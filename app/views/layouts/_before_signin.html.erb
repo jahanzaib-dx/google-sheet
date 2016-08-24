@@ -1,0 +1,29 @@
+<ul class="nav tx_nav navbar-nav">
+
+  <li class="active"> <a href="<%= about_marketrex_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'TenantRex_active.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'LeaseRex_active.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'ResearchRex_active.svg' %>"></a> </li>
+
+
+</ul>
+<ul class="nav navbar-nav tx_nav_right navbar-right">
+  <li  class="dropdown tx_dropdown "> <a href="#" class="tx_cap_letters"> blog</a> </li>
+  <li id="fat-menu" class="dropdown tx_dropdown">
+    <a href="#" id="drop3" role="button" class="dropdown-toggle tx-drop-down " data-toggle="dropdown" aria-expanded="true"> Sign In <b class="caret"></b></a>
+    <ul class="dropdown-menu tx_drop_menu" role="menu" aria-labelledby="drop3">
+      <li role="presentation">
+        <div class="tx_sign_drop_down">
+          <div class="form-group">
+            <!--<a class=" btn-block tx_orange_btn tx_orange_btn-sign" type="button" href="sign_in.html">Sign In</a>-->
+            <%= link_to "Sign In", new_user_session_path, :class => "btn-block tx_orange_btn tx_orange_btn-sign" %>
+          </div>
+        </div>
+      </li>
+      <li role="presentation tx_new_customer">
+        <!--<a href="sign_up.html">New Customers</a>-->
+        <%= link_to "New Customers", new_user_registration_path %>
+      </li>
+    </ul>
+  </li>
+</ul>

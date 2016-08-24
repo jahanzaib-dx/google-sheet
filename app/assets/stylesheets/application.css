@@ -1,0 +1,31 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require bootstrap.min
+ *= require buttons
+ *= require font-awesome
+ *= require build
+ *= require bootstrap-select.min
+ *= require perfect-scrollbar
+ *= require jquery.dataTables.min
+ *= require custom
+ *= require animate-words
+ *= require_self
+ */
+
+
+
+/*-------------- Styles to make the footer stick to the bottom of a page -------------*/
+html,body{height:100%;}
+.wrap {min-height: 100%;height: auto !important;height: 100%;}
+.middle {overflow:auto;padding-bottom: 135px;}
+footer{position: relative;margin-top: -135px;height: 135px;clear:both;}

@@ -1,0 +1,57 @@
+<div class="main_body_section">
+  <div class="container">
+  
+<div class="row">
+
+	  <%= render 'layouts/flash' , :flash => flash %>	  
+	  
+      <div class="Absolute-Center is-Responsive">
+	  
+        <div id="logo-container"></div>
+        <div class="col-sm-12 col-md-12 ">
+		
+          <div class="tx_form_container">
+		  
+	  <!--<p><%= notice %></p>-->
+	  
+	  <% if alert %>
+	  <p class="alert alert-danger"><%= alert %></p>
+	  <% end %>
+	  
+            <h1>Sign IN</h1>
+            <p> 
+			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url , class:"btn btn-social btn-linkedin tx-btn" %>
+			
+			<%= image_tag("login-border-shape.jpg",width: "100%")%>
+			
+			<%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'tx_form_content' , :id => 'loginForm'}) do |f| %>
+			
+              <div class="form-group input-group">
+			  	 <%= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
+              </div>
+              
+              
+              <div class="form-group input-group">
+			    <%= f.password_field :password, autocomplete: "off", class: 'form-control' , placeholder: "Password" %>
+              </div>
+             
+              
+              <div class="form-group">
+			  <button class='btn btn-def btn-block tx_orange_btn' type='submit'>Go</button>
+              </div>
+               <div class="form-group text-center"> 
+            <a class="tx_forget" href="<%= new_password_path(resource_name)%>">Forgot Password</a>
+          </div>
+              <div class="checkbox"> 
+			  <a class="tx_secure_content" href="#">
+			  <%= image_tag("lock-icon.jpg")%>
+			   ALWAYS SECURE YOUR <u>PRIVACY</u> IS OUR PROMISE</a> </div>
+            
+			<% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+	</div>
+</div>

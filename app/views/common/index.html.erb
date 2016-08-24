@@ -1,0 +1,24 @@
+<% unless user_signed_in? %>
+    <div class="tx_offer_hadding">
+      <h3>SPECIAL OFFER: FREE 30 DAY TRIAL OF ALL PRODUCTS. <a href="#!">SEE MORE</a></h3>
+    </div>
+<% end %>
+
+<div class="main_page_content">
+  <h2>ACCURATE COMMERCIAL REAL ESTATE</h2>
+  <div class="rw-wrapper">
+      <h1>
+        <ul class="rw-words rw-words-1">
+            <li>Comps</li>
+            <li>Analytics</li>
+            <li>Lease Analysis</li>
+            <li>Trends</li>
+            <li>Indices</li>
+            <li>Cash Flows</li>
+        </ul>
+      </h1>
+  </div>
+  <p>ALWAYS AVAILABLE. ALWAYS SAFEGUARDED.</p>
+  <span class="tx_see_btn"><a href="<%= subscription_plans_url %>">see plans <img src="<%= image_url 'right-arow.png' %>"></a></span>
+</div>
+

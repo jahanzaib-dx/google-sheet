@@ -1,0 +1,26 @@
+<% if flash[:error].present?  %>
+
+<br>
+<ul class="alert alert-danger">
+	  
+	  <% if flash[:error].kind_of?(Array) %>
+	  
+	  <% flash[:error].each do |msg| %>
+      <li><%= msg %></li>
+	  
+	  <% end %>
+	  
+	  <% else %>
+	  <li><%= flash[:error] %></li>
+	  <% end %>
+	
+</ul>
+
+<% elsif flash[:success].present?  %>
+
+<ul class="alert alert-success">
+      <li><%= flash[:success] %></li>
+</ul>
+	
+<% end %>
+

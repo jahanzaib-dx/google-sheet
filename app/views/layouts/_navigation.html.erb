@@ -1,0 +1,20 @@
+<nav  class="navbar tx_navbar navbar-static">
+  <div class="container">
+    <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+
+      <% if user_signed_in?  %>
+
+          <%= render 'layouts/after_signin' %>
+
+      <% else %>
+
+          <% if :devise_controller? %>
+              <%= render 'layouts/marketrex_public_header' %>
+           <% else %>
+              <%= render 'layouts/before_signin' %>
+          <% end %>
+      <% end %>
+
+    </div>
+  </div>
+</nav>

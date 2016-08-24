@@ -1,0 +1,63 @@
+
+  
+<div class="row">
+      <div class="Absolute-Center is-Responsive">
+        <div id="logo-container"></div>
+        <div class="col-sm-12 col-md-12 ">
+          <div class="tx_form_container">
+		  
+		  <%= devise_error_messages! %>
+		  
+		  
+            <h1>Sign Up</h1>
+            <p> 
+			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url, class:"btn btn-social btn-linkedin tx-btn" %>
+			</p>
+			<%= image_tag("login-border-shape.jpg",width: "100%")%>
+			
+			<%= form_for(resource, as: resource_name, url:  registration_path(resource_name), :html => {:class => 'tx_form_content' , :id => 'loginForm'}) do |f| %>
+			
+              <div class="form-group input-group">
+			  
+			  <%= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
+			  
+              </div>
+              <div class="form-group input-group">
+
+				<%= f.email_field :email, autofocus: false, class: 'form-control' , placeholder: "Email" %>
+              </div>
+              <div class="form-group input-group">
+				<%= f.text_field :mobile , class: 'form-control' , placeholder:"mobile #"%>
+				
+                <a href="#" class="tx_phone_help" data-toggle="tooltip" title="+9231500000">
+				<%= image_tag("question-tol-tipp.jpg")%>
+				</a> </div>
+				
+              <div class="form-group input-group">
+				<!--<% if @minimum_password_length %>
+				<em>(<%= @minimum_password_length %> characters minimum)</em>
+				<% end %><br />-->
+				<%= f.password_field :password, class: 'form-control' , autocomplete: "off" , placeholder:"Password" %>
+	
+              </div>
+              <div class="form-group input-group">
+
+				<%= f.password_field :password_confirmation, class: 'form-control' , autocomplete: "off" ,  placeholder:"Confirm Password" %>
+              </div>
+              
+              <div class="form-group">
+                <button type="Submit" class="btn btn-def btn-block tx_orange_btn">register</button>
+              </div>
+              <div class="checkbox"> <a href="#" class="tx_secure_content"><%= image_tag("lock-icon.jpg")%> ALWAYS SECURE YOUR <u>PRIVACY</u> IS OUR PROMISE</a> </div>
+              <!--<div class="form-group text-center">
+            <a href="#">Forgot Password</a>&nbsp;|&nbsp;<a href="#">Support</a>
+          </div>-->
+		  
+		  
+           <% end %>
+			
+          </div>
+        </div>
+      </div>
+    </div>
+

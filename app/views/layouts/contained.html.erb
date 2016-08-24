@@ -1,0 +1,16 @@
+<% content_for :content do %>
+
+    <div class="main_body_section">
+      <div class="container">
+
+        <%= render 'layouts/flash' %>
+
+        <%= yield %>
+
+      </div>
+    </div>
+
+
+<% end %>
+
+<%= render template: "layouts/application" %>

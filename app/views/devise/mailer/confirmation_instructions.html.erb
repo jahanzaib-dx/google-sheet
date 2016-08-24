@@ -1,0 +1,15 @@
+<p>Welcome <%= @email %>!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><%= link_to 'Confirm my account', user_confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>You can confirm your mobile number through the link below after login:</p>
+
+<p>
+<%= link_to 'Confirm my Mobile', verifications_verify_url %></p>
+
+<%###= link_to 'Confirm my Mobile', :controller => "verifications", :action => "verify" , :only_path => false, :host => request.base_url %>
+
+<%###= link_to "here", :controller => "contacts", :action => "confirm",
+:only_path => false, :id => 17, :host => "example.com" %>

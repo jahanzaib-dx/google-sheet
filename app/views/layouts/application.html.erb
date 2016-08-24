@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MarketRex</title>
+  <meta name="viewport" content="width=1024" />
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "jquery.min",'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="grey_background">
+
+    <div class="wrap">
+
+      <div class="header">
+        <!--navigation-start-->
+            <%= render 'layouts/navigation' %>
+        <!--navigation-end-->
+      </div> <!--/header -->
+
+      <div class="middle">
+        <!--main_body_section-start-->
+        <%= content_for?(:content) ? yield(:content) : yield %>
+        <!--main_body_section-end-->
+      </div> <!--/middle -->
+
+    </div> <!--/wrap -->
+
+    <!--footer-start-->
+    <%= render 'layouts/footer' %>
+    <!--footer-end-->
+
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+</body>
+</html>

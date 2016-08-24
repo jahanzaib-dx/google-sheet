@@ -1,0 +1,65 @@
+
+<div class="main_body_section">
+  <div class="container">
+
+<br>
+
+<% if flash[:success] -%>
+  <p class='alert alert-success'><%=h flash[:success] %></p>
+<% end -%>
+
+<% if flash[:errors] -%>
+  <p class='alert alert-danger'><%=h flash[:errors] %></p>
+<% end -%>
+
+<% if flash[:error].present?  %>
+	<p class='alert alert-danger'><%=h flash[:error] %></p>
+<% end %>
+
+
+<div class="row">
+      <div class="Absolute-Center is-Responsive">
+
+
+<div class="col-sm-12 col-md-12 ">
+		
+          <div class="tx_form_container">
+		  
+	  <!--<p><%= notice %></p>-->
+	  
+	  <% if alert %>
+	  <p class="alert alert-danger"><%= alert %></p>
+	  <% end %>
+	  
+            <h1>Verify your Mobile number</h1>
+            			
+			<%= image_tag("login-border-shape.jpg",width: "100%")%>
+			
+			<%= verify_mobile_number_form %>
+			
+			<br>
+			
+			<%= image_tag("login-border-shape.jpg",width: "100%")%>
+			
+			<br>
+			<br>
+			<h4>If you don't receive mobile verification number </h4>
+            			
+			<%= mobile_verification_button %>
+			
+          </div>
+		  
+		  
+        </div>
+      </div>
+    </div>
+	
+	 </div>
+    </div>
+	
+	<style>
+	.tx_form_container{margin-top:0px;}
+	</style>
+		
+		
+		
