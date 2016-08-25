@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
   root 'common#index'
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks" }
+  devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks", :registrations => "registrations" }
 
   post 'verifications/create' => 'verifications#create'
   get 'verifications/verify' => 'verifications#verify'
