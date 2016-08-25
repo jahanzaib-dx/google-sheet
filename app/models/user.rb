@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-
+  
   has_many :activity_log
 
   has_one :settings, class_name: 'UserSetting'
@@ -49,11 +49,11 @@ class User < ActiveRecord::Base
   
   #:email #system is validating itself
   
-  validates_uniqueness_of :mobile  , :username
+  ##validates_uniqueness_of :username
   
   validates :email, presence: true
-  validates :username, presence: true
-  validates :mobile, presence: true
+  ##validates :username, presence: true
+  ##validates :mobile, presence: true
   validates :first_name, presence: true, :on => :update
   validates :last_name, presence: true, :on => :update
   validates :firm_name, presence: true, :on => :update
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
 		user.first_name  = auth.info.first_name
 		user.username = auth.info.nickname || auth.info.email[0..(data.email.index('@') - 1)]
 		user.save(validate: false)
-		user
+		
 		
 		
 		#user = User.create(
@@ -137,8 +137,8 @@ class User < ActiveRecord::Base
 
 
   def assign_default_settings
-    values = {:sms => true, :email => true, :outofnetwork => false}
-    settings = UserSettings.create(values)
+    values = {:user_id => self.id, :sms => true, :email => true, :outofnetwork => false}
+	settings = UserSetting.create(values)
 
   end
 
