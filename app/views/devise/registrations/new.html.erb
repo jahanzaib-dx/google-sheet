@@ -1,4 +1,5 @@
-
+<div class="main_body_section">
+  <div class="container">
   
 <div class="row">
       <div class="Absolute-Center is-Responsive">
@@ -11,27 +12,29 @@
 		  
             <h1>Sign Up</h1>
             <p> 
-			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url, class:"btn btn-social btn-linkedin tx-btn" %>
+			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_omniauth_authorize_path(:linkedin) , class:"btn btn-social btn-linkedin tx-btn" %>			
 			</p>
 			<%= image_tag("login-border-shape.jpg",width: "100%")%>
 			
 			<%= form_for(resource, as: resource_name, url:  registration_path(resource_name), :html => {:class => 'tx_form_content' , :id => 'loginForm'}) do |f| %>
 			
-              <div class="form-group input-group">
+              <!--<div class="form-group input-group">
 			  
-			  <%= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
+			  <%##= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
 			  
-              </div>
+              </div>-->
               <div class="form-group input-group">
 
 				<%= f.email_field :email, autofocus: false, class: 'form-control' , placeholder: "Email" %>
               </div>
-              <div class="form-group input-group">
-				<%= f.text_field :mobile , class: 'form-control' , placeholder:"mobile #"%>
+			  
+             <!-- <div class="form-group input-group">
+				<%##= f.text_field :mobile , class: 'form-control' , placeholder:"mobile #"%>
 				
                 <a href="#" class="tx_phone_help" data-toggle="tooltip" title="+9231500000">
-				<%= image_tag("question-tol-tipp.jpg")%>
-				</a> </div>
+				<%##= image_tag("question-tol-tipp.jpg")%>
+				</a> 
+				</div>-->
 				
               <div class="form-group input-group">
 				<!--<% if @minimum_password_length %>
@@ -61,3 +64,5 @@
       </div>
     </div>
 
+ </div>
+</div>

@@ -20,14 +20,15 @@
 	  
             <h1>Sign IN</h1>
             <p> 
-			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url , class:"btn btn-social btn-linkedin tx-btn" %>
+			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_omniauth_authorize_path(:linkedin) , class:"btn btn-social btn-linkedin tx-btn" %>
 			
 			<%= image_tag("login-border-shape.jpg",width: "100%")%>
 			
 			<%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'tx_form_content' , :id => 'loginForm'}) do |f| %>
 			
               <div class="form-group input-group">
-			  	 <%= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
+			  	 <%##= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
+				 <%= f.email_field :email, autofocus: true , class: 'form-control' , placeholder: "Email" %>
               </div>
               
               
