@@ -11,24 +11,24 @@ class Connection < ActiveRecord::Base
   def self.getConnections(user,type='all')
   	
 	if type == 'all'
-		user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).order('connections.id DESC')
+		user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).order('connections.id DESC')
 	end
 	
 	if type == 'pending'
-		user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status < ?" , 1).order('connections.id DESC')
-		##user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:con_id=>user.id).where("connections.status" => 1).order('connections.id DESC')
+		user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status < ?" , 1).order('connections.id DESC')
+		##user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:con_id=>user.id).where("connections.status" => 1).order('connections.id DESC')
 	end
 	
 	if type == 'sent'
-		user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 1).order('connections.id DESC')
+		user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 1).order('connections.id DESC')
 	end
 	
 	if type == 'accept'
-		user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 2).order('connections.id DESC')
+		user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 2).order('connections.id DESC')
 	end
 	
 	if type == 'ignore'
-		user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 3).order('connections.id DESC')
+		user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 3).order('connections.id DESC')
 	end
 	
 	return user_connections
@@ -36,7 +36,7 @@ class Connection < ActiveRecord::Base
   end
   
   def self.current_user_connections(user)
-  	user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 2).order('connections.id DESC').all
+  	user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("connections.status" => 2).order('connections.id DESC').all
 	
 	user_connections_count = user_connections.count
 	

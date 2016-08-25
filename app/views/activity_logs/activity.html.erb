@@ -1,0 +1,70 @@
+<div class="body_section_inner"> 
+  
+  <!--advance search result-->
+  <div class="container ">
+  
+  <div class="col-md-12">
+  
+  <div class="bc_white">
+  
+    <div class="tx_activiti_fiulter">
+      <div class="col-md-1">
+        <div class="tx_tracker_box_round_content tx_small_round tx_small_round_red">
+          <p> L</p>
+        </div>
+      </div>
+      <div class="col-md-11 tx_activiti_fiulter_content">
+        <h1>Lease Comps Activity</h1>
+        <div class="col-md-11 tx_activiti_fiulter_content">
+          <div class="btn-group tx_btn_group">
+            <div class=" tx_dropdown_toggl">
+			
+            <%= form_tag activity_logs_path do %>
+
+			<select id="activity_select" name="atype" onchange="this.form.submit()" class="selectpicker">
+			  <option value="out"  <% if @atype=='out'%>selected<% end%>>Outgoing Request</option>
+			  <option value="in" <% if @atype=='in'%>selected<% end%>>Incoming Request</option>
+			  <option value="log" <% if @atype=='log'%>selected<% end%>>Activity Log</option>  
+			</select>
+			
+			<% end %>
+			
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+	
+    <%=
+	
+	if @atype=='out'
+	render 'outgoing_activity' 
+	
+	elsif @atype=='in'
+	render 'incoming_activity'
+	
+	elsif @atype=='log'
+	render 'log_activity'
+	
+	end
+	
+	%>
+	
+	</div>
+	
+	</div>
+	
+  </div>
+  
+  <!--advance search result end--> 
+  
+</div>
+
+
+
+
+
+
+
+

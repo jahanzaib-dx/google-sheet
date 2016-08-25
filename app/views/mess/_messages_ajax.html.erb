@@ -1,0 +1,70 @@
+       
+         <div class="tx_mgs_detail_head">
+		 
+		 <% if @selected_user %>
+		 
+          <div class="media tx_media_detail">
+            <div class="media-left tx_media"> 
+			<%= image_tag("mgs-user-img.jpg", class:"media-object") %> </div>
+            <div class="media-body tx_media_body_detail">
+			
+              <h4 class="">
+			  
+			  <%=@selected_user.username%>
+			  
+			  </h4>
+              <a href="#!" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>
+              <p><%=@selected_user.first_name%> <%=@selected_user.last_name%></p>
+              
+			 
+            </div>
+          </div>
+		  
+		   <% end %>
+		  
+          </div>
+           <div class="tx_mgs_detail_live perfectScrollbar-wheel">
+           
+		   <% 
+		   	  old_date = nil
+			  
+		   	  @user_messages.each do |message| 
+		   	  
+			  if message.sender_id == current_user.id
+			  	mess_class = "tx_mgs_detail_live_left"
+			  else
+			  	mess_class = "tx_mgs_detail_live_right"
+			  end
+			  
+			  ## get date
+			  
+			  
+			  
+		   %>
+		   
+		   <% if old_date != message.created_at.strftime("%Y-%m-%d") %>
+		   <h5><%= message.created_at.strftime("%B %d") %></h5>
+		   <% 
+		   old_date = message.created_at.strftime("%Y-%m-%d")
+		   end %>
+		   
+		   <div class="<%= mess_class %>">
+		   <% if message.message?%>
+            <p> <%= message.message%></p>
+			<span> <%= message.created_at.strftime("%I:%M %P")%> </span>
+		   <% end %>
+		   <% if message.file?%>
+            <p> File Attached: <a href="<%= message.file%>" target="_blank"><%= File.basename(message.file.to_s)%></a></p>
+			<span> <%= message.created_at.strftime("%I:%M %P")%> </span>
+		   <% end %>
+            
+            </div>
+			
+			<% end %>
+		   
+            
+           </div>
+		   
+		   <style>
+		   .tx_mgs_detail_live_left > p {float:left;}
+		   </style>

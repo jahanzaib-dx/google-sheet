@@ -1,0 +1,142 @@
+       
+         <div class="tx_mgs_detail_head">
+		 
+		 <% if @selected_user %>
+		 
+          <div class="media tx_media_detail">
+            <div class="media-left tx_media"> 
+			<%= image_tag("mgs-user-img.jpg", class:"media-object") %> </div>
+            <div class="media-body tx_media_body_detail">
+			
+              <h4 class="">
+			  
+			  <%=@selected_user.username%>
+			  
+			  </h4>
+             <!-- <a href="#!" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>-->
+			  
+			  <div class="dropdown tx_dropdown_mgs">
+                 <a data-toggle="dropdown" href="#" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>
+                 <ul class="dropdown-menu tx_dropdown_menu" role="menu" aria-labelledby="dLabel">
+                   	 <li><a href="#!" data-toggle="modal"  data-target="#basicModal">Forward Message</a></li>
+				   
+                     <li><a href="#!" class="mark_unread" data-receiver="<%= @selected_user.id%>">Mark as Unread</a></li>
+					 
+                     <li><a href="#!" class="msg_receiver" data-receiver="<%= @selected_user.id%>"><span class="delete_mgs">Delete Conversation</span></a></li>
+                 </ul>
+               </div>
+			   
+              <p><%=@selected_user.first_name%> <%=@selected_user.last_name%></p>
+              
+			 
+            </div>
+          </div>
+		  
+		   <% end %>
+		  
+          </div>
+           <div class="tx_mgs_detail_live perfectScrollbar-wheel">
+           
+		   <% 
+		   	  old_date = nil
+			  
+			  @text_area_text = "Conversation Forward by #{current_user.first_name}\n"
+			  
+		   	  @user_messages.each do |message| 
+		   	  
+			  if message.sender_id == current_user.id
+			  	mess_class = "tx_mgs_detail_live_left"
+				@for_name = current_user.first_name
+			  else
+			  	mess_class = "tx_mgs_detail_live_right"
+				@for_name = @selected_user.first_name
+			  end			  
+			  
+			  
+			  @text_area_text = @text_area_text+"#{@for_name}:\n#{message.message}\n------------------------------------------\n"
+		   %>
+		   
+		   <% if old_date != message.created_at.strftime("%Y-%m-%d") %>
+		   <h5><%= message.created_at.strftime("%B %d") %></h5>
+		   <% 
+		   old_date = message.created_at.strftime("%Y-%m-%d")
+		   end %>
+		   
+		   <div class="<%= mess_class %>">
+		   <% if message.message?%>
+            <p> <%= simple_format(message.message)%></p>
+			<span> <%= message.created_at.strftime("%I:%M %P")%> </span>
+		   <% end %>
+		   <% if message.file?%>
+            <p> File Attached: <a href="<%= message.file%>" target="_blank"><%= File.basename(message.file.to_s)%></a></p>
+			<span> <%= message.created_at.strftime("%I:%M %P")%> </span>
+		   <% end %>
+            
+            </div>
+			
+			<% end %>
+		   
+            
+           </div>
+
+<%= form_tag(messages_path, id:"mark_as_unread_form") do %>
+<input type="hidden" id="f_receiver_id_un" name="f_receiver_id">
+<input type="hidden" id="f_mtype" name="mtype" value="<%= @mtype%>">
+<input type="hidden" name="mark_as_unread" value="d">
+<% end %>
+
+<!----------------------Farword form in popup--------------------------------------->
+
+<%= form_tag messages_farword_path do %>
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog  tx_invite_modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Forward Message</h4>
+            </div>
+            <div class="modal-body tx_invite_modal-body">
+			
+               <!-- <input type="email" placeholder="Connection Email" class="tx_invite_email" required name="email">-->
+				
+				<div class="form-group">
+				<select name="receiver_id" class="form-control">
+					<% @user_connections.each do |user| %>						
+						<option value="<%= user.id%>"><%= user.email%></option>
+					<% end%>
+				</select>
+				</div>
+				
+				
+               <textarea id="c_show_textarea" name="for_message" rows="20"><%= @text_area_text%></textarea>
+            </div>
+			
+            <div class="modal-footer text-center">
+               
+                <button type="submit" class="btn btn-primary invite_save" >Send</button>
+				
+        </div>
+    </div>
+  </div>
+</div>
+
+<% end %>
+
+   
+<style>
+.tx_mgs_detail_live_left > p {float:left;}
+#c_show_textarea {height:150px;}
+</style>
+		   
+<script>
+
+$(document).on("click",".mark_unread",function (e) {
+    	
+		var rec_id = $(this).data("receiver");
+		$("#f_receiver_id_un").val(rec_id);
+		$("#mark_as_unread_form").submit();
+
+});
+
+</script>

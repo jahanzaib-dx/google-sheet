@@ -81,6 +81,7 @@ Rails.application.routes.draw do
   get 'messages' => 'messages#index'
   post 'messages' => 'messages#index'
   post 'messages/connections' => 'messages#connections'
+  post 'messages/farword' => 'messages#farword'
 
   get 'activity_logs' => 'activity_logs#index'
   post 'activity_logs' => 'activity_logs#index'

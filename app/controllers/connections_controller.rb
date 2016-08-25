@@ -23,9 +23,9 @@ class ConnectionsController < ApplicationController
 		
 		##type = 'sent'
 		
-		@user_connections = Connections.getConnections(current_user,type);
+		@user_connections = Connection.getConnections(current_user,type);
 		
-		##@user_connections = Connections.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>current_user.id)
+		##@user_connections = Connection.joins("INNER JOIN users ON users.id = connections.con_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>current_user.id)
 			  
 		
 		render "connections"
