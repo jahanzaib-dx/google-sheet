@@ -8,7 +8,7 @@
 
       <% else %>
 
-          <% if :devise_controller? %>
+          <% if show_colored_header? %>
               <%= render 'layouts/marketrex_public_header' %>
            <% else %>
               <%= render 'layouts/before_signin' %>

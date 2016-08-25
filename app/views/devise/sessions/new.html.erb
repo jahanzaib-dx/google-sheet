@@ -4,7 +4,7 @@
 <div class="row">
 
 	  <%= render 'layouts/flash' , :flash => flash %>	  
-	  
+
       <div class="Absolute-Center is-Responsive">
 	  
         <div id="logo-container"></div>
@@ -20,7 +20,7 @@
 	  
             <h1>Sign IN</h1>
             <p> 
-			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_omniauth_authorize_path(:linkedin) , class:"btn btn-social btn-linkedin tx-btn" %>
+			<%= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url , class:"btn btn-social btn-linkedin tx-btn" %>
 			
 			<%= image_tag("login-border-shape.jpg",width: "100%")%>
 			

@@ -1,5 +1,10 @@
 module SiteHelper
 
+
+  def show_colored_header?
+    ['passwords', 'sessions'].include? controller_name
+  end
+
   def user_image(user,cssclass="")
 
     if FileTest.exist?("#{Rails.root}/public/uploads/user/avatar/#{user.id}/#{user.avatar}")

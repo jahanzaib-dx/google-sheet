@@ -19,6 +19,7 @@
  *= require jquery.dataTables.min
  *= require custom
  *= require animate-words
+ *= require about
  *= require_self
  */
 

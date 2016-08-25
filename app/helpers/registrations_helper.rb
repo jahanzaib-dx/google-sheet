@@ -2,6 +2,7 @@ module RegistrationsHelper
 #### app/helpers/acme/registrations_helper.rb
 ###module Registrations::RegistrationsHelper
 
+
   def mobile_verification_button
     ###return '' unless current_user.needs_mobile_number_verifying?
     html = <<-HTML

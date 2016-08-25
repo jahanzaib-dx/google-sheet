@@ -4,7 +4,7 @@
   <title>MarketRex</title>
   <meta name="viewport" content="width=1024" />
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag "jquery.min",'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -30,7 +30,6 @@
     <%= render 'layouts/footer' %>
     <!--footer-end-->
 
-
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag :application, 'data-turbolinks-track' => true %>
 </body>
 </html>
