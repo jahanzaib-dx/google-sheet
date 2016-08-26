@@ -2690,7 +2690,7 @@ input:checked + .slider:before {
 }
 
 .tx_cost_table {
-    background: rgba(0, 0, 0, 0) url("../images/table-background.jpg") no-repeat scroll 0 0 / cover ;
+    background: asset-url("table-background.jpg") no-repeat scroll 0 0 / cover ;
     float: left;
     padding: 0 0 42px;
     width: 100%;
