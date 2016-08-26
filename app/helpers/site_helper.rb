@@ -2,7 +2,7 @@ module SiteHelper
 
 
   def show_colored_header?
-    ['passwords', 'sessions'].include? controller_name
+    ['passwords', 'sessions', 'registrations'].include? controller_name
   end
 
   def show_dark_footer?
