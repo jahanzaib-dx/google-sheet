@@ -11,7 +11,7 @@
 <ul class="nav navbar-nav tx_nav_right navbar-right">
         <li class="dropdown tx_dropdown " id="fat-menu">
           <a  class="dropdown-toggle tx-drop-down connetection-link " role="button" id="drop6" href="<%= connections_path%>">
-            <%= image_tag("tex-book-icon.png" , :class => "drom-icon")%> <%= current_user.all_connections.count %>
+            <%= image_tag("tex-book-icon.png" , :class => "drom-icon")%> <%= current_user.all_connections.count %> <%= "Connection".pluralize(current_user.all_connections.count) %>
           </a>
         </li>
         <li class="dropdown tx_dropdown" id="fat-menu">
@@ -28,7 +28,7 @@
           </ul>
 
         </li>
-        <li class="dropdown tx_dropdown" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("user-icon.png" , :class => "drom-icon")%> <%= current_user.username %> <b class="caret"></b></a>
+        <li class="dropdown tx_dropdown" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("user-icon.png" , :class => "drom-icon")%> <%= current_user.first_name %> <b class="caret"></b></a>
           <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
             <li role="presentation tx_new_customer">
 				<%= link_to "Profile", profile_path %>
