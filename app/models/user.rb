@@ -92,21 +92,23 @@ class User < ActiveRecord::Base
 		user.provider  = auth.provider
 		user.uid  = auth.provider
 		user.email  = auth.info.email
-		user.password  = Devise.friendly_token[0,20]
+		
+		user.password  = (0...8).map { (65 + rand(26)).chr }.join
+		
 		user.first_name  = auth.info.first_name
-		user.username = auth.info.nickname || auth.info.email[0..(data.email.index('@') - 1)]
+		
+		##user.username = auth.info.nickname || auth.info.email[0..(data.email.index('@') - 1)]
+		
+		user.skip_confirmation!
+		
 		user.save(validate: false)
+		##user
 		
+		##---welcome email with random password-------------
+		DxMailer.welcome_email(user).deliver
 		
-		
-		#user = User.create(
-        #                    provider:auth.provider,
-        #                    uid:auth.uid,
-        #                    email:auth.info.email,
-        #                    password:Devise.friendly_token[0,20],
-		#					username:'testing',
-		#					mobile:'563256325',
-        #                  )
+		####user.skip_confirmation! if user.respond_to?(:skip_confirmation)
+		return user
 		
       end
 
