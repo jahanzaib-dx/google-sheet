@@ -54,15 +54,13 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root 'common#index'
+  root 'pages#home'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks", :registrations => "registrations" }
 
   post 'verifications/create' => 'verifications#create'
   get 'verifications/verify' => 'verifications#verify'
   post 'verifications/verify' => 'verifications#verify'
-
-  get 'dashboard' => 'common#dashboard'
 
   get 'profile' => 'profile#index'
   get 'profile/update' => 'profile#update'

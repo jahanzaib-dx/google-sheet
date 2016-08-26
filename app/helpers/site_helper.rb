@@ -5,6 +5,31 @@ module SiteHelper
     ['passwords', 'sessions'].include? controller_name
   end
 
+  def show_dark_footer?
+    ['pages'].include? controller_name
+  end
+
+  def get_footer_links
+    page = "#{controller_name}/#{action_name}"
+    
+    case page
+      when "pages/about"
+        [ {:text => 'FAQ', :href => '#'},
+          {:text => 'ABOUT', :href => '#'},
+          {:text => 'CONTACT', :href => '#'},
+        ]
+      when "pages/plans"
+      when "sessions/new"
+      when "registrations/new"
+        [ {:text => 'CONTACT', :href => '#'}]
+      else
+        [ {:text => 'ABOUT', :href => '#'},
+          {:text => 'CONTACT', :href => '#'},
+        ]
+    end
+  end
+
+
   def user_image(user,cssclass="")
 
     if FileTest.exist?("#{Rails.root}/public/uploads/user/avatar/#{user.id}/#{user.avatar}")
