@@ -49,8 +49,11 @@ class User < ActiveRecord::Base
   
   #:email #system is validating itself
   
-  ##validates_uniqueness_of :username
+  validates_uniqueness_of :email
   
+  
+  validates :first_name, presence: true, :on => :create
+  validates :last_name, presence: true, :on => :create
   validates :email, presence: true
   ##validates :username, presence: true
   ##validates :mobile, presence: true
@@ -67,9 +70,7 @@ class User < ActiveRecord::Base
   ##validates :mobile, phone: { possible: false, allow_blank: true, types: [:mobile] }
   
   # -------------Setup accessible (or protected) attributes for your model ---------------
-  #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar
-  
-  # attr_accessible :title, :body
+  #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar  
 
   
   def self.connect_to_linkedin(auth, signed_in_resource=nil)
