@@ -36,8 +36,7 @@ default :from => "discreatelogix@gmail.com"
 	
 	def welcome_email(user)
 		
-		##mail(to: user.email, subject: "Welcome to MarketRex") do |format|
-		mail(to: "aamir.sarwar@discretelogix.com", subject: "Welcome to MarketRex") do |format|
+		mail(to: user.email, subject: "Welcome to MarketRex") do |format|
 		  format.html {
 			render locals: { user: user }
 		  }
