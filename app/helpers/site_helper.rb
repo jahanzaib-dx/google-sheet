@@ -2,7 +2,7 @@ module SiteHelper
 
 
   def show_colored_header?
-    ['passwords', 'sessions'].include? controller_name
+    ['passwords', 'sessions', 'registrations'].include? controller_name
   end
 
   def show_dark_footer?
@@ -13,15 +13,15 @@ module SiteHelper
     page = "#{controller_name}/#{action_name}"
 
     case page
-      when "pages/about"
+      when 'pages/about'
         [ {:text => 'FAQ', :href => '#'},
           {:text => 'ABOUT', :href => '#'},
           {:text => 'CONTACT', :href => '#'},
         ]
-      when "pages/home"
-      when "pages/plans"
-      when "sessions/new"
-      when "registrations/new"
+      when 'pages/home'
+      when 'pages/plans'
+      when 'sessions/new'
+      when 'registrations/new'
         [ {:text => 'CONTACT', :href => '#'}]
       else
         [ {:text => 'ABOUT', :href => '#'},
