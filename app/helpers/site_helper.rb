@@ -11,13 +11,14 @@ module SiteHelper
 
   def get_footer_links
     page = "#{controller_name}/#{action_name}"
-    
+
     case page
       when "pages/about"
         [ {:text => 'FAQ', :href => '#'},
           {:text => 'ABOUT', :href => '#'},
           {:text => 'CONTACT', :href => '#'},
         ]
+      when "pages/home"
       when "pages/plans"
       when "sessions/new"
       when "registrations/new"
