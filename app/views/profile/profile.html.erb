@@ -32,7 +32,11 @@
                     <div class="col-md-6 col-sm-6">
                       <div class="tx_profile_image"> 
 					  <%####= image_tag("user-img.jpg") %> 
+					  <% if current_user.linkedin_photo != "" %>
+					  <%= image_tag current_user.linkedin_photo.to_s %>
+					  <% else %>
 					  <%= image_tag current_user.avatar_url.to_s %>
+					  <% end %>
 					  </div>
                     </div>
                     <div class="col-md-6 col-sm-6">

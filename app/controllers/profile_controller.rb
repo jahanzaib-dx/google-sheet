@@ -20,7 +20,8 @@ class ProfileController < ApplicationController
 	  @user.mobile_active = false
 	end
 	
-	if @user.update_attributes params[:user]
+	##if @user.update_attributes params[:user]
+	if @user.update_attributes (user_params)
       flash[:success] = 'The User is successfully updated!'
 	  #render :text => "update"
 	  #return
@@ -51,6 +52,8 @@ class ProfileController < ApplicationController
 	
 		if @user.update_attribute(:avatar, params[:user][:avatar])
 			
+		  @user.update_attribute(:linkedin_photo, '')
+		  
 		  flash[:success] = 'Profile picture uploaded!'
 		  redirect_to profile_update_path
 		  return
@@ -99,6 +102,12 @@ class ProfileController < ApplicationController
 	
 	redirect_to profile_path
 	
+  end
+  
+  private
+
+  def user_params
+    params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
   end
  
 #########

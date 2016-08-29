@@ -40,7 +40,7 @@
   
   <ul>
  
-  <li><a href="#!" class="tx_linkdin_profile">Sync LinkedIn Profile </a> <a title="" data-toggle="tooltip" class="tx_linkdin_help" href="#" data-original-title="linkin"><%= image_tag("question-tol-tipp.jpg")%></a></li>
+  <!--<li><a href="#!" class="tx_linkdin_profile">Sync LinkedIn Profile </a> <a title="" data-toggle="tooltip" class="tx_linkdin_help" href="#" data-original-title="linkin"><%= image_tag("question-tol-tipp.jpg")%></a></li>-->
    <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>
    </li>
@@ -52,8 +52,11 @@
   	<div class="tx_upload_img">
 	
 	<%###= image_tag current_user.avatar_url.to_s %>
-	
+	<% if current_user.linkedin_photo != "" %>
+	<%= image_tag current_user.linkedin_photo.to_s %>
+	<% else %>
 	<%= image_tag current_user.avatar_url.to_s %>
+	<% end %>
 	
 	<%###= image_tag("upload.jpg")%>
     
@@ -66,7 +69,7 @@
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
   <li class="tx_bold">Basic Information</li>
-  <li>Username*</li>
+  <!--<li>Username*</li>-->
   <li>First Name*</li>
   <li>Last Name*</li>
   <li>Title</li>
@@ -76,7 +79,7 @@
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
   <li class="tx_bold"></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.username%></span><%= f.hidden_field :username %></li>
+  <!--<li class="inline-edit-text">&nbsp;<span><%= current_user.username%></span><%= f.hidden_field :username %></li>-->
   <li class="inline-edit-text">&nbsp;<span><%= current_user.first_name%></span><%= f.hidden_field :first_name %></li>
   <li class="inline-edit-text">&nbsp;<span><%= current_user.last_name%></span><%= f.hidden_field :last_name %></li>
   <li class="inline-edit-text">&nbsp;<span><%= current_user.title%></span><%= f.hidden_field :title %></li>
@@ -85,7 +88,7 @@
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
   <li class="tx_bold"></li>
-  <li><a href="javascript:void()" class="inline-edit">Edit</a></li>
+  <!--<li><a href="javascript:void()" class="inline-edit">Edit</a></li>-->
   <li><a href="javascript:void()" class="inline-edit">Edit</a></li>
   <li><a href="javascript:void()" class="inline-edit">Edit</a></li>
   <li><a href="javascript:void()" class="inline-edit">Edit</a></li>

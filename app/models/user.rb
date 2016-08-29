@@ -84,10 +84,6 @@ class User < ActiveRecord::Base
       else
 
 ##http://stackoverflow.com/questions/30211460/linkedin-oauth-exception-scope-not-authorized-r-fullprofile
-
-        ###user = User.create(name:auth.info.first_name,
-		##first_name: auth.extra.raw_info.name,
-		##username: auth.info.nickname || auth.uid
 		
 		user = User.new
 		user.provider  = auth.provider
@@ -98,12 +94,15 @@ class User < ActiveRecord::Base
 		
 		user.first_name  = auth.info.first_name
 		
-		##user.username = auth.info.nickname || auth.info.email[0..(data.email.index('@') - 1)]
+		user.last_name  = auth.info.last_name
+		
+		user.linkedin_photo = auth.info.image		
 		
 		user.skip_confirmation!
 		
-		user.save(validate: false)
-		##user
+		##Rails.logger.debug("omniauth: #{auth}")
+				
+		user.save(validate: false)		
 		
 		##---welcome email with random password-------------
 		DxMailer.welcome_email(user).deliver
