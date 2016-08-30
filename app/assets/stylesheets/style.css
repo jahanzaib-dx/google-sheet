@@ -1,0 +1,276 @@
+/* --------------------------------------------------defult----------------------------------------------------------*/
+.clear{
+	clear:both;
+}
+ul{
+	margin:0;
+	padding:0;
+}
+li{
+	list-style:none;
+}
+h1, h2, h3, h4, h5, h6,  p{
+	margin:0;
+	padding:0
+}
+.left-pad-none{
+	padding-left:0;
+}
+.right-pad-none{
+	padding-right:0;
+}
+.both-pad-none{
+	padding:0;
+}
+a:hover{
+	text-decoration:none;
+}
+html,body
+{
+    height: 100%;
+	color:#262626;
+}
+.cler-fix{
+}
+a {
+    transition: all 0.3s ease 0s;
+}
+/* -----------------------------------------------defult-------------------------------------------------------------*/
+
+
+/* -----------------------------------------------custom-------------------------------------------------------------*/
+.tx_navbar {
+    background: #262626 none repeat scroll 0 0;
+    border-radius: 0;
+    margin: 0;
+}
+
+.tx_nav > li:first-child > a {
+    border-left: 1px solid #666;
+    padding-left: 13px;
+}
+.tx_nav > li.active > a {
+    color: #fff !important;
+}
+
+.tx_nav > li > a {
+    border-right: 1px solid #666;
+    color: #fff;
+    font-size: 16px;
+    font-style: italic;
+    padding: 20px 13px;
+}
+.tx_nav > li > a img {
+    width: auto;
+}
+.dropdown-toggle.tx-drop-down {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.tx_nav_right > li > a {
+    border-left: 1px solid #666;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 21px 26px;
+}
+.tx_cap_letters {
+    text-transform: uppercase;
+}
+.dropdown-menu.tx_drop_menu {
+    background: #4a4949 none repeat scroll 0 0;
+    border-radius: 0;
+    padding: 22px 0;
+}
+.tx_drop_menu {
+    min-width: 246px;
+}
+.tx_sign_drop_down {
+    float: left;
+    padding: 0 21px;
+    width: 100%;
+}
+
+
+.nav > li > a:focus, .nav > li > a:hover {
+    background: #4a4949 none repeat scroll 0 0;
+    border-color: #666;
+}
+.main_page_content h1 {
+    color: #262626;
+    font-size: 89px;
+    font-weight: bold;
+    margin: 8px 0 20px;
+}
+
+
+.main_page_content p {
+    color: #262626;
+    font-size: 16px;
+}
+.main_page_content {
+    float: left;
+    font-weight: bold;
+    margin: 105px 0 300px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+/*.tx_footer {
+    background: #262626 none repeat scroll 0 0;
+    float: left;
+    padding: 32px 0;
+    width: 100%;
+}
+.tx_footer-menu {
+    float: right;
+    margin: 0 0 16px;
+    padding: 0 41px;
+    text-align: right;
+    width: 100%;
+}
+.tx_footer-menu li {
+    display: inline-block;
+    margin: 0 0 0 46px;
+}
+.tx_footer-menu li a {
+    color: #fff;
+    font-family: arial;
+    font-size: 23px;
+    font-weight: bold;
+}
+.tx_footer-links {
+    float: right;
+    padding: 0 40px;
+    text-align: right;
+    width: 100%;
+}
+.tx_footer-links li {
+    display: inline-block;
+    margin: 0;
+}
+.tx_footer-links li a {
+    border-right: 1px solid #fff;
+    color: #fff;
+    font-family: arial;
+    font-size: 14px;
+    padding: 0 12px 0 7px;
+}*/
+.tx_offer_hadding {
+    background: #4b4949 none repeat scroll 0 0;
+    float: left;
+    padding: 22px 0;
+    text-align: center;
+    width: 100%;
+}
+.tx_offer_hadding h3{
+	color:#fff
+}
+.tx_offer_hadding h3 a{
+	color:#fff
+}
+.tx_offer_hadding h3 {
+    color: #fff;
+    font-size: 19px;
+	  
+}
+
+
+.tx_bold{
+	font-weight: bold;
+}
+.tx_offer_hadding h3 a {
+    border-bottom: 1px solid #ccc;
+    color: #fff;
+}
+.tx_offer_hadding h3 a:hover {
+   opacity:0.7
+}
+.main_page_content h2 {
+    color: #262626;
+}
+.tx_nav_right .open > a, .nav .open > a:focus, .nav .open > a:hover {
+    background-color: #4a4949;
+    border-color: #4a4949;
+}
+
+.tx_see_btn > a {
+    background: #f19520 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 16px 40px;
+    text-transform: uppercase;
+}
+
+.tx_see_btn > a:hover {
+	opacity:0.6
+}
+.main_page_content span {
+    float: left;
+    margin: 57px 0 0;
+    width: 100%;
+}
+
+
+.tx_see_btn img {
+    bottom: 2px;
+    left: 3px;
+    position: relative;
+    width: 8px;
+}
+
+
+/* -----------------------------------------------custom-------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+/* -----------------------------------------------cost-page-------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -----------------------------------------------cost-page-------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

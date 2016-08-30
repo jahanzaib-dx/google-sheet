@@ -20,11 +20,12 @@
  *= require custom
  *= require animate-words
  *= require about
+ *= require cost
+ *= require style
  *= require_self
  */
 
 
-.dark-footer{background: #262626;}
 
 /*-------------- Styles to make the footer stick to the bottom of a page -------------*/
 html,body{height:100%;}

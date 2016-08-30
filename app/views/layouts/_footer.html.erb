@@ -1,21 +1,22 @@
-<% extra_class = "dark-footer" if show_dark_footer? %>
-
-<footer class="tx_footer <%= extra_class %>">
+<%
+bg_color = ""
+if controller.controller_name == 'common' && controller.action_name == 'index'
+	bg_color = "black_background"
+end
+%>
+<footer class="tx_footer <%= bg_color%>">
   <div class="container">
-
-    <ul class="tx_footer-menu">
-
-      <% footer_links = get_footer_links();
-         unless footer_links == nil %>
-            <% footer_links.each do |link| %>
-                  <li><a href="<%= link[:href] %>"><%= link[:text] %></a></li>
-            <% end %>
-      <% else %>
+    <% if user_signed_in? %>
+        <ul class="tx_footer-menu">
+          <li><a href="#">FAQ</a></li>
           <li><a href="#">ABOUT</a></li>
           <li><a href="#">CONTACT</a></li>
-      <% end %>
-    </ul>
-
+        </ul>
+    <% else %>
+        <ul class="tx_footer-menu">
+          <li><a href="#">CONTACT</a></li>
+        </ul>
+    <% end %>
 
     <ul class="tx_footer-links">
       <li><a href="#">&copy; 2016 TENANTREX, LLC.</a></li>
