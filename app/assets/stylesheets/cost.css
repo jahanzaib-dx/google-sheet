@@ -1,0 +1,228 @@
+
+.tx_choose_plan {
+    background: #d1d3d4 none repeat scroll 0 0;
+    float: left;
+    padding: 90px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.tx_cost_table_content p {
+    font-weight: bold;
+}
+.tx_choose_plan h1 {
+    color: #262626;
+    font-size: 50px;
+    font-weight: bold;
+}
+.tx_cost_table_main {
+    float: left;
+    margin: 100px 0 0;
+    width: 100%;
+}
+.tx_cost_table_box{
+    border: 1px solid #ccc;
+    float: left;
+    width: 246px;
+	 background: #fff none repeat scroll 0 0;
+}
+
+.tx_cost_table_box li {
+    border-bottom-colors: none;
+    border-left-colors: none;
+    border-right-colors: none;
+    border-top-colors: none;
+    border-color: #ccc;
+    border-image: none;
+	 font-weight: bold;
+    border-style: solid none;
+    border-width: 1px 0 0;
+    height: 60px;
+    padding: 18px 0;
+    text-align: center;
+}
+.tx_ultimate_plan:hover {
+    background: #d1d3d4 none repeat scroll 0 0;
+    color: #fff;
+
+
+}
+.tx_standard_red {
+    background: #c32127 none repeat scroll 0 0;
+    color: #fff;
+    font-weight: bold;
+	    font-size: 19px;
+}
+.tx_standard_green {
+    background: #3db34a none repeat scroll 0 0;
+    color: #fff;
+    font-weight: bold;
+	position: relative;
+	    font-size: 19px;
+}
+.tx_standard_mehroon {
+    background: #87365f none repeat scroll 0 0;
+    color: #fff;
+    font-weight: bold;
+	    font-size: 19px;
+}
+
+.tx_standard_blue {
+    background: #576eb2 none repeat scroll 0 0;
+    color: #fff;
+    font-weight: bold;
+	    font-size: 19px;
+}
+
+.tx_cost_table_box span {
+    float: left;
+    margin: 0 0 21px;
+    width: 100%;
+}
+
+.tx_cost_table_box span img {
+    width: 119px;
+}
+.tx_logo_height {
+    height: 200px !important;
+}
+.tx_width_fix {
+    margin: 0 0 0 16px;
+    width: 136px !important;
+}
+.tx_top_shape {
+    border-bottom: 28px solid #3db34a;
+    border-left: 121px solid transparent;
+    border-right: 126px solid transparent;
+    bottom: 59px;
+    height: 0;
+    position: absolute;
+    width: 0;
+    z-index: 11111111;
+}
+
+.tx_bc_darkgrey {
+    background: #4a4949 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.tx_basic_plan {
+    background: #556db1 none repeat scroll 0 0;
+    color: #fff;
+    padding: 13px 30px 15px;
+}
+.tx_basic_plan > img {
+    bottom: 1px;
+    left: 3px;
+    position: relative;
+    width: 9px;
+}
+.tx_basic_plan:hover {
+    color: #fff;
+}
+
+
+.tx_standard_plan:hover {
+    color: #fff;
+}
+.tx_trial_plan:hover {
+    color: #fff;
+}
+.tx_trial_plan:hover {
+    color: #fff;
+}
+.tx_standard_plan {
+    background: #c32127 none repeat scroll 0 0;
+    color: #fff;
+    padding: 13px 30px 15px;
+}
+.tx_standard_plan > img {
+    bottom: 1px;
+    left: 3px;
+    position: relative;
+    width: 9px;
+}
+.tx_trial_plan {
+    background: #3db34a none repeat scroll 0 0;
+    color: #fff;
+    padding: 13px 30px 15px;
+}
+.tx_trial_plan > img {
+    bottom: 1px;
+    left: 3px;
+    position: relative;
+    width: 9px;
+}
+.tx_ultimate_plan {
+    background: #d1d3d4 none repeat scroll 0 0;
+    color: #fff;
+    padding: 13px 30px 15px;
+}
+.tx_ultimate_plan > img {
+    bottom: 1px;
+    left: 3px;
+    position: relative;
+    width: 9px;
+}
+
+.tx_cost_table {
+    background: rgba(0, 0, 0, 0) url("../images/table-background.jpg") no-repeat scroll 0 0 / cover ;
+    float: left;
+    padding: 0 0 42px;
+    width: 100%;
+}
+.tx_cost_table_content {
+    float: left;
+    padding: 16px 13px;
+    width: 100%;
+}
+.tx_footer-links li:last-child a {
+    border: 0 none;
+    padding: 0 0 0 12px;
+}
+
+
+.tx_cost_table_help_content {
+    float: left;
+    text-align: center;
+    width: 100%;
+	margin: 55px 0;
+}
+
+.tx_cost_table_help_content > h1 {
+    font-size: 27px;
+    font-weight: bold;
+    margin: 19px 0 18px;
+}
+.tx_cost_table_help_content > h3 {
+    font-size: 23px;
+    margin: 0 0 13px;
+}
+.tx_orange_btn {
+    background: #f39500 none repeat scroll 0 0;
+    border: 1px solid #f39500;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px 12px;
+    text-transform: uppercase;
+}
+
+
+.dropdown-menu.tx_drop_menu a {
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+}
+.drom-icon {
+    margin: -3px 6px 0 0;
+    width: 21px;
+}
+.tx_red_border {
+    background: #bd202e none repeat scroll 0 0;
+    float: left;
+    padding: 37px 0;
+    width: 100%;
+}
