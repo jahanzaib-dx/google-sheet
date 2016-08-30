@@ -4,7 +4,7 @@ if controller.controller_name == 'common' && controller.action_name == 'index'
 	bg_color = "black_background"
 end
 %>
-<footer class="tx_footer <%= bg_color%>">
+<footer class="tx_footer <%= bg_color%> <%= controller.controller_name%> asdf <%= controller.action_name%>" >
   <div class="container">
     <% if user_signed_in? %>
         <ul class="tx_footer-menu">
