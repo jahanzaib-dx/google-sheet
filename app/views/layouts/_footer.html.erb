@@ -1,10 +1,10 @@
 <%
 bg_color = ""
-if controller.controller_name == 'common' && controller.action_name == 'index'
+if controller.controller_name == 'pages' && controller.action_name == 'home'
 	bg_color = "black_background"
 end
 %>
-<footer class="tx_footer <%= bg_color%> <%= controller.controller_name%> asdf <%= controller.action_name%>" >
+<footer class="tx_footer <%= bg_color%>" >
   <div class="container">
     <% if user_signed_in? %>
         <ul class="tx_footer-menu">
