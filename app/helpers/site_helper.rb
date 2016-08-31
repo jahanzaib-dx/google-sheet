@@ -14,8 +14,8 @@ module SiteHelper
 
     case page
       when 'pages/about'
-        [ {:text => 'FAQ', :href => '#'},
-          {:text => 'ABOUT', :href => '#'},
+        [ {:text => 'FAQ', :href => marketrex_faqs_path},
+          {:text => 'ABOUT', :href => about_marketrex_path},
           {:text => 'CONTACT', :href => '#'},
         ]
       when 'pages/home'
@@ -24,7 +24,7 @@ module SiteHelper
       when 'registrations/new'
         [ {:text => 'CONTACT', :href => '#'}]
       else
-        [ {:text => 'ABOUT', :href => '#'},
+        [ {:text => 'ABOUT', :href => about_marketrex_path},
           {:text => 'CONTACT', :href => '#'},
         ]
     end
