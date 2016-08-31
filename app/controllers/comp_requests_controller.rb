@@ -17,10 +17,11 @@ class CompRequestsController < ApplicationController
 
     @comp_request = CompRequest.find(params[:id])
 
-    if @comp_requests.received_by.settings.email
+    if @comp_request.received_by.settings.email
       DxMailer.outgoing_reminder(@comp_request)
     end
     render :json => {:status => 'success'}
+
   end
 
   def update

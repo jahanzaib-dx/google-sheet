@@ -4,8 +4,8 @@ class Message < ActiveRecord::Base
 
   mount_uploader :file, FileUploader
 
-  belongs_to :sender, class_name: :user
-  belongs_to :receiver, class_name: :user
+  belongs_to :sender, class_name: 'User'
+  belongs_to :receiver, class_name: 'User'
 
   scope :received_by, ->(user_id) { where("receiver_id = #{user_id}", user_id ) }
   scope :sent_by, ->(user_id) { where("sender_id = #{user_id}", user_id) }

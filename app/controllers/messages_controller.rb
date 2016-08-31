@@ -27,6 +27,7 @@ class MessagesController < ApplicationController
       ruser = User.find(params[:receiver_id])
 
       ## send email
+      @message = Message.find(@message.id)
       DxMailer.message_notification(ruser, @message).deliver
 
 

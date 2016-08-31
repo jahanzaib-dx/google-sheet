@@ -7,6 +7,9 @@ class CompRequest < ActiveRecord::Base
   belongs_to :initiated_by, class_name: 'User', foreign_key: :initiator_id
   belongs_to :received_by, class_name: 'User', foreign_key: :receiver_id
 
+  belongs_to :outgoing_comp_requests, class_name: 'User', foreign_key: :initiator_id
+  belongs_to :incoming_comp_requests, class_name: 'User', foreign_key: :receiver_id
+
 
   scope :received_by, ->(user_id) { where("receiver_id = #{user_id}", user_id ).all }
   scope :initiated_by, ->(user_id) { where("initiator_id = #{user_id}", user_id ).all }
