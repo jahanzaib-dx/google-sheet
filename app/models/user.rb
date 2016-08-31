@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   has_many :comp_requests
   has_many :outgoing_comp_requests, through: :comp_requests, foreign_key: :initiator_id
-  has_many :incomming_comp_requests, through: :comp_requests, foreign_key: :receiver_id
+  has_many :incoming_comp_requests, through: :comp_requests, foreign_key: :receiver_id
 
 
   has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id

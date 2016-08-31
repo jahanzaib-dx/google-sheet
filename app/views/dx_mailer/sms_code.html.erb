@@ -1,4 +1,10 @@
-Your sms verification code is <%= sms_code_no %>
-<br>
-<br>
-Just for testing
+<%= render 'partials/email_header' %>
+
+<h1 class="email-main-hadding">Hi <%= @user.name %>, </h1>
+
+<div class="email-content">
+
+    Your sms verification code is <%= @user.sms_code %>
+</div>
+
+<%= render 'partials/email_footer' %>

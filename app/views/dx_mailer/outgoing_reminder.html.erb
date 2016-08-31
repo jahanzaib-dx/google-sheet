@@ -1,5 +1,51 @@
-Dear <%= reciver.first_name %>,
-<br>
-<br>
-<%= sender.first_name%> wants to share your comp
-<br>
+<%= render 'partials/email_header' %>
+
+<h1 class="email-main-hadding">Hi <%= @comp_request.received_by.first_name %>,  I'd like to share my comp database with you.</h1>
+
+<div class="email-content">
+
+  <div style="width:338px; margin:auto;">
+    <div style="border: 1px solid #ccc;
+            float: left;
+            height: 117px;
+            width: 119px;">
+
+    </div>
+    <div style=" float: left;
+            height: 150px;
+            overflow:hidden;
+            margin: 0 0 0 24px;
+            width: 178px;">
+      <h2 style="font-size:14px;font-family: arial;"><%= @comp_request.initiated_by.name %></h2>
+      <h3 style="font-size:13px;font-family: arial;"><%= @comp_request.initiated_by.firm_name %>.</h3>
+      <h3 style="font-size:13px;font-family: arial;"><%= @comp_request.initiated_by.location %></h3>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+
+
+  <div style="margin: 48px 0 0 0px;">
+    <a href="#" style=" background: #ebeced; font-family: arial;
+            color: #566eb2;
+            padding: 19px 60px;
+            text-align: center;
+            text-decoration: none; margin: 0 11px;">View My Profile</a>
+    <a href="#" style=" background: #566eb2; font-family: arial;
+            color: #ebeced;
+            padding: 19px 88px;
+            text-align: center;
+            text-decoration: none; margin: 0 11px;">Accept</a>
+
+  </div>
+
+
+  <div style="margin: 61px 0;text-align: center;">
+    <a href="<%= about_marketrex_path %>" style="color:#566eb2; font-weight:bold;">What is MarketRex?</a>
+  </div>
+
+
+
+</div>
+
+
+<%= render 'partials/email_footer' %>

@@ -16,18 +16,18 @@ class MessagesController < ApplicationController
 
       if params[:file]
 
-        Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message] , :file =>params[:file])
+        @message = Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message] , :file =>params[:file])
 
       elsif
 
-      Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message])
+      @message = Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message])
 
       end
 
       ruser = User.find(params[:receiver_id])
 
       ## send email
-      DxMailer.message_notification(ruser,params[:m_message]).deliver
+      DxMailer.message_notification(ruser, @message).deliver
 
 
     end

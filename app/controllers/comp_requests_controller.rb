@@ -14,10 +14,12 @@ class CompRequestsController < ApplicationController
   end
 
   def remind
-    id = params[:id]
 
-    #TODO: send email...
+    @comp_request = CompRequest.find(params[:id])
 
+    if @comp_requests.received_by.settings.email
+      DxMailer.outgoing_reminder(@comp_request)
+    end
     render :json => {:status => 'success'}
   end
 

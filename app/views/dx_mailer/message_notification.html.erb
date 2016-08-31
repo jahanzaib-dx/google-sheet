@@ -1,7 +1,20 @@
-Dear <%= user.username %>,
-<br>
-<br>
-You have received new message
-<br>
-<br>
-<%= message%>
+<%= render 'partials/email_header' %>
+
+<h1 class="email-main-hadding">Hi <%= @user.name %>, </h1>
+
+<div class="email-content">
+
+    You have received a new message.
+    <br />
+    <br />
+    <%= @message.sender.name %> Said: <br />
+    <%= @message.message %><br />
+  <br />
+  <hr />
+  <br />
+  To  view all your messages, <%= link_to "Click here", messages_path('unread')%>.
+
+
+</div>
+
+<%= render 'partials/email_footer' %>

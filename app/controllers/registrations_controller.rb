@@ -20,11 +20,11 @@ class RegistrationsController < Devise::RegistrationsController
   private
   
     def sign_up_params
-        params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :username, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
+        params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
       end
   
     def account_update_params
-        params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :username, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
+        params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
       end
 
 end

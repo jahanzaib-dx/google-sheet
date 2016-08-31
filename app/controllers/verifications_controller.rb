@@ -29,7 +29,7 @@ def create
 
 
 
-	DxMailer.sms_code(current_user).deliver
+	#DxMailer.sms_code(current_user).deliver
 	
 	
   

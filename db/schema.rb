@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20160831101828) do
   create_table "activity_logs", force: :cascade do |t|
     t.integer  "comp_id"
     t.string   "status",       limit: 255
-    t.integer  "sender_id"
+    t.integer  "receiver_id"
     t.integer  "initiator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -565,6 +565,7 @@ ActiveRecord::Schema.define(version: 20160831101828) do
     t.string   "website",                limit: 150
     t.string   "zip",                    limit: 6
     t.string   "avatar",                 limit: 255
+    t.string   "linkedin_photo"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

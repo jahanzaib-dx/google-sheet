@@ -1,12 +1,24 @@
-Welcome <%= user.first_name%> to TanentRex <br>
-Below are your login information on TanentRex <br><br>
 
-Login: <%= user.email%>
-<br>
-Password: <%= user.password%>
-<br>
-<%##= link_to 'Click Here to login', verifications_verify_url %>
-<br>
-Regards,
-<br>
-TanentRex Team
+    <%= render 'partials/email_header' %>
+
+        <h1 class="email-main-hadding">Hi <%= @user.name %>, </h1>
+
+        <div class="email-content">
+
+
+            Welcome to MarketRex <br>
+
+            Below are your login information for MarketRex <br><br>
+
+            Login: <%= @user.email %>
+            <br>
+            Password: <%= @user.password %>
+            <br>
+            <br>
+            Regards,
+            <br>
+            MarketRex Team
+
+        </div>
+
+    <%= render 'partials/email_footer' %>
