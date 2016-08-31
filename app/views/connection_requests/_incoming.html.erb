@@ -1,0 +1,21 @@
+
+
+<tr>
+  <td><span class="hide"><%= request.user_id %></span></td>
+  <td width="5%" height="56" class="result_img_icon result_img_icon_select"><div class="checkbox checkbox-info">
+    <input type="checkbox" id="checkbox4">
+    <label for="checkbox4"> </label>
+  </div></td>
+  <td width="4%" class="result_img_icon">
+    <% #user_image(request.sender) %>
+  </td>
+  <td width="18%" class="result_line"><p class="result_line_bold"><%= request.sender.name %></p></td>
+  <td width="17%" class="result_line"><p class="result_line_bold"><%= request.sender.firm_name %></p></td>
+  <td width="31%" class="result_line"><p class="result_line_bold"><%= request.sender.location %></p></td>
+  <td width="13%" class="result_line">
+     <%= link_to "Accept", '#', :data => { :href => connections_url, :request_id => request.id} , :class=>"accpt_btn" %>
+  </td>
+  <td width="12%" class="result_line">
+        <%= link_to "Ignore", '#', :data => { :href => connection_requests_url(:request_id => request.id) }, :class=>"ignore_btn"  %>
+  </td>
+</tr>

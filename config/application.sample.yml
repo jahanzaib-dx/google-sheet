@@ -1,0 +1,20 @@
+devise_mail_from: "MarketRex Team"
+
+development:
+  mail_host: "localhost:3000"
+  smtp_host: "localhost"
+  smtp_port: "1025"
+
+test:
+  mail_host: "test.tenantrex.com"
+  smtp_host: "smtp.gmail.com"
+  smtp_port: "587"
+  smtp_username: "test@discretelogix.com"
+  smtp_password: "discrete123"
+
+production:
+  mail_host: "marketrex.com"
+  smtp_host: "smtp.gmail.com"
+  smtp_port: "587"
+  smtp_username: "test@discretelogix.com"
+  smtp_password: "discrete123"

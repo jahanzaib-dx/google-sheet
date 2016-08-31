@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>MarketRex</title>
-  <meta name="viewport" content="width=1024" />
+  <meta name="viewport" content="width=1300" />
 
   <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag "jquery.min",'data-turbolinks-track' => true %>
@@ -20,7 +20,14 @@
 
       <div class="middle">
         <!--main_body_section-start-->
-        <%= content_for?(:content) ? yield(:content) : yield %>
+
+        <%= content_for?(:sub_header) ? yield(:sub_header) : "" %>
+
+
+        <%= render 'layouts/flash' %>
+
+        <%= yield %>
+
         <!--main_body_section-end-->
       </div> <!--/middle -->
 
@@ -29,6 +36,8 @@
     <!--footer-start-->
     <%= render 'layouts/footer' %>
     <!--footer-end-->
+
+    <div class="ajax-loading"><div>Loading <img src="<%= image_url('ajax-loading.gif') %>" /></div></div>
 
     <%= javascript_include_tag :application, 'data-turbolinks-track' => true %>
 </body>

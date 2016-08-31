@@ -1,0 +1,141 @@
+<!--body_section-inner-->
+<div class="body_section_inner">
+
+  <!--advance search result-->
+  <div class="container">
+
+    <div class="col-md-12">
+      <div class="bc_white">
+
+        <%= render :partial => 'partials/connections_header' %>
+
+        <% if @connection_requests.count > 0 %>
+        <div class="tx_search_result_table_container">
+
+          <div class="short_lits_container">
+            <div class="col-md-4 ">
+              <div class="checkbox checkbox-info checkbox_table">
+                <input type="checkbox" id="checkbox1">
+                <label for="checkbox1"> Select All </label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <p class="tx_short_list">Sort By<span id="sort_by_id" class="sort_by_id_desc">Recently Added
+			<a href="#!">
+              <i class="fa fa-sort-asc set_fa_arrow" aria-hidden="true"></i>
+
+              <!--<%= image_tag("list-drop-arow.png") %>--></a>
+			</span></p>
+            </div>
+            <div class="col-md-3 tx_search_filter_right">
+              <div class="tx_search_filter  tx_search_table">
+                <input type="text" placeholder="Search" id="search_connections">
+                <a href="#!"><%= image_tag("search-filter-icon.png") %></a> </div>
+            </div>
+          </div>
+
+          <table width="100%" border="0" class="tx_search_result_table tx_search_result_table_auto tx_search_result_plan border_top_table display" id="connection_requests_list">
+
+            <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+
+
+            </tr>
+            </thead>
+
+            <tbody>
+                <%= render @connection_requests %>
+
+            </tbody>
+
+          </table>
+
+
+        </div>
+        <% else %>
+            <div class="alert alert-warning" role="alert" style="clear:both;margin-top:20px;">No request to show at the moment</div>
+        <% end %>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--advance search result end-->
+
+</div>
+<!--body_section-inner-end-->
+
+<%= render :partial => 'partials/connections_request_dialog' %>
+
+
+  <script>
+      $(document).ready(function() {
+          //$('#example11').DataTable();
+
+          //$('#connection_list').DataTable();
+
+          var c_table = $('#connection_requests_list').dataTable({
+
+          });
+
+          // #myInput is a <input type="text"> element
+          $('#search_connections').on( 'keyup', function () {
+              /*c_table.search( this.value ).draw();*/
+              c_table.fnFilter(this.value);
+
+          } );
+
+          $(document).on("click",".sort_by_id_desc",function() {
+              $('.sort_by_id_desc').toggleClass('sort_by_id_desc sort_by_id_asc');
+              $('.set_fa_arrow').toggleClass('fa-sort-asc fa-sort-desc');
+
+              /*c_table.fnSort(0);*/
+              c_table.fnSort([ [0,'desc']] );
+          });
+
+
+          $(document).on("click",".sort_by_id_asc",function() {
+              $('.sort_by_id_asc').toggleClass('sort_by_id_desc sort_by_id_asc');
+              $('.set_fa_arrow').toggleClass('fa-sort-desc fa-sort-asc');
+              /*c_table.fnSort(0);*/
+              c_table.fnSort([ [0,'asc']] );
+          });
+
+
+
+
+          $(".c_hide_me").click(function(){
+              $(".c_hide_me").hide();
+              $("#c_show_textarea").show();
+          });
+
+      } );
+  </script>
+
+  <style>
+      table.dataTable thead th {padding:0px !important;}
+      table.dataTable thead th {border-bottom:0px solid #111 !important;}
+      table.dataTable.no-footer {border-bottom:1px solid #ccc !important;}
+      .dataTables_length{display:none;}
+      .dataTables_filter{display:none;}
+      .dataTables_paginate{display:none;}
+      .dataTables_info{display:none;}
+      #sort_by_id{cursor:pointer;}
+      /*.set_fa_arrow{position:relative;bottom:3px;}*/
+      .sorting_1{padding:0px !important;}
+
+  </style>
+
+
+
+

@@ -7,54 +7,10 @@
   <div class="col-md-12">
   <div class="bc_white">
   
-  <% if flash[:error].present?  %>
-<br>
-<ul class="alert alert-danger">
-	  <li><%= flash[:error] %></li>
-</ul>
+    <%= render :partial => 'layouts/flash' %>
 
-<% elsif flash[:success].present?  %>
-<br>
-<ul class="alert alert-success">
-      <li><%= flash[:success] %></li>
-</ul>
-	
-<% end %>
+    <%= render :partial => 'partials/connections_header' %>
 
-
-    <div class="tx_activiti_fiulter">
-      <div class="col-md-1">
-        <div class="tx_tracker_box_round_content tx_small_round tx_small_round_brown">
-          <p> L</p>
-        </div>
-      </div>
-      <div class="col-md-11 tx_activiti_fiulter_content">
-        <h1>Connections</h1>
-		
-        <div class="btn-group tx_btn_group"> 
-        <div class=" tx_dropdown_toggl">
-		
-		<%= form_tag connections_path do %>
-
-<select id="connections_select" name="ctype" onchange="this.form.submit()" class="selectpicker">
-  <option value="all"  <% if params[:ctype]=='all'%>selected<% end%>>All</option>
-  <option value="pending" <% if params[:ctype]=='pending'%>selected<% end%>>Pending</option>
-  <option value="sent" <% if params[:ctype]=='sent'%>selected<% end%>>Sent</option>  
-</select>
-
-<% end %>
-
-
-</div>        
-        
-          <div class="tx_click tx_click_org"><a href="#" data-toggle="modal"  data-target="#basicModal"><%= image_tag("conectionorg.png")%></a>
-          
-          </div>         
-
-        </div>	
-		
-        </div>
-      </div>
     
     <div class="editable_group" style="display:none;">
       <div class="col-md-4">
@@ -91,7 +47,7 @@
           </div>
         </div>
 	
-      <table width="100%" border="0" class="tx_search_result_table tx_search_result_table_auto tx_search_result_plan border_top_table display" id="connection_list">
+      <table width="100%" border="0" class="tx_search_result_table tx_search_result_table_auto tx_search_result_plan border_top_table display" id="connections_list">
        
 	   <thead>
             <tr>
@@ -109,45 +65,9 @@
         </thead>
 	   
 	   <tbody>
-	   
-	   <% @user_connections.each do |user| 
-	   	  
-		  if user.first_name
-		  		uname = "#{user.first_name} #{user.last_name}"
-		  else
-		  		uname = "#{user.username}"
-		  end
-	   %>
-        <tr>
-		<td><span class="hide"><%= user.cid %></span></td>
-          <td width="5%" height="56" class="result_img_icon result_img_icon_select"><div class="checkbox checkbox-info">
-              <input type="checkbox" id="checkbox4">
-              <label for="checkbox4"> </label>
-            </div></td>
-          <td width="4%" class="result_img_icon">
-		  <%
-			image_check = user_image(user)
-		  %>
-		  <%= image_check %>
-		  
-		  </td>
-          <td width="18%" class="result_line"><p class="result_line_bold"><%= uname %></p></td>
-          <td width="17%" class="result_line"><p class="result_line_bold"><%= user.firm_name %></p></td>
-          <td width="31%" class="result_line"><p class="result_line_bold">Location</p></td>
-          <td width="13%" class="result_line">
-		  <% if user.status < 1 %>
-		  		<%= link_to "Accept", connections_accept_path(:cid => user.cid), :class=>"accpt_btn", method: :post %>
-		  <% end %>
-		  </td>
-          <td width="12%" class="result_line">
-		  <% if user.status < 1 %>
-		  		<%= link_to "Ignore", connections_ignore_path(:cid => user.cid), :class=>"ignore_btn" , method: :post %>
-		  <% end %>
-		  </td>
-        </tr>
-		<% end %>
-		
-		
+
+            <%= render @connections %>
+
 		</tbody>
 		
       </table>
@@ -210,7 +130,7 @@ $(document).ready(function() {
 	
 	//$('#connection_list').DataTable();	
 	
-	var c_table = $('#connection_list').dataTable({
+	var c_table = $('#connection_lists').dataTable({
     	
 	});
  

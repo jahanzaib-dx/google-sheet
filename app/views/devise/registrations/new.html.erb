@@ -28,6 +28,17 @@
 			  <%##= f.text_field :username, autofocus: true , class: 'form-control' , placeholder: "Username" %>
 			  
               </div>-->
+
+                <div class="form-group input-group">
+
+              				<%= f.text_field :first_name, autofocus: false, class: 'form-control' , placeholder: "First Name" %>
+                                </div>
+
+                  			  <div class="form-group input-group">
+
+              				<%= f.text_field :last_name, autofocus: false, class: 'form-control' , placeholder: "Last Name" %>
+                                </div>
+
               <div class="form-group input-group">
 
 				<%= f.email_field :email, autofocus: false, class: 'form-control' , placeholder: "Email" %>
@@ -56,7 +67,7 @@
               <div class="form-group">
                 <button type="Submit" class="btn btn-def btn-block tx_orange_btn">register</button>
               </div>
-              <div class="checkbox"> <a href="#" class="tx_secure_content"><%= image_tag("lock-icon.jpg")%> ALWAYS SECURE YOUR <u>PRIVACY</u> IS OUR PROMISE</a> </div>
+              <div class=""> <a href="#" class="tx_secure_content"><%= image_tag("lock-icon.jpg")%> ALWAYS SECURE. YOUR <u>PRIVACY</u> IS OUR PROMISE</a> </div>
               <!--<div class="form-group text-center">
             <a href="#">Forgot Password</a>&nbsp;|&nbsp;<a href="#">Support</a>
           </div>-->

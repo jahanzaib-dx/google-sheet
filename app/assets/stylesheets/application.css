@@ -20,6 +20,8 @@
  *= require custom
  *= require animate-words
  *= require about
+ *= require cost
+ *= require style
  *= require_self
  */
 
@@ -31,3 +33,19 @@ html,body{height:100%;}
 .wrap {min-height: 100%;height: auto !important;height: 100%;}
 .middle {overflow:auto;padding-bottom: 135px;}
 footer{position: relative;margin-top: -135px;height: 135px;clear:both;}
+
+
+div.ajax-loading{
+    position:fixed; left:3%;text-align: center;top: 0;width: 90%;
+    margin-bottom: 5px;font-weight: bold;font-size:2.2em;line-height:2.3em;padding: 10px 20px;clear:both;
+    border-radius:0px;
+    opacity:0.9;
+    user-select: none;
+    background-color:#fff4cc;color:#e79300;
+    z-index:999999;
+    display:none;
+}
+div.ajax-loading div{
+    line-height:30px;
+    text-align:center;
+}

@@ -1,0 +1,32 @@
+
+
+<%= form_tag connections_add_path do %>
+
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog  tx_invite_modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Add New Connections</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body">
+
+            <input type="email" placeholder="Invite by email address" class="tx_invite_email" required name="email">
+
+            <div class="text-center">
+              <%= link_to "Add a personal message" , "#!"  , :class => "c_hide_me" %>
+            </div>
+
+            <textarea placeholder="I'd like to share my comp database with you." id="c_show_textarea" style="display:none" name="p_message"></textarea>
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="submit" class="btn btn-primary invite_save" >Save changes</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+<% end %>

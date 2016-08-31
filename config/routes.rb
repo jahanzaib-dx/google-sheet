@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
+
   root 'pages#home'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks", :registrations => "registrations" }
@@ -62,7 +63,79 @@ Rails.application.routes.draw do
   get 'verifications/verify' => 'verifications#verify'
   post 'verifications/verify' => 'verifications#verify'
 
-  get 'profile' => 'profile#index'
+  get 'profile/update' => 'profile#update'
+  post 'profile/update' => 'profile#update'
+  post 'profile/picture' => 'profile#picture'
+  post 'profile/preferences' => 'profile#preferences'
+
+
+  get 'messages' => 'messages#index'
+  post 'messages' => 'messages#index'
+  post 'messages/connections' => 'messages#connections'
+  post 'messages/farword' => 'messages#farword'
+
+
+
+
+
+  get 'about-marketrex' => 'pages#about'
+  get 'subscription-plans' => 'pages#plans'
+  get 'marketrex-faqs' => 'pages#faqs'
+
+
+
+  resource :users
+
+  get 'dashboard' => 'users#dashboard'
+  get 'profile' => 'users#show'
+
+
+  get 'activity_log' => 'activity_log#index'
+  match 'comp_requests/:direction', :to => 'comp_requests#index', :as => :comp_requests, :via => [:get]
+  post 'comp_requests' => 'comp_requests#create'
+  post 'comp_requests/remind' => 'comp_requests#remind'
+  post 'comp_requests/update' => 'comp_requests#update'
+  post 'delete_comp_requests' => 'comp_requests#destroy'
+
+
+
+  match 'connection_requests/:direction', :to => 'connection_requests#index', :as => :connection_requests, :via => [:get]
+  post 'connection_requests' => 'connection_requests#create'
+  post 'connection_requests/:request_id' => 'connection_requests#update'
+  match 'delete_connection_requests/:id', :to => 'connection_requests#destroy', :as => :delete_connection_requests, :via => [:delete]
+
+
+
+  get 'connections' => 'connections#index'
+  post 'connections' => 'connections#create'
+  match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
+
+
+=begin
+  match 'messages/(:condition)', :to => 'messages#index', :as => :messages, :via => [:get]
+  post 'message' => 'messages#create'
+  post 'message/:message_id' => 'messages#forward'
+=end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   get 'profile/update' => 'profile#update'
   post 'profile/update' => 'profile#update'
   post 'profile/picture' => 'profile#picture'
@@ -86,8 +159,6 @@ Rails.application.routes.draw do
   post 'activity_logs/update' => 'activity_logs#update'
 
 
-  get 'about-marketrex' => 'pages#about'
-  get 'subscription-plans' => 'pages#plans'
-  get 'marketrex-faqs' => 'pages#faqs'
+
 
 end

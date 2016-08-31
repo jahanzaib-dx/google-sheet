@@ -3,7 +3,7 @@
 <!--tx_mgs_click_active-->
 
  <% @user_connections.each do |user| 
- 	last_message = Messages.getLastMessage(current_user,user.id)
+ 	last_message = Message.getLastMessage(current_user,user.id)
 	
 	if last_message
 		last_message_time = last_message.created_at

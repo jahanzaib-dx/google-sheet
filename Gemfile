@@ -56,3 +56,5 @@ gem 'phonelib'
 
 gem 'carrierwave'
 gem 'mini_magick'
+
+gem "figaro"

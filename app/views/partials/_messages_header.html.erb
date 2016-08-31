@@ -1,0 +1,51 @@
+
+<div class="tx_activiti_fiulter">
+  <div class="col-md-1">
+    <div class="tx_tracker_box_round_content tx_small_round tx_small_rund_green">
+      <p> M</p>
+    </div>
+  </div>
+  <div class="col-md-11 tx_activiti_fiulter_content">
+    <h1>Messages</h1>
+    <div class="btn-group tx_btn_group">
+      <div class=" tx_dropdown_toggl">
+        <%= form_tag messages_path do %>
+            <select id="messages_select" name="mtype" class="selectpicker">
+              <option value="all" data-href="<%= messages_url %>" <%= "selected" unless params[:condition]%> >All Messages</option>
+              <option value="connections" data-href="<%= messages_path('connections') %>"  <%= "selected" if params[:condition] == 'connections' %> >My Connections</option>
+              <option value="unread" data-href="<%= messages_path('unread') %>" <%= "selected" if params[:condition] == 'unread' %> >Unread</option>
+            </select>
+        <% end %>
+      </div>
+
+
+
+
+
+      <div class="tx_click"><a href="#"><%= image_tag("clik-edit.png") %></a></div>
+
+
+      <!--<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog  tx_invite_modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Add New Connections</h4>
+            </div>
+            <div class="modal-body tx_invite_modal-body">
+                <input type="text" placeholder="Invite by email address" class="tx_invite_email">
+               <textarea placeholder="I'd like to share my comp database with you."></textarea>
+            </div>
+            <div class="modal-footer text-center">
+
+                <button type="button" class="btn btn-primary invite_save" data-dismiss="modal">Save changes</button>
+        </div>
+    </div>
+  </div>
+</div>-->
+
+    </div>
+
+
+  </div>
+</div>

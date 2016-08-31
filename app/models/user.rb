@@ -12,9 +12,13 @@ class User < ActiveRecord::Base
   has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id'
   has_many :inverse_connected_to, through: :inverse_connections, source: :user
 
+
+
+  #scope :all_connections, ->() { where(:user_id => id).or.where(:agent_id => id) }
   def all_connections
-    connected_to << inverse_connected_to
+    connected_to + inverse_connected_to
   end
+
 
 
 
@@ -32,10 +36,13 @@ class User < ActiveRecord::Base
   has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
 
 
+  has_many :tenant_records
 
 
 
-
+  def self.marketrex_user_id field_name
+    "hex_to_int ( substring(md5(#{field_name}::text),0,2) || substring(md5(#{field_name}::text),10,2) || substring(md5(#{field_name}::text),20,2) )"
+  end
 
 
   after_create :assign_default_settings
@@ -48,12 +55,14 @@ class User < ActiveRecord::Base
 	mount_uploader :avatar, AvatarUploader
   
   #:email #system is validating itself
-  
-  ##validates_uniqueness_of :username
+
+  validates_uniqueness_of :email
+
+
+  validates :first_name, presence: true, :on => :create
+  validates :last_name, presence: true, :on => :create
   
   validates :email, presence: true
-  ##validates :username, presence: true
-  ##validates :mobile, presence: true
   validates :first_name, presence: true, :on => :update
   validates :last_name, presence: true, :on => :update
   validates :firm_name, presence: true, :on => :update
@@ -61,16 +70,15 @@ class User < ActiveRecord::Base
   validates :city, presence: true, :on => :update
   validates :state, presence: true, :on => :update
   validates :zip, presence: true, :on => :update
-  
-  ##validates :mobile , :email , :username , :first_name , :last_name , :firm , :address , :city , :state , :zip
-  
-  ##validates :mobile, phone: { possible: false, allow_blank: true, types: [:mobile] }
-  
-  # -------------Setup accessible (or protected) attributes for your model ---------------
-  #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar
-  
-  # attr_accessible :title, :body
 
+
+  def location
+    "#{city}, #{state}"
+  end
+
+  def name
+    "#{first_name} #{last_name}"
+  end
   
   def self.connect_to_linkedin(auth, signed_in_resource=nil)
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
@@ -91,12 +99,15 @@ class User < ActiveRecord::Base
 		user = User.new
 		user.provider  = auth.provider
 		user.uid  = auth.provider
-		user.email  = auth.info.email
+
+    user.email  = auth.info.email
 		
 		user.password  = (0...8).map { (65 + rand(26)).chr }.join
 		
 		user.first_name  = auth.info.first_name
-		
+    user.last_name  = auth.info.last_name
+    user.linkedin_photo = auth.info.image
+
 		##user.username = auth.info.nickname || auth.info.email[0..(data.email.index('@') - 1)]
 		
 		user.skip_confirmation!

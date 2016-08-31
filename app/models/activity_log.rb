@@ -1,24 +1,11 @@
 class ActivityLog < ActiveRecord::Base
- 
-  def self.activityLog(user,status="all")
-	
-	 ##alog = Activity.all
-	 
-	 if status == 'all'
-	 
-	 	alog = ActivityLog.joins("LEFT JOIN tenent_records ON tenent_records.id = activity_logs.comp_id").where("activity_logs.receiver_id = ? OR activity_logs.sender_id = ?",user.id,user.id).select("activity_logs .* , tenent_records .*")
-		
-	 elsif status == 'incoming'
-	 	alog = ActivityLog.joins("LEFT JOIN tenent_records ON tenent_records.id = activity_logs.comp_id").where("activity_logs.receiver_id = ? ",user.id).select("activity_logs .* , tenent_records .*")
-		
-	 elsif status == 'outgoing'
-	 	alog = ActivityLog.joins("LEFT JOIN tenent_records ON tenent_records.id = activity_logs.comp_id").where("activity_logs.sender_id = ? ",user.id).select("activity_logs .* , tenent_records .*")
-		
-	 end
-	 
-	 return alog
-	
-  end
-	 
-#####end of class#############
+
+  default_scope {order('created_at DESC')}
+
+  belongs_to :tenant_record, foreign_key: :comp_id
+  belongs_to :initiated_by, class_name: 'User', foreign_key: :initiator_id
+  belongs_to :received_by, class_name: 'User', foreign_key: :receiver_id
+
+  scope :all_activities_of_user, ->(user_id) { where("initiator_id = #{user_id} OR receiver_id = #{user_id} ", user_id ) }
+
 end

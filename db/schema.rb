@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160823123711) do
+ActiveRecord::Schema.define(version: 20160831101828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,12 +50,12 @@ ActiveRecord::Schema.define(version: 20160823123711) do
 
   create_table "activity_logs", force: :cascade do |t|
     t.integer  "comp_id"
-    t.string   "status",      limit: 255
+    t.string   "status",       limit: 255
     t.integer  "sender_id"
-    t.integer  "receiver_id"
+    t.integer  "initiator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",        limit: 255
+    t.string   "type",         limit: 255
   end
 
   create_table "agreements", force: :cascade do |t|
@@ -392,18 +392,6 @@ ActiveRecord::Schema.define(version: 20160823123711) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "requests", force: :cascade do |t|
-    t.integer  "comp_id"
-    t.integer  "initiator_id"
-    t.integer  "receiver_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "requests", ["comp_id"], name: "index_requests_on_comp_id_id", using: :btree
-  add_index "requests", ["initiator_id"], name: "index_requests_on_initiator_id_id", using: :btree
-  add_index "requests", ["receiver_id"], name: "index_requests_on_receiver_id_id", using: :btree
-
   create_table "spatial_ref_sys", primary_key: "srid", force: :cascade do |t|
     t.string  "auth_name", limit: 256
     t.integer "auth_srid"
@@ -528,10 +516,12 @@ ActiveRecord::Schema.define(version: 20160823123711) do
     t.string   "company_logo_content_type",     limit: 255
     t.integer  "company_logo_file_size"
     t.datetime "company_logo_updated_at"
+    t.integer  "user_id"
   end
 
   add_index "tenant_records", ["industry_sic_code_id"], name: "index_tenant_records_on_industry_sic_code_id", using: :btree
   add_index "tenant_records", ["office_id"], name: "index_tenant_records_on_office_id", using: :btree
+  add_index "tenant_records", ["user_id"], name: "index_tenant_records_on_user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id",      null: false
@@ -581,7 +571,4 @@ ActiveRecord::Schema.define(version: 20160823123711) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "requests", "tenant_records", column: "comp_id"
-  add_foreign_key "requests", "users", column: "initiator_id"
-  add_foreign_key "requests", "users", column: "receiver_id"
 end

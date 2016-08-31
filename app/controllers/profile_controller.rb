@@ -1,13 +1,6 @@
 class ProfileController < ApplicationController
 
-  before_filter :authenticate_user!
-  
 
-  def index
- 		@user = current_user
-		render "profile"
-  end
-  
   def update
   		@user = current_user
 		
@@ -20,7 +13,8 @@ class ProfileController < ApplicationController
 	  @user.mobile_active = false
 	end
 	
-	if @user.update_attributes params[:user]
+	#if @user.update_attributes params[:user]
+  if @user.update_attributes (user_params)
       flash[:success] = 'The User is successfully updated!'
 	  #render :text => "update"
 	  #return
@@ -50,7 +44,9 @@ class ProfileController < ApplicationController
 	if params[:user]
 	
 		if @user.update_attribute(:avatar, params[:user][:avatar])
-			
+
+      @user.update_attribute(:linkedin_photo, '')
+
 		  flash[:success] = 'Profile picture uploaded!'
 		  redirect_to profile_update_path
 		  return
@@ -67,28 +63,28 @@ class ProfileController < ApplicationController
   
   	@user = current_user
 	
-	if params[:UserSettings]
+	if params[:UserSetting]
 	
-		settings = UserSettings.where(:user_id=>@user.id).first
+		settings = UserSetting.where(:user_id=>@user.id).first
 		
 		if settings
-			settings.update_attributes(:sms => params[:UserSettings][:sms] , :email => params[:UserSettings][:email] ,  :outofnetwork => params[:UserSettings][:outofnetwork])
+			settings.update_attributes(:sms => params[:UserSetting][:sms] , :email => params[:UserSetting][:email] ,  :outofnetwork => params[:UserSetting][:outofnetwork])
 		else
-			settings_new = UserSettings.new
+			settings_new = UserSetting.new
 			settings_new.user_id = @user.id
 			#preferences_new.sms = true
 			#preferences_new.email = true
 			
-			if !params[:UserSettings][:sms].blank?
-				settings_new.sms = params[:UserSettings][:sms]
+			if !params[:UserSetting][:sms].blank?
+				settings_new.sms = params[:UserSetting][:sms]
 			end
 			
-			if !params[:UserSettings][:email].blank?
-				settings_new.email = params[:UserSettings][:email]
+			if !params[:UserSetting][:email].blank?
+				settings_new.email = params[:UserSetting][:email]
 			end
 			
-			if !params[:UserSettings][:outofnetwork].blank?
-				settings_new.outofnetwork = params[:UserSettings][:outofnetwork]
+			if !params[:UserSetting][:outofnetwork].blank?
+				settings_new.outofnetwork = params[:UserSetting][:outofnetwork]
 			end
 			
 			settings_new.save(validate: false)
@@ -100,6 +96,12 @@ class ProfileController < ApplicationController
 	redirect_to profile_path
 	
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
+    end
  
 #########
 end

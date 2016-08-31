@@ -12,8 +12,28 @@
 
 //= require jquery_ujs
 //= require bootstrap.min
+//= require common
 //= require jquery.mousewheel
 //= require perfect-scrollbar
 //= require jquery.dataTables.min
 //= require bootstrap-select.min
 //= require custom
+//= require connections
+//= require messages
+//= require comp_requests
+//= require_self
+
+jQuery(document).ready(function () {
+
+    jQuery("#activity_select, #messages_select, #connections_select ").on("change", function () {
+
+        var val = jQuery(this).val();
+        jQuery(this).children("option").each(function () {
+            if (jQuery(this).attr('value') == val) {
+                document.location.href = jQuery(this).data('href');
+            }
+        });
+
+    });
+
+});

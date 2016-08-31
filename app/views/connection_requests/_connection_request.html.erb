@@ -1,0 +1,14 @@
+
+
+    <%=
+        render partial: params[:direction],  :locals => {:request => connection_request}
+=begin
+        if connection_request.user_id == current_user.id
+           render partial: 'outgoing',  :locals => {:request => connection_request}
+        else
+          render partial: 'incoming',  :locals => {:request => connection_request}
+        end
+=end
+    %>
+
+

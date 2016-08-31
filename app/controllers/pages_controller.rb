@@ -4,7 +4,7 @@ class PagesController < ApplicationController
 
   def home
     if user_signed_in?
-      redirect_to profile_url
+      redirect_to dashboard_url
     else
       render :home
     end
