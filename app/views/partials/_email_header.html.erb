@@ -1,59 +1,14 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>::Email::</title>
-</head>
-<style>
-    .email-container{
-        width:600px;
-        margin:0 auto;
-
-    }
-    .email-mian-section{
-        background:#d9dadc
-
-    }
-
-    .email-body {
-        background: #fff none repeat scroll 0 0;
-        margin: 20px auto;
-        width: 520px;
-        text-align:center;
-        padding:20px;
-    }
-
-    .email-content-wrapper{
-        text-align: left;
-    }
-
-    .email-main-hadding {
-        font-family: arial;
-        font-size: 18px;
-        padding: 13px 0;
-    }
-
-
-    .email-header {
-        background:#272626;
-    }
-
-    .email-header img {
-        margin:20px 0 20px 20px;
-        width:260px;
-    }
-
-
-</style>
-
+<head></head>
 <body>
 
-<div class="email-container">
-  <div class="email-mian-section">
-    <div class="email-header">
-      <a href="<%= root_url %>"><%= image_tag 'email-logo.png' %></a>
+<div style="width:600px;margin:0 auto;">
+  <div style="background:#d9dadc">
+    <div style="background:#272626;">
+      <a href="<%= root_url %>"><%= image_tag 'email-logo.png', :style =>'margin:20px 0 20px 20px;width:260px;' %></a>
     </div>
-    <div class="email-body">
+    <div style="background:#fff;margin: 20px auto;width: 520px;text-align:center;padding:20px;">
 
-      <div class="email-content-wrapper">
+      <div style="text-align: left;">
 
