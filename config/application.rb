@@ -25,7 +25,7 @@ module MarketRex
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 	
-	config.action_mailer.default_options = { from: "info@marketrex.com" }
+	config.action_mailer.default_options = { from:  ENV['dx_mailer_from'] }
 
     config.action_mailer.asset_host = "http://#{ ENV['mail_host'] }"
     config.action_mailer.default_url_options = { :host =>  ENV['mail_host'] }

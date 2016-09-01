@@ -1,26 +1,32 @@
+
 devise_mail_from: "MarketRex Team"
 
 development:
-  #mail_host: "localhost:3000"
-  #smtp_host: "localhost"
-  #smtp_port: "1025"
-  
   mail_host: "localhost:3000"
-  smtp_host: "smtp.gmail.com"
-  smtp_port: "587"
-  smtp_username: "test.dx123"
-  smtp_password: "testdx123"
+  smtp_host: "localhost"
+  smtp_port: "1025"
+  LinkedIn_API_key: "xxxxxxxx"
+  LinkedIn_API_secret: "xxxxxxxx"
+  dx_mailer_from: info@marketrex.com
+
 
 test:
   mail_host: "test.tenantrex.com"
   smtp_host: "smtp.gmail.com"
   smtp_port: "587"
   smtp_username: "test@discretelogix.com"
-  smtp_password: "discrete123"
+  smtp_password: "xxxxxxxx"
+  LinkedIn_API_key: "xxxxxxxx"
+  LinkedIn_API_secret: "xxxxxxxx"
+  dx_mailer_from: info@marketrex.com
+
 
 production:
   mail_host: "marketrex.com"
   smtp_host: "smtp.gmail.com"
   smtp_port: "587"
   smtp_username: "test@discretelogix.com"
-  smtp_password: "discrete123"
+  smtp_password: "xxxxxxxx"
+  LinkedIn_API_key: "xxxxxxxx"
+  LinkedIn_API_secret: "xxxxxxxx"
+  dx_mailer_from: info@marketrex.com
