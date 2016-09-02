@@ -96,7 +96,39 @@ class ProfileController < ApplicationController
 	redirect_to profile_path
 	
   end
-
+  
+  def password
+  	@user = current_user
+	
+	if params[:user]
+		
+		if params[:user][:password].length < 8 
+			flash[:error] = 'Password should be minimum 8 character'
+			err = true
+		end
+		
+		if params[:user][:password] != params[:user][:password_confirmation]
+			flash[:error] = 'Password and Confirm Password should match'
+			err = true
+		end
+				
+		if !err
+			if @user.update_attribute(:password, params[:user][:password])
+	
+			  flash[:success] = 'Password updated successfully'
+			  redirect_to new_user_session_path
+			  return
+			
+			end
+		end
+	end
+	
+	##render password
+	##redirect_to profile_password_path
+	
+  end
+  
+  
   private
 
     def user_params
