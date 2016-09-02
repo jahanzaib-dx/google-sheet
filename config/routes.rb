@@ -75,7 +75,7 @@ Rails.application.routes.draw do
   resource :users
 
   get 'dashboard' => 'users#dashboard'
-  get 'profile/:id' => 'users#show', :as => :public_profile
+  ##get 'profile/:id' => 'users#show', :as => :public_profile
 
 
   get 'activity_log' => 'activity_log#index'
