@@ -15,6 +15,6 @@
   <td width="13%" class="result_line">
   </td>
   <td width="12%" class="result_line">
-    <%= link_to "Cancel", connection_requests_url(:request_id => request.id), :class=>"ignore_btn" , :method => :delete %>
+    <%= link_to "Cancel", delete_connection_requests_url(:id => request.id), :class=>"ignore_btn" , :method => :delete, :data => {:href => delete_connection_requests_url(:id => request.id)} %>
   </td>
 </tr>

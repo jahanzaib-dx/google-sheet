@@ -16,6 +16,6 @@
      <%= link_to "Accept", '#', :data => { :href => connections_url, :request_id => request.id} , :class=>"accpt_btn" %>
   </td>
   <td width="12%" class="result_line">
-        <%= link_to "Ignore", '#', :data => { :href => connection_requests_url(:request_id => request.id) }, :class=>"ignore_btn"  %>
+        <%= link_to "Ignore", delete_connection_requests_url(:id => request.id), :class=>"ignore_btn" , :method => :delete, :data => {:href => delete_connection_requests_url(:id => request.id)} %>
   </td>
 </tr>
