@@ -79,6 +79,11 @@ class User < ActiveRecord::Base
   def name
     "#{first_name} #{last_name}"
   end
+
+  def can_send_requests?
+    !mobile.nil?  and mobile_active
+    return true
+  end
   
   def self.connect_to_linkedin(auth, signed_in_resource=nil)
     user = User.where(:provider => auth.provider, :uid => auth.uid).first

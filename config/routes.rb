@@ -63,18 +63,6 @@ Rails.application.routes.draw do
   get 'verifications/verify' => 'verifications#verify'
   post 'verifications/verify' => 'verifications#verify'
 
-  get 'profile/update' => 'profile#update'
-  post 'profile/update' => 'profile#update'
-  post 'profile/picture' => 'profile#picture'
-  post 'profile/preferences' => 'profile#preferences'
-
-
-  get 'messages' => 'messages#index'
-  post 'messages' => 'messages#index'
-  post 'messages/connections' => 'messages#connections'
-  post 'messages/farword' => 'messages#farword'
-
-
 
 
 
@@ -87,7 +75,7 @@ Rails.application.routes.draw do
   resource :users
 
   get 'dashboard' => 'users#dashboard'
-  get 'profile' => 'users#show'
+  get 'profile/:id' => 'users#show', :as => :public_profile
 
 
   get 'activity_log' => 'activity_log#index'
@@ -99,11 +87,12 @@ Rails.application.routes.draw do
 
 
 
+
   match 'connection_requests/:direction', :to => 'connection_requests#index', :as => :connection_requests, :via => [:get]
-  post 'connection_requests' => 'connection_requests#create'
+  post 'connection_requests' => 'connection_requests#create', :as => :create_connection_requests
   post 'connection_requests/:request_id' => 'connection_requests#update'
   match 'delete_connection_requests/:id', :to => 'connection_requests#destroy', :as => :delete_connection_requests, :via => [:delete]
-
+  get 'connection_request/accept/:code' => 'connection_requests#accept', :as => :accept_connection_request
 
 
   get 'connections' => 'connections#index'
@@ -133,31 +122,31 @@ Rails.application.routes.draw do
 
 
 
-
-
-
   get 'profile/update' => 'profile#update'
   post 'profile/update' => 'profile#update'
   post 'profile/picture' => 'profile#picture'
-
   post 'profile/preferences' => 'profile#preferences'
 
+=begin
   get 'connections' => 'connections#index'
   post 'connections' => 'connections#index'
 
   post 'connections/ignore' => 'connections#ignore'
   post 'connections/accept' => 'connections#accept'
   post 'connections/add' => 'connections#add'
+=end
 
   get 'messages' => 'messages#index'
   post 'messages' => 'messages#index'
   post 'messages/connections' => 'messages#connections'
   post 'messages/farword' => 'messages#farword'
 
+=begin
   get 'activity_logs' => 'activity_logs#index'
   post 'activity_logs' => 'activity_logs#index'
   post 'activity_logs/update' => 'activity_logs#update'
 
+=end
 
 
 

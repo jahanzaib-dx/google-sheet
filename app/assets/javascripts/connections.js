@@ -54,4 +54,32 @@ jQuery(document).ready(function (){
         return false;
     });
 
+
+    jQuery("#btn-connection-invite").on("click", function (){
+        displayOverlay = true;
+        $('#basicModal').modal('hide');
+        var $btn = jQuery(this);
+        var $form = $btn.parents('form')
+        var dataString = $form.serialize();
+        //console.log($form.attr('action'));
+        //console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: dataString,
+            dataType: "json",
+            success: function(data) {
+                console.log(data)
+                if(data.status == 'success'){
+                    uiAlert('Success','Connection request successfully sent to the user');
+                }else{
+                    uiAlert('Error!','Unable to send connection request. '+data.message);
+                    $('#basicModal').modal('show');
+                }
+            }
+        });
+
+        return false;
+    });
+
 });

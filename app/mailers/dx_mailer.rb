@@ -21,6 +21,11 @@ class DxMailer < ActionMailer::Base
 	def welcome_email(user)
 		@user = user
 		mail( :to => @user.email, :subject => "Welcome to MarketRex" )
-	end
+  end
+
+  def connection_invite(request)
+    @connection_request = request
+    mail(:to => request.receiver.email, :subject => "Connect Request at MarketRex")
+  end
 
 end

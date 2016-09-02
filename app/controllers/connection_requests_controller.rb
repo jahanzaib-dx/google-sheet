@@ -18,18 +18,46 @@ class ConnectionRequestsController < ApplicationController
   # POST /connection_requests.json
   # TODO:
   def create
-    parameters = connection_request_params
-    if is_connection_request_valid? parameters[:agent_id]
-
-      @connection_request = ConnectionRequest.new(parameters)
-
-      if @connection_request.save
-        render json: {:status => :success, :data => @connection}
+    if !current_user.can_send_requests?
+      render json: {:status => :error, :message => 'Please enter and verify your mobile number first' }
+      return
+    else
+      agent = User.where(:email => params[:email]).first
+      if(agent != nil)
+        connection = Connection.where(:user_id => current_user.id, :agent_id => agent.id).count
+        if connection > 0
+          render json: {:status => :error, :message => 'You are already connected to selected user' }
+          return
+        else
+          reverse_connection = Connection.where(:user_id => agent.id, :agent_id =>  current_user.id).count
+          if reverse_connection > 0
+            render json: {:status => :error, :message=> 'You are already connected to selected user' }
+            return
+          else
+            request = {:user_id => current_user.id, :agent_id => agent.id, :message => params[:p_message]}
+            add request
+            return
+          end
+        end
       else
-        render json: {:status => :error, :data => @connection_request.errors}
-      end
+        # generate a random connection code
+        # create dummy user and add request for that user
+        # send invite email containig that code
 
+        #random_key = ('a'..'z').to_a.shuffle[0,8].join
+        agent = User.new
+        agent.email = params[:email]
+        agent.skip_confirmation!
+        if agent.save(validate: false)
+          request = {:user_id => current_user.id, :agent_id => agent.id, :message => params[:p_message]}
+          add request
+          return
+        end
+        return
+      end
     end
+
+
   end
 
 
@@ -48,36 +76,23 @@ class ConnectionRequestsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_request_params
-      params.fetch(:connection_request).permit(:agent_id)
+      params.fetch(:connection_request).permit(:agent_id, :message)
     end
 
+    def add parameters
+      @connection_request = ConnectionRequest.new(parameters)
+      if @connection_request.save
 
+        request = ConnectionRequest.find( @connection_request.id )
+        DxMailer.connection_invite(request).deliver
 
-    def is_connection_request_valid?( other_id )
-      return true
-      error = ''
-      if current_user.mobile.nil?  or !current_user.mobile_active
-        error = 'Please enter and verify your mobile number first'
+        render json: {:status => :success, :data => @connection_request}
+
       else
-        connection = Connection.where(:user_id => current_user.id, :agent_id => other_id).count
-        if connection > 0
-          error = 'You are already connected to selected user'
-        else
-          reverse_connection = Connection.where(:user_id => other_id, :agent_id =>  current_user.id).count
-          if reverse_connection > 0
-            error = 'You are already connected to selected user'
-          end
-        end
+        render json: {:status => :error, :data => @connection_request.errors}
       end
-
-
-      unless error == ''
-        render json: {:status => :error, :data => error }
-        return false
-      end
-
-      return true
     end
+
 
 
 end

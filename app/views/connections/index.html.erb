@@ -92,11 +92,12 @@
 
 
 
-<%= form_tag connections_add_path do %>
+
 
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog  tx_invite_modal-dialog">
         <div class="modal-content">
+          <%= form_tag create_connection_requests_path do %>
             <div class="modal-header  tx_invite_modal-header">
             <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
             <h4 class="modal-title" id="myModalLabel">Add New Connections</h4>
@@ -114,14 +115,15 @@
 			
             <div class="modal-footer text-center">
                
-                <button type="submit" class="btn btn-primary invite_save" >Save changes</button>
-				
-        </div>
+                <button type="button" class="btn btn-primary invite_save" id="btn-connection-invite" >Save changes</button>
+            </div>
+          <% end %>
+
     </div>
   </div>
 </div>
 
-<% end %>
+
 
 
 <script>
