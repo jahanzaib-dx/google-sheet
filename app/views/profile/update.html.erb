@@ -40,7 +40,9 @@
   
   <ul>
  
-  <!--<li><a href="#!" class="tx_linkdin_profile">Sync LinkedIn Profile </a> <a title="" data-toggle="tooltip" class="tx_linkdin_help" href="#" data-original-title="linkin"><%= image_tag("question-tol-tipp.jpg")%></a></li>-->
+   <li>
+   <%= link_to "Change Password", profile_password_path, :class => "tx_linkdin_profile" %>
+   </li>
    <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>
    </li>
@@ -69,7 +71,7 @@
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
   <li class="tx_bold">Basic Information</li>
-  <li>Username*</li>
+  <!--<li>Username*</li>-->
   <li>First Name*</li>
   <li>Last Name*</li>
   <li>Title</li>
@@ -142,6 +144,8 @@
   
   </div>
   <div class="col-md-12 col-sm-12 tx_profilebtn_section">
+  <%= link_to "Delete Account", "#!", :class => "text-danger delete_me" %>
+  
   <ul>
     <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>  
@@ -156,6 +160,8 @@
 </div>
 
 <% end %>
+
+<%= button_to "Cancel my account", registration_path(current_user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
 
 <%= form_for(:user, url: profile_picture_path, html: { :multipart => true , :id => 'upload_p_form' }) do |f| %>
 
@@ -189,6 +195,10 @@ $('#select_p_image').on('click', function() {
 	$('#upload_me').change(function() {
   		$('#upload_p_form').submit();
 	});
+});
+
+$('.delete_me').on('click', function() {
+    $('.target_delete_me').trigger('click');
 });
 </script>
 

@@ -67,6 +67,8 @@ Rails.application.routes.draw do
   post 'profile/update' => 'profile#update'
   post 'profile/picture' => 'profile#picture'
   post 'profile/preferences' => 'profile#preferences'
+  get 'profile/password' => 'profile#password'
+  post 'profile/password' => 'profile#password'
 
 
   get 'messages' => 'messages#index'
