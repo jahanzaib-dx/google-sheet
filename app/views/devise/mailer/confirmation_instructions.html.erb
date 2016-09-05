@@ -1,14 +1,19 @@
 <%= render 'partials/email_header' %>
 
-
-      <h1 style="font-family: arial;font-size: 18px;padding: 13px 0;">Hi <%= @resource.name %>, </h1>
-
       <div class="email-content">
-            <p>Please confirm your account through the link below:</p>
+            <p><%= @resource.name %>, welcome to MarketRex!</p>
+			
+			<p>Please confirm your account email by clicking the link below:</p>
 
-            <p><%= link_to 'Confirm my email', confirmation_url(@resource, confirmation_token: @token) %></p>
+            <p><%= link_to 'Confirm my email', confirmation_path(@resource, confirmation_token: @token) %></p>
 
       </div>
+	  
+	  <p>
+	  Regards,
+	  <br>
+	  MarketRex Team
+	  </p>
 
 
 <%= render 'partials/email_footer' %>

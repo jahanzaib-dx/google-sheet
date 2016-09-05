@@ -122,9 +122,12 @@
   
   </div>
   <div class="col-md-12 col-sm-12 tx_profilebtn_section">
-  <%= link_to "Delete Account", "#!", :class => "text-danger delete_me" %>
+  
   
   <ul>
+  <li class="valign">
+  <%= link_to "Delete Account", "#!", :class => "text-danger delete_me" %>
+  </li>
     <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>  
    </li>
@@ -200,6 +203,7 @@ $('#change_password').on('click', function() {
     outline: 1px solid #ccc;
     padding: 0 0 0 9px;
 }
+.valign{bottom:20px;}
 </style>
 
 <!--main_body_section-end--> 

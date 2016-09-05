@@ -1,10 +1,9 @@
 <%= render 'partials/email_header' %>
 
-<h1 style="font-family: arial;font-size: 18px;padding: 13px 0;">Hi <%= @user.name %>, </h1>
-
 <div class="email-content">
 
-    Your sms verification code is <%= @user.sms_code %>
+	Your SMS verification code is <%= @user.sms_code %> 
+	
 </div>
 
 <%= render 'partials/email_footer' %>

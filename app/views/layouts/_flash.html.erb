@@ -22,5 +22,8 @@
       <li><%= flash[:success] %></li>
 </ul>
 	
-<% end %>
+<% elsif notice %>
+<br class="clear">
+<p class="alert alert-success"><%= notice %></p>
+<% end%>
 
