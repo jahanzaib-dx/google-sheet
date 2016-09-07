@@ -20,9 +20,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world" 
-  devise:
-    confirmations:
+hello: "Hello world" 
+devise:
+confirmations:
       send_instructions: 'To verify your account, Please click the link sent to you in your MarketRex verification email'
-	omniauth_callbacks:
+      omniauth_callbacks:
       success: "Successfully authenticated."
