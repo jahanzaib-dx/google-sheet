@@ -60,3 +60,11 @@ gem 'mini_magick'
 gem "figaro"
 
 gem 'roadie'
+
+gem 'finance'
+##gem 'activerecord-postgres-hstore'
+gem 'paranoia'
+gem 'paperclip'
+gem 'jquery-ui-rails'
+gem 'remotipart'
+gem 'chosen-rails'

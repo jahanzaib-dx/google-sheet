@@ -24,17 +24,49 @@
           <label for="checkbox4"> Within Radius </label>
         </div>
       </div>
+	  
+	  <form id="basic-search-form" action="<%= search_basic_path() %>" method="post">
+	  
+	  <input id="search_type_address_zipcode" name="tenant_record[search_type]" value="address_zipcode" type="radio" <%= ("checked" if @search_params.blank? || (@search_params.has_key?(:search_type) && @search_params[:search_type] == "address_zipcode") ) %> />
+              <label for="search_type_address_zipcode">Address</label>
+			  
       <div class="col-md-8 col-sm-8">
         <div class="search_bar">
           <div id="custom-search-input">
             <div class="input-group col-md-12">
-              <input type="text" class="  search-query form-control" placeholder="Search" />
+			
+              <!--<input type="text" class="  search-query form-control" placeholder="Search" />-->
+			  
+			  
+			  <input id="autocomplete" type="text" name="q" tabindex="1" placeholder="Search" value="<%= fetch_search_query(@search_params) %>" />
+          <input type="hidden" id="address1" name="address1" value="<%= fetch_search_address(@search_params) %>" />
+          <input type="hidden" id="zipcode" name="zipcode" value="<%= fetch_search_zipcode(@search_params) %>" />
+          <button id="search" class="btn icon btn-red" disabled="disabled"><span>Go</span><i class="trex search"></i></button>
+		  
+		  
+		  <ul>
+            <li class="first checkbox">
+              <%- apply_radius = "checked" if @search_params && @search_params[:apply_radius] %>
+              <input id="apply_radius" tabindex="2" name="tenant_record[apply_radius]" value="true" type="checkbox" <%= apply_radius %> />
+              <label for="apply_radius" class="apply_radius">Within radius</label>
+            </li>
+            <li>
+              <input type="text" id="tenant_record_radius" name="tenant_record[radius]" value="<%= (@search_params[:radius] if @search_params) || 2 %>">
+              <label for="tenant_record_radius">Miles</label>
+            </li>
+          </ul>
+		  
+		  
+		  
+			  
               <span class="input-group-btn">
               <button class="btn btn-danger" type="button"> <span class="fa fa-search"></span> </button>
               </span> </div>
           </div>
         </div>
       </div>
+	  
+	  
       <div class="col-md-2 col-sm-2 both-pad-none miles_input">
         <input type="text" placeholder="1">
         Miles </div>
