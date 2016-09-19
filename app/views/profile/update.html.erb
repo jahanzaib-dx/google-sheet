@@ -1,0 +1,209 @@
+<!--main_body_section-start-->
+
+<%= form_for(:user, url: profile_update_path, html: { method: :post }) do |f| %>
+
+<div class="main_edit_section">
+  <div class="container">
+  <div class="col-md-12">
+  <h1 class="main_edit_hadding">Edit/ Complete Profile</h1>
+  </div>
+  <div class="col-md-12">
+
+  <div class="edit_content_eria">
+  <div class="col-md-12 col-sm-12 tx_profilebtn_section">
+  <h2>Profile</h2>
+  
+  <ul>
+ 
+   <!--<li>
+   <%= link_to "Change Password", profile_password_path, :class => "tx_linkdin_profile" %>
+   </li>-->
+   <li>
+   <%= f.submit "Save Profile" , :class => "tx_save_profile" %>
+   </li>
+  </ul>
+  
+  </div>
+  <div class="tx_edit_full_width tx_edit_margin">
+  <div class="col-md-3 col-sm-3">
+  	<div class="tx_upload_img">
+	
+	<%###= image_tag current_user.avatar_url.to_s %>
+      <% if current_user.linkedin_photo != "" %>
+          <%= image_tag current_user.linkedin_photo.to_s %>
+      <% else %>
+	    <%= image_tag current_user.avatar_url.to_s %>
+      <% end %>
+	
+	<%###= image_tag("upload.jpg")%>
+    
+    <label class="myLabel">
+    <!--<input type="file"/>-->
+    <span id="select_p_image"><%= image_tag("upload-icon.png")%> Change Image</span>
+</label>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-3">
+  <ul class="tx_profile_information">
+  <li class="tx_bold">Basic Information</li>
+  <!--<li>Username*</li>-->
+  <li>First Name*</li>
+  <li>Last Name*</li>
+  <li>Title</li>
+  <li>Password</li>
+  </ul>
+  
+  </div>
+  <div class="col-md-3 col-sm-3">
+  <ul class="tx_profile_information">
+  <li class="tx_bold">&nbsp;</li>
+  
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.first_name%></span><%= f.hidden_field :first_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.last_name%></span><%= f.hidden_field :last_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.title%></span><%= f.hidden_field :title %></li>
+  <li>&nbsp;</li>
+  </ul>
+  </div>
+  <div class="col-md-3 col-sm-3">
+  <ul class="tx_profile_information">
+  <li class="tx_bold">&nbsp;</li>
+  
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!<%=profile_password_path%>" id="change_password" >Edit</a></li>
+  </ul>
+  </div>
+  </div>
+   <div class="tx_edit_full_width ">
+  <div class="col-md-3 col-sm-3">
+  	
+  </div>
+  <div class="col-md-3 col-sm-3">
+  
+  <ul class="tx_profile_information">
+  <li class="tx_bold">Contact Information</li>
+  <li>Business Email*</li>
+  <li>Mobile Phone #*</li>
+  <li>Firm Name*</li>
+  <li>Street Address*</li>
+  <li>City*</li>
+  <li>State*</li>
+  <li>Zip Code*</li>
+  <li>Website</li>
+  </ul>
+  </div>
+  <div class="col-md-3 col-sm-3">
+  <ul class="tx_profile_information">
+  <li class="tx_bold">&nbsp;</li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.email%></span><%= f.hidden_field :email %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.mobile%></span><%= f.hidden_field :mobile %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.firm_name%></span><%= f.hidden_field :firm_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.address%></span><%= f.hidden_field :address %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.city%></span><%= f.hidden_field :city %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.state%></span><%= f.hidden_field :state %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.zip%></span><%= f.hidden_field :zip %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= current_user.website%></span><%= f.hidden_field :website %></li>
+  </ul>
+  </div>
+  <div class="col-md-3 col-sm-3">
+  <ul class="tx_profile_information">
+  <li class="tx_bold">&nbsp;</li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  <li><a href="#!" class="inline-edit">Edit</a></li>
+  </ul>
+  </div>
+  
+  </div>
+  <div class="col-md-12 col-sm-12 tx_profilebtn_section">
+  
+  
+  <ul>
+  <li class="valign">
+  <%= link_to "Delete Account", "#!", :class => "text-danger delete_me" %>
+  </li>
+    <li>
+   <%= f.submit "Save Profile" , :class => "tx_save_profile" %>  
+   </li>
+  </ul>
+  
+  </div>
+  </div>
+ 
+   </div>
+  </div>
+</div>
+
+<% end %>
+
+<%= button_to "Cancel my account", registration_path(current_user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
+
+<%= form_for(:user, url: profile_picture_path, html: { :multipart => true , :id => 'upload_p_form' }) do |f| %>
+
+<div class="hide"> 
+   <%= f.file_field :avatar , :id => "upload_me" %>
+</div>
+
+<% end %>
+
+<script>
+var inline_edit = false;
+
+$(document).ready(function() {
+ $(".inline-edit").click(function() { 
+ inline_edit = true;
+ click_index = $(this).closest('.inline-edit').index('.inline-edit');
+ var edit_text = $( ".main_edit_section" ).find( "li.inline-edit-text" ).eq( click_index );
+ edit_text.addClass("set-editable-css");
+ edit_text.find("span").hide();
+ edit_text.find("input").attr('type', 'text'); 
+
+ 
+  
+ });
+
+});
+
+$('#select_p_image').on('click', function() {
+    $('#upload_me').trigger('click');
+	
+	$('#upload_me').change(function() {
+  		$('#upload_p_form').submit();
+	});
+});
+
+$('.delete_me').on('click', function() {
+    $('.target_delete_me').trigger('click');
+});
+
+$('#change_password').on('click', function() {
+	if (inline_edit) {
+		uiConfirm('Profile', 'You have not save changes to your profile. Are you sure you want to leave this page', function (){
+    	document.location.href = "<%=profile_password_path%>";
+		});
+	} else {
+		document.location.href = "<%=profile_password_path%>";
+	}
+});
+
+</script>
+
+<style>
+.tx_profile_information li a { margin: 0 0 10px 0 !important; }
+
+.set-editable-css input {
+    transition: all 0.3s ease 0s;
+    border: 0;
+    outline: 1px solid #ccc;
+    padding: 0 0 0 9px;
+}
+.valign{bottom:20px;}
+</style>
+
+<!--main_body_section-end--> 
