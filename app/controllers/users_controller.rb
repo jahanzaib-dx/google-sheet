@@ -22,6 +22,7 @@ class UsersController  < ApplicationController
     if current_user.id == 1
       @users = User.search(params[:email], params[:name], params[:firm])
       @user = User.new
+      @f_comps = FlagedComp.all
     else
       redirect_to '/sub_users'
     end

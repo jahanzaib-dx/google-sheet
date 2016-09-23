@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -72,6 +73,12 @@ Rails.application.routes.draw do
   get 'sub_users/edit/:id' => 'users#sub_users_edit'
   patch 'sub_users/edit/:id' => 'users#sub_users_update'
 
+  get 'flaged_comps/create'
+  get 'flaged_comps/delete'
+  get 'flaged_comps/delete_comp'
+  post 'flaged_comps/email/:id' => 'flaged_comps#email'
+  get 'flaged_comps/email' => 'flaged_comps#email'
+
   get 'about-marketrex' => 'pages#about'
   get 'subscription-plans' => 'pages#plans'
   get 'marketrex-faqs' => 'pages#faqs'
@@ -113,17 +120,6 @@ Rails.application.routes.draw do
   post 'message' => 'messages#create'
   post 'message/:message_id' => 'messages#forward'
 =end
-
-
-
-
-
-
-
-
-
-
-
 
 
 

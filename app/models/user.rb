@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
   has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
   accepts_nested_attributes_for :schedule_accesses
 
+  has_many :flaged_comps, inverse_of: :user, :dependent => :destroy
+
   # end sub-user
 
   has_many :tenant_records
