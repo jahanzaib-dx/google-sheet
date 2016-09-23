@@ -1,0 +1,65 @@
+
+<%= stylesheet_link_tag  'sub_user', media: 'all', 'data-turbolinks-track' => true %>
+<!--main_body_section-start-->
+<div class="main_edit_section">
+  <div class="container">
+    <div class="col-md-12">
+      <h1 class="main_edit_hadding">Manage Users</h1>
+    </div>
+    <div class="col-md-12">
+      <div class="edit_content_eria">
+
+        <%= form_for @subUser, :url => { :action => :sub_users_update } do |f| %>
+            <div class="gust-email">
+              <h3>Edit Guest User  </h3>
+
+              <%= f.text_field :first_name, :placeholder => 'First Name' %>
+              <%= f.text_field :last_name, :placeholder => 'Last Name' %>
+              <%= f.text_field :password, :autocomplete => :off, :placeholder => 'Confirm Password' %>
+              <%= f.text_field :email, :placeholder => 'Email' %>
+              <%= f.hidden_field :parent_id, :value=> current_user.id %>
+
+              <h3>Schedule Access  </h3>
+              <%= f.fields_for :schedule_accesses do |sa| %>
+              <ul class="user-list-gust">
+                <!--<li>-->
+                  <!--<input type="checkbox" class="gust-date-checkbox ">-->
+                <!--</li>-->
+                <li>
+                  <p>Start</p>
+                </li>
+                <li>
+
+
+                      <%= sa.text_field :start_date_time, :class => 'gust-date-input'  %><br/><br />
+
+                      </li>
+                      <li><a href="#!"><img src="<%= image_url 'gust-date.png' %>"></a></li>
+                      <li><a href="#!"><img src="<%= image_url 'gust-clock.png' %>"></a></li>
+                      </ul>
+                      <ul class="user-list-gust">
+                        <!--<li>-->
+                          <!--<input type="checkbox" class="gust-date-checkbox ">-->
+                        <!--</li>-->
+                        <li>
+                          <p>End</p>
+                        </li>
+                        <li>
+
+                          <%= sa.text_field :end_date_time, :class => 'gust-date-input'  %><br/><br />
+                          <%= sa.hidden_field :status, :value=>'TRUE', :class => 'gust-date-input'  %>
+
+                  </li>
+                  <li><a href="#!"><img src="<%= image_url 'gust-date.png' %>"></a></li>
+                  <li><a href="#!"><img src="<%= image_url 'gust-clock.png' %>"></a></li>
+                  </ul>
+                  <% end %>
+                  <button type="submit" class=" tx_linkdin_profile pull-right">Update</button>
+                  <!--<a href="/sub_users/" class=" tx_linkdin_profile">Cancel</a>-->
+                  </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
