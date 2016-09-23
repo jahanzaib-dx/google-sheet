@@ -63,8 +63,11 @@ Rails.application.routes.draw do
   get 'verifications/verify' => 'verifications#verify'
   post 'verifications/verify' => 'verifications#verify'
 
-
-
+  get 'sub_users' => 'users#sub_users'
+  post 'sub_users' => 'users#sub_users_create'
+  get 'sub_users/delete/:id' => 'users#sub_users_delete'
+  get 'sub_users/edit/:id' => 'users#sub_users_edit'
+  patch 'sub_users/edit/:id' => 'users#sub_users_update'
 
   get 'about-marketrex' => 'pages#about'
   get 'subscription-plans' => 'pages#plans'
@@ -76,6 +79,8 @@ Rails.application.routes.draw do
 
   get 'dashboard' => 'users#dashboard'
   ##get 'profile/:id' => 'users#show', :as => :public_profile
+
+
 
 
   get 'activity_log' => 'activity_log#index'
