@@ -150,6 +150,21 @@ Rails.application.routes.draw do
 
 =end
 
+  get "search/offices"
+  get "search/basic"
+  get "search/poll"
+  get "search/fetch"
+  post "search/advanced"
+  
+  get "search/advanced"
+  
+  post "search/industry"
+  post "search/teams"
+  post "search/lease_types"
+  post "search/sixsigma"
+  post "search/export"
+  get "search/export"
+
 
 
 end

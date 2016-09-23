@@ -1,45 +1,91 @@
 <!--main_body_section-start-->
-<div class="main_body_section_grey">
+<div class="exists main_body_section_grey" id="dashboard">
   <div class="container">
     <div class="search_content">
       <div class="col-md-8 col-sm-8">
         <div class="radio_main_container">
           <div class="radio radio_color">
-            <input type="radio" checked="" value="option1" id="radio1" name="radio1">
+            <input type="radio" checked="" value="lease" id="comp_lease" name="comp_type" class="comp_type">
             <label for="radio1"> Lease </label>
           </div>
           <div class="radio radio_color">
-            <input type="radio" value="option2" id="radio2" name="radio1">
+            <input type="radio" value="sales" id="comp_sales" name="comp_type" class="comp_type">
             <label for="radio2"> Sales </label>
           </div>
-          <div class="radio radio_color">
-            <input type="radio" value="option2" id="radio3" name="radio1">
-            <label for="radio3"> Custom </label>
-          </div>
+
+
         </div>
       </div>
+
+	  <form id="basic-search-form" action="<%= search_basic_path() %>" method="post">
+
       <div class="col-md-4 col-sm-4 both-pad-none">
         <div class="checkbox checkbox-info">
-          <input type="checkbox" id="checkbox4">
+		  <%- apply_radius = "checked" if @search_params && @search_params[:apply_radius] %>
+              <input id="apply_radius" tabindex="2" name="tenant_record[apply_radius]" value="true" type="checkbox" <%= apply_radius %> />
+
+
           <label for="checkbox4"> Within Radius </label>
         </div>
       </div>
+
+
+
+	  <input id="search_type_address_zipcode" name="tenant_record[search_type]" value="address_zipcode" type="radio" <%= ("checked" if @search_params.blank? || (@search_params.has_key?(:search_type) && @search_params[:search_type] == "address_zipcode") ) %> class="hide" />
+
+              <!--<label for="search_type_address_zipcode">Address</label>-->
+
       <div class="col-md-8 col-sm-8">
         <div class="search_bar">
           <div id="custom-search-input">
             <div class="input-group col-md-12">
-              <input type="text" class="  search-query form-control" placeholder="Search" />
+
+              <!--<input type="text" class="  search-query form-control" placeholder="Search" />-->
+
+
+		  <input id="autocomplete" class="search-query form-control" type="text" name="q" tabindex="1" placeholder="Search" value="<%= fetch_search_query(@search_params) %>" />
+
+          <input type="hidden" id="address1" name="address1" value="<%= fetch_search_address(@search_params) %>" />
+          <input type="hidden" id="zipcode" name="zipcode" value="<%= fetch_search_zipcode(@search_params) %>" />
+
+          <!--<button id="search" class="btn icon btn-red" disabled="disabled"><span>Go</span><i class="trex search"></i></button>-->
+
+
+		  <!--<ul>
+            <li class="first checkbox">
+              <%- apply_radius = "checked" if @search_params && @search_params[:apply_radius] %>
+              <input id="apply_radius" tabindex="2" name="tenant_record[apply_radius]" value="true" type="checkbox" <%= apply_radius %> />
+              <label for="apply_radius" class="apply_radius">Within radius</label>
+            </li>
+            <li>
+              <input type="text" id="tenant_record_radius" name="tenant_record[radius]" value="<%= (@search_params[:radius] if @search_params) || 2 %>">
+              <label for="tenant_record_radius">Miles</label>
+            </li>
+          </ul>-->
+
+
+
+
               <span class="input-group-btn">
-              <button class="btn btn-danger" type="button"> <span class="fa fa-search"></span> </button>
+              <button class="btn btn-danger" type="submit" id="search" disabled="disabled"> <span class="fa fa-search"></span> </button>
               </span> </div>
           </div>
         </div>
       </div>
+
+
+
       <div class="col-md-2 col-sm-2 both-pad-none miles_input">
-        <input type="text" placeholder="1">
-        Miles </div>
-      <div class="col-md-2 col-sm-2 both-pad-none"> <a href="#!" class="advance_search_btn">Map Search</a> </div>
+        <!--<input type="text" placeholder="1">-->
+		<input type="text" id="tenant_record_radius" name="tenant_record[radius]" value="<%= (@search_params[:radius] if @search_params) || 2 %>">
+        Miles
+      </div>
+      <div class="col-md-2 col-sm-2 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
+
+    </form>
+
     </div>
+	
   </div>
 </div>
 

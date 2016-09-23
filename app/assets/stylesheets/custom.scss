@@ -408,7 +408,7 @@ a {
     border: 1px solid #666;
     color: #000;
     float: left;
-    height: 124px;
+    height: 142px;
     overflow: auto;
     width: 100%;
 }
@@ -435,7 +435,7 @@ a {
 .btn-group.tx_btn_group {
     float: left;
     width: 100%;
-	 margin: 39px 0 0;
+	/* margin: 39px 0 0;*/
 }
 .gm-arow  .caret {
     float: right;
@@ -2746,8 +2746,30 @@ input:checked + .slider:before {
     width: 100%;
 }
 
+/*-----------advance search update------------------------*/
 
+.tx_dropdown_toggl.tx-drop-down-select .btn-group.bootstrap-select button {
+    border: 0 none;
+    padding: 11px 13px;
+}
+.tx_dropdown_toggl.tx-drop-down-select {
+	width:100%;
+}
+.tx_dropdown_toggl.tx-drop-down-select .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+    font-size: 13px;
+}
+.col-6 {
+    float: left;
+    margin: 0 5px 0 0;
+    width: 44% !important;
+}
 
+.sfbold{
+	margin-top: 10px;
+}
+body .col-12{
+  width: 100%;
+}
 
 /* ##################################################################################################### */
 
