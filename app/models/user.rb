@@ -180,5 +180,15 @@ class User < ActiveRecord::Base
     ScheduleAccess.create(values)
   end
 
+  def self.search(email, name, firm)
+      if !name.blank? || !email.blank? || !firm.blank?
+        user= all
+        user=user.where('first_name iLIKE ? OR last_name iLIKE ? ',"%#{name}%","%#{name}%") unless name.blank?
+        user=user.where('email iLIKE ?' ,"%#{email}%") unless email.blank?
+        user
+      end
+  end
+
+
 #####end of class#############
 end

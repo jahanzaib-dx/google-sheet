@@ -2,33 +2,27 @@ class ProfileController < ApplicationController
 
 
   def update
-  		@user = current_user
+		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		# @user = current_user
 		
   if request.post?
   	
 	#if user mobile is changed then empty sms_code and set false active_mobile
 	
-	if params[:user][:mobile] != @user.mobile
-	  @user.sms_code = ""
-	  @user.mobile_active = false
-	end
+		if params[:user][:mobile] != @user.mobile
+			@user.sms_code = ""
+			@user.mobile_active = false
+		end
 	
-	#if @user.update_attributes params[:user]
-  if @user.update_attributes (user_params)
-      flash[:success] = 'The User is successfully updated!'
-	  #render :text => "update"
-	  #return
-	  
-      redirect_to profile_update_path
-	  return
-    else
-        flash[:error] = @user.errors.full_messages
-		#render :text => "error"
-		#return
-        redirect_to profile_update_path
-		return
-    end
-	
+		#if @user.update_attributes params[:user]
+		if @user.update_attributes (user_params)
+				flash[:success] = 'The User is successfully updated!'
+			return
+			else
+					flash[:error] = @user.errors.full_messages
+			return
+		end
+			redirect_to :controller => 'profile', :action => 'update', :id => @user.id
   end
 	
 		###render :text => "out"
@@ -36,7 +30,8 @@ class ProfileController < ApplicationController
   end
   
   def picture
-  	@user = current_user
+		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		# @user = current_user
 
 	###if @user.update_attributes params[:user]
 	###if @user.update_attribute params[:user][:avatar]
@@ -48,13 +43,16 @@ class ProfileController < ApplicationController
       @user.update_attribute(:linkedin_photo, '')
 
 		  flash[:success] = 'Profile picture uploaded!'
-		  redirect_to profile_update_path
+
+
+			redirect_to profile_update_path(:id => @user.id)
 		  return
 		
 	    end
 	end
-	
-	redirect_to profile_update_path
+
+	redirect_to :controller => 'profile', :action => 'update', :id => @user.id
+		# redirect_to profile_update_path
 	
   end
   
@@ -98,8 +96,10 @@ class ProfileController < ApplicationController
   end
   
   def password
-  	@user = current_user
-	
+
+		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		# @user = current_user
+
 	if params[:user]
 		
 		if params[:user][:password].length < 8 
@@ -116,8 +116,12 @@ class ProfileController < ApplicationController
 			if @user.update_attribute(:password, params[:user][:password])
 	
 			  flash[:success] = 'Password updated successfully'
-			  redirect_to new_user_session_path
-			  return
+        if current_user.id==1
+        redirect_to users_path
+        else
+        redirect_to new_user_session_path
+			  end
+        return
 			
 			end
 		end
@@ -126,6 +130,12 @@ class ProfileController < ApplicationController
 	##render password
 	##redirect_to profile_password_path
 	
+  end
+
+  def destroy
+    if User.find(params[:id]).destroy
+    redirect_to users_path
+    end
   end
   
   
