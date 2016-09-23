@@ -7,6 +7,10 @@
     padding: 0 20px;
     margin-bottom: 25px;
   }
+  #flagged_comps_list  a
+  {
+    margin-right: 20px;
+  }
 </style>
 <!--main_body_section-start-->
 <div class="main_edit_section">
@@ -102,8 +106,8 @@
                         <td><p><%= "Company" %></p></td>
                         <td>
                           <a href="#" id="<%= f_comp.id %>" class="send_email" data-toggle="modal" data-target="#email_model" data-whatever="@mdo0"> <i class="fa fa-reply"></i>Email</a>
-                        <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, data: { confirm: 'Are you sure?' } %>
-                        <%= link_to raw('<i class="fa fa-close"></i>Delete'), {:controller => 'flaged_comps', :action => 'delete_comp', :id => f_comp.comp_id}, data: { confirm: 'Are you sure?' } %>
+                          <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, data: { confirm: 'Are you sure?' } %>
+                          <%= link_to raw('<i class="fa fa-close"></i>Delete'), {:controller => 'flaged_comps', :action => 'delete_comp', :id => f_comp.comp_id}, data: { confirm: 'Are you sure?' } %>
                         </td>
                       </tr>
                   <% end %>
@@ -190,5 +194,4 @@
   $('.send_email').click(function() {
     $('#email_form').attr('action', 'flaged_comps/email/'+this.id);
   });
-
 </script>
