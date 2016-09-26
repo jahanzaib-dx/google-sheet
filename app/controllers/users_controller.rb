@@ -7,6 +7,17 @@ class UsersController  < ApplicationController
 
 
   def show
+	@request_id = params[:request_id]
+    if @request_id
+      session[:request_id] = @request_id
+      session[:user_id] = params[:id]
+    end
+
+    @user = User.find(params[:id])
+
+    unless user_signed_in?
+
+	end
 
   end
 

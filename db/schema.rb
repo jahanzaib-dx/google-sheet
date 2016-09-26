@@ -202,9 +202,25 @@ ActiveRecord::Schema.define(version: 20160917080951) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.integer "name", null: false
+  create_table "group_members", force: :cascade do |t|
+    t.integer  "group_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
+  add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
+  add_index "group_members", ["member_id"], name: "index_group_members_on_member_id", using: :btree
+
+  create_table "groups", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "title",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
+
 
   create_table "import_logs", force: :cascade do |t|
     t.integer  "tenant_record_import_id"

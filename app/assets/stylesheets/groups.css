@@ -1,0 +1,25 @@
+.groups-options{
+    clear:both;
+    padding-top: 40px;
+    padding-left:20px;
+}
+
+.groups-options select#group_id, .groups-options #group_title{
+    min-width: 50%;
+    padding: 20px;
+    font-size: 1.3em;
+}
+
+.groups-options #group_title{
+    min-width: 90%;
+}
+
+.groups-options .group-buttons-wrapper span{
+    display:inline-block;
+    padding-right: 20px;
+}
+
+.groups-options .group-buttons-wrapper {
+    text-align:right;
+}
+
