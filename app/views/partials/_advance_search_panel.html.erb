@@ -17,7 +17,7 @@
           <input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />
           <input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />
           <input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />
-          <input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />
+          <!--<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />-->
           
 		  <!--<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />
           
@@ -158,15 +158,22 @@
             <div class="clearfix"></div>
             <div class="col-md-12 col-sm-12 both-pad-none lease_filter">
               <div class="col-md-3 col-sm-3  formgroup_range"> <span>Deal type</span>
-                <input type="text" placeholder="" class="col-12 lease_filter_input">
+                <input id="tenant_record_lease_type" class="col-12 lease_filter_input" name="tenant_record[lease_type]" placeholder="Select Lease Type" type="text" tabindex="17" value="<%= search_params[:tenant_record][:lease_type] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" placeholder="" class="col-12 lease_filter_input">-->
               </div>
               <div class="col-md-3 col-sm-3  formgroup_range"> <span>Industry</span>
-                <input type="text" placeholder="" class="col-12 text-right lease_filter_input">
+
+                <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+                <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+
+                <!--<input type="text" placeholder="" class="col-12 lease_filter_input" name="tenant_record[industry_type]" id="tenant_record_lease_type">-->
               </div>
               <div class="col-md-3 col-sm-3  formgroup_range" > <span>Date Range</span>
-                <input type="text" class="lease_filter_input">
+                <input id="lease_commencement_date_min" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_min]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_min] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" class="lease_filter_input">-->
                 <b> - </b>
-                <input type="text" class="lease_filter_input">
+                <input id="lease_commencement_date_max" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_max]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_max] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" class="lease_filter_input">-->
               </div>
             </div>
 
