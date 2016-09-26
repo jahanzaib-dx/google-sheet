@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   get 'sub_users/edit/:id' => 'users#sub_users_edit'
   patch 'sub_users/edit/:id' => 'users#sub_users_update'
 
-  get 'flaged_comps/create'
+  get 'flaged_comps/create/:id' => 'flaged_comps#create'
   get 'flaged_comps/delete'
   get 'flaged_comps/delete_comp'
   post 'flaged_comps/email/:id' => 'flaged_comps#email'
@@ -82,8 +82,6 @@ Rails.application.routes.draw do
   get 'about-marketrex' => 'pages#about'
   get 'subscription-plans' => 'pages#plans'
   get 'marketrex-faqs' => 'pages#faqs'
-
-
 
   resource :users
 
