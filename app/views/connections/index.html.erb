@@ -11,33 +11,18 @@
 
     <%= render :partial => 'partials/connections_header' %>
 
-    
-    <div class="editable_group" style="display:none;">
-      <div class="col-md-4">
-        <input type="text" class="editable_group_hd" placeholder="Editable Group Name">
-      </div>
-      <div class="col-md-12 right-pad-none">
-        <ul class="save_cencel_btn">
-          <li><a href="#" class="dlt_change">Delete Group</a></li>
-          <li><a href="#" class="save_change">Save Changes</a></li>
-        </ul>
-      </div>
-    </div>
+
     <div class="tx_search_result_table_container">
 	
 	 <div class="short_lits_container">
           <div class="col-md-4 ">
-            <div class="checkbox checkbox-info checkbox_table">
-              <input type="checkbox" id="checkbox1">
-              <label for="checkbox1"> Select All </label>
-            </div>
+            <strong>Existing Connections</strong>
           </div>
           <div class="col-md-4">
             <p class="tx_short_list">Sort By<span id="sort_by_id" class="sort_by_id_desc">Recently Added
 			<a href="#!">
-			<i class="fa fa-sort-asc set_fa_arrow" aria-hidden="true"></i>
-			
-			<!--<%= image_tag("list-drop-arow.png") %>--></a>
+			    <i class="fa fa-sort-asc set_fa_arrow" aria-hidden="true"></i>
+			</a>
 			</span></p>
           </div>
           <div class="col-md-3 tx_search_filter_right">
@@ -51,7 +36,7 @@
        
 	   <thead>
             <tr>
-			<th></th>
+
                 <th></th>
                 <th></th>
                 <th></th>
