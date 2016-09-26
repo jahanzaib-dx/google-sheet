@@ -27,10 +27,25 @@ class ApplicationController < ActionController::Base
 
   def get_role
     if current_user
+<<<<<<< HEAD
       @role = Account.where('user_id = ?', current_user.id).first.role
     end
   end
 
+=======
+      if Account.where(:user_id => current_user.id).exists?
+        @role = Account.where('user_id = ?', current_user.id).first.role
+      else
+        account = Account.new
+        account.user_id = current_user.id
+        account.fullname = "#{current_user.first_name} #{current_user.last_name}"
+        account.role = 'user'
+        account.save
+        get_role
+      end
+    end
+  end
+>>>>>>> master
 
   private
 
