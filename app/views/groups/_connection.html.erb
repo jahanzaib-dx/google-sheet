@@ -1,0 +1,17 @@
+
+  <td width="4%" class="result_img_icon">
+    <%
+       image_check = user_image(other_user)
+    %>
+    <%= image_check %>
+    <span class="hide"><%= connection.id %></span>
+  </td>
+  <td width="18%" class="result_line"><p class="result_line_bold"><%= other_user.name %></p></td>
+  <td width="17%" class="result_line"><p class="result_line_bold"><%= other_user.firm_name %></p></td>
+  <td width="31%" class="result_line"><p class="result_line_bold"><%= other_user.location %></p></td>
+  <% if controller_name == 'connections' %>
+      <td width="12%" class="result_line">
+        <%= link_to "Remove", '#', :data => { :href => delete_connections_path(connection.id) }, :class=>"ignore_btn"  %>
+      </td>
+  <% end %>
+  <td width="13%" ></td>

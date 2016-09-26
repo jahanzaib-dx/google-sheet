@@ -63,8 +63,11 @@ Rails.application.routes.draw do
   get 'verifications/verify' => 'verifications#verify'
   post 'verifications/verify' => 'verifications#verify'
 
-
-
+  get 'sub_users' => 'users#sub_users'
+  post 'sub_users' => 'users#sub_users_create'
+  get 'sub_users/delete/:id' => 'users#sub_users_delete'
+  get 'sub_users/edit/:id' => 'users#sub_users_edit'
+  patch 'sub_users/edit/:id' => 'users#sub_users_update'
 
   get 'about-marketrex' => 'pages#about'
   get 'subscription-plans' => 'pages#plans'
@@ -76,6 +79,8 @@ Rails.application.routes.draw do
 
   get 'dashboard' => 'users#dashboard'
   ##get 'profile/:id' => 'users#show', :as => :public_profile
+
+
 
 
   get 'activity_log' => 'activity_log#index'
@@ -92,12 +97,19 @@ Rails.application.routes.draw do
   post 'connection_requests' => 'connection_requests#create', :as => :create_connection_requests
   post 'connection_requests/:request_id' => 'connection_requests#update'
   match 'delete_connection_requests/:id', :to => 'connection_requests#destroy', :as => :delete_connection_requests, :via => [:delete]
-  get 'connection_request/accept/:code' => 'connection_requests#accept', :as => :accept_connection_request
+  get 'connection_request/accept/:id' => 'connection_requests#accept', :as => :accept_connection_request
 
 
   get 'connections' => 'connections#index'
   post 'connections' => 'connections#create'
+  get 'connections/internal_create' => 'connections#create'
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
+
+
+  get 'groups' => 'groups#index'
+  get 'groups/new' => 'groups#new'
+  get 'groups/edit' => 'groups#edit'
+  post 'groups' => 'groups#create'
 
 
 =begin
@@ -129,6 +141,8 @@ Rails.application.routes.draw do
   get 'profile/password' => 'profile#password'
   post 'profile/password' => 'profile#password'
 
+  get 'profile/:id/(:request_id)' => 'users#show', :as => :public_profile
+
 =begin
   get 'connections' => 'connections#index'
   post 'connections' => 'connections#index'
@@ -143,12 +157,12 @@ Rails.application.routes.draw do
   post 'messages/connections' => 'messages#connections'
   post 'messages/farword' => 'messages#farword'
 
-=begin
+
   get 'activity_logs' => 'activity_logs#index'
   post 'activity_logs' => 'activity_logs#index'
   post 'activity_logs/update' => 'activity_logs#update'
 
-=end
+
 
 
 

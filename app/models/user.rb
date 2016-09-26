@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   
   has_many :activity_log
+  has_one :account
 
   has_one :settings, class_name: 'UserSetting'
 
@@ -31,13 +32,29 @@ class User < ActiveRecord::Base
   has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id
 
 
+  #connection request to user model by the specified user
+  scope :connection_request_by_current_user, ->(user_id) { joins(:connection_requests_received).where("user_id = #{User.current_user.id} and agent_id = #{user_id}", User.current_user.id, user_id ) }
+
+  #connection request by user model to the specified user
+  scope :connection_request_to_current_user, ->(user_id) { joins(:connection_requests_sent).where("user_id = #{user_id} and agent_id = #{User.current_user.id}", user_id, User.current_user.id ) }
+
+
   has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id
   has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id
   has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
 
+  # Association for sub-user
+
+  has_many :children, class_name: 'User', :foreign_key => 'parent_id'
+  belongs_to :parent, class_name: 'User', :foreign_key => 'parent_id'
+  has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
+  accepts_nested_attributes_for :schedule_accesses
+
+  # end sub-user
 
   has_many :tenant_records
-
+  has_many :groups
+  has_many :group_members
 
 
   def self.marketrex_user_id field_name
@@ -45,7 +62,9 @@ class User < ActiveRecord::Base
   end
 
 
-  after_create :assign_default_settings
+  after_create :assign_default_settings, :create_account
+
+
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable
@@ -65,23 +84,34 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   validates :first_name, presence: true, :on => :update
   validates :last_name, presence: true, :on => :update
-  validates :firm_name, presence: true, :on => :update
-  validates :address, presence: true, :on => :update
-  validates :city, presence: true, :on => :update
-  validates :state, presence: true, :on => :update
-  validates :zip, presence: true, :on => :update
+  # validates :firm_name, presence: true, :on => :update
+  # validates :address, presence: true, :on => :update
+  # validates :city, presence: true, :on => :update
+  # validates :state, presence: true, :on => :update
+  # validates :zip, presence: true, :on => :update
 
 
   def location
-    "#{city}, #{state}"
+    if city.blank?
+        state
+    elsif state.blank?
+        city
+    else
+        "#{city}, #{state}"
+    end
   end
 
   def name
-    "#{first_name} #{last_name}"
+    unless first_name.blank?
+      "#{first_name} #{last_name}"
+    else
+      "<#{email}>"
+    end
   end
 
   def can_send_requests?
-    !mobile.nil?  and mobile_active
+    return true
+    #!mobile.nil?  and mobile_active
   end
   
   def self.connect_to_linkedin(auth, signed_in_resource=nil)
@@ -156,7 +186,24 @@ class User < ActiveRecord::Base
   def assign_default_settings
     values = {:user_id => self.id, :sms => true, :email => true, :outofnetwork => false}
 	settings = UserSetting.create(values)
+  end
 
+  def self.current_user
+    Thread.current[:user]
+  end
+
+  def self.current_user=(user)
+    Thread.current[:user] = user
+  end
+
+  def create_account
+    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}"}
+    Account.create(values)
+  end
+
+  def create_schedule_access
+    values = {:user_id => self.id, :start_date_time => self.start_date_time, :end_date_time => self.end_date_time}
+    ScheduleAccess.create(values)
   end
 
 #####end of class#############

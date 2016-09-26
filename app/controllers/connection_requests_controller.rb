@@ -16,10 +16,10 @@ class ConnectionRequestsController < ApplicationController
 
   # POST /connection_requests
   # POST /connection_requests.json
-  # TODO:
   def create
     if !current_user.can_send_requests?
-      render json: {:status => :error, :message => 'Please enter and verify your mobile number first' }
+      session[:after_mobile_verfication_redirect] = connections_url
+      render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => verifications_verify_url}
       return
     else
       agent = User.where(:email => params[:email]).first
@@ -55,6 +55,31 @@ class ConnectionRequestsController < ApplicationController
         end
         return
       end
+    end
+
+
+  end
+
+
+  def accept
+    @connection_request = ConnectionRequest.find(params[:id]);
+    if user_signed_in?
+      if current_user.email != @connection_request.receiver.email
+        User.find(@connection_request.receiver.id).destroy
+        @connection_request.agent_id = current_user.id
+        @connection_request.save
+        @connection_request.receiver = current_user
+      end
+
+      if @connection_request.receiver.can_send_requests?
+        redirect_to connections_internal_create_url(:request_id=>@connection_request.id)
+      else
+        session[:after_mobile_verfication_redirect] = accept_connection_request_url(@connection_request.id)
+        redirect_to verifications_verify_url
+      end
+    else
+      session[:after_login_redirect] = accept_connection_request_url(@connection_request.id)
+      redirect_to new_user_session_url
     end
 
 

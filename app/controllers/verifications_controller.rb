@@ -14,24 +14,20 @@ def create
   ##  to.sub!("0", '+44')
   ##end
 	
-	account_sid = "AC48ee31a74556a9b83eaf1f3779e731a6" # Your Account SID from www.twilio.com/console
-	auth_token = "5f7cd10bce46d3246a263585182553fd"   # Your Auth Token from www.twilio.com/console
-	###twilio_from = "+12345678901";
-	twilio_from = "+15005550006";
+	account_sid = ENV['twilio_account_sid']
+	auth_token = ENV['twilio_auth_token']
+	###twilio_from = "+12345678901"
+	twilio_from = ENV['twilio_from']
 	
   @twilio_client = Twilio::REST::Client.new account_sid, auth_token
   @twilio_client.account.sms.messages.create(
     :from => twilio_from,
-    ###:to => "+#{to}",
-	:to => '+923086737235',
+    :to => "+#{to}",
+	#:to => '+923086737235',
     :body => "Your verification code is #{current_user.sms_code}."
   )
 
-
-
 	#DxMailer.sms_code(current_user).deliver
-	
-	
   
   redirect_to verifications_verify_path, :flash => { :success => "A verification code has been sent to your mobile. Please fill it in below." }
   return
@@ -57,7 +53,11 @@ def verify
       current_user.mobile_active = true
       current_user.sms_code = ''
       current_user.save(validate: false)
-      redirect_to verifications_verify_path, :flash => { :success => "Thank you for verifying your mobile number." }
+      if session[:after_mobile_verfication_redirect]
+        redirect_to session[:after_mobile_verfication_redirect], :flash => { :success => "Thank you for verifying your mobile number." }
+      else
+        redirect_to verifications_verify_path, :flash => { :success => "Thank you for verifying your mobile number." }
+      end
       return
     else
       redirect_to verifications_verify_path, :flash => { :errors => "Invalid verification code." }

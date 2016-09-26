@@ -13,9 +13,15 @@ class ConnectionsController < ApplicationController
 
       if @connection.save
         request.destroy
-        render json: {:status => :success, :data => @connection}
+        respond_to do |format|
+          format.html  { redirect_to connections_url }
+          format.json  { render :json => {:status => :success, :data => @connection} }
+        end
       else
-        render json: @connection.errors
+        respond_to do |format|
+          format.html  { redirect_to connections_url }
+          format.json  { render :json => {:status => :success, :data => @connection.errors} }
+        end
       end
 
     end
