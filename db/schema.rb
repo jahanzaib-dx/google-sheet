@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917080951) do
+ActiveRecord::Schema.define(version: 20160923063603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,11 +202,13 @@ ActiveRecord::Schema.define(version: 20160917080951) do
     t.datetime "updated_at",                null: false
   end
 
+
+
   create_table "group_members", force: :cascade do |t|
     t.integer  "group_id"
     t.integer  "member_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
@@ -218,11 +220,21 @@ ActiveRecord::Schema.define(version: 20160917080951) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
-
   add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
 
-  create_table "import_logs", force: :cascade do |t|
+
+  create_table "flaged_comps", force: :cascade do |t|
+    t.integer  "comp_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+
+
+
+create_table "import_logs", force: :cascade do |t|
     t.integer  "tenant_record_import_id"
     t.integer  "office_id"
     t.integer  "tenant_record_id"

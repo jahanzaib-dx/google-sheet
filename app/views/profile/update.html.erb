@@ -1,6 +1,6 @@
 <!--main_body_section-start-->
 
-<%= form_for(:user, url: profile_update_path, html: { method: :post }) do |f| %>
+<%= form_for(:user, url: {:controller => 'profile', :action => 'update', :id => @user.id}, html: { method: :post }) do |f| %>
 
 <div class="main_edit_section">
   <div class="container">
@@ -16,7 +16,7 @@
   <ul>
  
    <!--<li>
-   <%= link_to "Change Password", profile_password_path, :class => "tx_linkdin_profile" %>
+   <%= link_to "Change Password", {:controller => 'profile', :action => 'password', :id => @user.id}, :class => "tx_linkdin_profile" %>
    </li>-->
    <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>
@@ -28,11 +28,11 @@
   <div class="col-md-3 col-sm-3">
   	<div class="tx_upload_img">
 	
-	<%###= image_tag current_user.avatar_url.to_s %>
-      <% if current_user.linkedin_photo != "" %>
-          <%= image_tag current_user.linkedin_photo.to_s %>
+	<%###= image_tag @user.avatar_url.to_s %>
+      <% if @user.linkedin_photo != "" %>
+          <%= image_tag @user.linkedin_photo.to_s %>
       <% else %>
-	    <%= image_tag current_user.avatar_url.to_s %>
+	    <%= image_tag @user.avatar_url.to_s %>
       <% end %>
 	
 	<%###= image_tag("upload.jpg")%>
@@ -58,9 +58,9 @@
   <ul class="tx_profile_information">
   <li class="tx_bold">&nbsp;</li>
   
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.first_name%></span><%= f.hidden_field :first_name %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.last_name%></span><%= f.hidden_field :last_name %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.title%></span><%= f.hidden_field :title %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.first_name%></span><%= f.hidden_field :first_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.last_name%></span><%= f.hidden_field :last_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.title%></span><%= f.hidden_field :title %></li>
   <li>&nbsp;</li>
   </ul>
   </div>
@@ -96,14 +96,14 @@
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
   <li class="tx_bold">&nbsp;</li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.email%></span><%= f.hidden_field :email %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.mobile%></span><%= f.hidden_field :mobile %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.firm_name%></span><%= f.hidden_field :firm_name %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.address%></span><%= f.hidden_field :address %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.city%></span><%= f.hidden_field :city %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.state%></span><%= f.hidden_field :state %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.zip%></span><%= f.hidden_field :zip %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= current_user.website%></span><%= f.hidden_field :website %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.email%></span><%= f.hidden_field :email %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.mobile%></span><%= f.hidden_field :mobile %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.firm_name%></span><%= f.hidden_field :firm_name %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.address%></span><%= f.hidden_field :address %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.city%></span><%= f.hidden_field :city %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.state%></span><%= f.hidden_field :state %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.zip%></span><%= f.hidden_field :zip %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.website%></span><%= f.hidden_field :website %></li>
   </ul>
   </div>
   <div class="col-md-3 col-sm-3">
@@ -142,9 +142,14 @@
 
 <% end %>
 
-<%= button_to "Cancel my account", registration_path(current_user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
+<% if @role == 'admin' %>
+   <%= button_to "Cancel my account", {:controller => 'profile', :action => 'destroy', :id => @user.id}, data: { confirm: "Are you sure?" } ,:class => "hide target_delete_me" %>
+  <% else %>
+    <%= button_to "Cancel my account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
+  <% end %>
 
-<%= form_for(:user, url: profile_picture_path, html: { :multipart => true , :id => 'upload_p_form' }) do |f| %>
+
+<%= form_for(:user, url: profile_picture_path(:id => @user.id),  html: { :multipart => true , :id => 'upload_p_form' }) do |f| %>
 
 <div class="hide"> 
    <%= f.file_field :avatar , :id => "upload_me" %>
@@ -185,10 +190,10 @@ $('.delete_me').on('click', function() {
 $('#change_password').on('click', function() {
 	if (inline_edit) {
 		uiConfirm('Profile', 'You have not save changes to your profile. Are you sure you want to leave this page', function (){
-    	document.location.href = "<%=profile_password_path%>";
+    	document.location.href = "/profile/password/<%=@user.id%>";
 		});
 	} else {
-		document.location.href = "<%=profile_password_path%>";
+		document.location.href = "/profile/password/<%=@user.id%>";
 	}
 });
 
