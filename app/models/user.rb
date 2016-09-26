@@ -173,7 +173,8 @@ class User < ActiveRecord::Base
   end
 
   def create_account
-    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}"}
+    role = get_role
+    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}", :role =>"#{role}"}
     Account.create(values)
   end
 
@@ -184,11 +185,16 @@ class User < ActiveRecord::Base
 
   def self.search(email, name, firm)
       if !name.blank? || !email.blank? || !firm.blank?
-        user= all
-        user=user.where('first_name iLIKE ? OR last_name iLIKE ? ',"%#{name}%","%#{name}%") unless name.blank?
-        user=user.where('email iLIKE ?' ,"%#{email}%") unless email.blank?
+        user = User.joins(:account)
+        user = user.where.not('role = ?', 'admin')
+        user = user.where('first_name iLIKE ? OR last_name iLIKE ? ',"%#{name}%","%#{name}%") unless name.blank?
+        user = user.where('email iLIKE ?' ,"%#{email}%") unless email.blank?
         user
       end
+  end
+
+  def get_role
+    return ( self.parent_id ) ? 'sub-user' : 'user'
   end
 
 

@@ -142,7 +142,7 @@
 
 <% end %>
 
-<% if current_user.id==1 %>
+<% if @role == 'admin' %>
    <%= button_to "Cancel my account", {:controller => 'profile', :action => 'destroy', :id => @user.id}, data: { confirm: "Are you sure?" } ,:class => "hide target_delete_me" %>
   <% else %>
     <%= button_to "Cancel my account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
