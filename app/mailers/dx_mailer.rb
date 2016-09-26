@@ -26,6 +26,11 @@ class DxMailer < ActionMailer::Base
   def connection_invite(request)
     @connection_request = request
     mail(:to => request.receiver.email, :subject => "Connect Request at MarketRex")
-  end
+	end
+
+	def flag_comp_email(user,message)
+		@user = user
+		mail( :to => @user.email, :subject => message )
+	end
 
 end

@@ -1,0 +1,138 @@
+.main_page_content.mrg-control {
+    margin: 94px 0;
+}
+.margin-top-list {
+    margin-top: 28px;
+}
+.formgroup_input .btn-group.tx_btn_group {
+    margin: 0;
+}
+.main_edit_hadding {
+    font-weight: bold;
+    margin: 22px 0 29px;
+}
+
+
+
+/*manag-user*/
+
+
+.manange-edit {
+    font-size: 17px;
+    text-decoration: underline;
+}
+.user-detail-conten {
+    margin-bottom: 73px;
+}
+
+.tx__light_bold {
+    color: #4c494a;
+
+}
+.manange-dlt > img {
+    width: 17px;
+}
+.manange-dlt > a:hover  {
+    opecity:0.5
+}
+.active-user-hd > h4 {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.active-user-p p {
+    font-size: 16px;
+}
+
+
+.modal-title-user-hd {
+    font-size: 33px;
+    font-weight: bold;
+    margin:17px 0 4px;
+    text-align: center;
+}
+.gust-email.full-width > input {
+    margin: 0 0 20px;
+    padding: 0 20px;
+    width: 100%;
+}
+.modal-header-new-user h6 {
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+}
+.gust-email input {
+    border: 1px solid #ccc;
+    height: 47px;
+    margin:0 15px 75px 0;
+    width: 384px;
+}
+
+.modal-content.modal-content-user {
+    padding: 0 42px;
+}
+.modal-body.modal-body-new-user {
+    padding: 27px 0;
+}
+.gust-email h3 {
+    color: #4c494a;
+    font-weight: bold;
+    font-size: 21px;
+    margin: 0 0 22px;
+}
+.modal-dialog.modal-dialog-user {
+    width: 513px;
+}
+.user-list-gust > li {
+    float: left;
+    margin: 0 18px 0 0;
+}
+.gust-email .gust-date-input {
+    height: 34px;
+    margin: 0;
+    width: 159px;
+}
+.gust-email .gust-date-checkbox {
+    height: auto;
+    margin: 10px 0 0;
+    width: auto;
+}
+.user-list-gust li > p {
+    margin: 7px 0 0;
+    width: 30px;
+}
+.user-list-gust li > a {
+    margin: 7px 0 0;
+}
+.user-list-gust li > a img {
+    margin: 5px 0 0;
+}
+.user-list-gust {
+    float: left;
+    margin: 0 0 28px;
+    width: 100%;
+}
+.modal-footer.modal-footer-user {
+    border: 0 none;
+    text-align: center;
+}
+.modal-header.modal-header-new-user {
+    border: 0 none;
+}
+.btn.btn-secondary.close-user {
+    width: 100%;
+}
+.btn.btn-secondary.close-user-btn {
+    color: #556db1;
+    margin: 4px 0 39px;
+    text-decoration: underline;
+    width: 100%;
+}
+.btn.btn-primary.creat-user-btn {
+    background: #556db1 none repeat scroll 0 0;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 5px;
+    padding: 14px 60px;
+}
+/*manag-user*/

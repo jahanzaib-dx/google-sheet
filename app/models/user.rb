@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   
   has_many :activity_log
+  has_one :account
 
   has_one :settings, class_name: 'UserSetting'
 
@@ -35,6 +36,16 @@ class User < ActiveRecord::Base
   has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id
   has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
 
+  # Association for sub-user
+
+  has_many :children, class_name: 'User', :foreign_key => 'parent_id'
+  belongs_to :parent, class_name: 'User', :foreign_key => 'parent_id'
+  has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
+  accepts_nested_attributes_for :schedule_accesses
+
+  has_many :flaged_comps, inverse_of: :user, :dependent => :destroy
+
+  # end sub-user
 
   has_many :tenant_records
 
@@ -45,7 +56,9 @@ class User < ActiveRecord::Base
   end
 
 
-  after_create :assign_default_settings
+  after_create :assign_default_settings, :create_account
+
+
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable
@@ -65,11 +78,11 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   validates :first_name, presence: true, :on => :update
   validates :last_name, presence: true, :on => :update
-  validates :firm_name, presence: true, :on => :update
-  validates :address, presence: true, :on => :update
-  validates :city, presence: true, :on => :update
-  validates :state, presence: true, :on => :update
-  validates :zip, presence: true, :on => :update
+  # validates :firm_name, presence: true, :on => :update
+  # validates :address, presence: true, :on => :update
+  # validates :city, presence: true, :on => :update
+  # validates :state, presence: true, :on => :update
+  # validates :zip, presence: true, :on => :update
 
 
   def location
@@ -158,6 +171,26 @@ class User < ActiveRecord::Base
 	settings = UserSetting.create(values)
 
   end
+
+  def create_account
+    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}"}
+    Account.create(values)
+  end
+
+  def create_schedule_access
+    values = {:user_id => self.id, :start_date_time => self.start_date_time, :end_date_time => self.end_date_time}
+    ScheduleAccess.create(values)
+  end
+
+  def self.search(email, name, firm)
+      if !name.blank? || !email.blank? || !firm.blank?
+        user= all
+        user=user.where('first_name iLIKE ? OR last_name iLIKE ? ',"%#{name}%","%#{name}%") unless name.blank?
+        user=user.where('email iLIKE ?' ,"%#{email}%") unless email.blank?
+        user
+      end
+  end
+
 
 #####end of class#############
 end
