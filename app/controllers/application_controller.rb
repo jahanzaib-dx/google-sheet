@@ -27,12 +27,6 @@ class ApplicationController < ActionController::Base
 
   def get_role
     if current_user
-<<<<<<< HEAD
-      @role = Account.where('user_id = ?', current_user.id).first.role
-    end
-  end
-
-=======
       if Account.where(:user_id => current_user.id).exists?
         @role = Account.where('user_id = ?', current_user.id).first.role
       else
@@ -45,7 +39,6 @@ class ApplicationController < ActionController::Base
       end
     end
   end
->>>>>>> master
 
   private
 
