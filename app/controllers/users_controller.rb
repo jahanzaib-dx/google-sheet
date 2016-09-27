@@ -23,7 +23,6 @@ class UsersController  < ApplicationController
       @users = User.search(params[:email], params[:name], params[:firm])
       @user = User.new
       @f_comps = FlagedComp.all
-      @test = Account.where('user_id = ?',current_user)
     else
       redirect_to '/sub_users'
     end

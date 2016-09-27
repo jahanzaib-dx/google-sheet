@@ -101,8 +101,8 @@
                   <tbody>
                   <% @f_comps.each do |f_comp| %>
                       <tr class="active-user-p">
-                        <td><p><%= "#{f_comp.comp_id}" %></p></td>
-                        <td><p><%= "#{f_comp.user_id}" %></p></td>
+                        <td><p><%= "#{f_comp.tenant_record.address1}" %></p></td>
+                        <td><p><%= "#{f_comp.tenant_record.user.email}" %></p></td>
                         <td><p><%= "Company" %></p></td>
                         <td>
                           <a href="#" id="<%= f_comp.id %>" class="send_email" data-toggle="modal" data-target="#email_model" data-whatever="@mdo0"> <i class="fa fa-reply"></i>Email</a>
