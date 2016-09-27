@@ -1,3 +1,47 @@
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------------------------->
+
+<form id="advanced-search-form" action="<%= search_advanced_path() %>" method="post">
+
+<div id="<%= 'run_search' if search_params %>" class="hidden_fields">
+          <input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />
+          <input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />
+          <input type="hidden" id="tenant_record_page" name="tenant_record[page]" value="<%= (search_params[:tenant_record][:page] if search_params and search_params[:tenant_record].present?) || 1 %>" />
+          <input type="hidden" id="tenant_record_latitude" name="tenant_record[latitude]" value="<%= search_params[:tenant_record][:latitude] if search_params and search_params[:tenant_record].present? %>" />
+          <input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />
+          <input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />
+          <input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />
+          <!--<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />-->
+          
+		  <!--<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />
+          
+		  <input type="checkbox" id="tenant_record_disable_market_comps" name="tenant_record[disable_comp_type][]" value="market" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'market' %> />
+          
+		  <input type="checkbox" id="tenant_record_disable_confidential_comps" name="tenant_record[disable_view_type][]" value="confidential" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'confidential' %>  />
+          
+		  <input type="checkbox" id="tenant_record_disable_private_comps" name="tenant_record[disable_view_type][]" value="private"<%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'private' %>  />
+          
+		  <input type="checkbox" id="tenant_record_disable_network" name="tenant_record[disable_network]" value="true" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_network %> />
+          -->
+		  
+		  
+		  <% if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_tenant_record_id %>
+            <% search_params[:tenant_record][:disable_tenant_record_id].each do |tid| %>
+            <input id="tenant_record_disabled_tenant_record_<%= tid %>" name="tenant_record[disable_tenant_record_id][]" type="hidden" class="disabled_tenant_record_id" value="<%= tid %>" />
+            <% end  %>
+          <% end %>
+        </div>
+		
+		<div id="map_filter" class="map_container criteria_layout"><!--{{{-->
+          <div id="the_map"></div>
+        </div><!--}}}-->
+		
 <div class="panel panel-default">
   <div class="panel-heading tx_panel-heading">
     <div class="container">
@@ -8,23 +52,26 @@
     <div class="container">
       <div class="panel-body">
         <div class="row">
-          <div class="col-md-12 tx_clear_fix"> <a href="#!" class="tx-filter-btn">Apply Filters</a> <a href="#!" class="clear-btn">Clear All</a> </div>
+          <div class="col-md-12 tx_clear_fix"> 
+		  
+		  <button id="advanced-search-submit" class="btn btn-danger hide"><span>Apply Filters</span></button>
+		  
+		  <a href="#!" class="tx-filter-btn adv_trr">Apply Filters</a>
+		  
+		  <a href="#!" class="clear-btn">Clear All</a> </div>
           <div class="col-md-4 col-sm-4 both-pad-none">
             <div class="col-md-6 col-sm6 formgroup_input"> <span>Data Type</span>
-              <div class="btn-group tx_btn_group"> <a class="dropdown-toggle gm-arow" data-toggle="dropdown" href="#!" aria-expanded="true">Please Choose <span class="caret"></span></a>
-                <ul class="dropdown-menu slect-list">
-                  <li><a href="#!">Item I</a></li>
-                  <li><a href="#!">Item II</a></li>
-                  <li><a href="#!">Item III</a></li>
-                  <li><a href="#!">Item IV</a></li>
-                  <li><a href="#!">Item V</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Other</a></li>
-                </ul>
+              <div class="btn-group tx_btn_group"> 
+			   <div class="tx_dropdown_toggl tx-drop-down-select">
+                        <select class="selectpicker filters_type" name="comp_type">
+                          <option value="sales">Sales</option>
+                          <option value="lease" selected>Lease</option>
+                        </select>
+                      </div>
+				
               </div>
             </div>
-            <div class="col-md-6 col-sm-6 formgroup_input"> <span>Property Type <br/>
-                    (Select all that apply)</span>
+            <div class="col-md-6 col-sm-6 formgroup_input"> <span>Property Type </span>
               <div class="boxes">
                 <div class="col-md-12">
                   <div class="checkbox checkbox-info">
@@ -32,90 +79,178 @@
                     <label for="checkbox7"> Select All </label>
                   </div>
                   <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox8">
+                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="office">
                     <label for="checkbox8"> Office </label>
                   </div>
                   <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox9">
+                    <input type="checkbox" id="checkbox9" name="tenant_record[property_type][]" value="family">
                     <label for="checkbox9"> Multi-family </label>
                   </div>
                   <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox9">
+                    <input type="checkbox" id="checkbox9" name="tenant_record[property_type][]" value="land">
                     <label for="checkbox9"> Land </label>
                   </div>
                   <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox10">
+                    <input type="checkbox" id="checkbox10" name="tenant_record[property_type][]" value="hotel">
                     <label for="checkbox10"> Hotel </label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+
           <div class="col-md-8 col-sm-8 both-pad-none">
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>SQ FT Range</span>
-              <input type="number" placeholder="Please Choose" max="5" min="1" name="quantity">
+			
+			<!--<input id="size_min" tabindex="10" name="tenant_record[size_min]" type="text" placeholder="Minimum" value="<%= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>" />
+			
+			
+              <span class="to">To</span>
+			  
+              <input id="size_max" tabindex="10" name="tenant_record[size_max]" type="text" placeholder="Maximum" value="<%= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>" />-->
+			  
+			  
+			      <input type="text" placeholder=""  name="tenant_record[size_min]" class="col-6" value="<%= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>" >
+              <b class="pull-left sfbold"> -&nbsp;</b>
+              <input type="text" placeholder="" name="tenant_record[size_max]" class="col-6" value="<%= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>" >
             </div>
-            <div class="col-md-3 col-sm-3 formgroup_input"> <span>Year Sold</span>
-              <div class="btn-group tx_btn_group"> <a class="dropdown-toggle gm-arow" data-toggle="dropdown" href="#!" aria-expanded="true">Please Choose <span class="caret"></span></a>
-                <ul class="dropdown-menu slect-list">
-                  <li><a href="#!">Item I</a></li>
-                  <li><a href="#!">Item II</a></li>
-                  <li><a href="#!">Item III</a></li>
-                  <li><a href="#!">Item IV</a></li>
-                  <li><a href="#!">Item V</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Other</a></li>
-                </ul>
+
+            <div class="col-md-3 col-sm-3 formgroup_input sales_filter"> <span>Year Sold</span>
+              <div class="btn-group tx_btn_group">
+                <input type="text" placeholder=""  name="" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>">
+                <b class="pull-left sfbold"> -&nbsp;</b>
+                <input type="text" placeholder="" name="" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>">
+
+                <!--<div class="tx_dropdown_toggl tx-drop-down-select">-->
+                        <!--<select class="selectpicker">-->
+                          <!--<option>Choose</option>-->
+                        <!--</select>-->
+                      <!--</div>-->
+				
               </div>
             </div>
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>Class Type</span>
-              <div class="btn-group tx_btn_group"> <a class="dropdown-toggle gm-arow" data-toggle="dropdown" href="#!" aria-expanded="true">Select<span class="caret"></span></a>
-                <ul class="dropdown-menu slect-list">
-                  <li><a href="#!">Item I</a></li>
-                  <li><a href="#!">Item II</a></li>
-                  <li><a href="#!">Item III</a></li>
-                  <li><a href="#!">Item IV</a></li>
-                  <li><a href="#!">Item V</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Other</a></li>
-                </ul>
+              <div class="btn-group tx_btn_group">
+			  
+			  <div class="tx_dropdown_toggl tx-drop-down-select">
+                        <select class="selectpicker" name="tenant_record[class_type]">
+                          <option value="">Choose</option>
+                          <option value="a">A</option>
+                          <option value="b">B</option>
+                          <option value="c">C</option>
+                        </select>
+                      </div>
+				
               </div>
             </div>
-            <div class="col-md-3 col-sm-3 formgroup_input"> <span>Filay Connections</span>
-              <div class="btn-group tx_btn_group"> <a class="dropdown-toggle gm-arow" data-toggle="dropdown" href="#!" aria-expanded="true">Please Choose <span class="caret"></span></a>
-                <ul class="dropdown-menu slect-list">
-                  <li><a href="#!">Item I</a></li>
-                  <li><a href="#!">Item II</a></li>
-                  <li><a href="#!">Item III</a></li>
-                  <li><a href="#!">Item IV</a></li>
-                  <li><a href="#!">Item V</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Other</a></li>
-                </ul>
+            <div class="col-md-3 col-sm-3 formgroup_input"> <span>Filter by Connections</span>
+              <div class="btn-group tx_btn_group"> 
+			  
+			  <div class="tx_dropdown_toggl tx-drop-down-select">
+                        <select class="selectpicker">
+                          <option>Choose</option>
+                        </select>
+                      </div>
+				
               </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-12 col-sm-12 both-pad-none">
-              <div class="col-md-4 col-sm-4  formgroup_range"> <span>Price Range</span>
-                <input type="text" placeholder="$">
+            <div class="col-md-12 col-sm-12 both-pad-none lease_filter">
+              <div class="col-md-3 col-sm-3  formgroup_range"> <span>Deal type</span>
+                <input id="tenant_record_lease_type" class="col-12 lease_filter_input" name="tenant_record[lease_type]" placeholder="Select Lease Type" type="text" tabindex="17" value="<%= search_params[:tenant_record][:lease_type] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" placeholder="" class="col-12 lease_filter_input">-->
+              </div>
+              <div class="col-md-3 col-sm-3  formgroup_range"> <span>Industry</span>
+
+                <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+                <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+
+                <!--<input type="text" placeholder="" class="col-12 lease_filter_input" name="tenant_record[industry_type]" id="tenant_record_lease_type">-->
+              </div>
+              <div class="col-md-3 col-sm-3  formgroup_range" > <span>Date Range</span>
+                <input id="lease_commencement_date_min" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_min]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_min] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" class="lease_filter_input">-->
                 <b> - </b>
-                <input type="text" placeholder="$">
+                <input id="lease_commencement_date_max" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_max]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_max] if search_params and search_params[:tenant_record].present? %>" />
+                <!--<input type="text" class="lease_filter_input">-->
+              </div>
+            </div>
+
+
+
+            <div class="col-md-12 col-sm-12 both-pad-none sales_filter">
+              <div class="col-md-4 col-sm-4  formgroup_range"> <span>Price Range</span>
+                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled">
+                <b> - </b>
+                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled">
               </div>
               <div class="col-md-4 col-sm-4  formgroup_range"> <span>Cap Range</span>
-                <input type="text" placeholder="%" class="text-right">
+                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled">
                 <b> - </b>
-                <input type="text" placeholder="%" class="text-right">
+                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled">
               </div>
-              <div class="col-md-4 col-sm-4  formgroup_range"> <span>Built Range (year)</span>
-                <input type="text">
+              <div class="col-md-4 col-sm-4  formgroup_range" > <span>Built Range (year)</span>
+                <input type="text" class="sales_filter_input" disabled="disabled">
                 <b> - </b>
-                <input type="text">
+                <input type="text" class="sales_filter_input" disabled="disabled">
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
   </div>
   <!--Advanced Search-tab-end-->
 </div>
+
+</form>
+
+<style>
+  /*.lease_filter {display: none;}*/
+  .sales_filter {display: none;}
+    /*.col-12{width: 100%;}*/
+</style>
+
+<script>
+  $(function() {
+  $( ".comp_type" ).click(function() {
+    var cid = this.id;
+    if (cid == 'comp_sales') {
+      $(".lease_filter").css("display", "none");
+      $(".lease_filter_input").prop("disabled", true);
+      $(".sales_filter").css("display", "block");
+      $(".sales_filter_input").prop("disabled", false);
+      $(".filters_type").val("sales");
+      $('.filters_type').selectpicker('refresh');
+    } else {
+      $(".sales_filter").css("display", "none");
+      $(".sales_filter_input").prop("disabled", true);
+      $(".lease_filter").css("display", "block");
+      $(".lease_filter_input").prop("disabled", false);
+      $(".filters_type").val("lease");
+      $('.filters_type').selectpicker('refresh');
+
+    }
+  });
+
+  $( ".filters_type" ).change(function() {
+      var fval = $(this).val();
+      if (fval == 'lease') {
+        $( "#comp_lease" ).click();
+      } else if (fval == 'sales') {
+        $( "#comp_sales" ).click();
+      }
+      return false;
+  });
+
+    //$('.adv_trr').click(fucntion()
+    $( ".adv_trr" ).click(function() {
+        $("#advanced-search-submit").click();
+    });
+
+  });
+</script>
+
