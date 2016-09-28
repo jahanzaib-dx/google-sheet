@@ -202,13 +202,18 @@ ActiveRecord::Schema.define(version: 20160923063603) do
     t.datetime "updated_at",                null: false
   end
 
-
+  create_table "flaged_comps", force: :cascade do |t|
+    t.integer  "comp_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "group_members", force: :cascade do |t|
     t.integer  "group_id"
     t.integer  "member_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
@@ -220,21 +225,10 @@ ActiveRecord::Schema.define(version: 20160923063603) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
   add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
-
-
-  create_table "flaged_comps", force: :cascade do |t|
-    t.integer  "comp_id"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-
-
-
-create_table "import_logs", force: :cascade do |t|
+  create_table "import_logs", force: :cascade do |t|
     t.integer  "tenant_record_import_id"
     t.integer  "office_id"
     t.integer  "tenant_record_id"
@@ -312,6 +306,9 @@ create_table "import_logs", force: :cascade do |t|
   end
 
   add_index "lease_structures", ["name", "account_id"], name: "index_lease_structures_on_name_and_account_id", unique: true, using: :btree
+
+# Could not dump table "lookup_address_zipcodes" because of following StandardError
+#   Unknown type 'geometry(Point,3785)' for column 'location'
 
   create_table "lookup_address_zipcodes_tenant_records", id: false, force: :cascade do |t|
     t.integer "tenant_record_id"
@@ -609,5 +606,8 @@ create_table "import_logs", force: :cascade do |t|
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "group_members", "groups"
+  add_foreign_key "group_members", "users", column: "member_id"
+  add_foreign_key "groups", "users"
   add_foreign_key "schedule_accesses", "users"
 end
