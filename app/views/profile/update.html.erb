@@ -45,33 +45,40 @@
   </div>
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
-  <li class="tx_bold">Basic Information</li>
-  <!--<li>Username*</li>-->
-  <li>First Name*</li>
-  <li>Last Name*</li>
-  <li>Title</li>
-  <li>Password</li>
+    <li class="tx_bold">Basic Information</li>
+    <!--<li>Username*</li>-->
+    <li>First Name*</li>
+    <li>Last Name*</li>
+    <li>Title</li>
+    <li>Maximum Exports Allowed</li>
+    <li>Password</li>
   </ul>
   
   </div>
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
-  <li class="tx_bold">&nbsp;</li>
-  
-  <li class="inline-edit-text">&nbsp;<span><%= @user.first_name%></span><%= f.hidden_field :first_name %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= @user.last_name%></span><%= f.hidden_field :last_name %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= @user.title%></span><%= f.hidden_field :title %></li>
-  <li>&nbsp;</li>
+    <li class="tx_bold">&nbsp;</li>
+
+    <li class="inline-edit-text">&nbsp;<span><%= @user.first_name%></span><%= f.hidden_field :first_name %></li>
+    <li class="inline-edit-text">&nbsp;<span><%= @user.last_name%></span><%= f.hidden_field :last_name %></li>
+    <li class="inline-edit-text">&nbsp;<span><%= @user.title%></span><%= f.hidden_field :title %></li>
+    <li class="inline-edit-text">&nbsp; <span><%= @user.total_export_permissions %></span><% if @role == 'admin' %><%= f.hidden_field :total_export_permissions %><% end %></li>
+    <li>&nbsp;</li>
   </ul>
   </div>
   <div class="col-md-3 col-sm-3">
   <ul class="tx_profile_information">
-  <li class="tx_bold">&nbsp;</li>
-  
-  <li><a href="#!" class="inline-edit">Edit</a></li>
-  <li><a href="#!" class="inline-edit">Edit</a></li>
-  <li><a href="#!" class="inline-edit">Edit</a></li>
-  <li><a href="#!<%=profile_password_path%>" id="change_password" >Edit</a></li>
+    <li class="tx_bold">&nbsp;</li>
+
+    <li><a href="#!" class="inline-edit">Edit</a></li>
+    <li><a href="#!" class="inline-edit">Edit</a></li>
+    <li><a href="#!" class="inline-edit">Edit</a></li>
+    <% if @role == 'admin' %>
+      <li><a href="#!" class="inline-edit">Edit</a></li>
+    <% else %>
+      <li><label class="inline-edit">&nbsp;</label></li>
+    <% end %>
+    <li><a href="#!<%=profile_password_path%>" id="change_password" >Edit</a></li>
   </ul>
   </div>
   </div>
@@ -146,7 +153,7 @@
    <%= button_to "Cancel my account", {:controller => 'profile', :action => 'destroy', :id => @user.id}, data: { confirm: "Are you sure?" } ,:class => "hide target_delete_me" %>
   <% else %>
     <%= button_to "Cancel my account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete ,:class => "hide target_delete_me" %>
-  <% end %>
+<% end %>
 
 
 <%= form_for(:user, url: profile_picture_path(:id => @user.id),  html: { :multipart => true , :id => 'upload_p_form' }) do |f| %>

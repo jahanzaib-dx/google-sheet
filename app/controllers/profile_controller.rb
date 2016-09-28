@@ -2,9 +2,9 @@ class ProfileController < ApplicationController
 
 
   def update
-		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		@user = (@role == 'admin') ? User.find(params[:id]) : current_user
 		# @user = current_user
-		
+
   if request.post?
   	
 	#if user mobile is changed then empty sms_code and set false active_mobile
@@ -30,7 +30,7 @@ class ProfileController < ApplicationController
   end
   
   def picture
-		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		@user = (@role == 'admin') ? User.find(params[:id]) : current_user
 		# @user = current_user
 
 	###if @user.update_attributes params[:user]
@@ -97,7 +97,7 @@ class ProfileController < ApplicationController
   
   def password
 
-		@user = (current_user.id==1) ? User.find(params[:id]) : current_user
+		@user = (@role == 'admin') ? User.find(params[:id]) : current_user
 		# @user = current_user
 
 	if params[:user]
@@ -116,7 +116,7 @@ class ProfileController < ApplicationController
 			if @user.update_attribute(:password, params[:user][:password])
 	
 			  flash[:success] = 'Password updated successfully'
-        if current_user.id==1
+        if @role == 'admin'
         redirect_to users_path
         else
         redirect_to new_user_session_path
@@ -142,7 +142,7 @@ class ProfileController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar)
+      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :mobile, :provider, :uid, :sms_code, :mobile_active , :first_name , :last_name , :title , :firm_name , :address , :city , :state , :zip , :website , :photo , :avatar, :total_export_permissions)
     end
  
 #########
