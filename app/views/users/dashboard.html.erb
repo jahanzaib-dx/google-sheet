@@ -6,7 +6,24 @@
   <div class=" tx_accordion">
     <div class="panel-group" id="accordion">
 
-      <%= render :partial =>  'partials/advance_search_panel' %>
+      <%= render :partial =>  'partials/advance_search_panel', locals: { search_params: @search_params } %>
+	  	  	  
+	  <div id="results" class="container active">
+    <div class="empty_results">
+      <%##= image_tag('noPurchasedSearches.jpg') %>
+    </div>
+  </div>
+  
+<%= render "template_results_empty" %>
+<%= render "template_results_table_header" %>
+<%= render "template_results_table_row" %>
+<%= render partial:"template_search_results_summary", locals: { search_params: @search_params } %>
+<%= render "template_search_results" %>
+<%= render "template_map_display" %>
+
+<%= render "pending_download" %>
+<%= render "pending_search" %>
+
 
 
       <!--Dashboard-tab-start-->

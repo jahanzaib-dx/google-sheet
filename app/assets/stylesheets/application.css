@@ -11,6 +11,10 @@
  * file per style scope.
  *
  *= require bootstrap.min
+ *= require dashboard
+ *= require jqueryui.custom
+ *= require jquery.jqplot
+ *= require jquery.popup
  *= require buttons
  *= require font-awesome
  *= require build
@@ -21,12 +25,30 @@
  *= require animate-words
  *= require about
  *= require cost
+ *= require groups
  *= require style
  *= require_self
  */
 
 
 .dark-footer{background: #262626;}
+
+
+/*--- fixes to pages ----*/
+.bc_white{
+    overflow:hidden;
+}
+.tx_search_result_table td.text-center{
+    text-align:center;
+}
+
+/*--- connections page additional styles */
+.connection-record .result_img_icon{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
 
 /*-------------- Styles to make the footer stick to the bottom of a page -------------*/
 html,body{height:100%;}

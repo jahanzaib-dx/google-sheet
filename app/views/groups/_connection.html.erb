@@ -1,22 +1,10 @@
-<%
-   other_user = connection.user_id==current_user.id ? connection.connected_to : connection.user
-%>
-<tr class="connection-record">
-  <td width="4%" class="text-center">
-    <% if defined? frm != nil %>
-        <% #= fields_for 'group_members[]', connection do |f| %>
-        <%= frm.check_box :member_id, {},other_user.id %>
-        <% #end %>
-    <% end %>
-    <span class="hide"><%= connection.id %></span>
-  </td>
 
   <td width="4%" class="result_img_icon">
     <%
        image_check = user_image(other_user)
     %>
     <%= image_check %>
-
+    <span class="hide"><%= connection.id %></span>
   </td>
   <td width="18%" class="result_line"><p class="result_line_bold"><%= other_user.name %></p></td>
   <td width="17%" class="result_line"><p class="result_line_bold"><%= other_user.firm_name %></p></td>
@@ -27,4 +15,3 @@
       </td>
   <% end %>
   <td width="13%" ></td>
-</tr>

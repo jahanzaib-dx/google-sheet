@@ -105,12 +105,19 @@ Rails.application.routes.draw do
   post 'connection_requests' => 'connection_requests#create', :as => :create_connection_requests
   post 'connection_requests/:request_id' => 'connection_requests#update'
   match 'delete_connection_requests/:id', :to => 'connection_requests#destroy', :as => :delete_connection_requests, :via => [:delete]
-  get 'connection_request/accept/:code' => 'connection_requests#accept', :as => :accept_connection_request
+  get 'connection_request/accept/:id' => 'connection_requests#accept', :as => :accept_connection_request
 
 
   get 'connections' => 'connections#index'
   post 'connections' => 'connections#create'
+  get 'connections/internal_create' => 'connections#create'
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
+
+
+  get 'groups' => 'groups#index'
+  get 'groups/new' => 'groups#new'
+  get 'groups/edit' => 'groups#edit'
+  post 'groups' => 'groups#create'
 
 
 =begin
@@ -137,6 +144,8 @@ Rails.application.routes.draw do
   post 'profile/password/:id' => 'profile#password'
   post 'profile/delete/:id' => 'profile#destroy'
 
+  get 'profile/:id/(:request_id)' => 'users#show', :as => :public_profile
+
 =begin
   get 'connections' => 'connections#index'
   post 'connections' => 'connections#index'
@@ -151,12 +160,27 @@ Rails.application.routes.draw do
   post 'messages/connections' => 'messages#connections'
   post 'messages/farword' => 'messages#farword'
 
-=begin
+
   get 'activity_logs' => 'activity_logs#index'
   post 'activity_logs' => 'activity_logs#index'
   post 'activity_logs/update' => 'activity_logs#update'
 
-=end
+
+
+  get "search/offices"
+  get "search/basic"
+  get "search/poll"
+  get "search/fetch"
+  post "search/advanced"
+  
+  get "search/advanced"
+  
+  post "search/industry"
+  post "search/teams"
+  post "search/lease_types"
+  post "search/sixsigma"
+  post "search/export"
+  get "search/export"
 
 
 

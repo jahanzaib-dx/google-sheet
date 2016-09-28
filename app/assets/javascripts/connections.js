@@ -69,12 +69,16 @@ jQuery(document).ready(function (){
             data: dataString,
             dataType: "json",
             success: function(data) {
-                console.log(data)
+                console.log(data);
                 if(data.status == 'success'){
                     uiAlert('Success','Connection request successfully sent to the user');
                 }else{
                     uiAlert('Error!','Unable to send connection request. '+data.message);
-                    $('#basicModal').modal('show');
+                    if(data.issue == 'Mobile Validation'){
+                        document.location.href = data.url;
+                    }else {
+                        $('#basicModal').modal('show');
+                    }
                 }
             }
         });

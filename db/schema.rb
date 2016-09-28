@@ -209,9 +209,24 @@ ActiveRecord::Schema.define(version: 20160928092409) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.integer "name", null: false
+  create_table "group_members", force: :cascade do |t|
+    t.integer  "group_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
+  add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
+  add_index "group_members", ["member_id"], name: "index_group_members_on_member_id", using: :btree
+
+  create_table "groups", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "title",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
   create_table "import_logs", force: :cascade do |t|
     t.integer  "tenant_record_import_id"
@@ -291,6 +306,9 @@ ActiveRecord::Schema.define(version: 20160928092409) do
   end
 
   add_index "lease_structures", ["name", "account_id"], name: "index_lease_structures_on_name_and_account_id", unique: true, using: :btree
+
+# Could not dump table "lookup_address_zipcodes" because of following StandardError
+#   Unknown type 'geometry(Point,3785)' for column 'location'
 
   create_table "lookup_address_zipcodes_tenant_records", id: false, force: :cascade do |t|
     t.integer "tenant_record_id"
@@ -589,5 +607,8 @@ ActiveRecord::Schema.define(version: 20160928092409) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "group_members", "groups"
+  add_foreign_key "group_members", "users", column: "member_id"
+  add_foreign_key "groups", "users"
   add_foreign_key "schedule_accesses", "users"
 end
