@@ -145,7 +145,9 @@ class TenantRecord < ActiveRecord::Base
 
   scope :address_only, lambda { |office_id = nil|
     office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
-    select("tenant_records.id, company, submarket, property_name,property_type, comp_type, view_type, zipcode, city, state, address1" + office_scope + ", 'address_only' as in_scope ").group('tenant_records.id, tenant_records.address1, tenant_records.zipcode')
+    select("tenant_records.id, company, submarket, property_name,property_type, comp_type, view_type, zipcode, city, state, address1" + office_scope + ", 'address_only' as in_scope ")
+	
+	#.group('tenant_records.id, tenant_records.address1, tenant_records.zipcode')
   }
 
   scope :team, lambda { |team_id| where("team_id = ?", team_id) }
