@@ -1,13 +1,7 @@
 class TenantRecord < ActiveRecord::Base
-
-  require ConditionalValidations
-  #include ConditionalValidations
+  include ConditionalValidations
   ####serialize :data, ActiveRecord::Coders::Hstore
   acts_as_paranoid
-
-  has_many :comp_requests
-  belongs_to :user
-  has_one :flaged_comp, :foreign_key => :comp_id
 
   before_restore :add_to_all_office_agreements
   before_destroy :remove_from_all_office_agreements
@@ -320,11 +314,6 @@ class TenantRecord < ActiveRecord::Base
     having("(tenant_records.lease_commencement_date, DATE_TRUNC('MONTH', tenant_records.lease_commencement_date) + INTERVAL '1 MONTH - 1 DAY') OVERLAPS (DATE ?, DATE ?)", start, finish)
     .group('tenant_records.id')
   }
-
-
-  def complete_address
-    [address1, city, state, zipcode].join(", ")
-  end
 
   def data
     super.with_indifferent_access
