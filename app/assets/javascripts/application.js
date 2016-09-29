@@ -22,6 +22,7 @@
 //= require messages
 //= require comp_requests
 //= require autocomplete
+//= require jqueryuicustom.min
 //= require bpopup
 //= require jquery.popup
 //= require moment
