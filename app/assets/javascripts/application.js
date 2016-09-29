@@ -21,6 +21,14 @@
 //= require connections
 //= require messages
 //= require comp_requests
+//= require autocomplete
+//= require bpopup
+//= require jquery.popup
+//= require moment
+//= require number_format
+//= require mustache
+//= require dashboard
+//= require map
 //= require_self
 
 jQuery(document).ready(function () {
