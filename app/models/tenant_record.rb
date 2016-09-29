@@ -1,6 +1,6 @@
 class TenantRecord < ActiveRecord::Base
 
-  #include ConditionalValidations
+  include ConditionalValidations
   ####serialize :data, ActiveRecord::Coders::Hstore
   acts_as_paranoid
 
