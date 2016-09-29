@@ -62,7 +62,7 @@ gem "figaro"
 gem 'roadie'
 
 gem 'finance'
-##gem 'activerecord-postgres-hstore'
+gem 'activerecord-postgres-hstore'
 gem 'paranoia'
 gem 'paperclip'
 gem 'jquery-ui-rails'
