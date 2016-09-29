@@ -1,0 +1,23 @@
+<tr class="connection-record">
+  <% if action_name == "edit" %>
+    <td>
+
+    </td>
+  <% end %>
+
+  <td width="4%" class="result_img_icon">
+    <span class="hide"><%= member.id %></span>
+    <%
+       image_check = user_image(member)
+    %>
+    <%= image_check %>
+  </td>
+  <td width="18%" class="result_line"><p class="result_line_bold"><%= member.name %></p></td>
+  <td width="17%" class="result_line"><p class="result_line_bold"><%= member.firm_name %></p></td>
+  <td width="31%" class="result_line"><p class="result_line_bold"><%= member.location %></p></td>
+  <% if action_name == "edit" %>
+      <td width="12%" class="result_line">
+        <%= link_to "Remove", '#', :data => { :href => '#' }, :class=>"ignore_btn"  %>
+      </td>
+  <% end %>
+</tr>

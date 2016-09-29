@@ -3,11 +3,6 @@
 %>
 <tr class="connection-record">
   <td width="4%" class="text-center">
-    <% if defined? frm != nil %>
-        <% #= fields_for 'group_members[]', connection do |f| %>
-        <%= frm.check_box :member_id, {},other_user.id %>
-        <% #end %>
-    <% end %>
     <span class="hide"><%= connection.id %></span>
   </td>
 

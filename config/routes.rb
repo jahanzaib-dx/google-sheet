@@ -105,11 +105,8 @@ Rails.application.routes.draw do
   get 'connections/internal_create' => 'connections#create'
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
 
+  resources :groups
 
-  get 'groups' => 'groups#index'
-  get 'groups/new' => 'groups#new'
-  get 'groups/edit' => 'groups#edit'
-  post 'groups' => 'groups#create'
 
 
 =begin

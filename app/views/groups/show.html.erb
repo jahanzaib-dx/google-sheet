@@ -21,13 +21,15 @@
         <div class="groups-options">
           <div class="row">
               <div class="col-md-4">
+                <form action="<%= group_url('@') %>" method="get">
                 <%= collection_select(:group, :id, @groups , :id, :title, :prompt => "Select One" ) %>
-                <%= "<a href='#{groups_edit_url(:id => @group.id)}' class='dlt_change'>Edit Group</a>" if @group %>
+                </form>
+                <%= "<a href='#{edit_group_url(:id => @group.id)}' class='dlt_change'>Edit Group</a>".html_safe if @group %>
               </div>
               <div class="col-md-8">
                 <div class="group-buttons-wrapper">
-                  <span><a href="<%= groups_new_url %>" class="dlt_change">Create New Group</a></span>
-                  <span><a href="<%= groups_new_url %>"><img src="<%= image_url('new_group.png')%>" /></a></span>
+                  <span><a href="<%= new_group_url %>" class="dlt_change">Create New Group</a></span>
+                  <span><a href="<%= new_group_url %>"><img src="<%= image_url('new_group.png')%>" /></a></span>
                 </div>
               </div>
           </div>
@@ -39,10 +41,12 @@
 
           <div class="short_lits_container">
             <div class="col-md-4 ">
-              <div class="checkbox checkbox-info checkbox_table">
-                <input type="checkbox" id="checkbox1">
-                <label for="checkbox1"> Select All </label>
-              </div>
+              <% if action_name == "edit" %>
+                  <div class="checkbox checkbox-info checkbox_table">
+                    <input type="checkbox" id="checkbox1">
+                    <label for="checkbox1"> Select All </label>
+                  </div>
+              <% end %>
             </div>
             <div class="col-md-4">
               <p class="tx_short_list">Sort By<span id="sort_by_id" class="sort_by_id_desc">Recently Added
@@ -60,28 +64,33 @@
           </div>
 
           <table width="100%" border="0" class="tx_search_result_table tx_search_result_table_auto tx_search_result_plan border_top_table display" id="connections_list">
-
             <thead>
             <tr>
               <th></th>
               <th></th>
               <th></th>
               <th></th>
+              <% if action_name == "edit" %>
               <th></th>
               <th></th>
-              <th></th>
-              <th></th>
-
-
-            </tr>
+              <% end %>
             </thead>
 
             <tbody>
 
             <% unless @group.nil? %>
-                <%= render :partial => 'groups/group_member', :collection => @group.group_members %>
+                <%= render :partial => 'groups/member', :collection => @group.members %>
             <% else %>
-                <%= render :partial => "connections/connection", :collection => @connections %>
+
+                <%
+                   @connections.each do |connection|
+                     other_user = connection.user_id==current_user.id ? connection.connected_to : connection.user
+                %>
+                    <tr class="connection-record">
+                      <%= render :partial => "connection", :locals =>{:connection => connection ,:other_user => other_user} %>
+                    </tr>
+                <% end %>
+
             <% end %>
 
             </tbody>

@@ -67,3 +67,9 @@ div.ajax-loading div{
     line-height:30px;
     text-align:center;
 }
+
+table.tx_search_result_table tr td:first-child{ padding-left:20px;}
+table.tx_search_result_table tr td:last-child{ padding-right:20px;}
+
+form{display:inline;}
+

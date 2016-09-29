@@ -86,4 +86,14 @@ jQuery(document).ready(function (){
         return false;
     });
 
+
+    jQuery("#group_id").on("change", function (){
+        var gp_id = jQuery(this).val();
+        if(gp_id.trim() != "") {
+            url = jQuery(this).parent("form").attr("action");
+            url = url.replace("@", gp_id);
+            document.location.href = url;
+        }
+    });
+
 });

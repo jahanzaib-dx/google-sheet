@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917080951) do
+ActiveRecord::Schema.define(version: 20160929112401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,15 +202,12 @@ ActiveRecord::Schema.define(version: 20160917080951) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "group_members", force: :cascade do |t|
-    t.integer  "group_id"
-    t.integer  "member_id"
+  create_table "flaged_comps", force: :cascade do |t|
+    t.integer  "comp_id"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
-  add_index "group_members", ["member_id"], name: "index_group_members_on_member_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.integer  "user_id"
@@ -220,7 +217,6 @@ ActiveRecord::Schema.define(version: 20160917080951) do
   end
 
   add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
-
 
   create_table "import_logs", force: :cascade do |t|
     t.integer  "tenant_record_import_id"
@@ -301,6 +297,9 @@ ActiveRecord::Schema.define(version: 20160917080951) do
 
   add_index "lease_structures", ["name", "account_id"], name: "index_lease_structures_on_name_and_account_id", unique: true, using: :btree
 
+# Could not dump table "lookup_address_zipcodes" because of following StandardError
+#   Unknown type 'geometry(Point,3785)' for column 'location'
+
   create_table "lookup_address_zipcodes_tenant_records", id: false, force: :cascade do |t|
     t.integer "tenant_record_id"
     t.integer "lookup_address_zipcode_id"
@@ -358,6 +357,16 @@ ActiveRecord::Schema.define(version: 20160917080951) do
     t.boolean "is_preferred",             default: false
     t.string  "description",  limit: 255
   end
+
+  create_table "memberships", force: :cascade do |t|
+    t.integer  "group_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "memberships", ["group_id"], name: "index_memberships_on_group_id", using: :btree
+  add_index "memberships", ["member_id"], name: "index_memberships_on_member_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id",                               null: false
@@ -597,5 +606,8 @@ ActiveRecord::Schema.define(version: 20160917080951) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "groups", "users"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users", column: "member_id"
   add_foreign_key "schedule_accesses", "users"
 end

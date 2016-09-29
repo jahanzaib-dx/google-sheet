@@ -22,6 +22,7 @@
                 <div class="col-md-8">
                   <div class="group-buttons-wrapper">
                     <span><a href="<%= groups_url %>" class="dlt_change">Cancel</a></span>
+                    <span><%= link_to "Delete", @group, :confirm => "Are you sure?", :method => :delete %></span>
                     <span><%= f.submit :value=> 'Save Group', :class => 'save_change' %></span>
                   </div>
                 </div>
@@ -54,7 +55,7 @@
                 </div>
               </div>
 
-              <%= f.fields_for :group_members do |frm| %>
+
               <table width="100%" border="0" class="tx_search_result_table tx_search_result_table_auto tx_search_result_plan border_top_table display" id="connections_list">
 
                 <thead>
@@ -64,11 +65,6 @@
                   <th></th>
                   <th></th>
                   <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-
-
                 </tr>
                 </thead>
 
@@ -80,9 +76,7 @@
                     <tr class="connection-record">
 
                         <td width="4%" class="text-center">
-                            <% #= fields_for 'group_members[]', connection do |f| %>
-                            <%= frm.check_box :member_id, {},other_user.id %>
-                            <% #end %>
+                            <%= check_box_tag :member_ids, other_user.id, @group.member_ids.include?(other_user.id), :name => 'group[member_ids][]'  %>
                         </td>
                         <%= render :partial => "connection", :locals =>{:connection => connection ,:other_user => other_user} %>
                     </tr>
@@ -90,7 +84,6 @@
                 </tbody>
 
               </table>
-              <% end %>
 
             </div> <!-- /tx_search_result_table_container -->
 
