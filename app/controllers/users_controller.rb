@@ -1,23 +1,15 @@
 class UsersController  < ApplicationController
 
   def dashboard
+    if @role == 'admin'
+      redirect_to users_path
+    end
     @user = current_user
   end
 
 
 
   def show
-	@request_id = params[:request_id]
-    if @request_id
-      session[:request_id] = @request_id
-      session[:user_id] = params[:id]
-    end
-
-    @user = User.find(params[:id])
-
-    unless user_signed_in?
-
-	end
 
   end
 
@@ -40,7 +32,7 @@ class UsersController  < ApplicationController
   end
 
   def sub_users
-    @parent_id = ( @role == 'admin' ) ? params[:id] : current_user.id
+    @parent_id = (current_user.id==1) ? params[:id] : current_user.id
     @subUser = User.where("parent_id = ?", @parent_id)
     @newsubUser = User.new
     @newsubUser.schedule_accesses.new
@@ -54,7 +46,7 @@ class UsersController  < ApplicationController
     @subUser = User.new(sub_user_params)
       if @subUser.save
         flash[:success] = 'The User is successfully created!'
-        redirect_to users_path
+        redirect_to '/users'
       else
         flash[:error] = @subUser.errors.full_messages
         render :action => :sub_users
@@ -64,22 +56,22 @@ class UsersController  < ApplicationController
   def sub_users_edit
     @subUser = User.find(params[:id])
     @subUser.schedule_accesses.last
-    if  @role != 'admin' && @subUser.parent_id != current_user.id
+    if @role != 'admin' && @subUser.parent_id!=current_user.id
       flash[:error] = 'Permission denied'
-      redirect_to users_path
+      redirect_to '/users'
     end
   end
 
   def sub_users_update
     @subUser = User.find(params[:id])
     @subUser.schedule_accesses.last
-    if  @role != 'admin' && @subUser.parent_id != current_user.id
+    if @role != 'admin' && @subUser.parent_id!=current_user.id
       flash[:error] = 'Permission denied'
-      redirect_to users_path
+      redirect_to '/users'
     else
       if @subUser.update(sub_user_params)
         flash[:success] = 'The User is successfully updated!'
-        redirect_to users_path
+        redirect_to '/users'
       else
         flash[:error] = @subUser.errors.full_messages
         render :action => :sub_users_edit
@@ -90,12 +82,12 @@ class UsersController  < ApplicationController
 
   def sub_users_delete
     @subUser = User.find(params[:id])
-    if  @role != 'admin' && @subUser.parent_id != current_user.id
+    if @role != 'admin' && @subUser.parent_id!=current_user.id
       flash[:error] = 'Permission denied'
     else
       @subUser.destroy
     end
-    redirect_to users_path
+    redirect_to '/users'
   end
 
   private

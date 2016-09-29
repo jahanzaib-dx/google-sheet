@@ -4,7 +4,15 @@
 
       <% if user_signed_in?  %>
 
-          <%= render 'layouts/after_signin' %>
+          <% if @role == 'admin' %>
+
+              <%= render 'layouts/super_admin' %>
+
+          <% else %>
+
+              <%= render 'layouts/after_signin' %>
+
+          <% end %>
 
       <% else %>
 
