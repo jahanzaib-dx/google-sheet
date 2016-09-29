@@ -1,0 +1,23 @@
+<ul class="nav tx_nav navbar-nav">
+
+  <li class="active"> <a href="<%= root_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'TenantRex.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'LeaseRex.svg' %>"></a> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'ResearchRex.svg' %>"></a> </li>
+
+</ul>
+
+
+<ul class="nav navbar-nav tx_nav_right navbar-right">
+  <li class="dropdown tx_dropdown" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("user-icon.png" , :class => "drom-icon")%> <%= current_user.first_name %> <b class="caret"></b></a>
+    <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+      <li role="presentation tx_new_customer"> <%= link_to "Logout", destroy_user_session_url, :method => :delete %> </li>
+    </ul>
+  </li>
+  <li class="dropdown tx_dropdown tx_abslute_position" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("setting.png" , :class => "drom-icon")%> <b class="caret"></b></a>
+    <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+      <li role="presentation tx_new_customer"> <%= link_to "Manage Users", users_path %> </li>
+    </ul>
+  </li>
+</ul>
+
