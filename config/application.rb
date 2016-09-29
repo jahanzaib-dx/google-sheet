@@ -36,7 +36,8 @@ module MarketRex
         username: ENV['smtp_username'],
         password: ENV['smtp_password']
     }
-
+	
+	config.autoload_paths += %W(#{config.root}/lib/util #{config.root}/lib/util/marketrex #{config.root}/app/workers/marketrex)
 
   end
 end
