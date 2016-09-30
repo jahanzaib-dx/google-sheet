@@ -27,6 +27,7 @@
  *= require cost
  *= require groups
  *= require style
+ *= require date-time-picker
  *= require_self
  */
 

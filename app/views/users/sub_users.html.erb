@@ -1,4 +1,4 @@
-
+﻿
 <%= stylesheet_link_tag  'sub_user', media: 'all', 'data-turbolinks-track' => true %>
 <!--main_body_section-start-->
 <div class="main_edit_section">
@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-12">
       <div class="edit_content_eria">
-        <div class="col-md-12 col-sm-12 tx_profilebtn_section"> <a href="#!" class="tx_linkdin_profile" data-toggle="modal" data-target="#exampleModa2" data-whatever="@mdo0">Create New Guest User</a> </div>
+        <div class="col-md-12 col-sm-12 tx_profilebtn_section"> <a href="#!" class="tx_linkdin_profile" data-toggle="modal" data-target="#exampleModa2" data-whatever="@mdo0">Create New Sub User</a> </div>
         <%= form_for @newsubUser, :url => { :action => :sub_users } do |f| %>
             <div class="modal fade" id="exampleModa2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
               <div class="modal-dialog modal-dialog-user" role="document">
@@ -61,13 +61,12 @@
                             <p>Start</p>
                           </li>
                           <li>
-
                             <%= f.fields_for :schedule_accesses do |sa| %>
-                                <%= sa.text_field :start_date_time, :class => 'gust-date-input'  %><br/><br />
-
+                            <div class='input-group date fix-width' id='datetimepicker2'>
+                              <%= sa.text_field :start_date_time, :class => 'form-control'  %>
+                              <a href="#!" class="input-group-addon mrg-hidden"><img src="<%= image_url 'gust-date.png' %>"> </a>
+                            </div>
                           </li>
-                          <li><a href="#!"><img src="<%= image_url 'gust-date.png' %>"></a></li>
-                          <li><a href="#!"><img src="<%= image_url 'gust-clock.png' %>"></a></li>
                         </ul>
                         <ul class="user-list-gust">
                           <li>
@@ -77,13 +76,13 @@
                             <p>End</p>
                           </li>
                           <li>
-
-                                <%= sa.text_field :end_date_time, :class => 'gust-date-input'  %><br/><br />
+                            <div class='input-group date fix-width' id='datetimepicker3'>
+                              <%= sa.text_field :end_date_time, :class => 'form-control'  %>
+                              <a href="#!" class="input-group-addon mrg-hidden"><img src="<%= image_url 'gust-date.png' %>"> </a>
+                            </div>
                                 <%= sa.hidden_field :status, :value=>'TRUE', :class => 'gust-date-input'  %>
                             <% end %>
                           </li>
-                          <li><a href="#!"><img src="<%= image_url 'gust-date.png' %>"></a></li>
-                          <li><a href="#!"><img src="<%= image_url 'gust-clock.png' %>"></a></li>
                         </ul>
                       </div>
                     </div>
@@ -101,7 +100,7 @@
           <div class="col-lg-12 user-detail-conten">
             <table width="100%" border="0">
               <tr>
-                <td width="25%"><h3 class="tx__light_bold">Active Users</h3></td>
+                <td width="25%"><h3 class="tx__light_bold">Active Sub Users</h3></td>
                 <td width="56%">&nbsp;</td>
                 <td width="5%">&nbsp;</td>
                 <td width="14%">&nbsp;</td>
@@ -164,3 +163,22 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(function () {
+    $('#datetimepicker2').datetimepicker({
+      format: 'YYYY-MM-DD HH:mm:ss',
+
+    });
+  });
+
+  $(function () {
+    $('#datetimepicker3').datetimepicker({
+      format: 'YYYY-MM-DD HH:mm:ss',
+
+    });
+  });
+
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
