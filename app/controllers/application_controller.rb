@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :get_user
+  before_filter :get_user, :get_role
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -26,6 +26,20 @@ class ApplicationController < ActionController::Base
      User.current_user = @current_user
    end
 
+  def get_role
+    if current_user
+      if Account.where(:user_id => current_user.id).exists?
+        @role = Account.where('user_id = ?', current_user.id).first.role
+      else
+        account = Account.new
+        account.user_id = current_user.id
+        account.fullname = "#{current_user.first_name} #{current_user.last_name}"
+        account.role = 'user'
+        account.save
+        get_role
+      end
+    end
+  end
 
   private
 

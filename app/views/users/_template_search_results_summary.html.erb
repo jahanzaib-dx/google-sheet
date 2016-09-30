@@ -1,0 +1,54 @@
+<script id="template_search_results_summary" type="text/html">
+<div class="summary">
+  <p class="instructions">
+    <strong>Average values for selected market &amp; criteria:</strong>
+    <span class="cost_display_toggle"><a href="#" data-toggle_cost_display="yr" class="<%= 'active ' if search_params.nil? || ('active ' if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :cost_display and search_params[:tenant_record][:cost_display] == 'yr') %>left end">Year</a><a href="#" data-toggle_cost_display="mo" class="<%= 'active ' if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :cost_display and search_params[:tenant_record][:cost_display] == 'mo' %>right end">Month</a></span>
+  <table class="averages">
+    <tbody>
+      <tr>
+        <%#### if cushman_user %>
+       <!-- <td class="avg_net_effective_per_sf dashboard_summary_row_padding dashboard_summary_first_avg">
+          <label>Cushman Market Effective (Per SF/<span class="cost_display_abbr">YR</span>)</label>
+          <p class="average">
+              $<span id="cushman_market_net_effective_per_sf">{{##cushman_market_effective}}</span>
+          </p>
+        </td>-->
+        <%### else %>
+        <td class="avg_net_effective_per_sf dashboard_summary_row_padding dashboard_summary_first_avg">
+          <label>Market Effective (Per SF/<span class="cost_display_abbr">YR</span>)</label>
+          <p class="average">
+              $<span id="avg_net_effective_per_sf">{{avg_net_effective_per_sf}}</span>
+          </p>
+        </td>
+        <%### end %>
+
+        <td class="dashboard_summary_second_avg"><label>Tenant Size (Per SF)</label><p class="average"><span id="avg_size">{{avg_size}}</span></p></td>
+        <td class="term_years dashboard_summary_third_avg"><label>Term (YRS)</label><p class="average"><span id="avg_lease_term_years">{{avg_term_year}}</span></p></td>
+        <td><label>Concessions (Per SF)</label><p class="average">$<span id="avg_landlord_concessions_per_sf">{{avg_concessions}}</span></p></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="other_averages">
+  <table>
+    <tbody>
+      <tr>
+        <td class="average_net_effective_breakdown fixed_column" rowspan="5">
+          <div id="graph"></div>
+          <div id="graph_legend"></div>
+        </td>
+      </tr>
+      <tr class="landlard_concession"><td class="section dashboard_summary_no_padding_bottom" colspan="3"><label><strong>Landlord Concessions / Escalation</strong></label></td></tr>
+      <tr>
+        <td><label>Free Rent (Month)</label><p class="average">&nbsp;<span id="avg_free_rent">{{avg_free_rent}}</span></p></td>
+        <td><label>Escalation (%)</label><p class="average">&nbsp;<span id="avg_escalation">{{avg_escalation}}</span></p></td>
+        <td><label>Tenant Improvement (Per SF)</label><p class="average">$<span id="avg_tenant_improvement">{{avg_tenant_improvement}}</span></p></td>
+      </tr>
+      <tr><td class="section dashboard_summary_no_padding_bottom" colspan="3" ><label><strong>Additional Analytics</strong></label></td></tr>
+      <tr>
+        <td class="dashboard_summary_no_padding_top" colspan="3"><label>Weighted Average Per Annum</label><p class="average">&nbsp;$<span id="weighted_avg_annual_rent_by_sf">{{weighted_avg_annual_rent_by_sf}}</span></p></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</script>

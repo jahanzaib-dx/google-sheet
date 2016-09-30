@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
       Membership.where({:group_id => @group.id}).delete_all
     end
     @group.delete
-    
+
     redirect_to groups_url, notice: "Successfully deleted group #{@group.title}."
 
   end

@@ -11,6 +11,10 @@
  * file per style scope.
  *
  *= require bootstrap.min
+ *= require dashboard
+ *= require jqueryui.custom
+ *= require jquery.jqplot
+ *= require jquery.popup
  *= require buttons
  *= require font-awesome
  *= require build

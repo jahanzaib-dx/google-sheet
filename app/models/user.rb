@@ -50,6 +50,8 @@ class User < ActiveRecord::Base
   has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
   accepts_nested_attributes_for :schedule_accesses
 
+  has_many :flaged_comps, inverse_of: :user, :dependent => :destroy
+
   # end sub-user
 
   has_many :tenant_records
@@ -203,7 +205,8 @@ class User < ActiveRecord::Base
   end
 
   def create_account
-    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}"}
+    role = get_role
+    values = {:user_id => self.id, :fullname => "#{self.first_name} #{self.last_name}", :role =>"#{role}"}
     Account.create(values)
   end
 
@@ -211,6 +214,21 @@ class User < ActiveRecord::Base
     values = {:user_id => self.id, :start_date_time => self.start_date_time, :end_date_time => self.end_date_time}
     ScheduleAccess.create(values)
   end
+
+  def self.search(email, name, firm)
+      if !name.blank? || !email.blank? || !firm.blank?
+        user = User.joins(:account)
+        user = user.where.not('role = ?', 'admin')
+        user = user.where('first_name iLIKE ? OR last_name iLIKE ? ',"%#{name}%","%#{name}%") unless name.blank?
+        user = user.where('email iLIKE ?' ,"%#{email}%") unless email.blank?
+        user
+      end
+  end
+
+  def get_role
+    return ( self.parent_id ) ? 'sub-user' : 'user'
+  end
+
 
 #####end of class#############
 end
