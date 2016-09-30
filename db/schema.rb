@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20160928092409) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
@@ -209,16 +210,6 @@ ActiveRecord::Schema.define(version: 20160928092409) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "group_members", force: :cascade do |t|
-    t.integer  "group_id"
-    t.integer  "member_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "group_members", ["group_id"], name: "index_group_members_on_group_id", using: :btree
-  add_index "group_members", ["member_id"], name: "index_group_members_on_member_id", using: :btree
-
   create_table "groups", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "title",      limit: 255
@@ -364,6 +355,16 @@ ActiveRecord::Schema.define(version: 20160928092409) do
     t.boolean "is_preferred",             default: false
     t.string  "description",  limit: 255
   end
+
+  create_table "memberships", force: :cascade do |t|
+    t.integer  "group_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "memberships", ["group_id"], name: "index_memberships_on_group_id", using: :btree
+  add_index "memberships", ["member_id"], name: "index_memberships_on_member_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id",                               null: false
@@ -604,8 +605,10 @@ ActiveRecord::Schema.define(version: 20160928092409) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "group_members", "groups"
-  add_foreign_key "group_members", "users", column: "member_id"
+
   add_foreign_key "groups", "users"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users", column: "member_id"
   add_foreign_key "schedule_accesses", "users"
+
 end

@@ -55,8 +55,14 @@ class User < ActiveRecord::Base
   # end sub-user
 
   has_many :tenant_records
-  has_many :groups
-  has_many :group_members
+
+
+  has_many :groups_owned, class_name: 'Group', foreign_key: :user_id
+
+
+  has_many :memberships, foreign_key: :member_id, :dependent => :destroy
+  has_many :groups_joined, :through => :memberships, source: :group
+
 
 
   def self.marketrex_user_id field_name
