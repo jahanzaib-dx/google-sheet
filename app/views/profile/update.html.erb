@@ -1,5 +1,4 @@
 <!--main_body_section-start-->
-
 <%= form_for(:user, url: {:controller => 'profile', :action => 'update', :id => @user.id}, html: { method: :post }) do |f| %>
 
 <div class="main_edit_section">
@@ -18,6 +17,9 @@
    <!--<li>
    <%= link_to "Change Password", {:controller => 'profile', :action => 'password', :id => @user.id}, :class => "tx_linkdin_profile" %>
    </li>-->
+    <li class="">
+      <%= link_to 'Cancel',{:controller => 'users'} , :class => "tx_linkdin_profile" %>
+    </li>
    <li>
    <%= f.submit "Save Profile" , :class => "tx_save_profile" %>
    </li>

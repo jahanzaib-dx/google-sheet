@@ -26,6 +26,8 @@
 //= require bpopup
 //= require jquery.popup
 //= require moment
+//= require moment-timepicker
+//= require date-time-picker
 //= require number_format
 //= require mustache
 //= require dashboard
