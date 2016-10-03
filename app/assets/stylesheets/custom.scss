@@ -2771,6 +2771,112 @@ body .col-12{
   width: 100%;
 }
 
+/*-----map overwrite------*/
+
+div.popup{
+	padding:0;
+}
+div.popup .header {
+	background-color: #d9dadc;
+    color: #484848 !important;
+}
+div.popup #the_map .header h2{
+	padding: 4px 0;
+}
+
+div.popup #the_map .header a{
+	background-color: #4a4949;
+    color: #ffffff;
+    display: block;
+    height: 47px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 50px;
+}
+
+div.popup #the_map > * {
+    padding: 0 25px;
+}
+
+div.popup #map_controls nav ul > li {
+    float: none;
+}
+
+div.popup #map_controls .btn.zoom-in, div.popup #map_controls .btn.zoom-out {
+    font-size: 2.4rem;
+    font-weight: bold;
+    width: 80px;
+}
+div.popup #map_controls .btn.btn-inverse {
+    background-color: #4a4949;
+}
+div.popup #map_controls .btn {
+    border: 0 none;
+    height: 40px;
+    padding: 0;
+}
+.btn.btn-inverse {
+    color: #ffffff !important;
+}
+div.popup #map_controls .btn > span {
+    display: block;
+    padding: 3px 0;
+}
+
+div.popup #the_map h2 {
+    font-size: 3.5rem;
+    margin-bottom: 9px;
+}
+
+div.popup #the_map .close {
+    float: right;
+    font-size: inherit;
+    font-weight: 700;
+    line-height: 1;
+    opacity: inherit;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+div.popup #map_controls .btn {
+    border: 0 none;
+    height: 40px;
+    padding: 0;
+    width: 170px;
+}
+
+div.popup #map_controls .btn > span {
+    display: block;
+    padding: 10px 0;
+}
+
+div.popup #the_map .btn.btn-red {
+    color: #ffffff !important;
+}
+
+
+div.popup #map_controls .btn {
+    border: 0 none;
+    height: 40px;
+    padding: 0;
+    width: 170px;
+}
+div.popup #map_controls .btn.btn-red {
+    background-color: #a52c25;
+    color: #ffffff !important;
+}
+div.popup #map_controls .btn {
+    box-shadow: none;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.4rem;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
 /* ##################################################################################################### */
 
 
