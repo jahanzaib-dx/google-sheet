@@ -32,6 +32,7 @@
 //= require mustache
 //= require dashboard
 //= require map
+//= require jquery.validate.min.js
 //= require_self
 
 jQuery(document).ready(function () {
