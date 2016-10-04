@@ -21,16 +21,16 @@
                   <div class="modal-body modal-body-new-user">
                     <div class="gust-email full-width">
 
-                      <%= f.text_field :first_name, :placeholder => 'First Name' %>
-                      <%= f.text_field :last_name, :placeholder => 'Last Name' %>
-                      <%= f.text_field :password, :autocomplete => :off, :placeholder => 'Confirm Password' %>
+                      <%= f.text_field :first_name, :placeholder => 'First Name' , :class => "required" %>
+                      <%= f.text_field :last_name, :placeholder => 'Last Name', :class => "required" %>
+                      <%= f.text_field :password, :autocomplete => :off, :placeholder => 'Confirm Password', :class => "required"  %>
 
                     </div>
 
                   </div>
                   <div class="modal-footer modal-footer-user">
 
-                    <button type="button" class="btn btn-primary creat-user-btn" data-dismiss="modal" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">save</button>
+                    <button type="button" class="btn btn-primary creat-user-btn save_user"data-target="#exampleModal" data-whatever="@mdo">save</button>
                     <button type="button" class="btn btn-secondary close-user-btn" data-dismiss="modal">Cancel</button>
                   </div>
                 </div>
@@ -47,10 +47,9 @@
                     <div class="modal-body modal-body-new-user">
                       <div class="gust-email">
                         <h3>Guest User Email</h3>
-
-                        <%= f.text_field :email, :placeholder => 'Email' %>
+                        <%= f.text_field :email, :placeholder => 'Email', :class => "required", :style => "margin-bottom:22px" %>
                         <%= f.hidden_field :parent_id, :value=> @parent_id %>
-                        <a href="#!"><img src="<%= image_url 'plus-add.png' %>"></a> </div>
+                      </div>
                       <div class="gust-email">
                         <h3>Schedule Access  </h3>
                         <ul class="user-list-gust">
@@ -63,7 +62,7 @@
                           <li>
                             <%= f.fields_for :schedule_accesses do |sa| %>
                             <div class='input-group date fix-width' id='datetimepicker2'>
-                              <%= sa.text_field :start_date_time, :class => 'form-control'  %>
+                              <%= sa.text_field :start_date_time, :class => 'form-control required'  %>
                               <a href="#!" class="input-group-addon mrg-hidden"><img src="<%= image_url 'gust-date.png' %>"> </a>
                             </div>
                           </li>
@@ -77,7 +76,7 @@
                           </li>
                           <li>
                             <div class='input-group date fix-width' id='datetimepicker3'>
-                              <%= sa.text_field :end_date_time, :class => 'form-control'  %>
+                              <%= sa.text_field :end_date_time, :class => 'form-control required' %>
                               <a href="#!" class="input-group-addon mrg-hidden"><img src="<%= image_url 'gust-date.png' %>"> </a>
                             </div>
                                 <%= sa.hidden_field :status, :value=>'TRUE', :class => 'gust-date-input'  %>
@@ -117,7 +116,7 @@
                     <td><p><%= "#{user.first_name} #{user.last_name} (#{user.email}) " %></p></td>
                     <td><p><%= "Scheduled: #{user.schedule_accesses[0].start_date_time.strftime('%-m/%d/%y %I %p')} to #{user.schedule_accesses[0].end_date_time.strftime('%-m/%d/%y %I %p')}" %></p></td>
                     <td><%= link_to 'Edit', { :controller => 'users', :action => 'sub_users_edit', :id => user.id},:class => "manange-edit" %></td>
-                    <td><%= link_to image_tag('dlt_icon.png'), { :controller => 'users', :action => 'sub_users_delete', :id => user.id},:class => "manange-dlt", data: { confirm: 'Are you sure?' } %></td>
+                    <td><%= link_to image_tag('dlt_icon.png'), { :controller => 'users', :action => 'sub_users_delete', :id => user.id},:class => "manange-dlt delete-button  " %></td>
                   </tr>
 
               <% end %>
@@ -167,6 +166,14 @@
   $(function () {
     $('#datetimepicker2').datetimepicker({
       format: 'YYYY-MM-DD HH:mm:ss',
+      icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-arrow-up",
+        down: "fa fa-arrow-down",
+        next: "fa fa-arrow-right",
+        previous: "fa fa-arrow-left"
+      }
 
     });
   });
@@ -174,11 +181,58 @@
   $(function () {
     $('#datetimepicker3').datetimepicker({
       format: 'YYYY-MM-DD HH:mm:ss',
+      icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-arrow-up",
+        down: "fa fa-arrow-down",
+        next: "fa fa-arrow-right",
+        previous: "fa fa-arrow-left"
+      }
 
     });
   });
 
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $(function () {
+    $('.delete-button').on('click', function (event) {
+      var del_path = this.href;
+      event.preventDefault()
+      uiConfirm('Delete Sub-user', 'Are you sure?', function (){
+        document.location.href = del_path;
+      });
+    });
+  });
+
+
+  $(document).ready(function () {
+    $('#new_user').validate({
+      onfocusout: function (element) {
+        $(element).valid();
+      }
+    });
+
+    $('#new_user').validate({
+      onsubmit: function (element) {
+        $(element).valid();
+      }
+    });
+
+    $('#new_user').validate({
+      onsubmit: function (element) {
+        $(element).valid();
+      }
+    });
+  });
+
+  $('.save_user').on('click', function() {
+    if($("#new_user").valid())
+    {
+      $('#exampleModa2').modal('hide');
+      $('#exampleModal').modal('show');
+    }
   });
 </script>

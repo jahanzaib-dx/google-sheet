@@ -106,8 +106,8 @@
                         <td><p><%= "Company" %></p></td>
                         <td>
                           <a href="#" id="<%= f_comp.id %>" class="send_email" data-toggle="modal" data-target="#email_model" data-whatever="@mdo0"> <i class="fa fa-reply"></i>Email</a>
-                          <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, data: { confirm: 'Are you sure?' } %>
-                          <%= link_to raw('<i class="fa fa-close"></i>Delete'), {:controller => 'flaged_comps', :action => 'delete_comp', :id => f_comp.comp_id}, data: { confirm: 'Are you sure?' } %>
+                          <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, :class => 'ignore-button' %>
+                          <%= link_to raw('<i class="fa fa-close"></i>Delete'), {:controller => 'flaged_comps', :action => 'delete_comp', :id => f_comp.comp_id}, :class => 'delete-button' %>
                         </td>
                       </tr>
                   <% end %>
@@ -194,4 +194,26 @@
   $('.send_email').click(function() {
     $('#email_form').attr('action', 'flaged_comps/email/'+this.id);
   });
+
+  $(function () {
+    $('.delete-button').on('click', function (event) {
+      var del_path = this.href;
+      event.preventDefault()
+      uiConfirm('Delete Comp', 'Are you sure?', function (){
+        document.location.href = del_path;
+      });
+    });
+  });
+
+  $(function () {
+    $('.ignore-button').on('click', function (event) {
+      var del_path = this.href;
+      event.preventDefault()
+      uiConfirm('Ignore Comp', 'Are you sure?', function (){
+        document.location.href = del_path;
+      });
+    });
+  });
+
+
 </script>
