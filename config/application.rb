@@ -33,7 +33,7 @@ module MarketRex
     config.action_mailer.smtp_settings = {
         address: ENV['smtp_host'],
         port: ENV['smtp_port'],
-        username: ENV['smtp_username'],
+        user_name: ENV['smtp_username'],
         password: ENV['smtp_password']
     }
 	
