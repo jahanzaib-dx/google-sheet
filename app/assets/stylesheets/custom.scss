@@ -899,7 +899,7 @@ margin: 0 0 30px 129px;
 	}
 
 	.panel-title {
-		font-size: 14px;
+		font-size: 20px;
 	}
 
 	.panel-title > a {
@@ -937,7 +937,12 @@ margin: 0 0 30px 129px;
 }
 .accordion-toggle i {
     margin: 0 10px 0 0;
-	font-size: 15px;
+	font-size: 23px;
+}
+
+.tx_panel-heading .accordion-toggle i{
+	bottom:0px;
+	top:auto;
 }
 /* ----- v CAN BE DELETED v ----- */
 
