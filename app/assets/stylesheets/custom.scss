@@ -437,6 +437,11 @@ a {
     width: 100%;
 	margin: 39px 0 0;
 }
+
+.formgroup_input .btn-group.tx_btn_group {
+	margin: 0px 0 0;
+}
+
 .gm-arow  .caret {
     float: right;
     margin: 9px 0 0;
@@ -447,6 +452,7 @@ a {
     margin: 0 0 12px;
     width: 100%;
 }
+
 .tx-filter-btn {
     background: #556db1 none repeat scroll 0 0;
     border: 1px solid #556db1;
@@ -454,7 +460,7 @@ a {
     float: right;
 	   font-weight: bold;
 margin: 0 0 30px 129px;
-    padding: 13px 39px;
+    padding: 13px 54px;
 
 }
 .tx-filter-btn:hover {
@@ -805,8 +811,8 @@ margin: 0 0 30px 129px;
     border: 0 none;
     border-radius: 3px;
     color: #fff;
-    font-size: 22px;
-    left: 26px;
+    font-size: 34px;
+    left: 22px;
     margin-bottom: 0;
     margin-top: 2px;
     padding: 2px 5px;
@@ -819,11 +825,12 @@ margin: 0 0 30px 129px;
 
 .input-group-btn {
     background: #556db1 none repeat scroll 0 0;
-    width: 90px;
+    width: 80px;
 }
 .search-query.form-control {
-    height: 43px;
+    height: 55px;
     padding-left: 21px !important;
+	font-size:18px !important;
 }
 .search_content {
     float: left;
@@ -844,7 +851,7 @@ margin: 0 0 30px 129px;
 }
 .miles_input > input {
     border: 0 none;
-    height: 43px;
+    height: 55px;
     margin: 0 10px 0 0;
     text-align: center;
     width: 105px;
@@ -855,9 +862,10 @@ margin: 0 0 30px 129px;
     color: #fff;
     float: left;
     margin: 30px 0 0;
-    padding: 10px 0;
+    padding: 17px 0;
     text-align: center;
     width: 100%;
+	font-weight: bold;
 }
 .advance_search_btn:hover {
     background: #fff none repeat scroll 0 0;
@@ -897,7 +905,7 @@ margin: 0 0 30px 129px;
 	.panel-title > a {
 		display: block;
 		padding: 15px;
-
+		font-weight: bold;
 		text-decoration: none;
 	}
 
@@ -929,6 +937,7 @@ margin: 0 0 30px 129px;
 }
 .accordion-toggle i {
     margin: 0 10px 0 0;
+	font-size: 15px;
 }
 /* ----- v CAN BE DELETED v ----- */
 
