@@ -35,4 +35,9 @@ class CompRequest < ActiveRecord::Base
     log_activity 'Rejected'
   end
 
+  def self.incoming_sale_lease(user_id, comp_type)
+    comp_request = joins(:tenant_record).where('receiver_id = ? and record_type Like ? and status = ? ',user_id,comp_type,false).all
+    comp_request
+  end
+
 end
