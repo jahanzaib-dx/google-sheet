@@ -27,8 +27,10 @@ class ApplicationController < ActionController::Base
    end
 
   def count_comp_request
-    @lease_comp_request = CompRequest.incoming_sale_lease(current_user.id,'lease')
-    @sale_comp_request = CompRequest.incoming_sale_lease(current_user.id,'sale')
+    if(user_signed_in?)
+      @lease_comp_request = CompRequest.incoming_sale_lease(current_user.id,'lease')
+      @sale_comp_request = CompRequest.incoming_sale_lease(current_user.id,'sale')
+    end
   end
 
   def get_role
