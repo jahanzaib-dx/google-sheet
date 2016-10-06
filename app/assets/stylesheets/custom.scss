@@ -475,7 +475,7 @@ margin: 0 0 30px 129px;
 .clear-btn {
     color: #fff;
     float: right;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: bold;
     margin: 13px 0 0;
     text-decoration: underline;
@@ -667,7 +667,7 @@ margin: 0 0 30px 129px;
 .tx_notification_stetas a img {
     float: right;
     margin: 29px 0 0;
-    width: 23px;
+    width: 16px;
 }
 .tx_notification_stetas {
     margin: 33px 0 0;
@@ -899,7 +899,7 @@ margin: 0 0 30px 129px;
 	}
 
 	.panel-title {
-		font-size: 14px;
+		font-size: 20px;
 	}
 
 	.panel-title > a {
@@ -937,7 +937,12 @@ margin: 0 0 30px 129px;
 }
 .accordion-toggle i {
     margin: 0 10px 0 0;
-	font-size: 15px;
+	font-size: 23px;
+}
+
+.tx_panel-heading .accordion-toggle i{
+	bottom:0px;
+	top:auto;
 }
 /* ----- v CAN BE DELETED v ----- */
 
