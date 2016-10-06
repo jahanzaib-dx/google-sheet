@@ -1,0 +1,21 @@
+
+<script id="template_results_table_row_lease" type="text/html">
+{{#id}}
+<tr>
+    <td height="51" class="result_img_icon"><%= image_tag("tbl-img.jpg") %></td>
+    
+    <td class="result_line"><strong>{{address1}}</strong></td>
+    <td class="result_line"><p>Locked</p></td>
+    <td class="result_line"><p>Locked</p></td>
+    <td class="result_line"><p>Locked</p></td>
+    <td class="result_line"><p>4,000-9,999</p></td>
+    <td class="result_line"><p>{{year}}</p></td>
+    <td class="table_result_amker"><a href="#">Request Unlock</a></td>
+    <td class="result_lock_icon"><a href="#"><%= image_tag("lock.png") %></a></td>
+   <td class="filter_icon"></td>
+</tr>
+{{/id}}
+{{^id}}
+<tr class="adjust_table_height"><td colspan="9"></td></tr>
+{{/id}}
+</script>

@@ -42,6 +42,8 @@ $("#autocomplete").ajaxselect(
   data: (term) ->
     search_type: $('input[name="tenant_record[search_type]"]:checked').val()
     term: term
+    record_type: $('input[name="record_type"]:checked').val()
+    #f:new Date().getTime()
 ).bind("change.ajaxselect", (e) ->
   $("#search").removeAttr "disabled"
   $(this).off "keydown.autocomplete"
@@ -772,7 +774,8 @@ $dashboard.on 'click', '#confidential_graph_select li', (e) ->
 #   Populates results from Basic/Advanced Search
 #\\*************************************************************\\
 populateResults = (data, text_status, $xhr, doAppend) ->
-
+  #alert(data.params.record_type)
+  record_type = data.params.record_type
   re = []
   is_submit = data.params.trigger and data.params.trigger == 'submit'
   $empty = $('#results .empty_results')
@@ -854,11 +857,13 @@ populateResults = (data, text_status, $xhr, doAppend) ->
     filters: filters
 
   if !doAppend
-    $("#results .body").html Mustache.render($('#template_results_table_header').html(), the_header_data)
+    #$("#results .body").html Mustache.render($('#template_results_table_header').html(), the_header_data)
+    $("#results .body").html Mustache.render($('#template_results_table_header_'+record_type).html(), the_header_data)
   tb = $("#results .body table tbody")
   r = ""
   found = []
-  table_template = $('#template_results_table_row').html()
+  #table_template = $('#template_results_table_row').html()
+  table_template = $('#template_results_table_row_'+record_type).html()
   row_count = count + 1
   re = $.map(data_docs, (item) ->
 
