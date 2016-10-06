@@ -6,7 +6,17 @@ class CompRequestsController < ApplicationController
   def index
     direction = params[:direction]
     if direction == 'incoming'
-      @comp_requests = CompRequest.received_by current_user.id
+      comp_type = params[:comp_type]
+      if !comp_type.blank?
+        @comp_requests=CompRequest.incoming_sale_lease(current_user.id,comp_type)
+        @comp_requests.each do |comp_request|
+          comp = CompRequest.find(comp_request)
+          comp.status='TRUE'
+          comp.save
+        end
+      else
+        @comp_requests = CompRequest.received_by current_user.id
+      end
     else
       @comp_requests = CompRequest.initiated_by current_user.id
     end

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :get_user, :get_role
+  before_filter :get_user, :get_role, :count_comp_request
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
       end
      User.current_user = @current_user
    end
+
+  def count_comp_request
+    @lease_comp_request = CompRequest.incoming_sale_lease(current_user.id,'lease')
+    @sale_comp_request = CompRequest.incoming_sale_lease(current_user.id,'sale')
+  end
 
   def get_role
     if current_user

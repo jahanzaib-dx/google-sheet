@@ -93,6 +93,7 @@ Rails.application.routes.draw do
 
   get 'activity_log' => 'activity_log#index'
   match 'comp_requests/:direction', :to => 'comp_requests#index', :as => :comp_requests, :via => [:get]
+  get 'comp_requests/:direction/:comp_type' => 'comp_requests#index'
   post 'comp_requests' => 'comp_requests#create'
   post 'comp_requests/remind' => 'comp_requests#remind'
   post 'comp_requests/update' => 'comp_requests#update'
