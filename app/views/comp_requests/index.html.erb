@@ -8,7 +8,7 @@
 
         <div class="tx_search_result_table_container">
 
-          <% if params[:direction] == 'incoming'  %>
+          <% if params[:direction] == 'incoming' and @comp_requests.count > 0 %>
               <div class="short_by_incomming">
                 <div class="checkbox checkbox-info lock_list_check">
                   <input type="checkbox" id="checkbox1">
@@ -39,7 +39,7 @@
           <% end %>
 
 
-          <% if 1 %>
+          <% if @comp_requests.count > 0 %>
           <div class="tx_search_result_table_container perfectScrollbar-wheel  padding-hidden">
 
             <%= form_tag(comp_requests_path, id:"incoming_form") do %>
