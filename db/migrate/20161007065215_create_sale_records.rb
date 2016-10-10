@@ -1,6 +1,6 @@
 class CreateSaleRecords < ActiveRecord::Migration
   def change
-    ##unless ActiveRecord::Base.connection.table_exists? 'sale_records'
+    unless ActiveRecord::Base.connection.table_exists? 'sale_records'
       create_table :sale_records do |t|
 
         t.boolean :is_sales_record, default: false
@@ -17,6 +17,6 @@ class CreateSaleRecords < ActiveRecord::Migration
 
         t.timestamps
       end
-    ##end
+    end
   end
 end
