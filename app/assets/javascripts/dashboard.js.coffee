@@ -37,7 +37,9 @@ window.tenantrex.elTop  = 0
 #   Auto Complete Events
 #\\*************************************************************\\
 basic_search_url = $('#basic-search-form').prop('action')
+
 $("#autocomplete").ajaxselect(
+  #url: $('#basic-search-form').prop('action')
   url: basic_search_url
   data: (term) ->
     search_type: $('input[name="tenant_record[search_type]"]:checked').val()
@@ -59,6 +61,9 @@ $("#autocomplete").ajaxselect(
   $("#zipcode").val ui.item.label.zipcode
   $("#tenant_record_property_type").val ui.item.label.property_type
 ).bind "focus", (e) ->
+  #basic_search_url = $('#basic-search-form').prop('action')
+  ##alert(basic_search_url)
+  ##alert(basic_search_url)
   val = $(this).val()
   if val.indexOf(", ")
     $(this).val val.substring(0, val.indexOf(", "))
@@ -87,9 +92,11 @@ $('input[name="tenant_record[apply_radius]"]').on 'change', (e) ->
 $("#basic-search-form").on "submit", (e) ->
   e.preventDefault()
 
-  $adv = $('#advanced-search')
+  #####$adv = $('#advanced-search')
+  $adv = $('#advanced-search-new')
   if ($adv.length > 0 && $adv.hasClass('active'))
-    $($('#advanced-search .header').trigger('click'))
+    ####$($('#advanced-search .header').trigger('click'))
+    $($('#advanced-search-new .header').trigger('click'))
   term = $("#autocomplete").val()
   if (term.length == 0)
     return
@@ -107,14 +114,17 @@ $("#basic-search-form").on "submit", (e) ->
 #\\************************************************************\\
 #   Clicking on the headers on the dashboard
 #\\*************************************************************\\
-$dashboard.on 'click', '#advanced-search .header', (e) ->
+####$dashboard.on 'click', '#advanced-search .header', (e) ->
+
+$dashboard.on 'click', '#advanced-search-new .header', (e) ->
   e.preventDefault()
 
   # Empty results, don't need to show filter
   # if ($('.empty_results').length > 0)
   #   return
 
-  $adv = $('#dashboard #advanced-search')
+  #####$adv = $('#dashboard #advanced-search')
+  $adv = $('#dashboard #advanced-search-new')
   $adv_form = $adv.find('form')
   if (!$adv.hasClass('active'))
     $adv.addClass('active')
@@ -152,8 +162,8 @@ $("input[type=reset], button[type=reset]").on 'click', (e, params) ->
     window.setTimeout (()-> $('#advanced-search-form').trigger('submit')), 1000
 
 $('#advanced-search-submit').on 'click', (e) ->
-  $('#advanced-search .header').trigger('click')
-
+  #####$('#advanced-search .header').trigger('click')
+$('#advanced-search-new .header').trigger('click')
 
 #\\************************************************************\\
 #   Advanced Search Paginator
@@ -226,7 +236,8 @@ $('#advanced-search-form').on 'submit different_data', (e) ->
   $dashboard_popup.open()
   $('.popup_back').css('background-color', '#FFF')
   #$('.loader_img').show()
-  $('#advanced-search').addClass('on')
+  #####$('#advanced-search').addClass('on')
+  $('#advanced-search-new').addClass('on')
   $('#results .comp_report').removeClass('hide')
   $('#results .export_results').removeClass('hide')
   $body.addClass('dashboard')
@@ -254,8 +265,9 @@ $('#advanced-search-form').on 'submit different_data', (e) ->
         $body.fadeTo('fast', 1).addClass('search_complete')
         $dashboard_popup.close()
     error: (xhr, ts, et) ->
-      $('#advanced-search-form').hide()
-      $('#advanced-search').removeClass('active')
+      #####$('#advanced-search-form').hide()
+      #####$('#advanced-search').removeClass('active')
+      $('#advanced-search-new').removeClass('active')
       $("#results").html $('#template_results_empty').html()
       $body.fadeTo('fast', 1)
       $dashboard_popup.close()
@@ -774,7 +786,7 @@ $dashboard.on 'click', '#confidential_graph_select li', (e) ->
 #   Populates results from Basic/Advanced Search
 #\\*************************************************************\\
 populateResults = (data, text_status, $xhr, doAppend) ->
-  #alert(data.params.record_type)
+  alert(data.params.record_type)
   record_type = data.params.record_type
   re = []
   is_submit = data.params.trigger and data.params.trigger == 'submit'

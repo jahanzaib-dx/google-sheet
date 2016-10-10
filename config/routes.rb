@@ -172,6 +172,11 @@ Rails.application.routes.draw do
   post "search/advanced"
   
   get "search/advanced"
+
+  get "search/simple"
+  post "search/sales"
+
+  get "search/address"
   
   post "search/industry"
   post "search/teams"

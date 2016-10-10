@@ -28,6 +28,7 @@ class SearchController < ApplicationController
   end
 
   def basic
+
     res = Array.new
 
     search_type = params[:search_type]
@@ -83,6 +84,7 @@ class SearchController < ApplicationController
 
     # MySQL query
     unless (clause.nil?)
+
       tenant_records = tenant_records.where(clause[:where], clause[:params])
       params['summary'] = false
       results = case search_type
@@ -159,6 +161,7 @@ class SearchController < ApplicationController
     ####params['is_cushman_user'] = cushman_user
     # @NOTE specifying the table name, otherwise, the field returns sorted as a string, rather then integer
     $order = params[:tenant_record][:order] if (! params[:tenant_record][:order].blank?)
+
 
     tenant_records ||= scope
 
@@ -342,6 +345,188 @@ class SearchController < ApplicationController
     @record = tenant_record
     assigned_vars = {:user => @user, :sixsigma => sixsigma_results, :record => tenant_record, :summary => @summary, :is_cushman_user => is_cushman_user, :custom_template => @custom_template, :financial_detail => @financial_detail}
     render :template => 'search/custom_report/single/custom_single_report', :layout => 'layouts/report'
+  end
+
+
+
+
+#basic search for sales
+  def address
+
+    record_type     = params[:record_type]
+    if record_type == 'lease'
+      basic
+    elsif record_type == 'sale'
+      simple
+    end
+
+  end
+
+  #basic search for sales
+  def simple
+
+    res = Array.new
+
+    search_type = params[:search_type]
+    term        = params[:term]
+    address1    = params[:address1] if params.has_key? :address1
+    zipcode     = params[:zipcode]  if params.has_key? :zipcode
+
+    # SOLR query
+    #$q = URI::encode("^" + term)
+    #uri = URI("http://67.23.43.218:8080/solr/collection1/select?q=address1%3A%22" + $q.to_s + "*%22&rows=1000&df=address1&wt=json");
+    #res = Net::HTTP.get(uri)
+    ###if (current_user.has_trex_admin?)
+    if (current_user)
+      if (params[:sort].blank?)
+        tenant_records = SaleRecord.address_only
+      else
+        #tenant_records = TenantRecord.protect_view(current_user)
+      end
+    else # Check if firm_admin vs office_admin vs broker, vs analyst
+      if (params[:sort].blank?)
+        ######tenant_records = scope_address_only_office_user(params, current_user)
+      else
+        #####tenant_records = scope_protect_view_office_user(params, current_user)
+      end
+    end
+
+    clause = if address1.present? and zipcode.present?
+               { :where => "LOWER(sale_records.address1) = :address1 AND sale_records.zipcode = :zipcode",
+                 :params => { :address1 => address1.downcase, :zipcode => zipcode.to_s }
+               }
+             elsif term.present?
+               term = term.strip.gsub(/[\.\s]/, '%') + '%'
+               case search_type
+                 when 'company'
+                   { :where => "LOWER(tenant_records.company) LIKE :company",
+                     :params => { :company => term.downcase }
+                   }
+                 when 'property_name'
+                   { :where => "LOWER(tenant_records.property_name) LIKE :property_name",
+                     :params => { :property_name => term.downcase }
+                   }
+                 when 'submarket'
+                   { :where => "LOWER(tenant_records.submarket) LIKE :submarket",
+                     :params => { :submarket => term.downcase }
+                   }
+                 else
+                   { :where => "LOWER(sale_records.address1) LIKE :address1",
+                     :params => { :address1 => term.downcase }
+                   }
+               end
+             end
+
+
+    # MySQL query
+    unless (clause.nil?)
+
+      tenant_records = tenant_records.where(clause[:where], clause[:params])
+      params['summary'] = false
+      results = case search_type
+                  when 'company'
+                    tenant_records.order('company')
+                  when 'property_name'
+                    tenant_records.order('property_name')
+                  when 'submarket'
+                    tenant_records.order('submarket')
+                  else
+                    tenant_records.order('address1')
+                end
+      res = { :params => {:tenant_record => params }, :response => { :type => 'basic', :numFound => results.length, :docs => results } }
+    end
+
+    respond_to do |format|
+      format.json { render :json => res }
+    end
+
+    end
+
+
+
+#advance search for sales
+  def sales
+
+    scope = sales_scope_records_by_params(params[:tenant_record], current_user)
+    #if this is the first page than calculate summary
+    $order = 'address1'
+
+    original_params = Marshal.load(Marshal.dump(params))
+
+    # if summary, calculate quarters and find avg weighted market effective
+    if params[:tenant_record][:summary]
+      current = Date.today.beginning_of_quarter
+      q1, q2, q3, q4 = (1..4).map { |i| Date.today.beginning_of_quarter.months_ago(i*3) }
+      params['avg_weighted_tenant_effective'] = []
+      # a = q1_avg.avg_cushman_market_effective.to_f
+      #b = a
+      q1_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q1.end_of_quarter, current.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q1_avg.avg_cushman_market_effective.to_f : q1_avg.avg_weighted_market_effective.to_f)
+
+      q2_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q2.end_of_quarter, q1.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q2_avg.avg_cushman_market_effective.to_f : q2_avg.avg_weighted_market_effective.to_f)
+
+      q3_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q3.end_of_quarter, q2.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q3_avg.avg_cushman_market_effective.to_f : q3_avg.avg_weighted_market_effective.to_f)
+
+      q4_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q4.end_of_quarter, q3.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q4_avg.avg_cushman_market_effective.to_f : q4_avg.avg_weighted_market_effective.to_f)
+
+      params['avg_weighted_tenant_effective_quarters'] = ["Current", get_quarter(q1), get_quarter(q2), get_quarter(q3)].reverse
+      params['avg_weighted_tenant_effective'].reverse!
+
+      if params[:tenant_record][:cost_display] == 'mo'
+        params['avg_weighted_tenant_effective'].each_with_index do |single_avg, index|
+          params['avg_weighted_tenant_effective'][index] = single_avg / 12.0
+        end
+      end
+
+      #params['avg_weighted_tenant_effective'] = [53.0772056141280498,53.9177455557559932,54.4592933213889421,54.4012608930364223].reverse
+    end
+
+    if params.has_key? :radius and params[:tenant_record][:summary].blank?
+      # no records found but we just need a record with a latitude/longitude pair, so we'll get rid of other parameters that
+      # will prevent us from looking for an address
+      scope = scope_records_by_params({"search_type" => params[:tenant_record][:search_type], "address1" => params[:tenant_record][:address1], "zipcode" => params[:tenant_record][:zipcode], "q" => params[:tenant_record][:q]}, current_user)
+      t = scope.where('tenant_records.latitude is not null and tenant_records.longitude is not null').first
+
+      latitude, longitude = apply_radius(params[:radius], t.latitude, t.longitude)
+      params[:tenant_record][:latitude] = latitude
+      params[:tenant_record][:longitude] = longitude
+      params[:tenant_record].delete(:address1) if params[:tenant_record].has_key? :address1
+      params[:tenant_record].delete(:zipcode) if params[:tenant_record].has_key? :zipcode
+      params[:tenant_record].delete(:q)  if params[:tenant_record].has_key? :q
+      tenant_records = scope_records_by_params params[:tenant_record], current_user
+    end
+
+    ####params['is_cushman_user'] = cushman_user
+    # @NOTE specifying the table name, otherwise, the field returns sorted as a string, rather then integer
+    $order = params[:tenant_record][:order] if (! params[:tenant_record][:order].blank?)
+
+
+    tenant_records ||= scope
+
+
+    @summary = tenant_records.all.first
+
+
+    respond_to do |format|
+      if (params[:tenant_record][:summary].blank?)
+        session[:search_params] = original_params unless params.has_key? :previous # only if store if it's not a previous requery
+        #format.json { render json: { type: 'advanced', res: @tenant_records.limit(100).offset(params['tenant_record'][:offset]).order($order), count: @tenant_records.length, params:params } }
+
+        format.html  # index.html.erb
+
+        format.json { render json: { type: 'advanced', res: tenant_records.paginate(:page => params['tenant_record'][:page].to_i, :per_page => 100).order($order), count: tenant_records.length, params:params } }
+      else
+        format.json { render json: { type: 'advanced', summary: tenant_records.all.first, count: tenant_records.all.first.total_count, params:params } }
+
+
+        format.html { render html }
+
+
+      end
+    end
   end
 
   protected

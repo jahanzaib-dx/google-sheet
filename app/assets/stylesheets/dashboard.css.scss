@@ -1490,3 +1490,33 @@ fieldset.dashboard_export_result legend{
 .dashboard_summary_third_avg{
   width: 18% !important;
 }
+
+/*customize advance serach css*/
+
+#advanced-search-new.on {
+  opacity: 1;
+  height: 72px;
+}
+
+#advanced-search-new.active {
+  padding-bottom: 15px;
+  height: auto;
+  min-height:72px;
+  a,
+  .header a span,
+  label {
+    color: #fafafa;
+    font-weight:normal;
+  }
+  h2 {
+    color: #fafafa;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    font-weight: normal;
+  }
+
+}
+
+#advanced-search-new form {
+  display: none;
+}
