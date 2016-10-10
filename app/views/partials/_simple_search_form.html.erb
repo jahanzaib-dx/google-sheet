@@ -5,11 +5,11 @@
       <div class="col-md-8 col-sm-8">
         <div class="radio_main_container">
           <div class="radio radio_color">
-            <input type="radio" checked="" value="lease" id="comp_lease" name="comp_type" class="comp_type">
+            <input type="radio" checked="" value="lease" id="comp_lease" name="record_type" class="comp_type">
             <label for="radio1"> Lease </label>
           </div>
           <div class="radio radio_color">
-            <input type="radio" value="sales" id="comp_sales" name="comp_type" class="comp_type">
+            <input type="radio" value="sale" id="comp_sales" name="record_type" class="comp_type">
             <label for="radio2"> Sales </label>
           </div>
 
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-	  <form id="basic-search-form" action="<%= search_basic_path() %>" method="post">
+	  <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
 
       <div class="col-md-4 col-sm-4 both-pad-none">
         <div class="checkbox checkbox-info">
