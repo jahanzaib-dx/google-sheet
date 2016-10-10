@@ -7,46 +7,81 @@
 
 <!------------------------------------------------------------------------------------------------->
 
-<form id="advanced-search-form" action="<%= search_advanced_path() %>" method="post">
+<!--<form id="advanced-search-form" action="<%= search_advanced_path() %>" method="post">-->
 
-<div id="<%= 'run_search' if search_params %>" class="hidden_fields">
-          <input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />
-          <input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />
-          <input type="hidden" id="tenant_record_page" name="tenant_record[page]" value="<%= (search_params[:tenant_record][:page] if search_params and search_params[:tenant_record].present?) || 1 %>" />
-          <input type="hidden" id="tenant_record_latitude" name="tenant_record[latitude]" value="<%= search_params[:tenant_record][:latitude] if search_params and search_params[:tenant_record].present? %>" />
-          <input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />
-          <input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />
-          <input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />
-          <!--<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />-->
-          
-		  <!--<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />
-          
-		  <input type="checkbox" id="tenant_record_disable_market_comps" name="tenant_record[disable_comp_type][]" value="market" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'market' %> />
-          
-		  <input type="checkbox" id="tenant_record_disable_confidential_comps" name="tenant_record[disable_view_type][]" value="confidential" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'confidential' %>  />
-          
-		  <input type="checkbox" id="tenant_record_disable_private_comps" name="tenant_record[disable_view_type][]" value="private"<%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'private' %>  />
-          
-		  <input type="checkbox" id="tenant_record_disable_network" name="tenant_record[disable_network]" value="true" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_network %> />
-          -->
-		  
-		  
-		  <% if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_tenant_record_id %>
-            <% search_params[:tenant_record][:disable_tenant_record_id].each do |tid| %>
-            <input id="tenant_record_disabled_tenant_record_<%= tid %>" name="tenant_record[disable_tenant_record_id][]" type="hidden" class="disabled_tenant_record_id" value="<%= tid %>" />
-            <% end  %>
-          <% end %>
-        </div>
+<!--<div id="<%= 'run_search' if search_params %>" class="hidden_fields">-->
+          <!--<input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />-->
+          <!--<input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />-->
+          <!--<input type="hidden" id="tenant_record_page" name="tenant_record[page]" value="<%= (search_params[:tenant_record][:page] if search_params and search_params[:tenant_record].present?) || 1 %>" />-->
+          <!--<input type="hidden" id="tenant_record_latitude" name="tenant_record[latitude]" value="<%= search_params[:tenant_record][:latitude] if search_params and search_params[:tenant_record].present? %>" />-->
+          <!--<input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />-->
+          <!--<input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />-->
+          <!--<input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />-->
+          <!--&lt;!&ndash;<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />&ndash;&gt;-->
+          <!---->
+		  <!--&lt;!&ndash;<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />-->
+          <!---->
+		  <!--<input type="checkbox" id="tenant_record_disable_market_comps" name="tenant_record[disable_comp_type][]" value="market" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'market' %> />-->
+          <!---->
+		  <!--<input type="checkbox" id="tenant_record_disable_confidential_comps" name="tenant_record[disable_view_type][]" value="confidential" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'confidential' %>  />-->
+          <!---->
+		  <!--<input type="checkbox" id="tenant_record_disable_private_comps" name="tenant_record[disable_view_type][]" value="private"<%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'private' %>  />-->
+          <!---->
+		  <!--<input type="checkbox" id="tenant_record_disable_network" name="tenant_record[disable_network]" value="true" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_network %> />-->
+          <!--&ndash;&gt;-->
+		  <!---->
+		  <!---->
+		  <!--<% if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_tenant_record_id %>-->
+            <!--<% search_params[:tenant_record][:disable_tenant_record_id].each do |tid| %>-->
+            <!--<input id="tenant_record_disabled_tenant_record_<%= tid %>" name="tenant_record[disable_tenant_record_id][]" type="hidden" class="disabled_tenant_record_id" value="<%= tid %>" />-->
+            <!--<% end  %>-->
+          <!--<% end %>-->
+        <!--</div>-->
 		
 		<div id="map_filter" class="map_container criteria_layout"><!--{{{-->
           <div id="the_map"></div>
         </div><!--}}}-->
-		
-<div class="panel panel-default">
+
+<div class="panel panel-default" id="advanced_search_new">
   <div class="panel-heading tx_panel-heading">
     <div class="container">
-      <h4 class="panel-title"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel1">Advanced Search</a> </h4>
+      <h4 class="panel-title"> <a class="accordion-toggle header" data-toggle="collapse" data-parent="#accordion" href="#panel1">Advanced Search</a> </h4>
     </div>
+  </div>
+
+
+
+
+
+
+  <form id="advanced-search-form" action="<%= search_advanced_path() %>" method="post">
+  <div id="<%= 'run_search' if search_params %>" class="hidden_fields">
+    <input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />
+    <input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />
+    <input type="hidden" id="tenant_record_page" name="tenant_record[page]" value="<%= (search_params[:tenant_record][:page] if search_params and search_params[:tenant_record].present?) || 1 %>" />
+    <input type="hidden" id="tenant_record_latitude" name="tenant_record[latitude]" value="<%= search_params[:tenant_record][:latitude] if search_params and search_params[:tenant_record].present? %>" />
+    <input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />
+    <input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />
+    <input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />
+    <!--<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />-->
+
+    <!--<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />
+
+		  <input type="checkbox" id="tenant_record_disable_market_comps" name="tenant_record[disable_comp_type][]" value="market" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'market' %> />
+
+		  <input type="checkbox" id="tenant_record_disable_confidential_comps" name="tenant_record[disable_view_type][]" value="confidential" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'confidential' %>  />
+
+		  <input type="checkbox" id="tenant_record_disable_private_comps" name="tenant_record[disable_view_type][]" value="private"<%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'private' %>  />
+
+		  <input type="checkbox" id="tenant_record_disable_network" name="tenant_record[disable_network]" value="true" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_network %> />
+          -->
+
+
+    <% if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_tenant_record_id %>
+        <% search_params[:tenant_record][:disable_tenant_record_id].each do |tid| %>
+            <input id="tenant_record_disabled_tenant_record_<%= tid %>" name="tenant_record[disable_tenant_record_id][]" type="hidden" class="disabled_tenant_record_id" value="<%= tid %>" />
+        <% end  %>
+    <% end %>
   </div>
   <div id="panel1" class="panel-collapse collapse tx_background_black">
     <div class="container">
@@ -57,15 +92,19 @@
 		  <button id="advanced-search-submit" class="btn btn-danger hide"><span>Apply Filters</span></button>
 		  
 		  <a href="#!" class="tx-filter-btn adv_trr">Apply Filters</a>
-		  
-		  <a href="#!" class="clear-btn">Clear All</a> </div>
+
+            <button type="reset" class="clear-btn"><span>Clear All</span></button>
+
+		  <!--<a href="#!" class="clear-btn">Clear All</a> -->
+          </div>
           <div class="col-md-4 col-sm-4 both-pad-none">
             <div class="col-md-6 col-sm6 formgroup_input"> <span>Data Type</span>
               <div class="btn-group tx_btn_group"> 
 			   <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <select class="selectpicker filters_type" name="comp_type">
-                          <option value="sales">Sales</option>
-                          <option value="lease" selected>Lease</option>
+                        <select class="selectpicker filters_type" name="record_type">
+                          <option value="lease">Lease</option>
+                          <option value="sale">Sales</option>
+
                         </select>
                       </div>
 				
@@ -118,9 +157,9 @@
 
             <div class="col-md-3 col-sm-3 formgroup_input sales_filter"> <span>Year Sold</span>
               <div class="btn-group tx_btn_group">
-                <input type="text" placeholder=""  name="" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>">
+                <input type="text" placeholder=""  name="tenant_record[sold_year_min]" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>">
                 <b class="pull-left sfbold"> -&nbsp;</b>
-                <input type="text" placeholder="" name="" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>">
+                <input type="text" placeholder="" name="tenant_record[sold_year_max]" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>">
 
                 <!--<div class="tx_dropdown_toggl tx-drop-down-select">-->
                         <!--<select class="selectpicker">-->
@@ -181,19 +220,19 @@
 
             <div class="col-md-12 col-sm-12 both-pad-none sales_filter">
               <div class="col-md-4 col-sm-4  formgroup_range"> <span>Price Range</span>
-                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled">
+                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled" name="tenant_record[price_min]">
                 <b> - </b>
-                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled">
+                <input type="text" placeholder="$" class="sales_filter_input" disabled="disabled" name="tenant_record[price_max]">
               </div>
               <div class="col-md-4 col-sm-4  formgroup_range"> <span>Cap Range</span>
-                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled">
+                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled" name="tenant_record[cap_min]">
                 <b> - </b>
-                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled">
+                <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled" name="tenant_record[cap_max]">
               </div>
               <div class="col-md-4 col-sm-4  formgroup_range" > <span>Built Range (year)</span>
-                <input type="text" class="sales_filter_input" disabled="disabled">
+                <input type="text" class="sales_filter_input" disabled="disabled" name="tenant_record[build_year_min]">
                 <b> - </b>
-                <input type="text" class="sales_filter_input" disabled="disabled">
+                <input type="text" class="sales_filter_input" disabled="disabled" name="tenant_record[build_year_max]">
               </div>
             </div>
           </div>
@@ -204,9 +243,10 @@
     </div>
   </div>
   <!--Advanced Search-tab-end-->
+  </form>
 </div>
 
-</form>
+<!--</form>-->
 
 <style>
   /*.lease_filter {display: none;}*/
@@ -215,7 +255,18 @@
 </style>
 
 <script>
+
+  //$('#basic-search-form').prop('action' , '<%= search_simple_path() %>');
+  //alert($('#basic-search-form').prop('action'));
+
   $(function() {
+
+    //alert($.fn.ajaxselect);
+
+    //console.log( $.fn.ajaxselect({ url: $('#basic-search-form').prop('action') }) );
+    //console.log( $.fn.ajaxselect(url) )
+    console.log($( "body" ).data());
+
   $( ".comp_type" ).click(function() {
     var cid = this.id;
     if (cid == 'comp_sales') {
@@ -223,16 +274,23 @@
       $(".lease_filter_input").prop("disabled", true);
       $(".sales_filter").css("display", "block");
       $(".sales_filter_input").prop("disabled", false);
-      $(".filters_type").val("sales");
+      $(".filters_type").val("sale");
+      $('.filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
       $('.filters_type').selectpicker('refresh');
+      $('#basic-search-form').prop('action' , '<%= search_simple_path() %>')
+      $('#advanced-search-form').prop('action' , '<%= search_sales_path() %>')
+      basic_search_url = $('#basic-search-form').prop('action');
     } else {
       $(".sales_filter").css("display", "none");
       $(".sales_filter_input").prop("disabled", true);
       $(".lease_filter").css("display", "block");
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
+      $('.filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
       $('.filters_type').selectpicker('refresh');
-
+      $('#basic-search-form').prop('action' , '<%= search_basic_path() %>')
+      $('#advanced-search-form').prop('action' , '<%= search_advanced_path() %>')
+      basic_search_url = $('#basic-search-form').prop('action');
     }
   });
 
@@ -240,7 +298,7 @@
       var fval = $(this).val();
       if (fval == 'lease') {
         $( "#comp_lease" ).click();
-      } else if (fval == 'sales') {
+      } else if (fval == 'sale') {
         $( "#comp_sales" ).click();
       }
       return false;

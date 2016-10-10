@@ -786,7 +786,7 @@ $dashboard.on 'click', '#confidential_graph_select li', (e) ->
 #   Populates results from Basic/Advanced Search
 #\\*************************************************************\\
 populateResults = (data, text_status, $xhr, doAppend) ->
-  alert(data.params.record_type)
+  #alert(data.params.record_type)
   record_type = data.params.record_type
   re = []
   is_submit = data.params.trigger and data.params.trigger == 'submit'
