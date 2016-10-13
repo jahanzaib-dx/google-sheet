@@ -275,8 +275,8 @@
       $(".sales_filter").css("display", "block");
       $(".sales_filter_input").prop("disabled", false);
       $(".filters_type").val("sale");
-      $('.filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
       $('.filters_type').selectpicker('refresh');
+      $('.selectpicker.filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
       $('#basic-search-form').prop('action' , '<%= search_simple_path() %>')
       $('#advanced-search-form').prop('action' , '<%= search_sales_path() %>')
       basic_search_url = $('#basic-search-form').prop('action');
@@ -286,8 +286,8 @@
       $(".lease_filter").css("display", "block");
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
-      $('.filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
       $('.filters_type').selectpicker('refresh');
+      $('.selectpicker.filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
       $('#basic-search-form').prop('action' , '<%= search_basic_path() %>')
       $('#advanced-search-form').prop('action' , '<%= search_advanced_path() %>')
       basic_search_url = $('#basic-search-form').prop('action');
