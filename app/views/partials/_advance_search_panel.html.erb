@@ -101,12 +101,18 @@
             <div class="col-md-6 col-sm6 formgroup_input"> <span>Data Type</span>
               <div class="btn-group tx_btn_group"> 
 			   <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <select class="selectpicker filters_type" name="record_type">
+                        <select class="selectpicker filters_type" name="record_type123">
                           <option value="lease">Lease</option>
                           <option value="sale">Sales</option>
 
                         </select>
                       </div>
+
+                <select class="h_filters_type hide" name="record_type">
+                  <option value="lease">Lease</option>
+                  <option value="sale">Sales</option>
+
+                </select>
 				
               </div>
             </div>
@@ -275,8 +281,9 @@
       $(".sales_filter").css("display", "block");
       $(".sales_filter_input").prop("disabled", false);
       $(".filters_type").val("sale");
+      //$(".h_filters_type").val("sale");
       $('.filters_type').selectpicker('refresh');
-      $('.selectpicker.filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
+      $('.h_filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
       $('#basic-search-form').prop('action' , '<%= search_simple_path() %>')
       $('#advanced-search-form').prop('action' , '<%= search_sales_path() %>')
       basic_search_url = $('#basic-search-form').prop('action');
@@ -286,8 +293,9 @@
       $(".lease_filter").css("display", "block");
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
+      //$(".h_filters_type").val("lease");
       $('.filters_type').selectpicker('refresh');
-      $('.selectpicker.filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
+      $('.h_filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
       $('#basic-search-form').prop('action' , '<%= search_basic_path() %>')
       $('#advanced-search-form').prop('action' , '<%= search_advanced_path() %>')
       basic_search_url = $('#basic-search-form').prop('action');
