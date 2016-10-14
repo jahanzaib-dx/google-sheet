@@ -33,6 +33,7 @@
 //= require dashboard
 //= require map
 //= require jquery.validate.min.js
+//= require dropdown_t
 //= require_self
 
 jQuery(document).ready(function () {

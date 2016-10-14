@@ -1162,28 +1162,30 @@ div.popup #map_controls {
   }
   input[type="text"] { border: 0; display: block; margin: 15px 0 0 0; padding: 0 10px; height:40px; width: 150px;}
   #mode-select > ul > li {
-    height: 40px;
+    height: 30px;
     padding: 0;
     width: 170px;
     > span {
       display: block;
       padding: 15px;
+      padding-top:6px;
     }
-    >.arrow { top: 15px; }
+    >.arrow { top: 6px; }
   }
   #mode-select.open > ul > li {
     color: $white;
     text-transform: capitalize;
   }
   #saved-map-select > ul > li {
-    height: 40px;
+    height: 30px;
     padding: 0;
     width: 170px;
     > span {
       display: block;
       padding: 15px;
+      padding-top: 6px;
     }
-    >.arrow { top: 15px; }
+    >.arrow { top: 6px; }
   }
   #saved-map-select ul li { color: $white; }
   #saved-map-select div.options {
@@ -1519,4 +1521,90 @@ fieldset.dashboard_export_result legend{
 
 #advanced-search-new form {
   display: none;
+}
+
+
+/*****************************   Dropdown Select copy from global.css.scss from tanentrex  *****************************/
+.dropdown-select-wrapper {
+  padding: 15px 0;
+  margin-bottom: 20px;
+  position: relative;
+  text-align: right;
+  &.open ul > li {
+    background-color: $orange;
+    color: $white;
+    opacity:1;
+    position: relative !important;
+    visibility: visible;
+    i { display: none; }
+    &.active i {
+      color: $white;
+      display: block;
+      /* Safari */
+      -webkit-transform: rotate(90deg);
+      /* Firefox */
+      -moz-transform: rotate(90deg);
+      /* IE */
+      -ms-transform: rotate(90deg);
+      /* Opera */
+      -o-transform: rotate(90deg);
+    }
+  }
+  > ul {
+    border-radius: 0;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 15px 0 0 ;
+    text-transform: uppercase;
+    -webkit-appearance:none;
+    z-index: 10;
+    > li {
+      color: $white;
+      cursor: pointer;
+      background: $orange;
+      margin: 0 !important;
+      opacity: 0;
+      position: absolute !important;
+      top: 0;
+      left: 0;
+      padding: 0;
+      text-align: left;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      visibility: hidden;
+      z-index:11;
+      height: 40px;
+      width: 80%;
+      > span {
+        display: block;
+        padding: 12px;
+      }
+      i {
+        color: $white;
+        position: absolute;
+        top: 12px;
+        right: 10px;
+      }
+    }
+    > li:hover {
+      background-color: $light-orange;
+      color: $white;
+    }
+    > li.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 12;
+    }
+  }
+}
+.lt-ie9 .dropdown-select-wrapper.open ul > li.active i {
+  background-color: $orange;
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+}
+.ie .dropdown-select-wrapper.open ul > li.active:hover i {
+  background-color: $light-orange;
 }

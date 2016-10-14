@@ -23,17 +23,24 @@
     <div id="map_controls">
     <nav><ul>
         <li><a href="#" class="zoom zoom-in btn btn-inverse"><span>+</span></a> <a href="#" class="zoom zoom-out btn btn-inverse"><span>-</span></a></li>
-    <!--<li>-->
-      <!--<div id="mode-select" class="dropdown-select-wrapper">-->
-        <!--<ul class="dropdown dropdown_click" data-parent="#mode-select">-->
-          <!--<li data-hidden_id="mode" data-mode="pan" class="mode"><span>Drag Map</span><i class="arrow">&#x25BC;</i></li>-->
-          <!--<li data-hidden_id="mode" data-mode="drawPolygon" class="mode active"><span>Draw Freestyle</span><i class="arrow">&#x25BC;</i></li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    <!--</li>-->
       <li>&nbsp;</li>
-      <li>&nbsp;</li>
-      <li>&nbsp;</li>
+    <li>
+      <div id="mode-select" class="dropdown-select-wrapper">
+
+        <!--<select class="" data-parent="#mode-select">>-->
+          <!--<option value="">Choose</option>-->
+          <!--<option data-hidden_id="mode" data-mode="pan" class="mode">Drag Map</option>-->
+          <!--<option data-hidden_id="mode" data-mode="drawPolygon">Draw Freestyle</option>-->
+        <!--</select>-->
+
+        <ul class="dropdown dropdown_click" data-parent="#mode-select">
+          <li data-hidden_id="mode" data-mode="pan" class="mode"><span>Drag Map</span><i class="arrow">&#x25BC;</i></li>
+          <li data-hidden_id="mode" data-mode="drawPolygon" class="mode active"><span>Draw Freestyle</span><i class="arrow">&#x25BC;</i></li>
+        </ul>
+      </div>
+
+    </li>
+
     <li><a href="#" class="center-map btn btn-inverse"><span>Reset</span></a></li>
     <li class="spacer" id="instructions">
       <p id="drawPolygon-instructions">Click to form the outline of your submarket.  Double-click to finish.</p>
@@ -45,20 +52,20 @@
         </ul>
         <div class="options clearfix">
           <ul>
-            <li class="separator"><label><span>Your Office Defined Markets</span></label></li>
-            <li class="office_defined_maps">
-              <ul>
-              <%## if @office_maps.empty? %>
-                <li><p><span class="empty">None Available</span></p></li>
-              <%## else %>
-                <%## @office_maps.each do |map| %>
-                <li class="coordinate coordinate_<%##= map.id %>" id="coordinate_<%##= map.id %>" data-id="<%##= map.id %>" data-mode="<%##= map.mode %>" data-latitude="<%##= map.latitude %>" data-longitude="<%##= map.longitude %>">
-                  <p><span class="map_name" data-coordinate_id="coordinate_<%##= map.id %>"><%##= map.name %></span></p>
-                </li>
-                <%## end %>
-              <%## end %>
-              </ul>
-            </li>
+            <!--<li class="separator"><label><span>Your Office Defined Markets</span></label></li>-->
+            <!--<li class="office_defined_maps">-->
+              <!--<ul>-->
+              <!--<%## if @office_maps.empty? %>-->
+                <!--<li><p><span class="empty">None Available</span></p></li>-->
+              <!--<%## else %>-->
+                <!--<%## @office_maps.each do |map| %>-->
+                <!--<li class="coordinate coordinate_<%##= map.id %>" id="coordinate_<%##= map.id %>" data-id="<%##= map.id %>" data-mode="<%##= map.mode %>" data-latitude="<%##= map.latitude %>" data-longitude="<%##= map.longitude %>">-->
+                  <!--<p><span class="map_name" data-coordinate_id="coordinate_<%##= map.id %>"><%##= map.name %></span></p>-->
+                <!--</li>-->
+                <!--<%## end %>-->
+              <!--<%## end %>-->
+              <!--</ul>-->
+            <!--</li>-->
             <li class="separator"><label><span>Your Saved Markets</span></label></li>
             <li class="user_defined_maps">
               <ul>

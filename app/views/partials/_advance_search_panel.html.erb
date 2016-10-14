@@ -147,6 +147,18 @@
 
           <div class="col-md-8 col-sm-8 both-pad-none">
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>SQ FT Range</span>
+              <div class="btn-group tx_btn_group">
+              <div class="tx_dropdown_toggl tx-drop-down-select">
+              <select class="selectpicker" name="tenant_record[sq_ft_range]">
+                <option value="">Choose</option>
+                <option value="0-49000">0 - 49,000</option>
+                <option value="50000-99999">50,000 - 99,999</option>
+                <option value="100000-499999">100,000 - 499,999</option>
+                <option value="500000-999000">500,000 - 999,000</option>
+                <option value="999000">1MM+</option>
+              </select>
+              </div>
+              </div>
 			
 			<!--<input id="size_min" tabindex="10" name="tenant_record[size_min]" type="text" placeholder="Minimum" value="<%= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>" />
 			
@@ -156,16 +168,16 @@
               <input id="size_max" tabindex="10" name="tenant_record[size_max]" type="text" placeholder="Maximum" value="<%= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>" />-->
 			  
 			  
-			      <input type="text" placeholder=""  name="tenant_record[size_min]" class="col-6" value="<%= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>" >
-              <b class="pull-left sfbold"> -&nbsp;</b>
-              <input type="text" placeholder="" name="tenant_record[size_max]" class="col-6" value="<%= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>" >
+			      <!--<input type="text" placeholder=""  name="tenant_record[size_min]" class="col-6" value="<%= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>" >-->
+              <!--<b class="pull-left sfbold"> -&nbsp;</b>-->
+              <!--<input type="text" placeholder="" name="tenant_record[size_max]" class="col-6" value="<%= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>" >-->
             </div>
 
             <div class="col-md-3 col-sm-3 formgroup_input sales_filter"> <span>Year Sold</span>
               <div class="btn-group tx_btn_group">
-                <input type="text" placeholder=""  name="tenant_record[sold_year_min]" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>">
+                <input type="text" placeholder="MM/YYYY"  name="tenant_record[sold_year_min]" class="col-6 sales_filter_input date-picker year_sold" disabled="disabled" value="<%#= search_params[:tenant_record][:size_min] if search_params and search_params[:tenant_record].present? %>">
                 <b class="pull-left sfbold"> -&nbsp;</b>
-                <input type="text" placeholder="" name="tenant_record[sold_year_max]" class="col-6 sales_filter_input" disabled="disabled" value="<%#= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>">
+                <input type="text" placeholder="MM/YYYY" name="tenant_record[sold_year_max]" class="col-6 sales_filter_input date-picker year_sold" disabled="disabled" value="<%#= search_params[:tenant_record][:size_max] if search_params and search_params[:tenant_record].present? %>">
 
                 <!--<div class="tx_dropdown_toggl tx-drop-down-select">-->
                         <!--<select class="selectpicker">-->
@@ -214,10 +226,10 @@
                 <!--<input type="text" placeholder="" class="col-12 lease_filter_input" name="tenant_record[industry_type]" id="tenant_record_lease_type">-->
               </div>
               <div class="col-md-3 col-sm-3  formgroup_range" > <span>Date Range</span>
-                <input id="lease_commencement_date_min" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_min]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_min] if search_params and search_params[:tenant_record].present? %>" />
+                <input id="lease_commencement_date_min" class="lease_filter_input date-picker date_range" tabindex="10" name="tenant_record[lease_commencement_date_min]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_min] if search_params and search_params[:tenant_record].present? %>" />
                 <!--<input type="text" class="lease_filter_input">-->
                 <b> - </b>
-                <input id="lease_commencement_date_max" class="lease_filter_input" tabindex="10" name="tenant_record[lease_commencement_date_max]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_max] if search_params and search_params[:tenant_record].present? %>" />
+                <input id="lease_commencement_date_max" class="lease_filter_input date-picker date_range" tabindex="10" name="tenant_record[lease_commencement_date_max]" type="text" placeholder="MM/YYYY" value="<%= search_params[:tenant_record][:lease_commencement_date_max] if search_params and search_params[:tenant_record].present? %>" />
                 <!--<input type="text" class="lease_filter_input">-->
               </div>
             </div>
@@ -236,9 +248,9 @@
                 <input type="text" placeholder="%" class="text-right sales_filter_input" disabled="disabled" name="tenant_record[cap_max]">
               </div>
               <div class="col-md-4 col-sm-4  formgroup_range" > <span>Built Range (year)</span>
-                <input type="text" class="sales_filter_input" disabled="disabled" name="tenant_record[build_year_min]">
+                <input type="text" class="sales_filter_input date-picker" disabled="disabled" name="tenant_record[build_year_min]" placeholder="MM/YYYY">
                 <b> - </b>
-                <input type="text" class="sales_filter_input" disabled="disabled" name="tenant_record[build_year_max]">
+                <input type="text" class="sales_filter_input date-picker" disabled="disabled" name="tenant_record[build_year_max]" placeholder="MM/YYYY">
               </div>
             </div>
           </div>
@@ -257,6 +269,25 @@
 <style>
   /*.lease_filter {display: none;}*/
   .sales_filter {display: none;}
+  .ui-datepicker-calendar {
+    display: none;
+  }​
+
+
+  /*.ui-datepicker select.ui-datepicker-month{color:black !important;}*/
+  /*.ui-datepicker select.ui-datepicker-year{color:black;}*/
+
+  .ui-datepicker select, .ui-datepicker select {
+    color: black !important;
+  }
+
+  .ui-widget-header .ui-icon{background-image:url("assets/ui-icons.png");}
+
+  .ui-widget-content {background-color:#556db1; margin:10px 0 10px 0;}
+  .ui-widget-header{background-color:#556db1; border:#556db1;}
+
+  .formgroup_range .date_range{padding-left:10px; padding-right:10px;}
+  .formgroup_range .year_sold{padding-left:8px; padding-right:8px;}
     /*.col-12{width: 100%;}*/
 </style>
 
@@ -317,6 +348,18 @@
         $("#advanced-search-submit").click();
     });
 
+  });
+
+  $(function() {
+    $('.date-picker').datepicker( {
+      changeMonth: true,
+      changeYear: true,
+      showButtonPanel: false,
+      dateFormat: 'mm/yy',
+      onClose: function(dateText, inst) {
+        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+      }
+    });
   });
 </script>
 
