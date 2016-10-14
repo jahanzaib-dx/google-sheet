@@ -54,12 +54,17 @@ module SearchControllerUtil
       tenant_records = tenant_records.where("tenant_records.class_type IN (?)", params['class_type'])
     end
 
-    if (!params['size_min'].blank?)
-      tenant_records = tenant_records.where("tenant_records.size >= ?", params['size_min'].to_f)
-    end
 
-    if (!params['size_max'].blank?)
-      tenant_records = tenant_records.where("tenant_records.size <= ?", params['size_max'].to_f)
+    if (!params['sq_ft_range'].blank?)
+        size_arr = params['sq_ft_range'].split('-')
+
+        if (!size_arr[0].blank?)
+          tenant_records = tenant_records.where("tenant_records.size >= ?", size_arr[0].to_f)
+        end
+
+        if (!size_arr[1].blank?)
+          tenant_records = tenant_records.where("tenant_records.size <= ?", size_arr[1].to_f)
+        end
     end
 
     if (!params['zipcode_or_city'].blank? && !params['zipcode_or_city_value'].blank?)
@@ -325,12 +330,17 @@ module SearchControllerUtil
       tenant_records = tenant_records.where("sale_records.cap_rate <= ?", params['cap_max'].to_f)
     end
 
-    if (!params['size_min'].blank?)
-      tenant_records = tenant_records.where("sale_records.land_size >= ?", params['size_min'].to_f)
-    end
 
-    if (!params['size_max'].blank?)
-      tenant_records = tenant_records.where("sale_records.land_size <= ?", params['size_max'].to_f)
+    if (!params['sq_ft_range'].blank?)
+      size_arr = params['sq_ft_range'].split('-')
+
+      if (!size_arr[0].blank?)
+        tenant_records = tenant_records.where("sale_records.land_size >= ?", params['size_min'].to_f)
+      end
+
+      if (!size_arr[1].blank?)
+        tenant_records = tenant_records.where("sale_records.land_size <= ?", params['size_max'].to_f)
+      end
     end
 
     # if (!params['zipcode_or_city'].blank? && !params['zipcode_or_city_value'].blank?)
