@@ -14,6 +14,24 @@ class Connection < ActiveRecord::Base
     user_id == id or agent_id == id
   end
 
+  def connection_name(current_user,c)
+    if current_user.id == c.user_id
+      return connected_to.first_name
+    else
+      return user.first_name
+    end
+
+  end
+
+  def connection_id(current_user,c)
+    if current_user.id == c.user_id
+      return connected_to.account.id
+    else
+      return user.account.id
+    end
+
+  end
+
 
 
 

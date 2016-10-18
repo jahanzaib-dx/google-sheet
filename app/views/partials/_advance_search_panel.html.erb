@@ -202,13 +202,16 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>Filter by Connections</span>
-              <div class="btn-group tx_btn_group"> 
-			  
+              <div class="btn-group tx_btn_group">
+
+
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <select class="selectpicker">
-                          <option>Choose</option>
-                        </select>
-                      </div>
+          <%= select("tenant_record", "connection", Connection.all_connections_of_user(current_user.id).collect {|c| [ c.connection_name(current_user,c), c.connection_id(current_user,c) ] }, {:include_blank => 'Choose'},{ :class => 'selectpicker' }) %>
+
+                        <!--<select class="selectpicker">-->
+                          <!--<option>Choose</option>-->
+                        <!--</select>-->
+        </div>
 				
               </div>
             </div>

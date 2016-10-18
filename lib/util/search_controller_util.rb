@@ -157,6 +157,12 @@ module SearchControllerUtil
                    :params => { :address1 => "#{params['term'].gsub(/[\.\s]/,'%')}%".downcase }
                  }
                end
+
+
+      if (!params['connection'].blank? )     #params['industry_type']
+        tenant_records = tenant_records.joins(:ownership).where('ownerships.account_id = ?' , params['connection'])
+      end
+
       ###tenant_records = tenant_records.where(clause[:where], clause[:params])
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
