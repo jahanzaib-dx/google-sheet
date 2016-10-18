@@ -3,6 +3,9 @@ class TenantRecord < ActiveRecord::Base
   ####serialize :data, ActiveRecord::Coders::Hstore
   acts_as_paranoid
 
+  #belongs_to :ownership
+  has_many :ownership
+
   before_restore :add_to_all_office_agreements
   before_destroy :remove_from_all_office_agreements
   after_create :add_to_all_office_agreements
@@ -14,18 +17,9 @@ class TenantRecord < ActiveRecord::Base
 
   has_and_belongs_to_many :agreements
 
-  has_many :comp_requests
-  belongs_to :user
-  has_one :flaged_comp, :foreign_key => :comp_id
-
-  def complete_address
-    [address1, city, state, zipcode].join(", ")
-  end
-
   ###belongs_to :office
   #belongs_to :industry_sic_code
   ###belongs_to :team
-
 
   has_many :stepped_rents, :dependent => :destroy
   accepts_nested_attributes_for :stepped_rents, :allow_destroy => true
@@ -155,7 +149,6 @@ class TenantRecord < ActiveRecord::Base
   scope :address_only, lambda { |office_id = nil|
     office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("tenant_records.id, company, submarket, property_name,property_type, comp_type, view_type, zipcode, city, state, address1" + office_scope + ", 'address_only' as in_scope ")
-	
 	#.group('tenant_records.id, tenant_records.address1, tenant_records.zipcode')
   }
 
@@ -673,6 +666,8 @@ class TenantRecord < ActiveRecord::Base
     d.stepped_rents = stepped_rents.dup
     d
   end
+
+
 
   private
   def default_values
