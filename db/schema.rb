@@ -411,6 +411,28 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "sale_records", force: :cascade do |t|
+    t.boolean  "is_sales_record",                               default: false
+    t.string   "land_size_identifier"
+    t.string   "view_type"
+    t.string   "address1"
+    t.string   "city"
+    t.string   "state"
+    t.decimal  "land_size",            precision: 20, scale: 2
+    t.decimal  "price",                precision: 20, scale: 2
+    t.decimal  "cap_rate",             precision: 20, scale: 2
+    t.decimal  "latitude",             precision: 30, scale: 9
+    t.decimal  "longitude",            precision: 30, scale: 9
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "zipcode"
+    t.string   "zipcode_plus"
+    t.string   "class_type"
+    t.string   "property_type"
+    t.date     "build_date"
+    t.date     "sold_date"
+  end
+
   create_table "schedule_accesses", force: :cascade do |t|
     t.datetime "start_date_time"
     t.datetime "end_date_time"
