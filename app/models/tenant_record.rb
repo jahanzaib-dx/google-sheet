@@ -4,7 +4,7 @@ class TenantRecord < ActiveRecord::Base
   acts_as_paranoid
 
   #belongs_to :ownership
-  has_many :ownership
+  has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
 
   before_restore :add_to_all_office_agreements
   before_destroy :remove_from_all_office_agreements
@@ -150,7 +150,7 @@ class TenantRecord < ActiveRecord::Base
   }
   attr_accessor :delete_image, :delete_company_image
 
-
+  
 
 
 
@@ -231,7 +231,7 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.company_logo_file_name, " +
       "tenant_records.main_image_updated_at, " +
       "tenant_records.company_logo_updated_at, " +
-      ###"offices.firm_id AS firm_id,
+      ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
       #"industry_sic_codes.value AS industry_sic_code_id," +
