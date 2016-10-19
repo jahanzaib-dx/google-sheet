@@ -17,6 +17,14 @@ class TenantRecord < ActiveRecord::Base
 
   has_and_belongs_to_many :agreements
 
+  has_many :comp_requests
+  belongs_to :user
+  has_one :flaged_comp, :foreign_key => :comp_id
+
+  def complete_address
+    [address1, city, state, zipcode].join(", ")
+  end
+
   ###belongs_to :office
   #belongs_to :industry_sic_code
   ###belongs_to :team
