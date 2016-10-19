@@ -1,5 +1,7 @@
 class SaleRecord < ActiveRecord::Base
 
+  has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
+
   scope :address_only, lambda { |office_id = nil|
     #office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("sale_records.id, zipcode, city, state, address1, 'address_only' as in_scope ")
