@@ -427,10 +427,6 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.datetime "updated_at"
     t.string   "zipcode"
     t.string   "zipcode_plus"
-    t.string   "class_type"
-    t.string   "property_type"
-    t.date     "build_date"
-    t.date     "sold_date"
   end
 
   create_table "schedule_accesses", force: :cascade do |t|
