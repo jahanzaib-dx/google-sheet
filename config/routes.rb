@@ -115,6 +115,7 @@ Rails.application.routes.draw do
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
 
   resources :groups
+  resources :back_end_lease_comps
 
 
 

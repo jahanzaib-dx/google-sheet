@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   
   has_many :activity_log
   has_one :account
+  has_one :back_end_comp
 
   has_one :settings, class_name: 'UserSetting'
 
