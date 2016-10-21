@@ -3,8 +3,9 @@ class TenantRecord < ActiveRecord::Base
   ####serialize :data, ActiveRecord::Coders::Hstore
   acts_as_paranoid
 
-  #belongs_to :ownership
   has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
+
+  scope :ownership_lease, -> { joins(:ownership).where("ownerships.comp_type = 'lease'") }
 
   before_restore :add_to_all_office_agreements
   before_destroy :remove_from_all_office_agreements

@@ -160,10 +160,9 @@ module SearchControllerUtil
 
 
       if (!params['connection'].blank? )
-        tenant_records = tenant_records.joins(:ownership).where("ownerships.account_id = ? AND ownerships.comp_type = 'lease'" , params['connection'])
+        tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
       end
 
-      ###tenant_records = tenant_records.where(clause[:where], clause[:params])
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
 
@@ -392,8 +391,8 @@ module SearchControllerUtil
       tenant_records = tenant_records.where("(sale_records.latitude > ? AND sale_records.latitude < ? AND sale_records.longitude > ? AND sale_records.longitude < ?)", $min_latitude.to_f, $max_latitude.to_f, $max_longitude.to_f, $min_longitude.to_f)
     end
 
-    if (!params['connection'].blank? )     #params['industry_type']
-      tenant_records = tenant_records.joins(:ownership).where("ownerships.account_id = ? AND ownerships.comp_type = 'sale'" , params['connection'])
+    if (!params['connection'].blank? )
+      tenant_records = tenant_records.ownership_sale.where("ownerships.account_id = ?" , params['connection'])
     end
 
     #begin
