@@ -2,61 +2,80 @@
 /*faqs*/
 
 .blog-main-hadding-faq {
-	background: #f1f2f2 none repeat scroll 0 0;
-	border-bottom: 1px solid #262626;
-	padding: 32px 0;
-	text-align: center;
+  background: #f1f2f2 none repeat scroll 0 0;
+  border-bottom: 1px solid #262626;
+  padding: 32px 0;
+  text-align: center;
 }
 .more-click.fq-click {
-	text-align: left;
+  text-align: left;
 }
 .faq {
-	margin: 23px 0;
+  margin: 23px 0;
 }
 .faq h1 {
-	color: #434242;
-	cursor: pointer;
-	font-size: 20px;
-	font-weight: bold;
-	margin: 0 0 37px;
+  color: #566db2;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 37px;
+  text-decoration: underline;
 }
 
-
-.faq p{
-	margin: 0 0 37px 0;
-	color: #4c494a;
+.still-q {
+  border-top: 1px solid #000;
+  color: #1c1515;
+  float: left;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 35px 0 40px;
+  padding: 18px 0 0;
+  text-align: center;
+  width: 100%;
+}
+.faq p {
+  color: #000;
+}
+.tx-collapse {
+  background: #fff none repeat scroll 0 0;
+  margin: 0 0 34px;
+  padding: 24px 0;
 }
 
 .faq ol {
-	margin: 0 0 41px 18px;
+  margin: 22px 0 0;
+  padding: 0 0 0 16px;
+}
+.faq-list {
+  margin: 0 0 0 0 !important;
 }
 .more-click.fq-click > img {
-	width: 12px;
+  width: 12px;
 }
 .faq li {
-	list-style: unset;
-	margin: 0 0 10px;
+  list-style: unset;
+  margin: 0 0 10px;
+  color:#000
 }
 .faq-main-hadding {
-	color: #566db2;
-	font-size: 25px;
-	font-weight: bold;
-	margin: 44px 0 0;
-	text-align: center;
+  color: #566db2;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 44px 0 0;
+  text-align: center;
 }
 
 
 .more-click {
-	color: #566eb1;
-	font-size: 19px;
-	font-weight: bold;
-	margin: 0 0 37px;
-	text-align: center;
-	width: 100%;
+  color: #566eb1;
+  font-size: 19px;
+  font-weight: bold;
+  margin: 0 0 37px;
+  text-align: center;
+  width: 100%;
 }
 
 /*faqs*/
-
 
 .main_page_content.mrg-control {
     margin: 94px 0;
