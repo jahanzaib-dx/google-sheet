@@ -186,6 +186,9 @@ Rails.application.routes.draw do
   post "search/export"
   get "search/export"
 
+  get "search/lease_comp"
+  get "search/sale_comp"
+
 
 
 end
