@@ -116,6 +116,7 @@ Rails.application.routes.draw do
 
   resources :groups
   resources :back_end_lease_comps
+  get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
 
 
 
