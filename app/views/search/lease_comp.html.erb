@@ -1,0 +1,138 @@
+
+<%#= debug @comp_record %>
+<%#= comp_record%>
+
+<%#= debug @comp_record %>
+
+<%#= debug comp_record.data %>
+
+
+<div style="padding:0px;">
+
+  <div class="tenant-details">
+    <p>Tenant</p>
+    <address>
+      <%= @comp_record.company %><br />
+      <%= @comp_record.address1 %><br />
+      <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %><br />
+    </address>
+  </div>
+
+  <div class="street_view">
+    <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
+      <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
+      </div>
+    </a>
+  </div>
+
+<table class="tx_search_result_table table_full" style="background-color:;">
+
+  <tr>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line"><b>Lease</b></td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Tenant Name</td>
+          <td class="result_line"><%=@comp_record.contact%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Industry</td>
+          <td class="result_line"><%=@comp_record.industry_type%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Size (SF)</td>
+          <td class="result_line"><%=@comp_record.size%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Base Rent ($/SF)</td>
+          <td class="result_line"><%=@comp_record.base_rent%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Escalation (%)</td>
+          <td class="result_line"><%=@comp_record.escalation%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Lease Structure</td>
+          <td class="result_line"><%=@comp_record.data['leasestructure_name']%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Commencement Date</td>
+          <td class="result_line"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Term (Months)</td>
+          <td class="result_line"><%=@comp_record.lease_term_months%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Free Rent (Months)</td>
+          <td class="result_line"><%=@comp_record.free_rent%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Tenant Improvements ($/SF)</td>
+          <td class="result_line"><%=@comp_record.tenant_improvement%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Additional Concessions ($/SF)</td>
+          <td class="result_line"><%=@comp_record.landlord_concessions_per_sf%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Costs to Tenant ($/SF)</td>
+          <td class="result_line"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Lease Type</td>
+          <td class="result_line"><%=@comp_record.lease_type%></td>
+        </tr>
+      </table>
+    </td>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line">Building</td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Property Name</td>
+          <td class="result_line"><%=@comp_record.lease_type%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Property Type</td>
+          <td class="result_line"><%=@comp_record.lease_type%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Class Type</td>
+          <td class="result_line"><%=@comp_record.lease_type%></td>
+        </tr>
+
+
+
+      </table>
+    </td>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line">Custom Data</td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Custom 1</td>
+          <td class="result_line">Data</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</div>
+
+<style>
+  .street_view .street_view_image, .building_image .building_image_view {
+    padding: 0 20px 0 0 !important;
+    width: 316px;
+    height: 200px;
+  }
+</style>
