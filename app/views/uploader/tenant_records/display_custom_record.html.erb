@@ -1,0 +1,48 @@
+<div class="fixed-width-div">
+  <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'add_single_record' } %>
+  <div class="columns large-12 white-area">
+    <div class="fields-table-custom-data" style="width: 60%; margin: 20px auto">
+      <h2>Custom Record</h2>
+      <table>
+        <tr>
+          <td>Name</td>
+          <td><%= @custom_record.name %></td>
+        </tr>
+        <% if @custom_record.is_geo_coded %>
+            <tr>
+              <td>Address</td>
+              <td><%= @custom_record.address1 %></td>
+            </tr>
+
+            <tr>
+              <td>City</td>
+              <td><%= @custom_record.city %></td>
+            </tr>
+            <tr>
+              <td>State</td>
+              <td><%= @custom_record.state %></td>
+            </tr>
+        <% end %>
+        <% @custom_record.custom_record_properties.each do |record| %>
+            <tr>
+              <td><%= record.key %></td>
+              <td><%= record.value %></td>
+            </tr>
+        <% end %>
+        <% if @custom_record.is_geo_coded %>
+            <tr>
+              <td colspan="2" style="text-align: center;">
+                <a href="<%= "http://www.google.com/maps?cbll=#{@custom_record.latitude},#{@custom_record.longitude}&layer=c" %>" target="_blank">
+                  <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{@custom_record.address1},#{@custom_record.city},#{@custom_record.state},#{@custom_record.zipcode}" %>" />
+                </a>
+              </td>
+        <% end %>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+
+</div>
+

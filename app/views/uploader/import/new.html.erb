@@ -1,0 +1,11 @@
+<div class="fixed-width-div">
+  <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'new_bulk_import' } %>
+  <div class="columns large-12 white-area">
+    <h2>Import Comps </h2>
+    <div class="cancel"><%= link_to 'Cancel', new_uploader_import_path %></div>
+    <div class="clearfix"></div>
+    <%#= form_for @import, url: marketrex_tenant_records_path, html: { method: :post }, multipart: true, remote: true do |f| %>
+    <%= render "uploader/import/form" %>
+    <%# end %>
+  </div>
+</div>

@@ -17,7 +17,6 @@
 //= require perfect-scrollbar
 //= require jquery.dataTables.min
 //= require bootstrap-select.min
-//= require custom
 //= require connections
 //= require messages
 //= require comp_requests
@@ -33,6 +32,7 @@
 //= require dashboard
 //= require map
 //= require jquery.validate.min.js
+//= require custom
 //= require_self
 
 jQuery(document).ready(function () {

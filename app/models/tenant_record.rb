@@ -1,18 +1,17 @@
 class TenantRecord < ActiveRecord::Base
-  include ConditionalValidations
-  ####serialize :data, ActiveRecord::Coders::Hstore
-  acts_as_paranoid
 
-  before_restore :add_to_all_office_agreements
-  before_destroy :remove_from_all_office_agreements
-  after_create :add_to_all_office_agreements
-  after_create :do_net_effective_calculator
+  include ConditionalValidations
+
+  #acts_as_paranoid
+  store_accessor :data
+
+
   after_find :protect_record
   before_save :default_values
   before_validation :default_values
   after_save :populate_lookup_tables
 
-  has_and_belongs_to_many :agreements
+  # has_and_belongs_to_many :agreements
 
   has_many :comp_requests
   belongs_to :user
@@ -22,13 +21,9 @@ class TenantRecord < ActiveRecord::Base
     [address1, city, state, zipcode].join(", ")
   end
 
-  ###belongs_to :office
-  #belongs_to :industry_sic_code
-  ###belongs_to :team
-
-
   has_many :stepped_rents, :dependent => :destroy
   accepts_nested_attributes_for :stepped_rents, :allow_destroy => true
+
 
   has_many :tenant_record_images
   has_attached_file :main_image,
@@ -41,17 +36,19 @@ class TenantRecord < ActiveRecord::Base
                     :url => '/system/:class/:id/:style/:filename',
                     :path => ':rails_root/public:url'
 
+
   has_and_belongs_to_many :lookup_address_zipcodes
   has_and_belongs_to_many :lookup_companies
   has_and_belongs_to_many :lookup_property_names
   has_and_belongs_to_many :lookup_submarkets
 
-  #************************* Marketrex ***************************
-##  COMP_DATA_TYPE        = %w[lease_comps sales_comps custom_data]
-##  NEW_PROPERTY_TYPE     = PropertyType.property_type_list
-##  DEAL_TYPE             = ["new", "renewal", "expansion", "sublease", "blend & extend"]
-##  NEW_VIEW_TYPE         = %w[internal external]
-##  LEASE_STRUTURE        = ["Full Service", "Modified Gross", "NNN"]
+
+  #************************* Uploader ***************************
+  COMP_DATA_TYPE        = %w[lease_comps sales_comps custom_data]
+  NEW_PROPERTY_TYPE     = PropertyType.property_type_list
+  DEAL_TYPE             = ["new", "renewal", "expansion", "sublease", "blend & extend"]
+  NEW_VIEW_TYPE         = %w[internal external]
+  LEASE_STRUTURE        = ["Full Service", "Modified Gross", "NNN"]
   #**************************************************************
 
   CLASS_TYPE           = %w[a b c]
@@ -65,8 +62,6 @@ class TenantRecord < ActiveRecord::Base
   property_type size tenant_improvement tenant_ti_cost discount_percentage
   view_type comments property_name submarket industry_type]
 
-  validates_associated :office
-  #validates_associated :industry_sic_code
   validates_associated :stepped_rents
   validate :stepped_rents_equal_term_months
   conditionally_validate :address1,
@@ -105,16 +100,16 @@ class TenantRecord < ActiveRecord::Base
             :numericality => true, :allow_nil => true
 
   # Calculated by Net Effectived Calculator
-  conditionally_validate :landlord_concessions_per_sf,
-            :numericality => true
-  conditionally_validate :landlord_margins,
-            :numericality => true
-  conditionally_validate :landlord_effective_rent,
-            :numericality => true
-  conditionally_validate :lease_term_months,
-            :numericality => { :only_integer => true, :greater_than => 0 }, presence: true
-  conditionally_validate :net_effective_per_sf,
-            :numericality => true
+  # conditionally_validate :landlord_concessions_per_sf,
+  #           :numericality => true
+  # conditionally_validate :landlord_margins,
+  #           :numericality => true
+  # conditionally_validate :landlord_effective_rent,
+  #           :numericality => true
+  # conditionally_validate :lease_term_months,
+  #           :numericality => { :only_integer => true, :greater_than => 0 }, presence: true
+  # conditionally_validate :net_effective_per_sf,
+  #           :numericality => true
 
   conditionally_validate :main_image, :attachment_content_type => { :content_type => /\Aimage\/.*\Z/ }
   conditionally_validate :company_logo, :attachment_content_type => { :content_type => /\Aimage\/.*\Z/ }
@@ -134,197 +129,21 @@ class TenantRecord < ActiveRecord::Base
   end
 
 
-  attr_reader :lease_structure,
-              :lease_structure_id,
-    :operator_expense_cost,
-    :real_estate_tax_cost,
-    :electrical_expense_cost,
-    :cam_cost,
-    :janitorial_cost
+  # attr_reader :lease_structure,
+  #             :lease_structure_id,
+  #   :operator_expense_cost,
+  #   :real_estate_tax_cost,
+  #   :electrical_expense_cost,
+  #   :cam_cost,
+  #   :janitorial_cost
 
   before_validation {
     main_image.clear if delete_image == '1'
     company_logo.clear if delete_company_image == '1'
   }
+
   attr_accessor :delete_image, :delete_company_image
 
-  
-
-
-
-  scope :address_only, lambda { |office_id = nil|
-    office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
-    select("tenant_records.id, company, submarket, property_name,property_type, comp_type, view_type, zipcode, city, state, address1" + office_scope + ", 'address_only' as in_scope ")
-	
-	#.group('tenant_records.id, tenant_records.address1, tenant_records.zipcode')
-  }
-
-  scope :team, lambda { |team_id| where("team_id = ?", team_id) }
-
-  scope :protect_view, lambda { |user = nil|
-
-    #office_scope = (!user.has_trex_admin?) ? ", " + user.account.office_id.to_s + " as in_scope_office_id" : ""
-    #team_scope = (user.account.teams.present?) ? ",'" + user.account.teams.collect { |t| t.id }.join(',') + "' as in_scope_team_ids" : ""
-    #user_scope = if user.has_trex_admin?
-    #               ", 'admin' as user_scope"
-    #             elsif user.has_analyst?
-    #               ", 'analyst' as user_scope"
-    #             elsif user.has_broker?
-    #               ", 'broker' as user_scope"
-    #             else
-    #               ""
-    #             end
-
-    select(
-      "tenant_records.id, " +
-      "tenant_records.lease_commencement_date, " +
-      "tenant_records.address1, " +
-      "tenant_records.suite, " +
-      "tenant_records.city, " +
-      "tenant_records.state, " +
-      "tenant_records.zipcode, " +
-      "tenant_records.zipcode_plus, " +
-      "tenant_records.size, " +
-      "tenant_records.is_stepped_rent, " +
-      "tenant_records.data->'first_year_base_rent' as base_rent, " +
-      "tenant_records.class_type, " +
-      "tenant_records.comp_type, " +
-      "tenant_records.comments, " +
-      "tenant_records.contact, " +
-      "tenant_records.contact_email, " +
-      "tenant_records.contact_phone, " +
-      "tenant_records.escalation, " +
-      "tenant_records.free_rent_total as free_rent, " +
-      "tenant_records.free_rent_total, " +
-      "tenant_records.data->'fs_equivalent' as fs_equivalent, " +
-      "COALESCE((tenant_records.data->'average_annual_rent')::decimal / (tenant_records.size)::decimal,0) as aggr_annual_rent_by_sf, " +
-      "tenant_records.data->'leasestructure_expenses_insurance_cost' as insurance_cost, " +
-      "tenant_records.data->'leasestructure_expenses_janitorial_cost' as janitorial_cost, " +
-      "tenant_records.latitude, " +
-      "tenant_records.longitude, " +
-      "tenant_records.lease_commencement_date, " +
-      "tenant_records.data->'leasestructure_name' as lease_structure, " +
-      "tenant_records.lease_term_months / 12 as lease_term_years, " +
-      "tenant_records.lease_term_months, " +
-      "tenant_records.lease_type, " +
-      "tenant_records.location_type, " +
-      "tenant_records.net_effective_per_sf, " +
-      "tenant_records.cushman_net_effective_per_sf, " +
-      "tenant_records.property_type, " +
-      "tenant_records.property_name, " +
-      "tenant_records.submarket, " +
-      "tenant_records.data->'leasestructure_expenses_real_estate_tax_cost' as real_estate_tax_cost, " +
-      "tenant_records.tenant_improvement, " +
-      "tenant_records.tenant_ti_cost, " +
-      "tenant_records.data->'leasestructure_expenses_operating_expense_cost' as operator_expense_cost, " +
-      "tenant_records.data->'leasestructure_expenses_cam_cost' as cam_cost, " +
-      "COALESCE(COALESCE((tenant_records.data->'leasestructure_expenses_electrical_expense_cost')::decimal, (tenant_records.data->'leasestructure_expenses_electric_cost')::decimal,(tenant_records.data->'leasestructure_expenses_utilities_cost')::decimal), 0) AS electrical_expense_cost, " +
-      "tenant_records.company, " +
-      #"tenant_records.industry_sic_code_id, " +
-      "tenant_records.industry_type, " +
-      "tenant_records.view_type, " +
-      "tenant_records.office_id, " +
-      "tenant_records.team_id, " +
-      "tenant_records.data, " +
-      "tenant_records.main_image_file_name, " +
-      "tenant_records.company_logo_file_name, " +
-      "tenant_records.main_image_updated_at, " +
-      "tenant_records.company_logo_updated_at, " +
-      ###"offices.firm_id AS firm_id, 
-	  ###firms.name AS firm_name, " +
-      ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
-      #"industry_sic_codes.value AS industry_sic_code_id," +
-      #"industry_sic_codes.description AS industry_sic_code_description" +
-      ####office_scope +
-      ####team_scope +
-      ####user_scope +
-      ###", 0 as editable" +
-	  " 0 as editable" +
-      ", 'protect_view' as in_scope "
-    )
-    ####.joins({ :office => :firm })
-    ####.group('tenant_records.id, tenant_records.address1, offices.firm_id, offices.name, offices.logo_image_file_name, firms.name')
-    #.joins(:industry_sic_code)
-    #.group('tenant_records.id, tenant_records.address1, offices.firm_id, offices.name, offices.logo_image_file_name, industry_sic_codes.value, industry_sic_codes.description, firms.name')
-  }
-
-
-  scope :six_sigma, lambda { | fieldname = nil, avg = "", tile = "" |
-    fieldname ||= "net_effective_per_sf"
-    tile ||= 1
-    avg  ||= 0
-    tile_is  = tile.to_s + " as the_tile"
-    avg_is   = avg.to_s + " as the_avg"
-    field_is = "'#{fieldname.to_s}' as the_field"
-    select(
-      [tile_is, avg_is, field_is].join(', ') +
-      ( ", tenant_records." + fieldname ) +
-      ", 'six' AS selected_six_sigma" +
-      ", 'six_sigma' as in_scope "
-    )
-  }
-
-  scope :summary,  -> {select(
-    "count(distinct tenant_records.id) as total_count, " +
-
-    # Averages
-    "COALESCE(SUM((tenant_records.data->'first_year_base_rent')::decimal * tenant_records.size)/SUM(tenant_records.size)::decimal,0) AS avg_first_year_base_rent, " +
-    "COALESCE(SUM((tenant_records.data->'fs_equivalent')::decimal * tenant_records.size)/SUM(tenant_records.size)::decimal,0) AS avg_fs_equivalent, " +
-
-    "COALESCE(SUM((tenant_records.data->'tenant_effective_per_annum')::decimal)/SUM(tenant_records.size)::decimal, 0) AS avg_net_effective_per_sf, " +
-    "COALESCE(SUM((tenant_records.data->'landlord_effective_per_annum')::decimal)/SUM(tenant_records.size)::decimal,0) AS avg_landlord_effective_per_annum, " +
-    "COALESCE(SUM(tenant_records.landlord_concessions_per_sf * tenant_records.size)/SUM(tenant_records.size), 0) AS avg_landlord_concessions_per_sf, " +
-    "COALESCE(AVG(tenant_records.size), 0) AS avg_size, " +
-    "COALESCE(AVG(tenant_records.lease_term_months / 12), 0) AS avg_lease_term_years, " +
-    "COALESCE(AVG((tenant_records.data->'leasestructure_expenses_real_estate_tax_cost')::decimal), 0) AS avg_taxes, " +
-    "COALESCE(AVG((tenant_records.data->'leasestructure_expenses_operating_expense_cost')::decimal), 0) AS avg_operating_expenses, " +
-    "COALESCE(AVG((tenant_records.data->'leasestructure_expenses_cam_cost')::decimal), 0) AS avg_cam, " +
-    "AVG(COALESCE(COALESCE((tenant_records.data->'leasestructure_expenses_electrical_expense_cost')::decimal, (tenant_records.data->'leasestructure_expenses_electric_cost')::decimal,(tenant_records.data->'leasestructure_expenses_utilities_cost')::decimal), 0)) AS avg_electric, " +
-    "COALESCE(AVG((tenant_records.data->'leasestructure_expenses_janitorial_cost')::decimal), 0) AS avg_janitorial, " +
-    "COALESCE(AVG((tenant_records.data->'leasestructure_expenses_insurance_cost')::decimal), 0) AS avg_insurance, " +
-
-    "COALESCE(SUM(tenant_records.tenant_improvement * tenant_records.size)/SUM(tenant_records.size), 0) AS avg_tenant_improvement, " +
-    "COALESCE(AVG(tenant_records.free_rent_total), 0) AS avg_free_rent, " +
-    "COALESCE(SUM((tenant_records.data->'average_annual_rent')::decimal) / (SUM(tenant_records.size)::decimal), 0) AS weighted_avg_annual_rent_by_sf, " +
-    "COALESCE(AVG(tenant_records.escalation), 0) AS avg_escalation " +
-
-
-    # Percentage of net effective
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN (SUM((tenant_records.data->'first_year_base_rent')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_base_rent" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM((tenant_records.data->'leasestructure_expenses_real_estate_tax_cost')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_real_estate_tax_cost" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM((tenant_records.data->'leasestructure_expenses_operating_expense_cost')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_operator_expense_cost" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM((tenant_records.data->'leasestructure_expenses_cam_cost')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_cam_cost" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM(COALESCE(COALESCE((tenant_records.data->'leasestructure_expenses_electrical_expense_cost')::decimal, (tenant_records.data->'leasestructure_expenses_electric_cost')::decimal,(tenant_records.data->'leasestructure_expenses_utilities_cost')::decimal), 0)) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_electrical_expense_cost" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM((tenant_records.data->'leasestructure_expenses_janitorial_cost')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_janitorial_cost" +
-    ", COALESCE((CASE WHEN SUM(tenant_records.net_effective_per_sf) > 0 THEN ( SUM((tenant_records.data->'leasestructure_expenses_insurance_cost')::decimal) / SUM(tenant_records.net_effective_per_sf)) ELSE 0 END), 0) AS percentage_insurance_cost" +
-
-    # For Six Sigma
-    ", COALESCE(STDDEV(tenant_records.net_effective_per_sf), 0) AS tile_net_effective_per_sf " +
-    ", COALESCE(STDDEV(tenant_records.landlord_concessions_per_sf), 0) AS tile_landlord_concessions_per_sf " +
-    ", COALESCE(STDDEV(tenant_records.lease_term_months / 12), 0) AS tile_lease_term_years " +
-    ", COALESCE(STDDEV((tenant_records.data->'leasestructure_expenses_real_estate_tax_cost')::decimal), 0) AS tile_real_estate_tax_cost " +
-    ", COALESCE(STDDEV((tenant_records.data->'leasestructure_expenses_operating_expense_cost')::decimal), 0) AS tile_operator_expense_cost " +
-    ", COALESCE(STDDEV((tenant_records.data->'leasestructure_expenses_cam_cost')::decimal), 0) AS tile_cam " +
-    ", STDDEV(COALESCE(COALESCE((tenant_records.data->'leasestructure_expenses_electrical_expense_cost')::decimal, (tenant_records.data->'leasestructure_expenses_electric_cost')::decimal,(tenant_records.data->'leasestructure_expenses_utilities_cost')::decimal), 0)) AS tile_electrical_expenses_cost " +
-    ", COALESCE(STDDEV((tenant_records.data->'leasestructure_expenses_janitorial_cost')::decimal), 0) AS tile_janitorial_cost " +
-    ", COALESCE(STDDEV((tenant_records.data->'leasestructure_expenses_insurance_cost')::decimal), 0) AS tile_insurance_cost " +
-    ", COALESCE(STDDEV(tenant_records.tenant_improvement), 0) AS tile_tenant_improvement " +
-    ", COALESCE(STDDEV(tenant_records.free_rent_total), 0) AS tile_free_rent " +
-    ", COALESCE(STDDEV(tenant_records.escalation), 0) AS tile_escalation " +
-
-    # For Market Effective
-    ", COALESCE(SUM((tenant_records.data->'tenant_effective_per_annum')::decimal)::decimal / SUM(tenant_records.size)::decimal, 0) as avg_weighted_market_effective " +
-    # For Cushman Market Effective
-    ", COALESCE(SUM((tenant_records.cushman_net_effective_per_sf * tenant_records.size)::decimal)::decimal / SUM(tenant_records.size)::decimal, 0) as avg_cushman_market_effective " +
-    ", 'summary' as in_scope "
-  )
-  }
-
-  scope :lease_term_overlap, lambda { |start,finish|
-    #having("(tenant_records.lease_commencement_date, tenant_records.lease_commencement_date + (tenant_records.lease_term_months || ' month')::INTERVAL) OVERLAPS (DATE ?, DATE ?)", start, finish)
-    having("(tenant_records.lease_commencement_date, DATE_TRUNC('MONTH', tenant_records.lease_commencement_date) + INTERVAL '1 MONTH - 1 DAY') OVERLAPS (DATE ?, DATE ?)", start, finish)
-    .group('tenant_records.id')
-  }
 
   def data
     super.with_indifferent_access
@@ -542,7 +361,8 @@ class TenantRecord < ActiveRecord::Base
     self.discount_rate = ls.discount_rate
     self.interest_rate = ls.interest_rate
 
-    self.destroy_keys :data, *self[:data].keys.grep(/^leasestructure_expenses_/)
+
+    self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
     ls.expenses.each do |e|
       exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
       self[:data]["#{exp_name}_cost"] = e.default_cost
@@ -587,9 +407,12 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def base_rent=(v)
+    self[:data] ||= {}
     self[:base_rent] = v
     self[:data]["first_year_base_rent"] = v.to_s
   end
+
+
 
   def lease_term_years
     lease_term_months / 12 if lease_term_months
@@ -621,10 +444,11 @@ class TenantRecord < ActiveRecord::Base
     JSON.parse(self[:data]['custom']) if self[:data]['custom']
   end
 
+
   def method_missing(method_name, *args)
     str_method = method_name.to_s
 
-    #if str_method.match /^leasestructure_expenses_(\w+)_(cost|calc_type|increase_percent|start_date)=?$/
+    ##if str_method.match /^leasestructure_expenses_(\w+)_(cost|calc_type|increase_percent|start_date)=?$/
     if str_method.match /^leasestructure_(expenses_)?(\w+)?(_)?(cost|calc_type|increase_percent|start_date|name|description|discount_rate|interest_rate)=?$/
       if str_method.end_with?("=") and args.length >= 1
         self[:data][str_method.chomp("=")] = args[0].to_s
@@ -635,6 +459,7 @@ class TenantRecord < ActiveRecord::Base
       super
     end
   end
+
 
   def property_group(section)
     case section
@@ -654,9 +479,6 @@ class TenantRecord < ActiveRecord::Base
     end
   end
 
-  def calculate
-    RunTenantEffectiveCalculatorWorker.perform_async(self.id)
-  end
 
   def stepped_rents_equal_term_months
     if stepped_rents.any?
@@ -672,6 +494,12 @@ class TenantRecord < ActiveRecord::Base
     d = super
     d.stepped_rents = stepped_rents.dup
     d
+  end
+
+
+  def destroy_keys (attribute, keys)
+    puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    puts keys.inspect
   end
 
   private
@@ -705,30 +533,6 @@ class TenantRecord < ActiveRecord::Base
     true
   end
 
-  def add_to_all_office_agreements
-    return if office_id.nil? or office.nil?
-    Office.find(office_id).agreements.each { |agreement|
-      agreement.tenant_records << self
-      agreement.save
-    }
-  end
-
-  def remove_from_all_office_agreements
-    return if office_id.nil? or office.nil?
-    Office.find(office_id).agreements.each { |agreement|
-      agreement.tenant_records.destroy(self)
-      agreement.save
-    }
-  end
-
-  def do_net_effective_calculator
-    begin
-      RunTenantEffectiveCalculatorWorker.perform_in(15.seconds, self.id) if self.base_rent.to_f > 0 || !stepped_rents.blank?
-    rescue Exception => e
-      logger.error e.inspect + "\n" + e.message + "\n" + e.backtrace.join("\n")
-    end
-  end
-
   def populate_lookup_tables
     if self.address1_changed? or self.zipcode_changed? or self.latitude_changed? or self.longitude_changed?
       o = LookupAddressZipcode.find_by_name([self.address1_was, self.zipcode_was].join(', '));
@@ -736,7 +540,7 @@ class TenantRecord < ActiveRecord::Base
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupAddressZipcode.find_or_create_by_name(name: [self.address1, self.zipcode].join(', '))
+      l = LookupAddressZipcode.find_or_create_by(name: [self.address1, self.zipcode].join(', '))
       l.city = self.city if self.city
       l.state = self.state if self.state
       l.set_latlon(self.latitude, self.longitude) if self.latitude and self.longitude
@@ -749,29 +553,34 @@ class TenantRecord < ActiveRecord::Base
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupCompany.find_or_create_by_name(name: self.company)
+      l = LookupCompany.find_or_create_by(name: self.company)
       l.tenant_records << self
       l.save
     end
     if self.submarket_changed?
-      o = LookupSubmarket.find_by_name(self.submarket_was)
+      o = LookupSubmarket.find_by(name: self.submarket_was)
       if !o.nil?
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupSubmarket.find_or_create_by_name(name: self.submarket)
+      l = LookupSubmarket.find_or_create_by(name: self.submarket)
       l.tenant_records << self
       l.save
     end
     if self.property_name_changed?
-      o = LookupPropertyName.find_by_name(self.property_name_was)
+      o = LookupPropertyName.find_by(name: self.property_name_was)
       if !o.nil?
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupPropertyName.find_or_create_by_name(name: self.property_name)
+      l = LookupPropertyName.find_or_create_by(name: self.property_name)
       l.tenant_records << self
       l.save
     end
   end
+
+
+
+
+
 end

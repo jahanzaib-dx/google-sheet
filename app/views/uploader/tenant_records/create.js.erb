@@ -1,0 +1,11 @@
+<%
+    path = ''
+    if @property_type == 'lease_comps'
+        path = uploader_tenant_record_path(@tenant_record)
+    elsif @property_type == 'sales_comps'
+        path = uploader_tenant_record_display_sales_comp_path(@sale_record)
+    elsif @property_type == 'custom_data'
+        path = uploader_tenant_record_display_custom_record_path(@custom_record)
+    end
+%>
+window.location = "<%= path %>"

@@ -181,4 +181,32 @@ Rails.application.routes.draw do
 
 
 
+  namespace :uploader do
+    resources :tenant_records, only: [:index, :new, :create, :show] do
+      match 'display_custom_record' => 'tenant_records#display_custom_record', via: :get
+      match 'display_sales_comp' => 'tenant_records#display_sales_comp', via: :get
+    end
+    resources :import do
+      collection do
+        match 'process_file' => "import#process_file", via: :post
+        match 'create_and_process_upload' => "import#create_and_process_upload", via: :post
+        match 'marketrex_import_status' => 'import#import_status', :as => :marketrex_import_status, via: :get
+      end
+      member do
+        get :filter_by_geocode
+        get :filter_by_valid
+        put :undo
+      end
+    end
+    resources :ajax, only: [:opex_market_list, :market_expenses_list] do
+      collection do
+        match 'opex_type_list' => "ajax#opex_type_list", via: :get
+        match 'property_type_list' => "ajax#property_type_list", via: :get
+        match 'opex_market_list/:property_type_id' => "ajax#opex_market_list", via: :get
+        match 'market_expenses_list/:opex_market_id' => "ajax#market_expenses_list", via: :get
+        match 'get_custom_record_attributes/:custom_record_id' => "ajax#get_custom_record_attributes", via: :get
+      end
+    end
+  end
+
 end

@@ -1,0 +1,45 @@
+<ul class="accordion accordion-custom" data-accordion>
+  <li class="accordion-item accordian-item1 is-active invalid" data-accordion-item>
+    <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 1: Data Classification</span><span class="tick"><span>&#x2713;</span></span></a>
+    <div class="accordion-content clearfix" data-tab-content>
+      <div class="accordion-content-data">
+        <p>
+          Please tell us what data type you would like to add.
+        </p>
+        <%= select_tag 'tenant_record[comp_data_type]',
+                       options_for_select(TenantRecord::COMP_DATA_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'property-type-dropdown', style: "font-size: 14px" %>
+        <%= hidden_field_tag 'property_type_switch' %>
+      </div>
+      <div class="right-box">
+        <div class="accordion-content-continue" id="single-comp-continue-1">
+          <p>Continue</p>
+          <p><%= image_tag("uploader/down_continue.png") %></p>
+        </div>
+      </div>
+    </div>
+  </li>
+  <!---->
+  <div id="lease-comp-dynamic-content">
+    <%= render partial: "uploader/shared/lease_form" %>
+  </div>
+
+  <div id="sales-comp-dynamic-content" style="display: none">
+    <%= render partial: 'uploader/shared/sales_form' %>
+  </div>
+
+  <div id="custom-comp-dynamic-content" style="display: none">
+    <%= render partial: 'uploader/shared/custom_form' %>
+  </div>
+  <!---->
+</ul>
+
+<!-- Mustache Templates -->
+<script type="text/template" id="stepped_rent_new_layout_template">
+  <%= render partial: 'uploader/shared/stepped_rent_section' %>
+</script>
+
+<script type="text/template" id="additional_cost_single_template">
+  <%= render partial: 'uploader/shared/additional_cost_single' %>
+</script>
+
+<%= render partial: 'uploader/shared/dynamic_mustache_templates' %>

@@ -1,0 +1,107 @@
+<% records.each.with_index do |record, i| %>
+  <%= t.fields_for( :import_records, record) do |r| %>
+    <% r.object[:record_errors] ||= Hash.new %>
+    <table class="wizard responsive import-fields" id="import-fields-<%= i %>">
+      <thead>
+        <tr>
+          <th class="tenantrex_field">
+            <span>TenantRex Field</span>
+          </th>
+          <th class="client_field"><span>Values from your spreadsheet matching</span></th>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+          <% if r.object.record_errors["geocode_info"].present? and r.object.record_errors["geocode_addresses"].nil? %>
+          <tr class="record-row geoinfo">
+            <td class="geocode <%= r.object.id %> error" colspan="2">
+              <p>The following issues were found with this address:</p>
+              <% r.object.record_errors["geocode_info"].each do |info| %>
+                <p><%= info %></p>
+              <%end%>
+              <ul>
+                <% if r.object.record_errors["geocode_addresses"].present? and r.object.record_errors["geocode_addresses"].length == 1 %>
+                  <% r.object.record_errors["geocode_addresses"].each_with_index do |addr, i| %>
+                  <%= radio_button_tag :addr, "#{i}_#{r.object.id}", nil, class: 'geocode-address-select' %>
+                  <%= label_tag "addr_#{i}_#{r.object.id}", addr["full_address"], :data => addr.except("full_address").merge({"id" => r.object.id})%>
+                <%end%>
+              <%end%>
+              </ul>
+            </td>
+          </tr>
+          <%end%>
+          <% if r.object.record_errors["geocode_addresses"].present? && r.object.record_errors["geocode_addresses"].length > 1  %>
+            <tr class="record-row geoaddress_error">
+              <td class="geocode <%= r.object.id %> error" colspan="2">
+                <p>Found more than one matching address. Did you mean:</p><br />
+                <ul>
+                  <% r.object.record_errors["geocode_addresses"].each_with_index do |addr, i| %>
+                    <li>
+                      <%= radio_button_tag :addr, "#{i}_#{r.object.id}" %>
+                      <%= label_tag "addr_#{i}_#{r.object.id}", addr["full_address"], :data => addr.except("full_address").merge({"id" => r.object.id})%>
+                    </li>
+                  <%end%>
+                </ul>
+              </td>
+              <td></td>
+            </tr>
+          <%end%>
+
+        <% if r.object.record_errors["stepped_errors"] %>
+          <tr class="record-row step_error">
+            <td class="geocode <%= r.object.id %> error" colspan="2">
+              <p><%= r.object.record_errors["stepped_errors"].html_safe %></p>
+            </td>
+          </tr>
+        <%end%>
+
+        <% Naturalsorter::Sorter.sort_by_method(r.object.data, "first", true).each_with_index do |d, i| %>
+          <% errors = r.object.record_errors.find {|e| e[0] == d[0] } %>
+          <% if controller.action_name == 'filter_by_geocode' and ['address1', 'suite', 'city', 'state', 'zipcode'].include? d[0] %>
+            <tr class="record-row extra">
+          <% else %>
+            <tr class="record-row extra<%= ' valid" style="display: none;'.html_safe if !errors %>">
+          <% end %>
+              <td class="tenantrex_field <%= "error" if errors or (controller.action_name == 'filter_by_geocode' and ['address1', 'suite', 'city', 'state', 'zipcode'].include? d[0]) %>">
+                <%= r.label d[0].to_s, :class => "cell"%>
+                <% if errors or (controller.action_name == 'filter_by_geocode' and ['address1', 'suite', 'city', 'state', 'zipcode'].include? d[0]) %>
+                <div class="errors">
+                  <% if errors.blank? %>
+                  <p class="error"><span>Geocode Error</span></p>
+                  <% else %>
+                  <%= simple_format "<span>"+ d[0].to_s.humanize + " " + errors[1].to_sentence + "</span>", :class => "error"%>
+                  <% end %>
+                </div>
+                <%end%>
+              </td>
+              <td class="client_field <%= "stepped" if r.object.record_errors["stepped_errors"] && Importer.is_stepped_rent_params(d[0]) %>">
+                <% value = (d[1].split('_').map(&:capitalize).join(' ') if d[1].is_a? String) || d[1].to_s %>
+                <% if errors or (controller.action_name == 'filter_by_geocode' and ['address1', 'suite', 'city', 'state', 'zipcode'].include? d[0]) %>
+                <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{r.object.id}#{d[0].to_s}" %>
+                <% else %>
+                <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{r.object.id}#{d[0].to_s}", :disabled => true %>
+                <%= r.hidden_field d[0].to_s, :value => d[1] %>
+                <% end %>
+              </td>
+            </tr>
+        <%end%>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="text-align:right">
+              <%= hidden_field_tag :record, i %>
+              <%= r.hidden_field :id %>
+              <% if controller.action_name == 'filter_by_geocode' %>
+              <%= r.hidden_field 'latitude', :value=>'', :id=> "#{record.id}latitude" %>
+              <%= r.hidden_field 'longitude', :value=>'', :id=>"#{record.id}longitude" %>
+              <% end %>
+              <%= content_tag :button, :type => "button", :class => "btn view-import-record" do %><span>Show/Hide Details</span><%end%>
+              <%= content_tag :button, :type => "button", :class => "btn btn-red validate-import-record" do %><span>Update</span><%end%>
+            </td>
+          </tr>
+        </tfoot>
+      </tbody>
+    </table>
+  <%end%>
+<%end%>
+<%= will_paginate records %>

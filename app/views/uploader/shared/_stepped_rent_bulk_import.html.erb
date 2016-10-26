@@ -1,0 +1,27 @@
+<tr class="stepped-rent-row">
+  <td>Step {{index}} Cost Per SF*</td>
+  <td>
+    <div class="header-name-container">
+      <div class="first">
+        <%= text_field_tag "tenant_record[stepped_rents_attributes][{{index}}][cost_per_month]", "", class: "bulk-column-header-value", placeholder: "{ Please select }", id: "tenant_record_stepped_rents_attributes_{{index}}_cost_per_month" %>
+      </div>
+      <div class="second">
+        <select class="bulk-column-header-dd"></select>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr class="stepped-rent-row">
+  <td># of Months*</td>
+  <td>
+    <div class="header-name-container">
+      <div class="first">
+        <%= text_field_tag "tenant_record[stepped_rents_attributes][{{index}}][months]", "", class: "bulk-column-header-value", placeholder: "{ Please select }", id: "tenant_record_stepped_rents_attributes_{{index}}_months" %>
+      </div>
+      <div class="second">
+        <select class="bulk-column-header-dd"></select>
+      </div>
+    </div>
+  </td>
+</tr>

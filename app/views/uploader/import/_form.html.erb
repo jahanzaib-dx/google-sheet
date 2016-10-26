@@ -1,0 +1,53 @@
+<ul class="accordion accordion-custom" data-accordion>
+  <li class="accordion-item accordian-item1 invalid is-active" data-accordion-item>
+    <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 1: Data Classification</span><span class="tick"><span>&#x2713;</span></span></a>
+    <div class="accordion-content clearfix" data-tab-content>
+      <div class="accordion-content-data">
+        <p>
+          Please tell us what data type you would like to add.
+        </p>
+        <%= select_tag 'tenant_record[comp_data_type]',
+                       options_for_select(TenantRecord::COMP_DATA_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'property-type-dropdown', style: "font-size: 14px" %>
+        <%= hidden_field_tag 'bulk_property_type_switch' %>
+      </div>
+      <div class="right-box">
+        <div class="accordion-content-continue" id="bulk-comp-continue-1">
+          <p>Continue</p>
+          <p><%= image_tag("uploader/down_continue.png") %></p>
+        </div>
+      </div>
+    </div>
+  </li>
+
+  <!---->
+  <div id="bulk-lease-comp-dynamic-content">
+    <%= render partial: "uploader/import/lease_form" %>
+  </div>
+
+  <div id="bulk-sales-comp-dynamic-content" style="display: none">
+    <%= render partial: 'uploader/import/sales_form' %>
+  </div>
+
+  <div id="bulk-custom-comp-dynamic-content" style="display: none">
+    <%= render partial: 'uploader/import/custom_form' %>
+  </div>
+
+  <!---->
+
+  <%= hidden_field_tag 'upload_file_tmp_url' %>
+</ul>
+
+<!-- Mustache Templates -->
+<script type="text/template" id="stepped_rent_new_layout_template">
+  <%= render partial: 'uploader/shared/stepped_rent_section' %>
+</script>
+
+<script type="text/template" id="stepped_rent_bulk_template">
+  <%= render partial: 'uploader/shared/stepped_rent_bulk_import' %>
+</script>
+
+<script type="text/template" id="additional_cost_tenant_template">
+  <%= render partial: 'uploader/shared/additional_cost_tenant' %>
+</script>
+
+<%= render partial: 'uploader/shared/dynamic_mustache_templates' %>

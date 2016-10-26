@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
   helper SiteHelper
 
 
+   def current_user_account_type
+     current_user.account.role
+   end
+
    protected
 
    def configure_permitted_parameters

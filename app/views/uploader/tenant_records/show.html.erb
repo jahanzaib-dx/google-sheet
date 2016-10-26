@@ -1,0 +1,207 @@
+
+
+  <div class="fixed-width-div">
+
+    <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'add_single_record' } %>
+
+    <div class="columns large-12 white-area-single-display">
+
+      <div class="large-6 columns no-padding">
+        <h2 class="comp-added">Successfully added:</h2>
+        <div style="clear:both"></div>
+        <h1 class="comp-added-name"><%= @tenant_record.address1 %></h1>
+      </div>
+
+      <div class="large-6 columns no-padding text-right">
+        <a href="<%= new_uploader_tenant_record_path %>"><button class="btn-edit-single-display">Edit this Record</button></a>
+        <a href="<%= new_uploader_tenant_record_path %>"><button class="btn-add-single-display">+Add Another Record</button></a>
+      </div>
+
+      <div class="cancel"><a href="javscript:void(0)" style="text-decoration: none;"><span style="text-decoration: none;"><&nbsp;</span><span style="text-decoration: underline;">Back to Results</span></a></div>
+      <div class="clearfix"></div>
+      <div class="upgrade-with-tenantrex columns large-12">Upgrade with TenantRex Today for Cash Flow & Print Capabilities. Learn More!&#9658;</div>
+
+      <div class="columns large-12 white-inner-grey no-padding show-water-mark">
+        <div class="columns large-12">
+          <div class="columns large-4">
+            <a href="<%= "http://www.google.com/maps?cbll=#{@tenant_record.latitude},#{@tenant_record.longitude}&layer=c" %>" target="_blank">
+              <% location = u "#{@tenant_record.address1},#{@tenant_record.city},#{@tenant_record.state},#{@tenant_record.zipcode}" %>
+              <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x370&location=#{location}"%>" />
+            </a>
+          </div>
+          <div class="columns large-4 no-padding">
+            <div class="columns large-12 comp-address">
+              <div class="name"><%= @tenant_record.company %></div>
+              <div><%= @tenant_record.address1 %></div>
+              <div>4th Floor</div>
+              <div><%= @tenant_record.city %>, <%= @tenant_record.state %> <%= @tenant_record.zipcode %></div>
+            </div>
+            <div class="columns large-12 comp-rent">
+              <div class="price-text">Tenant Effective Rent $/SF</div>
+              <div class="price-value"> <%= number_to_currency(@tenant_record.net_effective_per_sf) %> </div>
+            </div>
+          </div>
+          <div class="columns large-4">
+            <div class="columns large-12 no-padding">
+              <div style="float:left"><div class="name">Joe Broker</div>
+                <div>joe@example.com</div></div>
+              <div style="float: right"> <%= image_tag("/assets/marketrex/print.png") %></div>
+            </div>
+            <div class="columns large-12 analysis">
+              <a href="">
+                <div class="cashflow">Cash Flow Analysis</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="large-12 columns">
+          <div class="large-8 large-offset-4 columns details">
+            <div class="columns large-3">
+              <div class="attribute">Tenant Size <br><span class="unit">(SF)</span></div>
+            </div>
+            <div class="columns large-3">
+              <div class="attribute">Term <br><span class="unit">(Months)</span></div>
+            </div>
+
+            <div class="columns large-3">
+              <div class="attribute">Free Rent <br><span class="unit">(Months)</span></div>
+            </div>
+
+            <div class="columns large-3" style="float: left;">
+              <div class="attribute">Tenant <br>Improvements&nbsp;<span class="unit">($/SF)</span></div>
+            </div>
+          </div>
+
+          <div class="large-8 large-offset-4 columns details">
+            <div class="columns large-3">
+              <div class="value"><%= @tenant_record.size %></div>
+            </div>
+            <div class="columns large-3">
+              <div class="value"><%= @tenant_record.lease_term_months %></div>
+            </div>
+            <div class="columns large-3">
+              <div class="value"><%= (@tenant_record.free_rent == "0" || @tenant_record.free_rent == "") ? '-' : @tenant_record.free_rent %></div>
+            </div>
+            <div class="columns large-3" style="float: left;">
+              <div class="value"><%= @tenant_record.tenant_improvement %></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Img and Expense section -->
+        <div class="large-12 columns comp-img-expense-container">
+            <div class="large-4 columns left">
+              <img src="<%= "http://maps.googleapis.com/maps/api/staticmap?center=#{@tenant_record.latitude},#{@tenant_record.longitude}&zoom=11&size=400x300&sensor=false" %>">
+              <!--<div class="tenant-record-map-view" -->
+                   <!--data-address="<%#= [@tenant_record.address1, @tenant_record.city, @tenant_record.zipcode, @tenant_record.zipcode_plus].compact.join(' ') %>" -->
+                   <!--data-longitude="<%#= @tenant_record.longitude %>" -->
+                   <!--data-latitude="<%#= @tenant_record.latitude %>"></div>-->
+            </div>
+            <div class="large-4 columns left">
+              <div class="expense">
+                <div>
+                  <label>Expenses <span>(Per SF)</span></label>
+                </div>
+                <div>
+                  <table>
+                    <% @tenant_record.expenses.each do |name, hash| %>
+                        <tr>
+                          <td> <%= name.to_s.titleize %> </td>
+                          <td>
+                            <%= number_to_currency(hash[:cost].to_f, { :precision => 2 }) %>
+                          </td>
+                        </tr>
+                    <% end %>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+        </div>
+        <!-- -->
+
+        <!-- Comp Details -->
+        <div class="large-12 columns">
+          <div class="show-single-comp-table large-12 columns">
+            <table>
+              <tr><td>Internal or External*</td><td><%= @tenant_record.comp_view_type %></td></tr>
+              <tr><td>Company*</td><td><%= @tenant_record.company %></td></tr>
+              <tr><td>Address Line 1*</td><td><%= @tenant_record.address1 %></td></tr>
+              <tr><td>City*</td><td><%= @tenant_record.city %></td></tr>
+              <tr><td>State*</td><td><%= @tenant_record.state %></td></tr>
+              <tr><td>Class Type*</td><td><%= @tenant_record.class_type %></td></tr>
+              <tr><td>Property Type*</td><td><%= @tenant_record.property_type %></td></tr>
+              <tr><td>Lease Commencement Date*</td><td><%= @tenant_record.lease_commencement_date.strftime('%m/%d/%Y') if @tenant_record.lease_commencement_date %></td></tr>
+              <tr><td>Lease Term Months*</td><td><%= @tenant_record.lease_term_months %></td></tr>
+              <tr><td>Size*</td><td><%= @tenant_record.size %></td></tr>
+
+              <% unless @tenant_record.is_stepped_rent %>
+               <tr class="base-rent-row"><td>Base rent*</td><td><%= @tenant_record.base_rent %></td></tr>
+               <tr class="base-rent-row">
+                 <% is_fix_increase = @tenant_record.rent_escalation_type ==  "base_rent_fixed_increase" %>
+                 <td><%= is_fix_increase ? "$/SF increase*" : "% increase*" %></td>
+                 <td><%= is_fix_increase ? @tenant_record.fixed_escalation : @tenant_record.escalation %></td>
+               </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+        <!-- -->
+        <% if @tenant_record.stepped_rents.present? %>
+          <!-- Stepped Rents -->
+          <div class="large-12 columns">
+            <div class="show-single-comp-table large-12 columns">
+              <table>
+                <caption style="text-align: left;">Stepped Rents</caption>
+                <tbody>
+                <% @tenant_record.stepped_rents.order("id ASC").each_with_index do |stepped_rent, index| %>
+                  <tr><td>Step#<%= index+1 %> Rent Cost Per SF*</td><td><%= stepped_rent.cost_per_month %></td></tr>
+                  <tr><td># of Months Rent*</td><td><%= stepped_rent.months %></td></tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- -->
+        <% end %>
+
+        <% if @tenant_record.custom %>
+          <!-- Custom Data -->
+          <div class="large-12 columns">
+            <div class="show-single-comp-table large-12 columns custom-data-wrapper">
+              <table>
+                <caption>Custom Data</caption>
+                <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @tenant_record.custom.each_with_index do |(key, value), index| %>
+                        <tr>
+                          <td> <%= key.split('_').map(&:capitalize).join(' ') %> </td>
+                          <td> <%= value %> </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- -->
+        <% end %>
+
+      </div>
+
+    </div>
+
+    <div class="large-12 columns">
+      <div class="large-6 columns text-right large-offset-6 single-comp-display-bottom-btn">
+        <a href="<%= new_uploader_tenant_record_path %>"><button class="btn-edit-single-display">Edit this Record</button></a>
+        <a href="<%= new_uploader_tenant_record_path %>"><button class="btn-add-single-display">+Add Another Record</button></a>
+        <div class="cancel"><a href="javscript:void(0)" style="text-decoration: none;"><span style="text-decoration: none;"><&nbsp;</span><span style="text-decoration: underline;">Back to Results</span></a></div>
+      </div>
+    </div> 
+
+  </div>
