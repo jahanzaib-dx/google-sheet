@@ -574,7 +574,7 @@ class SearchController < ApplicationController
   def sale_comp
     if (!params[:id].blank?)
       comp_id = params[:id]
-      @comp_record = TenantRecord.find(comp_id)
+      @comp_record = SaleRecord.find(comp_id)
     end
 
     render "sale_comp"
