@@ -1,22 +1,20 @@
 class TenantRecord < ActiveRecord::Base
+
   include ConditionalValidations
-  ####serialize :data, ActiveRecord::Coders::Hstore
-  acts_as_paranoid
+
+  #acts_as_paranoid
+  store_accessor :data
 
   has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
 
   scope :ownership_lease, -> { joins(:ownership).where("ownerships.comp_type = 'lease'") }
 
-  before_restore :add_to_all_office_agreements
-  before_destroy :remove_from_all_office_agreements
-  after_create :add_to_all_office_agreements
-  after_create :do_net_effective_calculator
   after_find :protect_record
   before_save :default_values
   before_validation :default_values
   after_save :populate_lookup_tables
 
-  has_and_belongs_to_many :agreements
+  # has_and_belongs_to_many :agreements
 
   has_many :comp_requests
   belongs_to :user
@@ -26,12 +24,9 @@ class TenantRecord < ActiveRecord::Base
     [address1, city, state, zipcode].join(", ")
   end
 
-  ###belongs_to :office
-  #belongs_to :industry_sic_code
-  ###belongs_to :team
-
   has_many :stepped_rents, :dependent => :destroy
   accepts_nested_attributes_for :stepped_rents, :allow_destroy => true
+
 
   has_many :tenant_record_images
   has_attached_file :main_image,
@@ -44,17 +39,19 @@ class TenantRecord < ActiveRecord::Base
                     :url => '/system/:class/:id/:style/:filename',
                     :path => ':rails_root/public:url'
 
+
   has_and_belongs_to_many :lookup_address_zipcodes
   has_and_belongs_to_many :lookup_companies
   has_and_belongs_to_many :lookup_property_names
   has_and_belongs_to_many :lookup_submarkets
 
-  #************************* Marketrex ***************************
-##  COMP_DATA_TYPE        = %w[lease_comps sales_comps custom_data]
-##  NEW_PROPERTY_TYPE     = PropertyType.property_type_list
-##  DEAL_TYPE             = ["new", "renewal", "expansion", "sublease", "blend & extend"]
-##  NEW_VIEW_TYPE         = %w[internal external]
-##  LEASE_STRUTURE        = ["Full Service", "Modified Gross", "NNN"]
+
+  #************************* Uploader ***************************
+  COMP_DATA_TYPE        = %w[lease_comps sales_comps custom_data]
+  NEW_PROPERTY_TYPE     = PropertyType.property_type_list
+  DEAL_TYPE             = ["new", "renewal", "expansion", "sublease", "blend & extend"]
+  NEW_VIEW_TYPE         = %w[internal external]
+  LEASE_STRUTURE        = ["Full Service", "Modified Gross", "NNN"]
   #**************************************************************
 
   CLASS_TYPE           = %w[a b c]
@@ -68,8 +65,6 @@ class TenantRecord < ActiveRecord::Base
   property_type size tenant_improvement tenant_ti_cost discount_percentage
   view_type comments property_name submarket industry_type]
 
-  validates_associated :office
-  #validates_associated :industry_sic_code
   validates_associated :stepped_rents
   validate :stepped_rents_equal_term_months
   conditionally_validate :address1,
@@ -108,16 +103,16 @@ class TenantRecord < ActiveRecord::Base
             :numericality => true, :allow_nil => true
 
   # Calculated by Net Effectived Calculator
-  conditionally_validate :landlord_concessions_per_sf,
-            :numericality => true
-  conditionally_validate :landlord_margins,
-            :numericality => true
-  conditionally_validate :landlord_effective_rent,
-            :numericality => true
-  conditionally_validate :lease_term_months,
-            :numericality => { :only_integer => true, :greater_than => 0 }, presence: true
-  conditionally_validate :net_effective_per_sf,
-            :numericality => true
+  # conditionally_validate :landlord_concessions_per_sf,
+  #           :numericality => true
+  # conditionally_validate :landlord_margins,
+  #           :numericality => true
+  # conditionally_validate :landlord_effective_rent,
+  #           :numericality => true
+  # conditionally_validate :lease_term_months,
+  #           :numericality => { :only_integer => true, :greater_than => 0 }, presence: true
+  # conditionally_validate :net_effective_per_sf,
+  #           :numericality => true
 
   conditionally_validate :main_image, :attachment_content_type => { :content_type => /\Aimage\/.*\Z/ }
   conditionally_validate :company_logo, :attachment_content_type => { :content_type => /\Aimage\/.*\Z/ }
@@ -137,31 +132,30 @@ class TenantRecord < ActiveRecord::Base
   end
 
 
-  attr_reader :lease_structure,
-              :lease_structure_id,
-    :operator_expense_cost,
-    :real_estate_tax_cost,
-    :electrical_expense_cost,
-    :cam_cost,
-    :janitorial_cost
+  # attr_reader :lease_structure,
+  #             :lease_structure_id,
+  #   :operator_expense_cost,
+  #   :real_estate_tax_cost,
+  #   :electrical_expense_cost,
+  #   :cam_cost,
+  #   :janitorial_cost
 
   before_validation {
     main_image.clear if delete_image == '1'
     company_logo.clear if delete_company_image == '1'
   }
+
   attr_accessor :delete_image, :delete_company_image
 
-  
 
 
 
   scope :address_only, lambda { |office_id = nil|
     office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("tenant_records.id, company, submarket, property_name,property_type, comp_type, view_type, zipcode, city, state, address1" + office_scope + ", 'address_only' as in_scope ")
+	
 	#.group('tenant_records.id, tenant_records.address1, tenant_records.zipcode')
   }
-
-  scope :team, lambda { |team_id| where("team_id = ?", team_id) }
 
   scope :protect_view, lambda { |user = nil|
 
@@ -544,7 +538,8 @@ class TenantRecord < ActiveRecord::Base
     self.discount_rate = ls.discount_rate
     self.interest_rate = ls.interest_rate
 
-    self.destroy_keys :data, *self[:data].keys.grep(/^leasestructure_expenses_/)
+
+    self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
     ls.expenses.each do |e|
       exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
       self[:data]["#{exp_name}_cost"] = e.default_cost
@@ -589,9 +584,12 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def base_rent=(v)
+    self[:data] ||= {}
     self[:base_rent] = v
     self[:data]["first_year_base_rent"] = v.to_s
   end
+
+
 
   def lease_term_years
     lease_term_months / 12 if lease_term_months
@@ -623,10 +621,11 @@ class TenantRecord < ActiveRecord::Base
     JSON.parse(self[:data]['custom']) if self[:data]['custom']
   end
 
+
   def method_missing(method_name, *args)
     str_method = method_name.to_s
 
-    #if str_method.match /^leasestructure_expenses_(\w+)_(cost|calc_type|increase_percent|start_date)=?$/
+    ##if str_method.match /^leasestructure_expenses_(\w+)_(cost|calc_type|increase_percent|start_date)=?$/
     if str_method.match /^leasestructure_(expenses_)?(\w+)?(_)?(cost|calc_type|increase_percent|start_date|name|description|discount_rate|interest_rate)=?$/
       if str_method.end_with?("=") and args.length >= 1
         self[:data][str_method.chomp("=")] = args[0].to_s
@@ -637,6 +636,7 @@ class TenantRecord < ActiveRecord::Base
       super
     end
   end
+
 
   def property_group(section)
     case section
@@ -656,9 +656,6 @@ class TenantRecord < ActiveRecord::Base
     end
   end
 
-  def calculate
-    RunTenantEffectiveCalculatorWorker.perform_async(self.id)
-  end
 
   def stepped_rents_equal_term_months
     if stepped_rents.any?
@@ -677,6 +674,12 @@ class TenantRecord < ActiveRecord::Base
   end
 
 
+
+
+  def destroy_keys (attribute, keys)
+    puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    puts keys.inspect
+  end
 
   private
   def default_values
@@ -709,30 +712,6 @@ class TenantRecord < ActiveRecord::Base
     true
   end
 
-  def add_to_all_office_agreements
-    return if office_id.nil? or office.nil?
-    Office.find(office_id).agreements.each { |agreement|
-      agreement.tenant_records << self
-      agreement.save
-    }
-  end
-
-  def remove_from_all_office_agreements
-    return if office_id.nil? or office.nil?
-    Office.find(office_id).agreements.each { |agreement|
-      agreement.tenant_records.destroy(self)
-      agreement.save
-    }
-  end
-
-  def do_net_effective_calculator
-    begin
-      RunTenantEffectiveCalculatorWorker.perform_in(15.seconds, self.id) if self.base_rent.to_f > 0 || !stepped_rents.blank?
-    rescue Exception => e
-      logger.error e.inspect + "\n" + e.message + "\n" + e.backtrace.join("\n")
-    end
-  end
-
   def populate_lookup_tables
     if self.address1_changed? or self.zipcode_changed? or self.latitude_changed? or self.longitude_changed?
       o = LookupAddressZipcode.find_by_name([self.address1_was, self.zipcode_was].join(', '));
@@ -740,7 +719,7 @@ class TenantRecord < ActiveRecord::Base
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupAddressZipcode.find_or_create_by_name(name: [self.address1, self.zipcode].join(', '))
+      l = LookupAddressZipcode.find_or_create_by(name: [self.address1, self.zipcode].join(', '))
       l.city = self.city if self.city
       l.state = self.state if self.state
       l.set_latlon(self.latitude, self.longitude) if self.latitude and self.longitude
@@ -753,29 +732,34 @@ class TenantRecord < ActiveRecord::Base
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupCompany.find_or_create_by_name(name: self.company)
+      l = LookupCompany.find_or_create_by(name: self.company)
       l.tenant_records << self
       l.save
     end
     if self.submarket_changed?
-      o = LookupSubmarket.find_by_name(self.submarket_was)
+      o = LookupSubmarket.find_by(name: self.submarket_was)
       if !o.nil?
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupSubmarket.find_or_create_by_name(name: self.submarket)
+      l = LookupSubmarket.find_or_create_by(name: self.submarket)
       l.tenant_records << self
       l.save
     end
     if self.property_name_changed?
-      o = LookupPropertyName.find_by_name(self.property_name_was)
+      o = LookupPropertyName.find_by(name: self.property_name_was)
       if !o.nil?
         o.tenant_records.destroy(self)
         o.save
       end
-      l = LookupPropertyName.find_or_create_by_name(name: self.property_name)
+      l = LookupPropertyName.find_or_create_by(name: self.property_name)
       l.tenant_records << self
       l.save
     end
   end
+
+
+
+
+
 end

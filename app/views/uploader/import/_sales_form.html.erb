@@ -1,0 +1,332 @@
+<li class="accordion-item accordian-item2 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 2: Upload</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label>Note: All column headers in your spreadsheet must be in row 1.</label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns large-12 no-padding bulk-upload-file-section">
+        <table>
+          <th>Name your upload</th>
+          <th><input type="text" class="normal-element"></th>
+          <tr>
+            <td colspan="2">
+              <%= form_tag '/uploader/import/process_file', multipart: true, remote: true do |f| %>
+                  <div class="wrapper">
+                    <div class="text">
+                      <span class="text-to-drop-file">To <strong>UPLOAD</strong> files drag & drop here or </span><span class="link-to-select-file">Select file from your computer</span>
+                      <div class="uploaded_file_name"></div>
+                    </div>
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                  </div>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue" id="bulk-sales-comp-continue-2">
+        <p>Continue</p>
+        <p><%= image_tag("uploader//down_continue.png") %></p>
+      </div>
+    </div>
+
+  </div>
+</li>
+<li class="accordion-item accordian-item3 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Base Rent Model</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Is this a land record sale?
+      </p>
+      <%= radio_button_tag "sale_record[is_sales_record]", 'yes', nil, class: 'sale-record' %>
+      <%= label 'sale_record[is_sales_record]', 'yes', 'Yes' %><br>
+      <%= radio_button_tag "sale_record[is_sales_record]", 'no', nil, class: 'sale-record' %>
+      <%= label 'sale_record[is_sales_record]', 'no', 'No' %>
+      <div class="land-size-unit-container">
+        <p>
+          Is Land Size in Acres or SF?
+        </p>
+        <%= radio_button_tag "sale_record[land_size_identifier]", 'acres' %>
+        <%= label 'sale_record[land_size_identifier]', 'acres', 'Acres' %><br>
+        <%= radio_button_tag "sale_record[land_size_identifier]", 'sf' %>
+        <%= label 'sale_record[land_size_identifier]', 'sf', 'SF' %>
+      </div>
+    </div>
+    <div class="right-box">
+      <div class="accordion-content-continue" id="bulk-sales-comp-continue-3">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<!---->
+<li class="accordion-item accordian-item4 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 4: Mapping</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Please select and match from the dropdowns your document's column headers with the require MarketRex fields on the left.
+      </p>
+
+      <div class="columns large-12 no-padding">
+        <div class="bulk-upload-mapping">
+          <table>
+            <th>Required Field</th><th>Column Header</th>
+            <tr>
+              <td>
+                Internal or External*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[view_type]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Address Line 1*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[address1]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>City*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>State*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[state]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <!--<tr>
+              <td>
+                Property Type*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[property_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Class Type*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[class_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>-->
+            <tr>
+              <td>
+                Building Size*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[land_size]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Sale Price*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[price]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Cap Rate*
+                <div class="no-padding" style="float: right;">
+                  <div class="hover-info">?
+                    <div class="tooltip-custom">
+                      <div class="triangle"></div>
+                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[cap_rate]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <!--              <tr>
+                            <td>Stepped Rents*</td>
+                            <td>
+                              <div class="header-name-container">
+                                <div class="first"><input class="bulk-column-header-value" type="text" placeholder="{ Please select }"></div>
+                                <div class="second">
+                                  <select class="bulk-column-header-dd">
+                                    <option value="property type">Property type</option>
+                                    <option value="property type2">Property type2</option>
+                                  </select>
+                                </div>
+                                <div style="clear: both"></div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Stepped Rent Escalation*</td>
+                            <td>
+                              <div class="header-name-container">
+                                <div class="first"><input class="bulk-column-header-value" type="text" placeholder="{ Please select }"></div>
+                                <div class="second">
+                                  <select class="bulk-column-header-dd">
+                                    <option value="property type">Property type</option>
+                                    <option value="property type2">Property type2</option>
+                                  </select>
+                                </div>
+                                <div style="clear: both"></div>
+                              </div>
+                            </td>
+                          </tr>-->
+
+            <!--<tr>
+              <td>Concessions</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>-->
+
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="bulk-sales-comp-continue-4">
+        <p>Add Record</p>
+        <p><%= image_tag("/assets/cloud.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>

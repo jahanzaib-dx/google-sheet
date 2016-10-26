@@ -1,0 +1,376 @@
+<li class="accordion-item accordian-item2 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 2: Base Rent Model</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Please choose one of the following types of the base rent data:
+      </p>
+      <%= radio_button_tag 'tenant_record[base_rent_type]', 'annual' %>
+      <%= label "tenant_record[base_rent_type]", 'annual', "Annual" %>
+      <br>
+      <%= radio_button_tag 'tenant_record[base_rent_type]', 'monthly' %>
+      <%= label "tenant_record[base_rent_type]", 'monthly', "Monthly" %>
+    </div>
+    <div class="right-box">
+      <div class="accordion-content-continue" id="single-comp-continue-2">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<!---->
+
+<li class="accordion-item accordian-item3 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Base Rent Escalation</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        How does your base rent escalate?
+      </p>
+
+      <!-- repeat div -->
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_percent" %> This record includes a base rent w/ an annual % increase. </label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_fixed_increase" %> This record includes a base rent w/ an annual $/SF increase. </label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same $/SF.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "stepped_rent" %> This record includes stepped rents. </label>
+          <div> <label>
+                <span class="stepped-rent-text">Max # of steps</span><br>
+                <%= select_tag "steps_count", options_for_select((1..20).to_a), class: 'stepped-rent-count', prompt: 'Please Choose' %>
+            </label>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means your base rent will remain the same for a period of time (could be longer or shorter than 12 months) and then step up to a new rent. This process typically occurs several times over the term.
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="free-rent-type large-12">
+        <p class="section-title-heading">Free Rent</p>
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label>
+              <div class=" columns large-1 no-padding free-rent-type-radio">
+                <%= radio_button_tag "tenant_record[free_rent_type]", "consecutive" %>
+              </div>
+
+              <div class=" columns large-11  no-padding left">
+                <span>This record includes free rent that occurs consecutively starting at the beginning of the lease term. </span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label>
+              <div class=" columns large-1 no-padding free-rent-type-radio">
+                <%= radio_button_tag "tenant_record[free_rent_type]", "non_consecutive" %>
+              </div>
+
+              <div class=" columns large-11  no-padding left">
+                <span> This record includes free rent that occurs in non-consecutive months throughout the term. </span>
+              </div>
+            </label>
+          </div>
+          <div class="columns large-4 no-padding">
+            <div class="hover-info">?
+              <div class="tooltip-custom">
+                <div class="triangle"></div>
+                <strong>Tooltip:</strong> For example, if free rent occurred in months 1 through 9, months 24 and months 36, you would type 1-9, 24, 36.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label><%= check_box_tag "tenant_record[gross_free_rent]" %> Make my free rent gross free rent. </label>
+          </div>
+          <div class="columns large-4 no-padding">
+            <div class="hover-info">?
+              <div class="tooltip-custom">
+                <div class="triangle"></div>
+                <strong>Tooltip:</strong> If you check this box, free rent means the base rent and expenses are free.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="clear: both"></div>
+
+      <div class="large-12">
+        <p class="section-title-heading">Tenant Improvement</p>
+        <div>
+          <label>
+            <%= check_box_tag "tenant_record[is_tenant_improvement]" %><p class="tenant-improvement-description">This record has a landlord tenant improvement allowance.</p>
+          </label>
+        </div>
+      </div>
+
+      <div class="columns large-12 default-bg no-padding">
+        <p class="section-title-heading">Additional costs/concessions</p>
+        <div class="columns large-8 no-padding additional-cost-section">
+          <label><%= check_box_tag "tenant_record[has_additional_tenant_cost]", nil, false, :class => 'has-additional-tenant-cost-check' %>This record has additional costs to the tenant? </label>
+
+          <div>
+            <%= select_tag "additional_tenant_cost_tmp", options_for_select((0..10).to_a), :class => 'has-additional-tenant-cost-select custom-select-centered' %>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> Actual cost values are typed in the input boxes below
+            </div>
+          </div>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div style="clear: both"></div>
+
+      <div class="columns large-12 no-padding default-bg">
+        <p class="section-title-heading"></p>
+        <div class="columns large-8 no-padding additional-cost-section">
+          <label><%= check_box_tag "tenant_record[has_additional_ll_allowance]", nil, false, class: 'has-additional-ll-allowance-check' %>This record has additional landlord concessions? </label>
+          <div>
+            <%= select_tag "additional_ll_cost_tmp", options_for_select((0..10).to_a), class: 'has-additional-ll-allowance-select custom-select-centered' %>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> Actual cost values are typed in the input boxes below
+            </div>
+          </div>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div style="clear: both"></div>
+
+      <div class="fields-table lease-comp-single">
+        <table>
+          <tr><td>Internal or External*</td>
+            <td>
+              <%= select_tag 'tenant_record[comp_view_type]',
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+              <%#= text_field_tag 'temp_comp_view_type_tf', "", class: 'custom-value-input', :disabled => true %>
+
+              <%#= hidden_field_tag 'tenant_record[comp_view_type]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+          <tr><td>Company*</td><td><%= text_field_tag "tenant_record[company]" %></td></tr>
+          <tr><td>Industry*</td>
+            <td>
+              <%= select_tag 'temp_comp_industry_dd',
+                             options_for_select(industry_list.map { |s| [s.name, s.name] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+              <%= text_field_tag 'temp_comp_industry_tf', "", class: 'custom-value-input', :disabled => true %>
+
+              <%= hidden_field_tag 'tenant_record[industry_type]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+          <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]" %></td></tr>
+          <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
+          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]" %></td></tr>
+          <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+          <tr>
+            <td>Class Type*</td>
+            <td>
+              <%= select_tag 'temp_comp_class_type_dd',
+                             options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+              <%= text_field_tag 'temp_comp_class_type_tf', "", class: 'custom-value-input', :disabled => true %>
+              <%= hidden_field_tag 'tenant_record[class_type]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+          <tr><td>Property Type*</td>
+            <td>
+              <%= select_tag 'temp_comp_property_type_dd',
+                             options_for_select(TenantRecord::NEW_PROPERTY_TYPE.map { |pt| [pt.name, pt.id] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+              <%= text_field_tag 'temp_comp_property_type_tf', "", class: 'custom-value-input', :disabled => true %>
+              <%= hidden_field_tag 'tenant_record[property_type]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+          <tr>
+            <td>Lease Commencement Date*</td>
+            <td>
+              <%= text_field_tag 'tenant_record[lease_commencement_date]', "", class: 'date-picker-inline' %>
+              <span> <% #= hidden_field_tag "tenant_record[lease_commencement_date]"
+              %> </span>
+            </td>
+          </tr>
+          <tr><td>Lease Term Months*</td><td><%= text_field_tag "tenant_record[lease_term_months]" %></td></tr>
+          <tr><td>Free Rent Months*</td><td><%= text_field_tag "tenant_record[free_rent]", '' %></td></tr>
+          <tr><td>Size*</td><td><%= text_field_tag "tenant_record[size]" , nil, placeholder: 'SF' %></td></tr>
+          <tr class="tenant-improvement-row"><td>Tenant Improvement*</td><td><%= text_field_tag "tenant_record[tenant_improvement]", nil, placeholder: '$/SF' %></td></tr>
+          <tr><td>Deal Type*</td>
+            <td>
+              <%= select_tag 'temp_comp_deal_type_dd',
+                             options_for_select(TenantRecord::DEAL_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+              <%= text_field_tag 'temp_comp_deal_type_tf', "", class: 'custom-value-input', :disabled => true %>
+              <%= hidden_field_tag 'tenant_record[deal_type]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+          <tr><td>Lease Structure*</td>
+            <td>
+              <%= select_tag 'temp_comp_lease_structure_dd',
+                             options_for_select(TenantRecord::LEASE_STRUTURE), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+              <%= text_field_tag 'temp_comp_lease_structure_tf', "", class: 'custom-value-input', :disabled => true %>
+              <%= hidden_field_tag 'lease_structure[name]', "", class: 'actual-value' %>
+            </td>
+          </tr>
+
+          <tr class="base-rent-row"><td>Base rent*</td><td><%= text_field_tag "tenant_record[base_rent]", nil, placeholder: '$/SF' %></td></tr>
+
+          <tr class="sf-percent-increase-row">
+            <td>
+              % increase*
+              <div class="no-padding" style="float: right;">
+                <div class="hover-info">?
+                  <div class="tooltip-custom">
+                    <div class="triangle"></div>
+                    <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><%= text_field_tag 'tenant_record[escalation]' %></td>
+          </tr>
+          <tr class="sf-fixed-increase-row"><td>$/SF increase*</td><td><%= text_field_tag "tenant_record[fixed_escalation]" %></td></tr>
+        </table>
+        <div class="stepped-rent-increment-bpopup">
+          <div style="position: relative">
+            <span id="close-stepped-rent-popup" title="Close">X</span>
+            <div class="select-row">
+              <h4 id="current-rent-number"></h4>
+              <label>Increment Type: </label>
+              <select id="increment-type">
+                <option value="fixed">$/SF Increase</option>
+                <option value="percent">% Increase</option>
+              </select>
+            </div>
+            <div class="previous-interval">
+                <span>
+                  <label>Previous Rent Value: $</label><label id="previous-value"></label>
+                </span>
+              <input id="increment-value" placeholder="Enter increment value">
+              <input id="current-element-id" style="display: none">
+              <input id="previous-element-id" style="display: none">
+            </div>
+            <div class="button-cal">
+              <input type="button" value="Calculate" id="calculate-current-stepped-rent">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <%= render partial: "uploader/shared/custom_fields" %>
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue" id="single-comp-continue-3">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+
+  </div>
+</li>
+
+<!---->
+<li class="accordion-item accordian-item4 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 4: Operating Expenses</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <div class="large-12 columns no-padding operating-expense-help-div">
+        <p>
+          Would you like help with operating expenses for your market?
+        </p>
+        <label><%= radio_button_tag 'has_operating_expenses', 'yes' %> Yes </label>
+        <label><%= radio_button_tag 'has_operating_expenses', 'no' %> No </label>
+      </div>
+
+      <div class="large-12 columns no-padding operating-expense-market-div">
+        <p>
+          Please select your market or the market closest to you.
+        </p>
+        <select class="market-for-expense">
+          <option value="">Select Market</option>
+        </select>
+      </div>
+
+      <div class="lease-property-expense-section large-12 no-padding">
+        <p>Property Type: <span class="property-type-expense-section"></span></p>
+        <p>Lease Structure: <span class="lease-structure-expense-section"></span></p>
+      </div>
+
+      <div class="discount-interest-expense-section large-12 no-padding">
+        <div class="columns large-4 no-padding">
+          <table>
+            <tr>
+              <td>Discount %</td>
+              <td> <%= text_field_tag "lease_structure[discount_rate]", "0.00", :class => 'normal-element'  %> </td>
+            </tr>
+          </table>
+        </div>
+        <div class="columns large-4">
+          <table>
+            <tr>
+              <td>Interest %</td>
+              <td>
+                <%= text_field_tag "lease_structure[interest_rate]", "0.00", :class => 'normal-element' %>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+
+      <div class="large-12 columns no-padding">
+        <%= render partial: "uploader/shared/operating_expenses"%>
+      </div>
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
+        <p>Add Record</p>
+        <p><%= image_tag("/assets/cloud.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>

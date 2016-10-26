@@ -55,3 +55,7 @@ config/nginx.config
 /config/application.yml
 
 .vagrant/
+
+# Ignore uploaded excel
+/public/system/marketrex_uploads/*
+

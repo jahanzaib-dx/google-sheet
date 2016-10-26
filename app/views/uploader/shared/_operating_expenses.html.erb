@@ -1,0 +1,72 @@
+<div class="large-12 columns no-padding expense-table-container">
+  <table id="expense-table" class="">
+    <thead>
+      <tr>
+        <th>Expense Column Header</th>
+        <th>Calculation Type</th>
+        <th>Delay Start Date</th>
+        <th>Default</th>
+        <th>Increase %</th>
+        <th>Increase Start Date</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+      <tr class="add-expense-button-td">
+        <td colspan="2">
+            <button class="add-expense-row">+Add Row</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!-- Expense Template  -->
+<script type="text/template" id="expense-row-tmpl-dynamic">
+  <tr>
+    <td>
+      <%= select_tag "expense{{row}}", "{{{expense_dd_options}}}".html_safe, class: 'custom-expense-dd', id: "expense{{row}}", name: "expense[{{row}}][value1]" %>
+      <%= text_field_tag 'custom-expense-tf{{row}}', "", class: 'custom-expense-tf', id: 'custom-expense-tf{{row}}', :disabled => true %>
+      <%= hidden_field_tag 'lease_structure[lease_structure_expenses_attributes][{{row}}][name]', "",
+                           class: 'custom-expense-actual-value', id: "lease_structure_lease_structure_expenses_attributes{{row}}_name" %>
+    </td>
+    <td>
+      <%= select_tag "lease_structure[lease_structure_expenses_attributes][{{row}}][calculation_type]",
+                     "<option value='generic'>Pass Through</option><option value='with_start_and_base_year'>Base Year and Start Date</option><option value='pass_through_and_start_date'>Pass Through and Start Date</option>".html_safe,
+                     class: "lease-structure-calc-type", id: "lease_structure_lease_structure_expenses_attributes{{row}}_calculation_type"  %>
+    </td>
+    <td class="delay_start_date_content">
+      <span></span>
+      <%= hidden_field_tag 'lease_structure[lease_structure_expenses_attributes][{{row}}][delay_start_date]', "",
+                           id: "lease_structure_lease_structure_expenses_attributes{{row}}_delay_start_date" %>
+    </td>
+    <td>
+      <span class="prepost-wrapper pre">
+        <span class="prefix"><i class="icon-dollar"></i></span>
+        <%= text_field_tag "lease_structure[lease_structure_expenses_attributes][{{row}}][default_cost]", "",
+                           style: 'padding-left: 20px !important;', value: "{{default_expense}}",
+                           id: "lease_structure_lease_structure_expenses_attributes{{row}}_default_cost" %>
+      </span>
+    </td>
+    <td>
+      <span class="prepost-wrapper post">
+        <%= text_field_tag "lease_structure[lease_structure_expenses_attributes][{{row}}][increase_percent]", "",
+                           class: 'left', style: 'padding-right: 20px;',
+                           id: "lease_structure_lease_structure_expenses_attributes{{row}}_increase_percent" %>
+        <span class="postfix">%</span>
+      </span>
+    </td>
+    <td>
+      <%= text_field_tag "expense[{{row}}][value5]", "", id: "expense{{row}}_value5", class: 'increase-start-date date-picker-inline' %>
+      <span>
+        <%= hidden_field_tag 'lease_structure[lease_structure_expenses_attributes][{{row}}][start_date]', "",
+                             id: "lease_structure_lease_structure_expenses_attributes{{row}}_start_date" %>
+      </span>
+    </td>
+    <td>
+      <a href="#" type="button" class='btn btn-red delete-custom-field'><span><u>Delete</u></span></a>
+    </td>
+  </tr>
+</script>

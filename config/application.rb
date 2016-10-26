@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'active_record/connection_adapters/postgis_adapter'
 require 'yaml'
 
 # Require the gems listed in Gemfile, including any gems
@@ -24,8 +25,11 @@ module MarketRex
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.active_record.schema_format = :sql
+
 	
-	config.action_mailer.default_options = { from:  ENV['dx_mailer_from'] }
+	  config.action_mailer.default_options = { from:  ENV['dx_mailer_from'] }
 
     config.action_mailer.asset_host = "http://#{ ENV['mail_host'] }"
     config.action_mailer.default_url_options = { :host =>  ENV['mail_host'] }
@@ -37,7 +41,10 @@ module MarketRex
         password: ENV['smtp_password']
     }
 	
-	config.autoload_paths += %W(#{config.root}/lib/util #{config.root}/lib/util/marketrex #{config.root}/app/workers/marketrex)
+	  #config.autoload_paths += %W(#{config.root}/lib/util #{config.root}/lib/util/marketrex #{config.root}/app/workers/marketrex)
+    config.autoload_paths << Rails.root.join('lib/util')
+
+    config.middleware.use Rack::ContentLength
 
   end
 end

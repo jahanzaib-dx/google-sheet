@@ -6,6 +6,7 @@
 #
  
 module ConditionalValidations
+
   attr_accessor :validated_fields
   attr_accessor :field_errors
   attr_accessor :validate_all

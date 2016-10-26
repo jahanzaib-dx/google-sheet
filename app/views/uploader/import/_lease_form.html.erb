@@ -1,0 +1,554 @@
+<li class="accordion-item accordian-item2 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 2: Spreadsheet Rent Details</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Please choose one of the following types of the base rent data:
+      </p>
+      <%= radio_button_tag 'tenant_record[base_rent_type]', 'annual' %>
+      <%= label "tenant_record[base_rent_type]", 'annual', "Annual" %>
+      <br>
+      <%= radio_button_tag 'tenant_record[base_rent_type]', 'monthly' %>
+      <%= label "tenant_record[base_rent_type]", 'monthly', "Monthly" %>
+
+      <p>
+        How does your base rent escalate?
+      </p>
+
+      <!-- repeat div -->
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= check_box_tag "tenant_record[rent_escalation_type_percent]"%> This spreadsheet includes a base rent w/ an annual % increase. </label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= check_box_tag "tenant_record[rent_escalation_type_fixed]" %> This spreadsheet includes a base rent w/ an annual $/SF increase. </label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same $/SF.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label><%= check_box_tag "tenant_record[rent_escalation_type_stepped]" %> This spreadsheet includes stepped rents. </label>
+          <div id="max-stepped-rent-dd" style="display: none;">
+            <span class="stepped-rent-label">Max # of steps</span><br>
+            <%= select_tag "steps_count_dd", options_for_select((1..20).to_a), class: 'stepped-rent-count', prompt: 'Please Choose' %>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means your base rent will remain the same for a period of time (could be longer or shorter than 12 months) and then step up to a new rent. This process typically occurs several times over the term.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="free-rent-type large-12">
+        <p class="section-title-heading">Free Rent</p>
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label>
+              <div class=" columns large-1 no-padding free-rent-type-radio">
+                <%= check_box_tag "tenant_record[free_rent_type_consecutive]" %>
+              </div>
+
+              <div class=" columns large-11  no-padding left">
+                <span>This record includes free rent that occurs consecutively starting at the beginning of the lease term. </span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label>
+              <div class=" columns large-1 no-padding free-rent-type-radio">
+                <%= check_box_tag "tenant_record[free_rent_type_non_consecutive]" %>
+              </div>
+
+              <div class=" columns large-11  no-padding left">
+                <span> This record includes free rent that occurs in non-consecutive months throughout the term. </span>
+              </div>
+            </label>
+          </div>
+          <div class="columns large-4 no-padding">
+            <div class="hover-info">?
+              <div class="tooltip-custom">
+                <div class="triangle"></div>
+                <strong>Tooltip:</strong> For example, if free rent occurred in months 1 through 9, months 24 and months 36, you would type 1-9, 24, 36.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns large-12 no-padding">
+          <div class="columns large-8 no-padding">
+            <label><%= check_box_tag "tenant_record[gross_free_rent]" %> Make my free rent gross free rent. </label>
+          </div>
+          <div class="columns large-4 no-padding">
+            <div class="hover-info">?
+              <div class="tooltip-custom">
+                <div class="triangle"></div>
+                <strong>Tooltip:</strong> If you check this box, free rent means the base rent and expenses are free.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="clear: both"></div>
+
+      <div class="large-12">
+        <p class="section-title-heading">Tenant Improvement</p>
+        <div>
+          <label>
+            <%= check_box_tag "tenant_record[is_tenant_improvement]" %><p class="tenant-improvement-description">This record has a landlord tenant improvement allowance.</p>
+          </label>
+        </div>
+      </div>
+
+      <div class="columns large-12 default-bg no-padding">
+        <p class="section-title-heading">Additional costs/concessions</p>
+        <div class="columns large-8 no-padding additional-cost-section">
+          <label><%= check_box_tag "tenant_record[has_additional_tenant_cost]", nil, false, :class => 'has-additional-tenant-cost-check' %>This record has additional costs to the tenant? </label>
+          <div>
+            <%= select_tag "tenant_record[additional_tenant_cost]", options_for_select((0..10).to_a), :class => 'has-additional-tenant-cost-select custom-select-centered' %>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> Actual cost values are typed in the input boxes below
+            </div>
+          </div>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div style="clear: both"></div>
+
+      <div class="columns large-12 no-padding default-bg">
+        <p class="section-title-heading"></p>
+        <div class="columns large-8 no-padding additional-cost-section">
+          <label><%= check_box_tag "tenant_record[has_additional_ll_allowance]", nil, false, class: 'has-additional-ll-allowance-check' %>This record has additional landlord concessions? </label>
+          <div>
+            <%= select_tag "tenant_record[additional_ll_allowance]", options_for_select((0..10).to_a), class: 'has-additional-ll-allowance-select custom-select-centered' %>
+          </div>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> Actual cost values are typed in the input boxes below
+            </div>
+          </div>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div style="clear: both"></div>
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue" id="bulk-comp-continue-2">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<li class="accordion-item accordian-item3 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Upload</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+
+      <div class="columns large-12 no-padding">
+        <div class="columns large-8 no-padding">
+          <label>Note: All column headers in your spreadsheet must be in row 1.</label>
+        </div>
+        <div class="columns large-4 no-padding">
+          <div class="hover-info">?
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns large-12 no-padding bulk-upload-file-section">
+        <table>
+          <th>Name your upload</th>
+          <th><input type="text" class="normal-element"></th>
+          <tr>
+            <td colspan="2">
+              <%= form_tag '/uploader/import/process_file', multipart: true, remote: true do |f| %>
+                  <div class="wrapper">
+                    <div class="text">
+                      <span class="text-to-drop-file">To <strong>UPLOAD</strong> files drag & drop here or </span><span class="link-to-select-file">Select file from your computer</span>
+                      <div class="uploaded_file_name"></div>
+                    </div>
+
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                  </div>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue" id="bulk-comp-continue-3">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+
+  </div>
+</li>
+
+<li class="accordion-item accordian-item4 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 4: Mapping</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Please select and match from the dropdowns your document's column headers with the require MarketRex fields on the left.
+      </p>
+
+      <div class="columns large-12 no-padding">
+        <div class="bulk-upload-mapping lease-record-section">
+          <table>
+            <th>Required Field</th><th>Column Header</th>
+            <tr>
+              <td>Internal or External*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" name="tenant_record[comp_view_type]" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Company*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[company]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Address Line 1*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" name="tenant_record[address1]" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>City*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[city]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>State*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" name="tenant_record[state]" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Class Type*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[class_type]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Property Type*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[property_type]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Lease Commencement Date*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" name="tenant_record[lease_commencement_date]" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Lease Term Months*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[lease_term_months]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Size*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[size]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Deal Type*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[deal_type]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Lease Structure*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="lease_structure[name]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Base Rent*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[base_rent]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Escalation %*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[escalation]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Escalation $/SF*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[fixed_escalation]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Free Rent</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[free_rent]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Tenant Improvements</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[tenant_improvement]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue" id="bulk-comp-continue-4">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<li class="accordion-item accordian-item5 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 5: Operating Expenses</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+
+      <div class="discount-interest-expense-section large-12 no-padding">
+        <div class="columns large-4 no-padding">
+          <table>
+            <tr>
+              <td>Discount %</td>
+              <td> <%= text_field_tag "lease_structure[discount_rate]", "0.00", :class => 'normal-element'   %> </td>
+            </tr>
+          </table>
+        </div>
+        <div class="columns large-4">
+          <table>
+            <tr>
+              <td>Interest %</td>
+              <td>
+                <%= text_field_tag "lease_structure[interest_rate]", "0.00", :class => 'normal-element'   %>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+
+      <div class="large-12 columns no-padding">
+        <%= render partial: "uploader/shared/operating_expenses" %>
+      </div>
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
+        <p>Add Record</p>
+        <p><%= image_tag("/assets/cloud.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>

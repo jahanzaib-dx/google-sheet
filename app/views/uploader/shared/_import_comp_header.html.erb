@@ -1,0 +1,11 @@
+<div class="columns large-12 grey-area">
+  <h1>Import Comps </h1>
+  <p> Would you like us to manage your data? Need help uploading?
+    <a href="mailto:support@tenantrex.com">Contact Us.</a> </p>
+  <ul class="menu">
+    <li class= <%= ((active_tab == 'current_imports') ? "active-custom" : "")  %>><%= link_to 'Current Imports', uploader_import_index_path %></li>
+    <li class= <%= ((active_tab == 'add_single_record') ? "active-custom" : "")  %>><%= link_to 'Add Single Record', new_uploader_tenant_record_path %></li>
+    <li class= <%= ((active_tab == 'new_bulk_import') ? "active-custom" : "")  %>><%= link_to 'New Bulk Import', new_uploader_import_path %></li>
+  </ul>
+</div>
+<div style="clear: both"></div>
