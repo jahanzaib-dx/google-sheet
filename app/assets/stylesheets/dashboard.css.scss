@@ -1608,3 +1608,35 @@ fieldset.dashboard_export_result legend{
 .ie .dropdown-select-wrapper.open ul > li.active:hover i {
   background-color: $light-orange;
 }
+
+
+/*--------------custom css ---------------------*/
+
+/*.lease_filter {display: none;}*/
+.sales_filter {display: none;}
+.ui-datepicker-calendar {
+  display: none;
+}​
+
+
+
+ .ui-datepicker select, .ui-datepicker select {
+   color: black !important;
+ }
+
+/*.ui-widget-header .ui-icon{background-image:url("assets/ui-icons.png");}*/
+
+.ui-datepicker {background-color:#556db1 !important; margin:10px 0 10px 0 !important;}
+.ui-datepicker-header{background-color:#556db1 !important; border:#556db1 !important;}
+
+
+.formgroup_range .date_range{padding-left:10px !important; padding-right:10px !important;}
+.formgroup_range .year_sold{padding-left:8px !important; padding-right:8px !important;}
+
+.custom_dialog_style #ui-id-3, #ui-id-4{
+  margin-top: 0px !important;
+  display: block !important;
+  float: none !important;
+  margin-left: 0px !important;
+  padding-bottom: 0px !important;
+}
