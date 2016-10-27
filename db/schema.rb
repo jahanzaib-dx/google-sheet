@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160929112401) do
+ActiveRecord::Schema.define(version: 20161027071106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,11 +43,6 @@ ActiveRecord::Schema.define(version: 20160929112401) do
   add_index "accounts", ["office_id"], name: "index_accounts_on_office_id", using: :btree
   add_index "accounts", ["user_id"], name: "index_accounts_on_user_id", using: :btree
 
-  create_table "accounts_teams", force: :cascade do |t|
-    t.integer "account_id"
-    t.integer "team_id"
-  end
-
   create_table "activity_logs", force: :cascade do |t|
     t.integer  "comp_id"
     t.string   "status",       limit: 255
@@ -57,33 +52,6 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.datetime "updated_at"
     t.string   "type",         limit: 255
   end
-
-  create_table "agreements", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.text     "description"
-    t.boolean  "office_default",                   default: false
-    t.datetime "agreement_start_date"
-    t.datetime "agreement_end_date"
-    t.datetime "deleted_at"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
-  end
-
-  create_table "agreements_offices", id: false, force: :cascade do |t|
-    t.integer "agreement_id"
-    t.integer "office_id"
-  end
-
-  add_index "agreements_offices", ["agreement_id", "office_id"], name: "index_agreements_offices_on_agreement_id_and_office_id", unique: true, using: :btree
-  add_index "agreements_offices", ["office_id"], name: "index_agreements_offices_on_office_id", using: :btree
-
-  create_table "agreements_tenant_records", id: false, force: :cascade do |t|
-    t.integer "agreement_id"
-    t.integer "tenant_record_id"
-  end
-
-  add_index "agreements_tenant_records", ["agreement_id", "tenant_record_id"], name: "index_agreement_tenant_record", unique: true, using: :btree
-  add_index "agreements_tenant_records", ["tenant_record_id"], name: "index_agreements_tenant_records_on_tenant_record_id", using: :btree
 
   create_table "archive_migration_tenant_records", force: :cascade do |t|
     t.string  "image_url",                   limit: 255
@@ -103,12 +71,27 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.string  "file_name",  limit: 255
   end
 
+  create_table "back_end_lease_comps", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "back_end_sale_comps", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comp_requests", force: :cascade do |t|
     t.integer  "comp_id"
     t.integer  "initiator_id"
     t.integer  "receiver_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "status",       default: false
   end
 
   add_index "comp_requests", ["comp_id"], name: "index_comp_requests_on_comp_id", using: :btree
@@ -134,57 +117,27 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.integer  "agent_id"
   end
 
-  create_table "custom_report_header_custom_fields", force: :cascade do |t|
-    t.integer  "custom_report_header_id"
-    t.string   "custom_field_name",       limit: 255
-    t.integer  "order"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+  create_table "custom_record_properties", force: :cascade do |t|
+    t.string   "key"
+    t.string   "value"
+    t.integer  "custom_record_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "custom_report_header_fields", force: :cascade do |t|
-    t.integer  "custom_report_header_id"
-    t.integer  "tenant_record_sub_category_id"
-    t.integer  "order"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
-  create_table "custom_report_headers", force: :cascade do |t|
-    t.string   "bg_color",                  limit: 255
-    t.integer  "tenant_record_category_id"
-    t.integer  "custom_report_id"
-    t.integer  "order"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.string   "header_name",               limit: 255
-  end
-
-  create_table "custom_report_summary_column_names", force: :cascade do |t|
-    t.string   "label_name",                     limit: 255
-    t.integer  "custom_report_id"
-    t.integer  "custom_report_summary_field_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.integer  "order"
-  end
-
-  create_table "custom_report_summary_fields", force: :cascade do |t|
-    t.string   "field_name", limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "label_name", limit: 255
-  end
-
-  create_table "custom_reports", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.string   "bg_color",           limit: 255
-    t.string   "template_type",      limit: 255
-    t.integer  "report_template_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-    t.boolean  "default",                        default: false
+  create_table "custom_records", force: :cascade do |t|
+    t.boolean  "is_existing_data_set",                          default: false
+    t.boolean  "is_geo_coded",                                  default: false
+    t.string   "name"
+    t.string   "address1"
+    t.string   "city"
+    t.string   "state"
+    t.decimal  "latitude",             precision: 30, scale: 9
+    t.decimal  "longitude",            precision: 30, scale: 9
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "zipcode"
+    t.string   "zipcode_plus"
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -255,6 +208,12 @@ ActiveRecord::Schema.define(version: 20160929112401) do
 
   add_index "import_templates", ["name", "office_id", "reusable"], name: "index_import_templates_on_name_and_office_id_and_reusable", unique: true, using: :btree
 
+  create_table "industries", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "industry_sic_codes", force: :cascade do |t|
     t.string "value",               limit: 255
     t.string "description",         limit: 255
@@ -282,6 +241,7 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.decimal "increase_percent"
     t.date    "start_date"
     t.string  "name",               limit: 255
+    t.date    "delay_start_date"
   end
 
   add_index "lease_structure_expenses", ["lease_structure_id"], name: "index_lease_structure_expenses_on_lease_structure_id", using: :btree
@@ -349,6 +309,24 @@ ActiveRecord::Schema.define(version: 20160929112401) do
   add_index "maps", ["account_id"], name: "index_maps_on_account_id", using: :btree
   add_index "maps", ["office_id"], name: "index_maps_on_office_id", using: :btree
 
+  create_table "market_expenses", force: :cascade do |t|
+    t.decimal  "taxes",                precision: 20, scale: 2
+    t.decimal  "insurance",            precision: 20, scale: 2
+    t.decimal  "utilities",            precision: 20, scale: 2
+    t.decimal  "cam",                  precision: 20, scale: 2
+    t.decimal  "janitorial",           precision: 20, scale: 2
+    t.decimal  "administrative",       precision: 20, scale: 2
+    t.decimal  "payroll_and_benefits", precision: 20, scale: 2
+    t.decimal  "management_fee",       precision: 20, scale: 2
+    t.decimal  "grounds_landscape",    precision: 20, scale: 2
+    t.decimal  "security",             precision: 20, scale: 2
+    t.decimal  "other_tax",            precision: 20, scale: 2
+    t.decimal  "total_opex",           precision: 20, scale: 2
+    t.integer  "opex_market_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "markets", force: :cascade do |t|
     t.string  "name",         limit: 255
     t.boolean "is_preferred",             default: false
@@ -400,15 +378,52 @@ ActiveRecord::Schema.define(version: 20160929112401) do
 
   add_index "offices", ["firm_id"], name: "index_offices_on_firm_id", using: :btree
 
+  create_table "opex_markets", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "description"
+    t.integer  "property_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ownerships", force: :cascade do |t|
     t.integer "account_id"
     t.integer "tenant_record_id"
+  end
+
+  create_table "property_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "report_templates", force: :cascade do |t|
     t.string   "template_name", limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "sale_records", force: :cascade do |t|
+    t.boolean  "is_sales_record",                               default: false
+    t.string   "land_size_identifier"
+    t.string   "view_type"
+    t.string   "address1"
+    t.string   "city"
+    t.string   "state"
+    t.decimal  "land_size",            precision: 20, scale: 2
+    t.decimal  "price",                precision: 20, scale: 2
+    t.decimal  "cap_rate",             precision: 20, scale: 2
+    t.decimal  "latitude",             precision: 30, scale: 9
+    t.decimal  "longitude",            precision: 30, scale: 9
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "zipcode"
+    t.string   "zipcode_plus"
+    t.string   "class_type"
+    t.string   "property_type"
+    t.date     "build_date"
+    t.date     "sold_date"
   end
 
   create_table "schedule_accesses", force: :cascade do |t|
@@ -438,15 +453,6 @@ ActiveRecord::Schema.define(version: 20160929112401) do
   end
 
   add_index "stepped_rents", ["deleted_at"], name: "index_stepped_rents_on_deleted_at", using: :btree
-
-  create_table "teams", force: :cascade do |t|
-    t.integer  "office_id"
-    t.string   "name",       limit: 255
-    t.text     "comment"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.boolean  "multi_user",             default: true
-  end
 
   create_table "tenant_record_categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -547,6 +553,24 @@ ActiveRecord::Schema.define(version: 20160929112401) do
     t.integer  "company_logo_file_size"
     t.datetime "company_logo_updated_at"
     t.integer  "user_id"
+    t.boolean  "has_additional_tenant_cost",                                         default: false
+    t.boolean  "has_additional_ll_allowance",                                        default: false
+    t.decimal  "additional_ll_allowance",                   precision: 20, scale: 2, default: 0.0
+    t.decimal  "additional_tenant_cost",                    precision: 20, scale: 2, default: 0.0
+    t.boolean  "gross_free_rent",                                                    default: false
+    t.string   "comp_view_type"
+    t.string   "deal_type"
+    t.string   "comp_data_type"
+    t.string   "base_rent_type"
+    t.string   "rent_escalation_type"
+    t.string   "free_rent_type"
+    t.boolean  "is_tenant_improvement",                                              default: false
+    t.decimal  "fixed_escalation",                          precision: 20, scale: 2, default: 0.0
+    t.float    "cap_rate"
+    t.float    "sale_price"
+    t.date     "build_date"
+    t.date     "sold_date"
+    t.string   "record_type",                                                        default: "lease"
   end
 
   add_index "tenant_records", ["industry_sic_code_id"], name: "index_tenant_records_on_industry_sic_code_id", using: :btree
