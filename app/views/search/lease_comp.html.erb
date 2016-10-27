@@ -1,0 +1,215 @@
+
+<%#= debug @comp_record %>
+<%#= comp_record%>
+
+<%#= debug @comp_record %>
+
+<%#= debug comp_record.data %>
+
+
+<div style="padding:0px;">
+<br>
+  <br>
+  <table width="100%">
+    <tr><td> </td></tr>
+    <tr>
+      <td width="10%"></td>
+      <td width="60%">
+
+        <div class="tenant-details">
+        <p><h3><%=@comp_record.contact%></h3></p>
+        <address>
+          <%#= @comp_record.company %><br />
+          <%= @comp_record.address1 %><br />
+          <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %><br />
+        </address>
+      </div>
+
+      </td>
+
+      <td>
+
+        <div class="street_view">
+          <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
+            <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
+            </div>
+          </a>
+        </div>
+
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+
+
+
+
+<table class="tx_search_result_table table_full" style="background-color:;">
+
+  <tr>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line"><h3>Lease</h3></td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Tenant Name</td>
+          <td class="result_line"><%=@comp_record.contact%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Industry</td>
+          <td class="result_line"><%=@comp_record.industry_type%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Size (SF)</td>
+          <td class="result_line"><%=@comp_record.size%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Base Rent ($/SF)</td>
+          <td class="result_line"><%=@comp_record.base_rent%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Escalation (%)</td>
+          <td class="result_line"><%=@comp_record.escalation%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Lease Structure</td>
+          <td class="result_line"><%=@comp_record.data['leasestructure_name']%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Commencement Date</td>
+          <td class="result_line"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Term (Months)</td>
+          <td class="result_line"><%=@comp_record.lease_term_months%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Free Rent (Months)</td>
+          <td class="result_line"><%=@comp_record.free_rent%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Tenant Improvements ($/SF)</td>
+          <td class="result_line"><%= number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2})%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Additional Concessions ($/SF)</td>
+          <td class="result_line"><%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Costs to Tenant ($/SF)</td>
+          <td class="result_line"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Lease Type</td>
+          <td class="result_line"><%=@comp_record.lease_type%></td>
+        </tr>
+      </table>
+    </td>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line"><h3>Building</h3></td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Property Name</td>
+          <td class="result_line"><%=@comp_record.property_name.to_s.capitalize!%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Property Type</td>
+          <td class="result_line"><%= @comp_record.property_type.to_s.capitalize! %></td>
+        </tr>
+        <tr>
+          <td class="result_line">Class Type</td>
+          <td class="result_line"><%=@comp_record.class_type.to_s.capitalize!%></td>
+        </tr>
+
+        <tr>
+          <td class="result_line">&nbsp;</td>
+          <td class="result_line"></td>
+        </tr>
+
+        <tr>
+          <td class="result_line"><h3>Location</h3></td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Address</td>
+          <td class="result_line"><%=@comp_record.address1%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Suit</td>
+          <td class="result_line"><%= @comp_record.suite %></td>
+        </tr>
+        <tr>
+          <td class="result_line">City</td>
+          <td class="result_line"><%=@comp_record.city%></td>
+        </tr>
+        <tr>
+          <td class="result_line">State</td>
+          <td class="result_line"><%=@comp_record.state%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Zip Code</td>
+          <td class="result_line"><%=@comp_record.zipcode%></td>
+        </tr>
+        <tr>
+          <td class="result_line">Submarket</td>
+          <td class="result_line"><%=@comp_record.submarket%></td>
+        </tr>
+
+      </table>
+    </td>
+    <td valign="top">
+      <table class="tx_search_result_table table_full">
+        <tr>
+          <td class="result_line"><h3>Custom Data</h3></td>
+          <td class="result_line"></td>
+        </tr>
+        <tr>
+          <td class="result_line">Custom 1</td>
+          <td class="result_line">Data</td>
+        </tr>
+        <tr>
+          <td class="result_line">Custom 2</td>
+          <td class="result_line">Data</td>
+        </tr>
+        <tr>
+          <td class="result_line">Custom 3</td>
+          <td class="result_line">Data</td>
+        </tr>
+        <tr>
+          <td class="result_line">Custom 4</td>
+          <td class="result_line">Data</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+  <br>
+  <br>
+
+</div>
+
+<style>
+  .street_view .street_view_image, .building_image .building_image_view {
+    padding: 0 20px 0 0 !important;
+    width: 316px;
+    height: 200px;
+  }
+  .result_line{
+    text-align:left !important;
+    padding-left:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+  .tx_search_result_table{
+    border-top:1px solid #ccc;
+  }
+</style>

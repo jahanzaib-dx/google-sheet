@@ -1,0 +1,76 @@
+<div class="fixed-width-div">
+  <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'current_imports' } %>
+  <div class="columns large-12 white-area">
+    <!--<h2>Import Comps </h2>-->
+    <!--<div class="cancel"><%#= link_to 'Cancel', new_marketrex_tenant_record_path %></div>-->
+    <!--<div class="clearfix"></div>-->
+
+    <!-- Content -->
+    <%= link_to "Refresh", marketrex_import_status_uploader_import_index_path, :remote => true, :id => 'refresh_import_status', :class => 'import_status', style: "display: none" %>
+    <% if imports.empty? %>
+        <br />
+        <h4>No import in progress</h4>
+        <br />
+        <p><%= link_to "Create a New Record", new_uploader_tenant_record_path %> | <%= link_to "Start a New Bulk Import", new_uploader_import_path %></p>
+    <% else %>
+        <div class="clearfix">
+          <table class="table full responsive wizard imports-list">
+            <tr>
+              <thead>
+              <th><span></span></th>
+              <th><span>Date</span></th>
+              <% if can? :manage, Firm %>
+                  <th><span>Firm</span></th>
+              <%end%>
+              <% if can? :manage, Office %>
+                  <th><span>Office</span></th>
+              <%end%>
+              <th><span>Status</span></th>
+              <th><span>&nbsp;</span></th>
+              <th><span>&nbsp;</span></th>
+              </thead>
+            </tr>
+            <tbody>
+            <% imports.each do |i| %>
+                <tr class="<%= 'error' if !i.complete or !i.import_valid or !i.geocode_valid %><%= ' complete ' if i.complete and i.import_valid and i.geocode_valid %>">
+                  <td>
+                    <% if !i.complete %>
+                        <%= image_tag("small-ajax-loader.gif", :class => 'status_image') %>
+                    <% end %>
+                  </td>
+                  <td class="import-row custom-vertical-align"><%= i.created_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_with_date) %></td>
+                  <% if can? :manage, Firm %>
+                      <td class="vertical-align"><%= simple_format i.office.firm.name if i.office %></td>
+                  <% end %>
+                  <% if can? :manage, Office %>
+                      <td class="vertical-align"><%= simple_format i.office.name if i.office %></td>
+                  <% end %>
+                  <td class="status vertical-align"><%= simple_format i.status %></td>
+                  <td class="count import-row custom-vertical-align"><%="#{i.num_imported_records} of #{i.total_record_count} imported"%> </td>
+                  <td class="actions" style="padding-top: 10px;">
+                    <% if i.complete and i.import_valid and i.geocode_valid %>
+                        <span>&#x2713;</span>
+                        <span class="standard-font-size"><%= link_to(image_tag(image_url("uploader/undo.png"), size: "16x10", alt: 'undo', title: 'undo'),
+                      undo_uploader_import_path(i), method: :put, :class => "undo") %></span>
+                    <% else %>
+                        <%= link_to "view", uploader_import_path(i), :class=>"btn standard-font-size" %>
+                        <%= link_to "delete", uploader_import_path(i), { method: :delete,  :class => "btn btn-red standard-font-size" } %>
+                        <% if i.complete && (!i.import_valid || !i.geocode_valid) %>
+                            <%= link_to(undo_uploader_import_path(i), method: :put, :class=>"btn standard-font-size") do %><span>undo</span><% end %>
+                        <% end %>
+
+                    <% end %>
+                  </td>
+                </tr>
+            <%end%>
+            </tbody>
+          </table>
+          <%= will_paginate(imports, :params => { :controller => 'import', :action => 'index' }) %>
+        </div>
+    <% end %>
+
+    <!-- END -->
+  </div>
+
+
+</div>

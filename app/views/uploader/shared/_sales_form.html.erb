@@ -1,0 +1,116 @@
+<li class="accordion-item accordian-item2 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 2: Base Rent Model</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <p>
+        Is this a land record sale?
+      </p>
+      <%= radio_button_tag "sale_record[is_sales_record]", 'yes', nil, class: 'sale-record' %>
+      <%= label 'sale_record[is_sales_record]', 'yes', 'Yes' %><br>
+      <%= radio_button_tag "sale_record[is_sales_record]", 'no', nil, class: 'sale-record' %>
+      <%= label 'sale_record[is_sales_record]', 'no', 'No' %>
+      <div class="land-size-unit-container">
+        <p>
+          Is Land Size in Acres or SF?
+        </p>
+        <%= radio_button_tag "sale_record[land_size_identifier]", 'acres' %>
+        <%= label 'sale_record[land_size_identifier]', 'acres', 'Acres' %><br>
+        <%= radio_button_tag "sale_record[land_size_identifier]", 'sf' %>
+        <%= label 'sale_record[land_size_identifier]', 'sf', 'SF' %>
+      </div>
+    </div>
+    <div class="right-box">
+      <div class="accordion-content-continue" id="sales-comp-continue-2">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<!---->
+
+<li class="accordion-item accordian-item3 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Property Details</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <div class="fields-table">
+        <table>
+          <tr>
+            <td>
+              Internal or External*
+              <div class="no-padding" style="float: right;">
+                <div class="hover-info">?
+                  <div class="tooltip-custom">
+                    <div class="triangle"></div>
+                    <strong>Tooltip:</strong>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <%= select_tag 'sale_record[view_type]',
+                           options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+            </td>
+          </tr>
+          <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
+          <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
+          <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+          <tr>
+            <td>
+              Land Size*
+              <div class="no-padding" style="float: right;">
+                <div class="hover-info">?
+                  <div class="tooltip-custom">
+                    <div class="triangle"></div>
+                    <strong>Tooltip:</strong>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><%= text_field_tag 'sale_record[land_size]' %></td>
+          </tr>
+          <tr>
+            <td>
+              Sale Price*
+              <div class="no-padding" style="float: right;">
+                <div class="hover-info">?
+                  <div class="tooltip-custom">
+                    <div class="triangle"></div>
+                    <strong>Tooltip:</strong>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><%= text_field_tag 'sale_record[price]' %></td>
+          </tr>
+          <tr>
+            <td>
+              Cap Rate*
+              <div class="no-padding" style="float: right;">
+                <div class="hover-info">?
+                  <div class="tooltip-custom">
+                    <div class="triangle"></div>
+                    <strong>Tooltip:</strong>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
+          </tr>
+        </table>
+
+      </div>
+
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="sales-comp-continue-3" >
+        <p>Add Record</p>
+        <p><%= image_tag("/assets/cloud.png") %></p>
+      </div>
+    </div>
+
+  </div>
+</li>

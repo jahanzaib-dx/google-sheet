@@ -1,0 +1,75 @@
+<li class="accordion-item accordian-item2 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 2: Data Set</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <%= radio_button_tag 'custom_record[is_existing_data_set]', 'yes', nil, class: 'data-set-type' %>
+      <%= label "custom_record[is_existing_data_set]", 'yes', "This is to be added to an existing data set." %><br>
+      <%= radio_button_tag 'custom_record[is_existing_data_set]', 'no', nil, class: 'data-set-type' %>
+      <%= label "custom_record[is_existing_data_set]", 'no', "This is a new record set." %>
+      <div class="existing-data-set-container">
+        <p>Please select existing data set.</p>
+        <%= select_tag 'existing-data-set-dd',
+                       options_for_select(get_custom_records.to_a.map { |record| [record.name, record.id] }), prompt: 'Please Choose', class: 'existing-data-set-dd' %>
+      </div>
+      <div class="new-data-set-container">
+        <div class="columns large-12 no-padding">
+          <div class="columns large-4">
+            <label><%= check_box_tag 'custom_record[is_geo_coded]', nil, nil, class: 'geo-code-my-records' %> Geo-code my records.</label>
+          </div>
+          <div class="columns large-4">
+            <div class="hover-info">?
+              <div class="tooltip-custom">
+                <div class="triangle"></div>
+                <strong>Tooltip:</strong>
+              </div>
+            </div>
+          </div>
+          <div class="columns large-4 required-column-header-hint">
+            *Address1, City and State are required column headers in your spreadsheet."
+          </div>
+        </div>
+        <div>
+          <table>
+            <tr>
+              <td>Name your data set</td>
+              <td><%= text_field_tag 'custom_record[name]' , '', :class => 'normal-element' %></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="right-box">
+      <div class="accordion-content-continue" id="custom-comp-continue-2">
+        <p>Continue</p>
+        <p><%= image_tag("uploader/down_continue.png") %></p>
+      </div>
+    </div>
+  </div>
+</li>
+
+<!---->
+
+<li class="accordion-item accordian-item3 invalid" data-accordion-item>
+  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Property Details</span><span class="tick"><span>&#x2713;</span></span></a>
+  <div class="accordion-content clearfix" data-tab-content>
+    <div class="accordion-content-data">
+      <div class="fields-table-custom-data">
+        <table >
+          <tbody></tbody>
+          <tfoot></tfoot>
+        </table>
+
+      </div>
+
+
+    </div>
+
+    <div class="right-box">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="custom-comp-continue-3">
+        <p>Add Record</p>
+        <p><%= image_tag("/assets/cloud.png") %></p>
+      </div>
+    </div>
+
+  </div>
+</li>

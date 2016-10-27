@@ -7,6 +7,7 @@ VALIDATION_ERRORS = {:street_number => "Address not found",
 }
 
 module GoogleGeocoder
+
   def geocode_address(tenant_record, address_only = false)
     get_address_by_geocode({
                                :address1 => tenant_record.address1,
@@ -21,7 +22,11 @@ module GoogleGeocoder
     combined_fields = address_only ? ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}") :
         ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{(tenant_hash[:zipcode].present? ? tenant_hash[:zipcode] : '')}")
     #("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:zipcode]}")
-    uri = URI.encode("https://maps.googleapis.com/maps/api/geocode/json?address=#{combined_fields}&key=#{Figaro.env.google_geocode_key}")
+    uri = URI.encode("https://maps.googleapis.com/maps/api/geocode/json?address=#{combined_fields}&key=#{ENV['google_geocode_key']}")
+
+    Rails.logger.debug "****************************************************************************"
+    Rails.logger.debug "GEOCODE URL: #{uri}"
+
     HTTParty.get(uri)
   end
 

@@ -81,6 +81,44 @@ function uiConfirm(title, message,ok_callback,cancel_callback){
     $("#uiConfirm").modal();
 }
 
+function uiLoader(title, message){
+    if(message == ''){ message = 'Please wait...';}
+    if(title == ''){ title = 'Loading...'; }
+    if( $("#uiLoader").length ==0){
+        var html = '<div id="uiLoader" class="modal fade"> \
+		  <div class="modal-dialog"> \
+		    <div class="modal-content"> \
+		      <div class="modal-header"> \
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> \
+		        <h4 class="modal-title">'+title+'</h4> \
+		      </div> \
+		      <div class="modal-body"> \
+			    <p>'+ message +'</p> \
+			    <p><img src="/images/long-loading.gif" /></p> \
+		      </div> \
+		    </div> \
+		  </div> \
+		</div>';
+
+        $('body').append(html);
+
+    }else{
+        $("#uiLoader").find('.modal-title').html(title);
+        $("#uiLoader").find('.modal-body p:first').html(message);
+    }
+
+    $("#uiLoader").modal();
+}
+
+function clearLoader(){
+    if($("#uiLoader").length > 0){
+        if($("#uiLoader").is(":visible")) {
+            $("#uiLoader").modal("hide");
+            return;
+        }
+    }
+}
+
 function uiAlert(title, message){
 
     if( $("#uiAlert").length ==0){

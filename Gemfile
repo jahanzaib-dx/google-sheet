@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -42,8 +42,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
-
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-linkedin'
@@ -57,15 +55,28 @@ gem 'phonelib'
 gem 'carrierwave'
 gem 'mini_magick'
 
+gem 'jquery-ui-rails'
+gem 'remotipart', '~> 1.2'
 gem "figaro"
 
 gem 'roadie'
 
 gem 'finance'
 #gem 'activerecord-postgres-hstore'
+gem 'rgeo'
+gem 'rgeo-activerecord'
+gem 'activerecord-postgis-adapter'
 gem 'paranoia'
 gem 'paperclip'
-gem 'jquery-ui-rails'
-gem 'remotipart'
 gem 'chosen-rails'
 gem 'will_paginate'
+
+
+#gem 'roo'
+gem 'roo-xls'
+gem 'geocoder'
+gem 'httparty'
+gem 'google_static_maps_helper'
+gem 'foundation-rails', '6.1.2'
+
+gem 'cancancan'

@@ -1,0 +1,1220 @@
+// Place all the styles related to the tenant_records controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  min-height: 100%;
+  position: relative;
+  height: auto;
+}
+
+.left {
+  float: left !important;
+}
+
+.right {
+  float: right !important;
+}
+
+.default-bg {
+  background-color: #D9DADC;
+}
+
+.lease-single {
+  background-color: #fafafa;
+  overflow: auto;
+  padding-bottom: 125px;
+
+
+  p{
+    font-size: 14px;
+    color: #4b4949;
+  }
+
+  label {
+    font-size: 14px;
+    color: #4b4949;
+  }
+
+  .no-padding{
+    padding: 0;
+  }
+
+
+  .custom-header {
+    padding: 0;
+    background-color: #25282B;
+
+    ul {
+      background-color: transparent;
+      li {
+        border-left : 1px solid #404040;
+        padding: 10px 20px;
+        background-color: transparent;
+        color: white;
+
+        @media (max-width: 1040px) {
+          padding: 10px 16px !important;
+        }
+
+        &:nth-child(3) {
+          border-right : 1px solid #404040;
+        }
+      }
+    }
+    .right-menu-custom {
+      li {
+        padding: 16px 20px;
+        cursor: pointer;
+        @media (max-width: 1040px) {
+          padding: 16px 16px !important;
+        }
+
+        span {
+          vertical-align: top;
+          font-size: 16px;
+          img {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+
+  .fixed-width-div {
+    width: 1000px;
+    margin: 0 auto;
+
+    .grey-area {
+      background-color: #cccccc;
+      padding: 25px 30px 10px;
+
+      h1 {
+        font-size: 34px;
+        color: #4b4949;
+        font-family: arial;
+        font-weight: bolder;
+      }
+
+      p {
+        color: #4b4949;
+        font-family: arial;
+        font-size: 14px;
+      }
+      .menu {
+        font-size: 14px;
+        li {
+          a {
+            color: #4b4949;
+          }
+        }
+        li.active-custom {
+          a {
+            text-decoration: underline;
+            font-weight: bold;
+          }
+        }
+      }
+
+    }
+
+    .white-area {
+      background-color: #ffffff;
+      padding: 10px 20px;
+      h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 28px;
+        color: #262626;
+        font-weight: bolder;
+        float: left;
+      }
+
+      div.cancel {
+        float: right;
+        margin-top: 35px;
+        margin-right: 55px;
+        a {
+          text-decoration: underline;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .white-area-single-display {
+      background-color: #ffffff;
+      padding: 10px 20px;
+
+      .comp-added {
+        font-family: arial, sans-serif;
+        font-size: 20px;
+        color: #262626;
+      }
+
+      .comp-added-name {
+        font-family: arial, sans-serif;
+        font-size: 28px;
+        color: #262626;
+        font-weight: bold;
+      }
+
+      div.back-to-results {
+        float: right;
+        margin-top: 35px;
+        margin-right: 55px;
+        color: #556DB1;
+        a {
+          text-decoration: underline;
+          font-size: 12px;
+          font-family: arial, sans-serif;
+        }
+      }
+
+      .white-inner-grey {
+        background-color: #eeeeee;
+        padding: 30px 0 50px;
+
+        .comp-address {
+          line-height: 18px;
+        }
+
+        .name {
+          font-family: arial, sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          color: #000000;
+          letter-spacing: 0.04px;
+        }
+
+        .comp-rent {
+          margin: 50px 0 0;
+
+          .price-text {
+            font-family: arial, sans-serif;
+            font-size: 18px;
+            color: #000000;
+          }
+
+          .price-value {
+            font-size: 70px;
+            font-family: arial, sans-serif;
+            font-weight: bold;
+            color: #262626;
+            line-height: 60px;
+          }
+        }
+
+        .details {
+          .attribute {
+            font-size: 18px;
+            color: #000000;
+            font-family: arial, sans-serif;
+
+            .unit {
+              font-size: 12px;
+            }
+          }
+
+          .value {
+            font-weight: bold;
+            font-family: arial, sans-serif;
+            font-size: 24px;
+            color: #262626;
+          }
+        }
+      }
+
+
+      h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 28px;
+        color: #262626;
+        font-weight: bolder;
+        float: left;
+      }
+
+      div.cancel {
+        float: right;
+        margin-top: 15px;
+        margin-right: 35px;
+        a {
+          text-decoration: underline;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .accordion-custom {
+      border: 0;
+      background-color: transparent;
+
+      li {
+        background-color:#EBEDEE;
+        margin-bottom: 10px;
+
+        a.accordion-title {
+          border: 0;
+          color: #262626;
+          font-size: 18px;
+          font-weight: bold;
+          padding: 0;
+          span {
+            padding: 20px 30px;
+            display: block;
+            float: left;
+          }
+          span.tick {
+            float: right;
+            background-color: #ECECEF;
+            padding: 20px 67px;
+
+            span {
+              padding: 0;
+              color: #ECECEF;
+            }
+          }
+        }
+        .accordion-title::before {
+          content: '';
+        }
+
+        div.accordion-content {
+          background-color: #D9DADC;
+          border: 0;
+          padding: 0px 0px 40px 28px;
+          position: relative;
+
+          .accordion-content-data {
+            width: 82%;
+            float: left;
+            padding-top: 10px;
+
+            .rent-escalation-left-div {
+              float: left;
+              width: 60%;
+            }
+            .rent-escalation-right-div {
+              float: left;
+            }
+
+            .section-title-heading {
+              font-weight: bold;
+              font-size: 14px;
+              font-family: arial, sans-serif;
+              margin: 10px 0;
+            }
+            .tenant-improvement-description {
+              display: inline-block;
+              margin-left: 10px;
+            }
+
+            .additional-cost-section {
+              select {
+                width: 75px;
+                text-align: center;
+                padding-left: 0;
+                display: none;
+              }
+            }
+
+            .fields-table {
+              background-color: #ffffff;
+              margin-right: 15px;
+
+              table {
+                width: 100%;
+                margin-bottom: 0;
+
+                tr {
+                  background-color: #ffffff;
+                  td:first-child {
+                    font-family: arial, sans-serif;
+                    font-weight: bold;
+                    color: #000000;
+                    font-size: 14px;
+                  }
+
+                  input {
+                    background-color: #ffffff;
+                    border: medium none;
+                    box-shadow: none;
+                    height: 100%;
+                    margin-bottom: 0;
+                    vertical-align: middle;
+                    width: 100%;
+                    font-size: 14px;
+                  }
+
+                  td {
+                    width: 50%;
+                    padding-left: 20px;
+                    border: #cccccc solid 1px;
+                    font-size: 14px;
+                  }
+                }
+
+                select {
+                  margin: 0;
+                }
+
+                select.custom-select {
+                  width: 324px;
+                  font-size: 14px;
+                }
+
+                .custom-value-dropdown {
+                  height: 35px;
+                  width: 160px;
+                  display: inline-block;
+                  font-size: 14px;
+                  margin: 0;
+                }
+
+                .custom-value-input {
+                  border: 1px solid rgba(0, 0, 0, 0.44);
+                  height: 34px;
+                  margin-top: -4px;
+                  width: 160px;
+                  display: inline-block;
+                  cursor: not-allowed;
+                }
+              }
+            }
+
+            .custom-fields-table-container {
+              margin-right: 15px;
+              padding-left: 0;
+              padding-top: 15px;
+
+              h5 {
+                font-weight: bold;
+              }
+
+              table {
+
+
+                tbody tr:nth-child(2n) {
+                  background-color: #FFFFFF;
+                }
+
+                tr {
+                  &:first-child {
+                    width: 165px;
+                  }
+                }
+
+                th {
+                  background-color: #84B7DC;
+                  border: 1px solid #ddd;
+                }
+
+                td {
+                  margin: 0;
+                  padding: 2px 10px;
+                  border: 1px solid #ddd;
+                  font-size: 14px;
+
+
+                  input {
+                    margin: 0;
+                    padding: 5px;
+                    border: 1px solid #ffffff;
+                    box-shadow: none;
+                    font-size: 14px;
+
+                    &:focus {
+                      border: 1px solid #a52c25;
+                    }
+                  }
+                }
+
+                .add-custom-data-single-comp-td {
+                    padding: 0;
+                }
+
+              }
+
+              .actions {
+                padding: 2px 10px;
+
+                .delete-custom-field {
+                  padding: 4px 6px;
+                  font-size: 12px;
+                }
+              }
+            }
+
+            .add-custom-data-single-comp {
+              background-color: #ececef;
+              color: #4883c0;
+              font-size: 14px;
+              font-weight: bold;
+              padding: 20px 40px 20px 20px;
+              font-family: arial, sans-serif;
+            }
+
+            .market-for-expense {
+              width: 170px;
+            }
+
+            .lease-property-expense-section {
+
+              p {
+                font-size: 16px;
+                color: #000000;
+                font-weight: bold;
+                margin: 2px 0;
+              }
+            }
+
+            .discount-interest-expense-section {
+              table {
+                width: 100%;
+                margin: 0;
+                background-color: #FFFFFF;
+                font-size: 12px;
+                font-weight: bold;
+
+                td {
+                  vertical-align: middle;
+                  text-align: center;
+                  border: 1px solid #bababa;
+                  width: 50%;
+                  padding: 0;
+
+                  input {
+                    border: 0 none;
+                    box-shadow: none;
+                    margin: 0;
+                    text-align: center;
+                  }
+                }
+              }
+            }
+
+            .expense-table-container {
+              margin-right: 15px;
+              padding-left: 0;
+              padding-top: 15px;
+
+              table {
+                background-color: #D9DADC;
+                font-size: 14px;
+                border: none;
+
+                tbody tr:nth-child(2n) {
+                  background-color: #FFFFFF;
+                }
+
+                tfoot {
+                  border: 0 none;
+                }
+
+                th {
+                  background-color: #eeeeee;
+                  border: 1px solid #ddd;
+                }
+
+                td {
+                  margin: 0;
+                  padding: 2px 10px;
+                  border: 1px solid #ddd;
+                  font-size: 1em;
+                  /*&:first-child, &:nth-child(2) {
+                    select {
+                      width: auto;
+                    }
+                  }*/
+
+                  input {
+                    margin: 0;
+                    padding: 5px;
+                    border: 1px solid #ffffff;
+                    box-shadow: none;
+                    font-size: 1em;
+
+                    &:focus {
+                      border: 1px solid #a52c25;
+                    }
+                  }
+
+                  select {
+                    font-size: 1em;
+                    text-align: left;
+                    padding: 0;
+                    margin: 0;
+                    border: none;
+                    width: auto;
+                  }
+
+                  &:first-child {
+                    select {
+                      border: 1px solid #bababa;
+                      height: 22px;
+                      margin-bottom: 2px;
+                      width: 100%;
+                    }
+
+                    input {
+                      border: 1px solid #bababa;
+                      font-size: 12px;
+                      height: 20px;
+                      padding: 1px 3px;
+                      width: 135px;
+                      background-color: #FFFFFF;
+                      cursor: not-allowed;
+                    }
+                  }
+
+                  .prepost-wrapper {
+                    position: relative;
+
+                    .prefix {
+                      left: 1px;
+                      min-width: 15px;
+                      position: absolute;
+                      top: 17px;
+                      width: auto;
+                      font-size: 9px;
+                    }
+                    .postfix {
+                      min-width: 15px;
+                      position: absolute;
+                      right: 1px;
+                      top: 17px;
+                      width: auto;
+                      font-size: 9px;
+                    }
+                  }
+
+                  .prefix, .postfix {
+                    border-style: solid;
+                    border-width: 0;
+                    display: block;
+                    font-size: 0.77778rem;
+                    height: 2.05556rem;
+                    line-height: 2.05556rem;
+                    overflow: hidden;
+                    padding-bottom: 0;
+                    padding-top: 0;
+                    position: relative;
+                    text-align: center;
+                    width: 100%;
+                    z-index: 2;
+                  }
+                }
+
+                .add-expense-button-td {
+                  border: 0;
+                  td {
+                    padding: 0;
+                    background-color: #d9dadc;
+
+                    button {
+                      width: 190px;
+                    }
+                  }
+                }
+
+              }
+
+              .actions {
+                padding: 2px 10px;
+
+                .delete-custom-field {
+                  background-color: #ce5b55;
+                  color: #ffffff;
+                  padding: 4px 6px;
+                }
+              }
+            }
+
+            .add-expense-row {
+              background-color: #ececef;
+              color: #4883c0;
+              font-size: 14px;
+              font-weight: bold;
+              padding: 20px 40px 20px 20px;
+              font-family: arial, sans-serif;
+            }
+
+            .free-rent-type {
+
+              .free-rent-type-radio {
+                width: 27px;
+              }
+
+              .free-rent-description-div {
+                width: 60%;
+
+                .free-rent-radio {
+                  float: left;
+                  margin-right: 0.5rem;
+                }
+
+                .free-rent-lable-description {
+
+                }
+              }
+              .free-rent-hover {
+                width: 40%;
+                float: right;
+              }
+            }
+
+            .hover-info {
+              background-color: #000000;
+              border-radius: 16px;
+              color: #ffffff;
+              height: 16px;
+              text-align: center;
+              width: 16px;
+              margin: 2px 0 13px;
+              font-size: 14px;
+              line-height: 19px;
+              position: relative;
+
+              &:hover {
+                .tooltip-custom{
+                  display: block !important;
+
+                }
+              }
+
+              .tooltip-custom {
+                display: none;
+                cursor: pointer;
+                position: absolute;
+                bottom: 26px;
+                background-color: #fff;
+                color: #000;
+                padding: 10px;
+                min-width: 280px;
+                width: auto;
+                height: auto;
+                left: -9px;
+                border: 1px solid #bbbbbb;
+
+                .triangle {
+                  width: 0;
+                  height: 0;
+                  border-left: 8px solid transparent;
+                  border-right: 8px solid transparent;
+                  border-top: 16px solid #fff;
+                  position: absolute;
+                  bottom: -13px;
+                  left: 8px;
+                }
+              }
+
+            }
+          }
+
+          .property-type-dropdown {
+            width: 180px;
+            height: 48px;
+            text-align: center;
+          }
+
+          .operating-expense-help-div {
+            display: none;
+            padding-bottom: 10px;
+
+            p {
+              margin-bottom: 3px;
+            }
+            input {
+              margin-bottom: 2px;
+            }
+          }
+
+          .operating-expense-market-div {
+            display: none;
+          }
+
+          .right-box {
+            position: absolute;
+            right: 0;
+            background-color: #ECECEF;
+            height: 100%;
+            width: 150px;
+
+            .accordion-content-continue {
+              float: right;
+              text-align: center;
+              padding: 27px 46px 27px 47px;
+              background-color: #5B6BAF;
+              color: #ffffff;
+              height: 100px;
+              position: absolute;
+              cursor: pointer;
+              bottom: 0;
+              right: 0;
+
+              p {
+                margin: 0;
+                color: #ffffff;
+              }
+
+            }
+            .accordion-content-continue-add-record {
+              font-weight: bold;
+              padding-right: 34px;
+              padding-left: 35px;
+            }
+
+          }
+
+        }
+
+      }
+      li.is-active {
+        background-color:#D9DADC !important;
+      }
+    }
+  }
+
+  .single-comp-display-bottom-btn {
+    padding: 20px 0px;
+
+    div.cancel {
+      margin-top: 15px;
+      margin-right: 35px;
+      a {
+        text-decoration: underline;
+        font-size: 14px;
+      }
+    }
+  }
+  .btn-edit-single-display {
+    background-color: #eeeeee;
+    padding: 17px;
+    font-size: 14px;
+    color: #5B6BAF;
+  }
+
+  .btn-add-single-display {
+    background-color: #5B6BAF;
+    padding: 17px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    font-family: arial, sans-serif;
+  }
+
+  .comp-img-expense-container {
+    margin-top: 15px;
+
+    .expense {
+      background-color: #FFFFFF;
+      //height: 197px;
+      padding: 10px 15px;
+
+      label {
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: 0.05rem;
+        span {
+          font-weight: normal;
+
+        }
+      }
+      table {
+        border-collapse: unset;
+        font-size: 13px;
+
+        tr {
+          background-color: #FFFFFF;
+          
+          td {
+            padding: 3px 4px;
+            &:last-child {
+              font-weight: bold;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  .stepped-rent-count {
+    width: 139px;
+    font-size: 14px;
+    color: #0a0a0a;
+  }
+
+  .stepped-rent-text {
+    color: #4b4949;
+  }
+
+  .stepped-rent-row.error-message, .stepped-rent-row.info {
+    display: none;
+  }
+
+
+  .show-single-comp-table {
+    margin-top: 40px;
+
+    table {
+      width: 90%;
+      margin-bottom: 0;
+
+      tr {
+        background-color: #ffffff;
+        td:first-child {
+          font-family: arial, sans-serif;
+          font-weight: bold;
+          color: #000000;
+          font-size: 14px;
+        }
+
+        td {
+          width: 50%;
+          padding-left: 20px;
+          border: #cccccc solid 1px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .custom-data-wrapper {
+    caption {
+      text-align: left;
+    }
+
+    th {
+      border: #cccccc solid 1px;
+    }
+
+    td:first-child {
+      font-weight: normal !important;
+    }
+
+  }
+
+  footer {
+    background-color: #5B6BAF;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 26px 0;
+
+
+    .footer-nav {
+      ul {
+        list-style: none;
+        margin: 0;
+        li {
+          display: inline-block;
+          margin-left: 10px;
+          a {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .footer-policy {
+      ul {
+        list-style: none;
+        margin: 0;
+        li {
+          display: inline-block;
+          color: #ffffff;
+          font-size: 13px;
+          margin-left: 10px;
+          a {
+            color: #ffffff;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.stepped-rent-increment-bpopup {
+
+  width: 370px;
+  height: 225px;
+  display: none;
+  border-radius: 2px;
+  background-color: #FFFFFF;
+  padding: 20px 20px 0px 66px;
+
+  select {
+    font-family: arial;
+    font-size: 14px;
+    height: 28px;
+    margin: 0;
+    padding: 3px;
+    width: 110px;
+  }
+
+  label {
+    display: inline-block;
+  }
+
+  input {
+    padding: 2px 3px;
+  }
+
+  #increment-value {
+    width: 238px;
+  }
+
+  ::-webkit-input-placeholder {
+    font-size: 14px;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+    font-size: 14px;
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 14px;
+  }
+
+  :-ms-input-placeholder {
+    font-size: 14px;
+  }
+
+  #calculate-current-stepped-rent {
+    background-color: #777777;
+    margin-top: 5px;
+    border-radius: 2px;
+    border: none;
+    color: #FFFFFF;
+    padding: 10px;
+  }
+
+  #close-stepped-rent-popup {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 14px;
+    height: 19px;
+    position: absolute;
+    right: -20px;
+    text-align: center;
+    top: -20px;
+    width: 22px;
+    cursor: pointer;
+  }
+
+  .select-row {
+    padding: 0 0 10px 0;
+
+    h4 {
+      margin: 0;
+    }
+
+    label {
+      padding-right: 15px;
+    }
+  }
+
+  .previous-interval {
+    padding-bottom: 15px;
+
+    span label {
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+#dialog-message-dalay-start-date-mr {
+  display: none;
+
+  .container {
+    padding-top: 38px;
+    text-align: center;
+
+
+    input {
+      display: inline-block;
+      margin: 0;
+      max-width: 175px;
+    }
+  }
+}
+
+#dialog-message-dalay-start-date {
+  display: none;
+}
+
+.custom_dialog_style {
+  .ui-widget-header {
+    background-color: #CCCCCC !important;
+    color: #ffffff !important;
+  }
+
+  .ui-icon-closethick {
+
+  }
+  .ui-button-text-only {
+    padding: 8px 16px 8px 15px !important;
+    background-color: #CCCCCC !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+  }
+}
+
+.land-size-unit-container {
+  display: none;
+}
+
+/************* Custom Data comp *************/
+.existing-data-set-container {
+  display: none;
+
+  p {
+    margin: 13px 0 6px;
+  }
+  select {
+    max-width: 200px;
+  }
+}
+
+.new-data-set-container {
+  /*display: none;*/
+
+  .required-column-header-hint {
+    margin-top: -60px;
+    font-size: 14px;
+  }
+
+  table {
+    font-weight: bold;
+    font-size: 14px;
+    font-family: "Arial", "sans-serif";
+    tr {
+      border: solid 2px #D2D1D1;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    td:first-child {
+      width: 30%;
+      text-align: center;
+      border-right: solid 1px #A5A4A4;
+    }
+    td:last-child {
+      width: 70px;
+      border-left: solid 1px #A5A4A4;
+
+      input {
+        box-shadow: none;
+        border: unset;
+        margin: 0;
+        padding: 0 30px;
+        font-size: 14px;
+        font-family: "Arial", "sans-serif";
+      }
+    }
+  }
+}
+
+.fields-table-custom-data {
+  background-color: #ffffff;
+  margin-right: 15px;
+
+  table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+
+    tr {
+      background-color: #ffffff;
+      td:first-child {
+        font-family: arial, sans-serif;
+        font-weight: bold;
+        color: #000000;
+        font-size: 14px;
+      }
+
+      input {
+        background-color: #ffffff;
+        border: medium none;
+        box-shadow: none;
+        height: 100%;
+        margin-bottom: 0;
+        vertical-align: middle;
+        width: 100%;
+      }
+
+      label {
+        color: #000000;
+        font-weight: bold;
+        padding-left: 7px;
+      }
+
+      td {
+        width: 50%;
+        padding-left: 20px;
+        border: #cccccc solid 1px;
+      }
+
+      .add-row-custom-data-geocode-single-comp-td {
+        background-color: #d9dadc;
+        padding: 0 !important;
+        border: 1px solid #d9dadc !important;
+      }
+
+      .add-row-custom-data-geocode-single-comp {
+        background-color: #ececef;
+        color: #4883c0;
+        font-family: arial,sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 12px 40px 12px 20px;
+      }
+    }
+  }
+}
+
+.normal-element {
+  font-weight: normal;
+}
+
+.show-water-mark {
+  background-image: url('/assets/marketrex/watermark.png');
+  background-repeat-x: initial;
+  background-size: 1000px 1040px;
+  background-repeat: no-repeat;
+}
+
+.custom-select-centered {
+  text-indent: 25px;
+}
+
+.analysis {
+  padding-top: 70px;
+}
+
+.cashflow {
+  color: #FFFFFF;
+  background: #6d6e71;
+  padding: 13px 0;
+  padding-left: 48px;
+}
+.upgrade-with-tenantrex {
+  background-color: #58595b;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 8px 0 12px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+/********************************************/

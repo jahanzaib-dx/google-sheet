@@ -1,0 +1,12 @@
+<% if column_errors.count == 0 %>
+  <p>No column errors found.</p>
+<% else %>
+  <p><b>Uploaded spreadsheets has missing columns.</b></p>
+  <p>TenantRex needs special columns in your uploaded spreadsheet.</p>
+  <p>Please add the following columns in your spreadsheet and restart your upload.</p>
+  <ul class="column_data errors">
+  <% column_errors.each do |column| %>
+    <li><p><%= column %></p></li>
+  <% end %>
+  </ul>
+<% end %>

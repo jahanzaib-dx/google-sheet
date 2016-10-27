@@ -1,0 +1,13 @@
+<tr class="additional-allowance-{{type}}">
+  <td>Additional {{header}} Allowance {{index}}</td>
+  <td>
+    <div class="header-name-container">
+      <div class="first">
+        <%= text_field_tag "tenant_record[additional_cost][{{type}}][{{index}}]", "", class: "bulk-column-header-value", placeholder: "{ Please select }", id: "tenant_record_additional_cost_{{type}}_{{index}}" %>
+      </div>
+      <div class="second">
+        <select class="bulk-column-header-dd"></select>
+      </div>
+    </div>
+  </td>
+</tr>

@@ -1,5 +1,7 @@
 class SaleRecord < ActiveRecord::Base
 
+  has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
+
   scope :address_only, lambda { |office_id = nil|
     #office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("sale_records.id, zipcode, city, state, address1, 'address_only' as in_scope ")
@@ -47,6 +49,11 @@ class SaleRecord < ActiveRecord::Base
     #.joins(:industry_sic_code)
     #.group('tenant_records.id, tenant_records.address1, offices.firm_id, offices.name, offices.logo_image_file_name, industry_sic_codes.value, industry_sic_codes.description, firms.name')
   }
+  
+  #attr_accessible :is_sales_record, :land_size_identifier, :view_type,
+  #                :address1, :city, :state, :land_size, :price, :cap_rate,
+  #                :latitude, :longitude, :zipcode, :zipcode_plus, :office_id
+
 
 
 end

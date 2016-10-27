@@ -1,0 +1,59 @@
+<div class="fixed-width-div">
+  <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'add_single_record' } %>
+  <div class="columns large-12 white-area">
+
+    <div class="fields-table-custom-data" style="width: 60%; margin: 20px auto">
+      <h2>Sales Record</h2>
+      <table>
+        <tr>
+          <td>Is this Land Record Sale?</td>
+          <td><%= @sale_record.is_sales_record ? "Yes" : "No" %></td>
+        </tr>
+        <tr>
+          <td>Is Land Size in Acres or SF?</td>
+          <td><%= @sale_record.land_size_identifier.titleize %></td>
+        </tr>
+        <tr>
+          <td>Internal or External</td>
+          <td><%= @sale_record.view_type.titleize %></td>
+        </tr>
+        <tr>
+          <td>Address Line 1</td>
+          <td><%= @sale_record.address1 %></td>
+        </tr>
+
+        <tr>
+          <td>City</td>
+          <td><%= @sale_record.city %></td>
+        </tr>
+        <tr>
+          <td>State</td>
+          <td><%= @sale_record.state %></td>
+        </tr>
+        <tr>
+          <td>Land Size</td>
+          <td><%= number_with_precision(@sale_record.land_size, :precision => 0) %></td>
+        </tr>
+        <tr>
+          <td>Sale Price</td>
+          <td><%= number_with_precision(@sale_record.price, :precision => 0) %></td>
+        </tr>
+        <tr>
+          <td>Cap Rate</td>
+          <td><%= number_with_precision(@sale_record.cap_rate, :precision => 0) %></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center;">
+            <a href="<%= "http://www.google.com/maps?cbll=#{@sale_record.latitude},#{@sale_record.longitude}&layer=c" %>" target="_blank">
+              <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{@sale_record.address1},#{@sale_record.city},#{@sale_record.state},#{@sale_record.zipcode}" %>" />
+            </a>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+  </div>
+
+</div>
+

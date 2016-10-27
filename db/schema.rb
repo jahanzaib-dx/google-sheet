@@ -256,6 +256,9 @@ ActiveRecord::Schema.define(version: 20161027071106) do
 
   add_index "lease_structures", ["name", "account_id"], name: "index_lease_structures_on_name_and_account_id", unique: true, using: :btree
 
+# Could not dump table "lookup_address_zipcodes" because of following StandardError
+#   Unknown type 'geometry(Point,3785)' for column 'location'
+
   create_table "lookup_address_zipcodes_tenant_records", id: false, force: :cascade do |t|
     t.integer "tenant_record_id"
     t.integer "lookup_address_zipcode_id"
