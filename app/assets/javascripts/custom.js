@@ -117,14 +117,16 @@ $(document).ready(function(){
   $( ".adv_trr" ).click(function() {
       $("#advanced-search-submit").click();
   });
-  
-  
-  $('.date-picker').datepicker( {
-      changeMonth: true,
-      changeYear: true,
-      showButtonPanel: false,
-      dateFormat: 'mm/yy',
-      onClose: function(dateText, inst) {
-          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-      }
-  });
+
+  jQuery.isFunction( $('.date-picker').datepicker )
+  {
+      $('.date-picker').datepicker({
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: false,
+          dateFormat: 'mm/yy',
+          onClose: function (dateText, inst) {
+              $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+          }
+      });
+  }
