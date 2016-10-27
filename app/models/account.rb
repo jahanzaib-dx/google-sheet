@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
 
 
   # belongs_to :market
-  has_one :account_feature
+  has_one :account_featurerails
   # has_many   :maps, :dependent => :destroy
   # has_and_belongs_to_many :teams
   # before_validation :validate_user
