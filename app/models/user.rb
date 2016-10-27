@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
 
 
 
-  #scope :all_connections, ->() { where(:user_id => id).or.where(:agent_id => id) }
   def all_connections
     connected_to + inverse_connected_to
   end
@@ -229,6 +228,10 @@ class User < ActiveRecord::Base
 
   def get_role
     return ( self.parent_id ) ? 'sub-user' : 'user'
+  end
+
+  def has_trex_admin?
+    account.access('trex_admin')
   end
 
 

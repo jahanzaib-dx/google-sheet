@@ -1,5 +1,9 @@
 
 devise_mail_from: "MarketRex Team"
+twilio_account_sid: ""
+twilio_auth_token: ""
+twilio_from: ""
+google_geocode_key: ""
 
 development:
   mail_host: "localhost:3000"

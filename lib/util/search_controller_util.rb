@@ -157,7 +157,12 @@ module SearchControllerUtil
                    :params => { :address1 => "#{params['term'].gsub(/[\.\s]/,'%')}%".downcase }
                  }
                end
-      ###tenant_records = tenant_records.where(clause[:where], clause[:params])
+
+
+      if (!params['connection'].blank? )
+        tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
+      end
+
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
 
@@ -386,6 +391,9 @@ module SearchControllerUtil
       tenant_records = tenant_records.where("(sale_records.latitude > ? AND sale_records.latitude < ? AND sale_records.longitude > ? AND sale_records.longitude < ?)", $min_latitude.to_f, $max_latitude.to_f, $max_longitude.to_f, $min_longitude.to_f)
     end
 
+    if (!params['connection'].blank? )
+      tenant_records = tenant_records.ownership_sale.where("ownerships.account_id = ?" , params['connection'])
+    end
 
     #begin
     # Using SOLR instead

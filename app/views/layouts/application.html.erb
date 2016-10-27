@@ -11,9 +11,11 @@
   <%= javascript_tag do %>
       window.TENANTREX = {};
     <% end %>
-	
+
+  <%= content_for?(:html_head) ? yield(:html_head) : "" %>
+
 </head>
-<body class="grey_background">
+<body class="grey_background  <%= controller.controller_name %> <%= controller.action_name %>">
 
     <div class="wrap">
 
@@ -31,7 +33,7 @@
 
         <%= render 'layouts/flash' %>
 
-        <%= yield %>
+        <%= content_for?(:content) ? yield(:content) : yield %>
 
         <!--main_body_section-end-->
       </div> <!--/middle -->
@@ -44,7 +46,10 @@
 
     <div class="ajax-loading"><div>Loading <img src="<%= image_url('ajax-loading.gif') %>" /></div></div>
 	
-	<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
+	<!-- <script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script> -->
+
     <%= javascript_include_tag :application, 'data-turbolinks-track' => true %>
+
+    <%= yield :javascript_includes %>
 </body>
 </html>

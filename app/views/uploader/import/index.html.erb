@@ -1,0 +1,23 @@
+<div class="imports container">
+  <div class="inner-container">
+    <div id="#current-uploads">
+      <div id='import_status'>
+        <%= render partial: 'import_status', locals: { imports: @imports } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript_includes do %>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        setInterval(function(){
+          var href = $("#refresh_import_status").attr('href') + window.location.search
+          $("#refresh_import_status").attr('href', href);
+          $("#refresh_import_status").trigger("click");
+        }, 10000);
+      });
+    </script>
+<% end %>
+
+

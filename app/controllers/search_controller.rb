@@ -529,6 +529,57 @@ class SearchController < ApplicationController
     end
   end
 
+  # ---------------------
+
+  def comp
+    if (!params[:id].blank?)
+        comp_id = params[:id]
+        @comp_record = TenantRecord.find(comp_id)
+    end
+
+    #render "comp"
+
+    render(
+        partial: 'comp', :locals =>{:comp_record => @comp_record}
+        #partial: 'comp'
+    #,
+     #   locals: { heading: heading, block: block }
+    )
+    #render json: {:data => params[:id] }
+
+    ##render comp
+
+    # respond_to do |format|
+    #
+    #
+    #     #format.json { render json: { type: 'advanced', params:params } }
+    #
+    #
+    #     format.html { render html }
+    #
+    #
+    #   end
+
+  end
+
+  def lease_comp
+    if (!params[:id].blank?)
+      comp_id = params[:id]
+      @comp_record = TenantRecord.find(comp_id)
+    end
+
+    render "lease_comp"
+  end
+
+  def sale_comp
+    if (!params[:id].blank?)
+      comp_id = params[:id]
+      @comp_record = SaleRecord.find(comp_id)
+    end
+
+    render "sale_comp"
+  end
+
   protected
 
   def get_dashboard_query_url(result_hash = { previous: true })
