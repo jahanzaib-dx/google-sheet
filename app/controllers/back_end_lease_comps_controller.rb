@@ -148,7 +148,7 @@ class BackEndLeaseCompsController < ApplicationController
 
   def create
 
-    session = GoogleDrive::Session.from_config("config.json")
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
     session.drive.delete_file(params[:id])
     @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
 
