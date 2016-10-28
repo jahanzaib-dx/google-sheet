@@ -176,6 +176,7 @@ class Uploader::ImportController < ApplicationController
       spreadsheet = Roo::Excelx.new(@file_path) if( ext.eql?('xlsx'))
 
       @headers = spreadsheet.first
+      @headers.sort!
     end
 
     respond_to do |format|

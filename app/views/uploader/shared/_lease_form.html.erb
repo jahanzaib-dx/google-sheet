@@ -207,6 +207,7 @@
           <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
           <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]" %></td></tr>
           <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+          <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', "", class: 'required' %></td></tr>
           <tr>
             <td>Class Type*</td>
             <td>
