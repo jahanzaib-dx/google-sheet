@@ -7,7 +7,7 @@ class BackEndLeaseCompsController < ApplicationController
 
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
-    session = GoogleDrive::Session.from_config("config.json")
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
     check = BackEndLeaseComp.where('user_id = ?', @current_user)
     if  check.count == 0
