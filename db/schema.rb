@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20161027071106) do
     t.integer  "receiver_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "status",       default: false
   end
 
   add_index "comp_requests", ["comp_id"], name: "index_comp_requests_on_comp_id", using: :btree
@@ -422,6 +423,12 @@ ActiveRecord::Schema.define(version: 20161027071106) do
     t.datetime "updated_at"
     t.string   "zipcode"
     t.string   "zipcode_plus"
+
+    t.string   "class_type"
+    t.string   "property_type"
+    t.date     "build_date"
+    t.date     "sold_date"
+
   end
 
   create_table "schedule_accesses", force: :cascade do |t|
@@ -564,6 +571,13 @@ ActiveRecord::Schema.define(version: 20161027071106) do
     t.string   "free_rent_type"
     t.boolean  "is_tenant_improvement",                                              default: false
     t.decimal  "fixed_escalation",                          precision: 20, scale: 2, default: 0.0
+
+    t.float    "cap_rate"
+    t.float    "sale_price"
+    t.date     "build_date"
+    t.date     "sold_date"
+    t.string   "record_type",                                                        default: "lease"
+
   end
 
   add_index "tenant_records", ["industry_sic_code_id"], name: "index_tenant_records_on_industry_sic_code_id", using: :btree
