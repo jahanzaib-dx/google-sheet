@@ -54,9 +54,9 @@ class BackEndLeaseCompsController < ApplicationController
       end
 
 
-      path = "#{Rails.root}/public/back_end_lease_comp/"
-      extension = "4"
-      session.drive.export_file(@file.id,extension,download_dest: "#{path}/#{@file.id}.xlsx")
+      # path = "#{Rails.root}/public/back_end_lease_comp/"
+      # extension = "4"
+      # session.drive.export_file(@file.id,extension,download_dest: "#{path}/#{@file.id}.xlsx")
 
       # save file name to database
       @BackEndLeaseComp = BackEndLeaseComp.new
