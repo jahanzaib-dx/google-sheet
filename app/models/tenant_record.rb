@@ -12,7 +12,7 @@ class TenantRecord < ActiveRecord::Base
   after_find :protect_record
   before_save :default_values
   before_validation :default_values
-  after_save :populate_lookup_tables
+  # after_save :populate_lookup_tables
 
   # has_and_belongs_to_many :agreements
 
