@@ -1,5 +1,5 @@
-<iframe src="<%= "https://docs.google.com/spreadsheets/d/#{@file_temp.id}/edit?usp=sharing" %>"
-        style="width:100%; height: 700px">
-
-</iframe>
+<div style="width:100%; height:62px; background-color: #d9dadd; z-index: 999; position: relative"></div>
+<div style = "margin-top: -62px; z-index: 0">
+  <iframe src="<%= "https://docs.google.com/spreadsheets/d/#{@file_temp.id}/edit?usp=sharing" %>" style="width:100%; height: 700px"></iframe>
+</div>
 <%= link_to "Save", {:controller => 'back_end_lease_comps', :action => 'create', :id => @file.file, :temp => @file_temp.id }, :class =>"advance_search_btn advanced_map_search", :style =>"width:120px" %>
