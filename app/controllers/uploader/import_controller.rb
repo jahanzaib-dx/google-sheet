@@ -83,8 +83,8 @@ class Uploader::ImportController < ApplicationController
 
     ext = File.extname("#{file_path}")[1..-1]
 
-    @sheet = Roo::Excel.new("#{file_path}") if( ext.match('xls') )
-    @sheet = Roo::Excelx.new("#{file_path}") if( ext.match('xlsx'))
+    @sheet = Roo::Excel.new("#{file_path}") if( ext.eql?('xls') )
+    @sheet = Roo::Excelx.new("#{file_path}") if( ext.eql?('xlsx'))
 
     required_params = {}
     not_for_sheet = {}
@@ -176,7 +176,7 @@ class Uploader::ImportController < ApplicationController
       spreadsheet = Roo::Excelx.new(@file_path) if( ext.eql?('xlsx'))
 
       @headers = spreadsheet.first
-      @headers.sort!
+      @headers = @headers.sort_by(&:downcase)
     end
 
     respond_to do |format|

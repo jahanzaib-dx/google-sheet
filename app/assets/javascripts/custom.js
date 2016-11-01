@@ -118,7 +118,7 @@ $(document).ready(function(){
       $("#advanced-search-submit").click();
   });
 
-  jQuery.isFunction( $('.date-picker').datepicker )
+  if ( $('.date-picker').length > 0)
   {
       $('.date-picker').datepicker({
           changeMonth: true,
