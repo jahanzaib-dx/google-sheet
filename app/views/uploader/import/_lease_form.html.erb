@@ -315,6 +315,21 @@
               </td>
             </tr>
             <tr>
+              <td>Submarket*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" type="text" name="tenant_record[submarket]" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td>Class Type*</td>
               <td>
                 <div class="header-name-container">
@@ -503,49 +518,7 @@
     </div>
 
     <div class="right-box">
-      <div class="accordion-content-continue" id="bulk-comp-continue-4">
-        <p>Continue</p>
-        <p><%= image_tag("uploader/down_continue.png") %></p>
-      </div>
-    </div>
-  </div>
-</li>
-
-<li class="accordion-item accordian-item5 invalid" data-accordion-item>
-  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 5: Operating Expenses</span><span class="tick"><span>&#x2713;</span></span></a>
-  <div class="accordion-content clearfix" data-tab-content>
-    <div class="accordion-content-data">
-
-      <div class="discount-interest-expense-section large-12 no-padding">
-        <div class="columns large-4 no-padding">
-          <table>
-            <tr>
-              <td>Discount %</td>
-              <td> <%= text_field_tag "lease_structure[discount_rate]", "0.00", :class => 'normal-element'   %> </td>
-            </tr>
-          </table>
-        </div>
-        <div class="columns large-4">
-          <table>
-            <tr>
-              <td>Interest %</td>
-              <td>
-                <%= text_field_tag "lease_structure[interest_rate]", "0.00", :class => 'normal-element'   %>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div style="clear: both"></div>
-      </div>
-
-      <div class="large-12 columns no-padding">
-        <%= render partial: "uploader/shared/operating_expenses" %>
-      </div>
-
-    </div>
-
-    <div class="right-box">
-      <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
+      <div class="accordion-content-continue accordion-content-continue-add-record" id="bulk-comp-continue-4">
         <p>Add Record</p>
         <p><%= image_tag("/assets/cloud.png") %></p>
       </div>

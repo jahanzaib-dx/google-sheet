@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -116,6 +117,10 @@ Rails.application.routes.draw do
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
 
   resources :groups
+  resources :back_end_lease_comps
+  get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
+  resources :back_end_sale_comps
+  get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
 
 
 

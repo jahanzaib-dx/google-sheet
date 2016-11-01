@@ -207,6 +207,7 @@
           <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
           <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]" %></td></tr>
           <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+          <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', "", class: 'required' %></td></tr>
           <tr>
             <td>Class Type*</td>
             <td>
@@ -301,76 +302,15 @@
 
     </div>
 
-    <div class="right-box">
-      <div class="accordion-content-continue" id="single-comp-continue-3">
-        <p>Continue</p>
-        <p><%= image_tag("uploader/down_continue.png") %></p>
-      </div>
-    </div>
+                          <div class="right-box">
+                            <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
+                              <p>Add Record</p>
+                              <p><%= image_tag("/assets/cloud.png") %></p>
+                            </div>
+                          </div>
+
 
   </div>
 </li>
 
-<!---->
-<li class="accordion-item accordian-item4 invalid" data-accordion-item>
-  <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 4: Operating Expenses</span><span class="tick"><span>&#x2713;</span></span></a>
-  <div class="accordion-content clearfix" data-tab-content>
-    <div class="accordion-content-data">
-      <div class="large-12 columns no-padding operating-expense-help-div">
-        <p>
-          Would you like help with operating expenses for your market?
-        </p>
-        <label><%= radio_button_tag 'has_operating_expenses', 'yes' %> Yes </label>
-        <label><%= radio_button_tag 'has_operating_expenses', 'no' %> No </label>
-      </div>
-
-      <div class="large-12 columns no-padding operating-expense-market-div">
-        <p>
-          Please select your market or the market closest to you.
-        </p>
-        <select class="market-for-expense">
-          <option value="">Select Market</option>
-        </select>
-      </div>
-
-      <div class="lease-property-expense-section large-12 no-padding">
-        <p>Property Type: <span class="property-type-expense-section"></span></p>
-        <p>Lease Structure: <span class="lease-structure-expense-section"></span></p>
-      </div>
-
-      <div class="discount-interest-expense-section large-12 no-padding">
-        <div class="columns large-4 no-padding">
-          <table>
-            <tr>
-              <td>Discount %</td>
-              <td> <%= text_field_tag "lease_structure[discount_rate]", "0.00", :class => 'normal-element'  %> </td>
-            </tr>
-          </table>
-        </div>
-        <div class="columns large-4">
-          <table>
-            <tr>
-              <td>Interest %</td>
-              <td>
-                <%= text_field_tag "lease_structure[interest_rate]", "0.00", :class => 'normal-element' %>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div style="clear: both"></div>
-      </div>
-
-      <div class="large-12 columns no-padding">
-        <%= render partial: "uploader/shared/operating_expenses"%>
-      </div>
-
-    </div>
-
-    <div class="right-box">
-      <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
-        <p>Add Record</p>
-        <p><%= image_tag("/assets/cloud.png") %></p>
-      </div>
-    </div>
-  </div>
-</li>
+<!-- -->

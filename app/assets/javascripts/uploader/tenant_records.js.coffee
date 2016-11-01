@@ -165,20 +165,41 @@ $(document).ready ->
   $('.is-active .tick span').css 'color', '#ececef'
 
   #******** Sales Comp ******************#
+
   $('#sales-comp-continue-2').on 'click', (e) ->
     e.preventDefault()
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
 
-  if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'yes'
-    $('.land-size-unit-container').css 'display', 'block'
+    if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'yes'
+      $('#sales-building-table').hide()
+      $('#sales-land-table').show()
+      $('#sales-building-table input, #sales-building-table select').attr('disabled','disabled')
+      $('#sales-land-table input, #sales-land-table select').removeAttr('disabled')
+      $('.land-size-unit-container').css 'display', 'block'
+
+
+    if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'no'
+      $('#sales-building-table').show()
+      $('#sales-land-table').hide()
+      $('#sales-building-table input, #sales-building-table select').removeAttr('disabled')
+      $('#sales-land-table input, #sales-land-table select').attr('disabled','disabled')
+
+
   $(".sale-record").on 'click', ->
     selected = $("input[type='radio'][name='sale_record[is_sales_record]']:checked")
     if selected.length > 0 and selected.val() == 'no'
       $('.land-size-unit-container').css 'display', 'none'
     else
       $('.land-size-unit-container').css 'display', 'block'
+
+  $("input[type=radio][name='sale_record[land_size_identifier]']").on 'click' , ->
+    selected = $("input[type='radio'][name='sale_record[land_size_identifier]']:checked")
+    if selected.length > 0 and selected.val() == 'acres'
+      $('#sale_record_land_size').attr('placeholder','Acres')
+    else
+      $('#sale_record_land_size').attr('placeholder','SF')
   #***************************************#
 
 
@@ -237,7 +258,7 @@ $(document).ready ->
       else
         $('#custom_record_name').val('').prop("disabled", false);
         $('.existing-data-set-container').css 'display', 'none'
-        #$('.new-data-set-container').css 'display', 'block'
+  #$('.new-data-set-container').css 'display', 'block'
 
   $(document).on 'click', '.add-row-custom-data-geocode-single-comp', (e)->
     e.preventDefault()
@@ -264,7 +285,7 @@ $(document).ready ->
         container = $('.fields-table-custom-data table tbody')
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: obj.value})
+          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: ''})
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       else
         $('#custom_record_is_geo_coded').prop 'checked', false
@@ -272,7 +293,7 @@ $(document).ready ->
         container.empty()
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: obj.value})
+          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: ''})
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       $('#custom_record_name').val(response.name)
 

@@ -13,32 +13,21 @@
       </div>
       <div class="new-data-set-container">
         <div class="columns large-12 no-padding">
-          <div class="columns large-4">
+          <div class="columns large-6">
             <label><%= check_box_tag 'custom_record[is_geo_coded]', nil, nil, class: 'geo-code-my-records' %> Geo-code my records.</label>
           </div>
-          <div class="columns large-4">
+          <div class="columns large-6">
             <div class="hover-info">?
               <div class="tooltip-custom">
                 <div class="triangle"></div>
-                <strong>Tooltip:</strong> If you check this box, free rent means the base rent and expenses are free.
+                <strong>Tooltip:</strong> Address1, City and State are required column headers in your spreadsheet.
               </div>
             </div>
-          </div>
-          <div class="columns large-4 required-column-header-hint">
-            *Address1, City and State are required column headers in your spreadsheet."
           </div>
         </div>
         <div class="columns large-12 no-padding">
-          <div class="columns large-8 no-padding">
+          <div class="columns large-12 no-padding">
             <label>Note: All column headers in your spreadsheet must be in row 1.</label>
-          </div>
-          <div class="columns large-4 no-padding">
-            <div class="hover-info">?
-              <div class="tooltip-custom">
-                <div class="triangle"></div>
-                <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
-              </div>
-            </div>
           </div>
         </div>
 

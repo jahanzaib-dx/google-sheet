@@ -34,8 +34,8 @@
   <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Property Details</span><span class="tick"><span>&#x2713;</span></span></a>
   <div class="accordion-content clearfix" data-tab-content>
     <div class="accordion-content-data">
-      <div class="fields-table">
-        <table>
+      <div class="fields-table sales-dynamic-fields-wrapper">
+        <table class="sales-dynamic-fields" id="sales-building-table">
           <tr>
             <td>
               Internal or External*
@@ -50,15 +50,143 @@
             </td>
             <td>
               <%= select_tag 'sale_record[view_type]',
-                           options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
-            </td>
-          </tr>
-          <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
-          <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
-          <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                  </td>
+                  </tr>
+                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
+                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+                        <tr>
+                          <td>
+                            Property Name*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[property_name]' %></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Date Built*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[date_built]', "", class: 'date-picker-inline' %>
+                                      <span> <% #= hidden_field_tag "sale_record[date_built]"
+                                      %> </span></td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    Property Type*
+                                    <div class="no-padding" style="float: right;">
+                                      <div class="hover-info">?
+                                        <div class="tooltip-custom">
+                                          <div class="triangle"></div>
+                                          <strong>Tooltip:</strong>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td><%= select_tag 'sale_record[property_type]',
+                                                     options_for_select(TenantRecord::SALES_PROPERTY_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            Class Type*
+                                            <div class="no-padding" style="float: right;">
+                                              <div class="hover-info">?
+                                                <div class="tooltip-custom">
+                                                  <div class="triangle"></div>
+                                                  <strong>Tooltip:</strong>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <%= select_tag 'sale_record[class_type]',
+                                                           options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+
+
+                                                </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    Building Size*
+                                                    <div class="no-padding" style="float: right;">
+                                                      <div class="hover-info">?
+                                                        <div class="tooltip-custom">
+                                                          <div class="triangle"></div>
+                                                          <strong>Tooltip:</strong>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td><%= text_field_tag 'sale_record[building_size]' %></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    Sale Price*
+                                                    <div class="no-padding" style="float: right;">
+                                                      <div class="hover-info">?
+                                                        <div class="tooltip-custom">
+                                                          <div class="triangle"></div>
+                                                          <strong>Tooltip:</strong>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td><%= text_field_tag 'sale_record[sale_price]' %></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    Date Sold*
+                                                    <div class="no-padding" style="float: right;">
+                                                      <div class="hover-info">?
+                                                        <div class="tooltip-custom">
+                                                          <div class="triangle"></div>
+                                                          <strong>Tooltip:</strong>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td><%= text_field_tag 'sale_record[date_sold]', "", class: 'date-picker-inline' %>
+                                      <span> <% #= hidden_field_tag "sale_record[date_sold]"
+                                      %> </span></td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    Cap Rate*
+                                                    <div class="no-padding" style="float: right;">
+                                                      <div class="hover-info">?
+                                                        <div class="tooltip-custom">
+                                                          <div class="triangle"></div>
+                                                          <strong>Tooltip:</strong>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
+                                                </tr>
+        </table>
+
+
+        <table class="sales-dynamic-fields" id="sales-land-table">
           <tr>
             <td>
-              Land Size*
+              Internal or External*
               <div class="no-padding" style="float: right;">
                 <div class="hover-info">?
                   <div class="tooltip-custom">
@@ -68,36 +196,74 @@
                 </div>
               </div>
             </td>
-            <td><%= text_field_tag 'sale_record[land_size]' %></td>
-          </tr>
-          <tr>
             <td>
-              Sale Price*
-              <div class="no-padding" style="float: right;">
-                <div class="hover-info">?
-                  <div class="tooltip-custom">
-                    <div class="triangle"></div>
-                    <strong>Tooltip:</strong>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td><%= text_field_tag 'sale_record[price]' %></td>
-          </tr>
-          <tr>
-            <td>
-              Cap Rate*
-              <div class="no-padding" style="float: right;">
-                <div class="hover-info">?
-                  <div class="tooltip-custom">
-                    <div class="triangle"></div>
-                    <strong>Tooltip:</strong>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
-          </tr>
+              <%= select_tag 'sale_record[view_type]',
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                  </td>
+                  </tr>
+                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
+                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+                        <tr>
+                          <td>
+                            Land Size*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[land_size]' %></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Sale Price*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[price]' %></td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            Date Sold*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[date_sold]', "", class: 'date-picker-inline' %>
+                                      <span> <% #= hidden_field_tag "sale_record[date_sold]"
+                                      %> </span></td>
+                                </tr>
+
+                        <tr>
+                          <td>
+                            Cap Rate*
+                            <div class="no-padding" style="float: right;">
+                              <div class="hover-info">?
+                                <div class="tooltip-custom">
+                                  <div class="triangle"></div>
+                                  <strong>Tooltip:</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
+                        </tr>
         </table>
 
       </div>
@@ -114,3 +280,4 @@
 
   </div>
 </li>
+
