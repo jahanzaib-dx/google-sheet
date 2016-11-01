@@ -20,7 +20,7 @@ body {
   background-color: #D9DADC;
 }
 
-.lease-single {
+.lease-single, .sales-dynamic-fields-wrapper {
   background-color: #fafafa;
   overflow: auto;
   padding-bottom: 125px;
@@ -268,7 +268,7 @@ body {
           span.tick {
             float: right;
             background-color: #ECECEF;
-            padding: 20px 67px;
+            padding: 20px 68px;
 
             span {
               padding: 0;

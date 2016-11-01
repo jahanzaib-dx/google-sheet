@@ -59,6 +59,7 @@ class TenantRecord < ActiveRecord::Base
   VIEW_TYPE            = %w[private confidential network public]
   LOCATION_TYPE        = %w[branch headquarters]
   PROPERTY_TYPE        = %w[office industrial retail flex]
+  SALES_PROPERTY_TYPE = %w[healthcare hospitality industrial multifamily office portfolio retail single-family speciality other]
   REQUIRED_FIELDS = %w[company address1 suite city state zipcode
   base_rent class_type comp_type contact contact_email contact_phone lease_type
   escalation free_rent industry_sic_code_id lease_commencement_date lease_term_months

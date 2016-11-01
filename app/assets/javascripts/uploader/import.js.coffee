@@ -38,7 +38,6 @@ $(document).ready ->
     $(@).parent().siblings('.first').find('.bulk-column-header-value').val($(@).find(":selected").text())
 
   $(document).on 'click', '#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2', (e) ->
-    console.log('clickeddddddddddddddddddddddddddddddd')
     submit_is = $(@)
 #    submit_is.closest('form').submit()
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
@@ -65,11 +64,28 @@ $(document).ready ->
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
 
+
   $('#bulk-sales-comp-continue-3').on 'click', (e) ->
     e.preventDefault()
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item4', 'accordian-item3'
     $('.is-active .tick span').css 'color', '#ececef'
+    if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'yes'
+      $('.building-row').hide()
+      $('.land-row').show()
+      $('.building-row input, .building-row select').attr('disabled','disabled')
+      $('.land-row input, .land-row select').removeAttr('disabled')
+
+
+
+    if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'no'
+      $('.building-row').show()
+      $('.land-row').hide()
+      $('.building-row input, .building-row select').removeAttr('disabled')
+      $('.land-row input, .land-row select').attr('disabled','disabled')
+
+
+
 
 open_next_accordian_item = (to_show,to_hide) ->
   $('.'+to_show).addClass('is-active')
@@ -164,3 +180,24 @@ $(document).on 'change', '#steps_count_dd', (e) ->
     $('.stepped-rent-row').hide()
 
   $('.lease-record-section table tbody').append html
+
+
+
+
+$(document).on 'click', '#tenant_record_rent_escalation_type_percent', (e) ->
+  if $(this).is(":checked")
+    $('input[type=text][name="tenant_record[escalation]"]').parents('tr').show();
+  else
+    $('input[type=text][name="tenant_record[escalation]"]').parents('tr').hide();
+
+
+$(document).on 'click', '#tenant_record_rent_escalation_type_fixed', (e) ->
+  if $(this).is(":checked")
+    $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').show();
+  else
+    $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').hide();
+
+
+$(document).on 'ready', ->
+  $('input[type=text][name="tenant_record[escalation]"]').parents('tr').hide();
+  $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').hide();
