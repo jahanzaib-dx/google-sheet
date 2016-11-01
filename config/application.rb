@@ -45,6 +45,7 @@ module MarketRex
     config.autoload_paths << Rails.root.join('lib/util')
 
     config.middleware.use Rack::ContentLength
+	config.middleware.use WickedPdf::Middleware
 
   end
 end

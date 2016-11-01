@@ -126,12 +126,31 @@
 
 
 
+/*sale-detail*/
 
 
+.ls-table-box > h1 {
+    font-size: 27px;
+    font-weight: bold;
+    height: 59px;
+    margin: 25px 0 0;
+}
 
 
+.ls-table-box > p {
+    color: #4c494a;
+    font-size: 16px;
+    margin: 0 0 5px;
+}
 
-
+.comp-background-container.comp-sale-background-container {
+    margin: 45px 0 24px;
+    padding: 51px 13px 38px 0;
+}
+.detail-comp-hadding.sale-detail-comp-hadding {
+    margin: 0 0 34px;
+}
+/*sale-detail*/
 
 
 

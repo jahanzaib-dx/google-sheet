@@ -53,7 +53,10 @@ class SearchController < ApplicationController
       else
         #####tenant_records = scope_protect_view_office_user(params, current_user)
       end
-    end
+  end
+
+    @connections = Connection.all_connection_ids(current_user)
+    tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
 
     clause = if address1.present? and zipcode.present?
                { :where => "LOWER(tenant_records.address1) = :address1 AND tenant_records.zipcode = :zipcode",
@@ -421,6 +424,9 @@ class SearchController < ApplicationController
     # MySQL query
     unless (clause.nil?)
 
+      @connections = Connection.all_connection_ids(current_user)
+      tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
+
       tenant_records = tenant_records.where(clause[:where], clause[:params])
       params['summary'] = false
       results = case search_type
@@ -567,7 +573,6 @@ class SearchController < ApplicationController
       comp_id = params[:id]
       @comp_record = TenantRecord.find(comp_id)
     end
-
     render "lease_comp"
   end
 
@@ -576,8 +581,23 @@ class SearchController < ApplicationController
       comp_id = params[:id]
       @comp_record = SaleRecord.find(comp_id)
     end
-
     render "sale_comp"
+  end
+
+  def lease_comp_pdf
+    if (!params[:id].blank?)
+      comp_id = params[:id]
+      @comp_record = TenantRecord.find(comp_id)
+    end
+    render :pdf => "lease_comp_pdf" ##any name
+  end
+
+  def sale_comp_pdf
+    if (!params[:id].blank?)
+      comp_id = params[:id]
+      @comp_record = SaleRecord.find(comp_id)
+    end
+    render :pdf => "sale_comp_pdf"
   end
 
   protected
