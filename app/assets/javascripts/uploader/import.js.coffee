@@ -42,7 +42,7 @@ $(document).ready ->
 #    submit_is.closest('form').submit()
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
 
-  $(document).on 'click', '#single-comp-continue-4, #bulk-sales-comp-continue-4, #bulk-custom-comp-continue-3', (e) ->
+  $(document).on 'click', '#bulk-comp-continue-4, #bulk-sales-comp-continue-4, #bulk-custom-comp-continue-3', (e) ->
     form_data = $('.accordion-custom :input').serializeArray();
 
     xhr = $.ajax
@@ -82,7 +82,7 @@ $(document).ready ->
       $('.building-row').show()
       $('.land-row').hide()
       $('.building-row input, .building-row select').removeAttr('disabled')
-      $('.land-row input, .land-row select').attr('disabled','disabled')
+      $('.land-row input, #sales-land-table select').attr('disabled','disabled')
 
 
 
