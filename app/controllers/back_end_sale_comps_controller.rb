@@ -140,7 +140,19 @@ class BackEndSaleCompsController < ApplicationController
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
-           
+            :is_sales_record => ws[counter, 2],
+            :land_size_identifier => ws[counter, 3],
+            :view_type => ws[counter, 4],
+            :address1 =>  ws[counter, 5],
+            :city => ws[counter, 6],
+            :state => ws[counter, 7],
+            :land_size => ws[counter, 8],
+            :price => ws[counter, 9],
+            :cap_rate => ws[counter, 10],
+            :latitude => ws[counter, 11],
+            :longitude => ws[counter, 12],
+            :zipcode => ws[counter, 13],
+            :zipcode_plus => ws[counter, 14]
         )
       end
       counter+=1
