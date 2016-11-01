@@ -164,3 +164,23 @@ $(document).on 'change', '#steps_count_dd', (e) ->
     $('.stepped-rent-row').hide()
 
   $('.lease-record-section table tbody').append html
+
+
+$(document).on 'click', '#tenant_record_rent_escalation_type_percent', (e) ->
+  if $(this).is(":checked")
+    $('input[type=text][name="tenant_record[escalation]"]').parents('tr').show();
+  else
+    $('input[type=text][name="tenant_record[escalation]"]').parents('tr').hide();
+
+
+$(document).on 'click', '#tenant_record_rent_escalation_type_fixed', (e) ->
+  if $(this).is(":checked")
+    $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').show();
+  else
+    $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').hide();
+
+
+
+$(document).on 'ready', ->
+  $('input[type=text][name="tenant_record[escalation]"]').parents('tr').hide();
+  $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').hide();
