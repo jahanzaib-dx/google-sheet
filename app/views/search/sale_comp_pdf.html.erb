@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="comp-width-container">
+    <div class="col-md-12 comp-background-container ">
+      <div class="comp-detail-container">
+        <div class="col-md-12 successfully-added-main">
+          <div class="col-md-4">
+            <!--<h3 class="successfully-hadding">Successfully added: </h3>-->
+            <h2 class="broadway-hadding"><%= @comp_record.address1 %></h2>
+          </div>
+          <div class="col-md-8 pull-right">
+            <p class="custom-pdf-btn"><a href="#!"> Create Custom PDF</a></p>
+            <p class="creat-pdf-btn"><a href="<%=search_sale_comp_pdf_path(@comp_record.id)%>" target="_blank"> Create  PDF</a></p>
+            <!--<p class="edit-record-btn"><a href="#!">Edit Record</a></p>-->
+          </div>
+        </div>
+      </div>
+      <div class="adress-bar-main-container">
+        <div class="col-md-12 adress-bar-container">
+          <div class="adress-detail">
+            <h1 class="nespresso">
+              <!--Nespresso-->
+            </h1>
+            <h3 class="adress-content"><%= @comp_record.address1 %><br/>
+              <%#= @comp_record.suite %>
+              <!--<br/>-->
+              <%#= @comp_record.city %>
+              <!--<br/>-->
+              <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %></h3>
+          </div>
+          <img src="<%= image_url 'adress-img.jpg' %>" class="adress-img">
+        </div>
+      </div>
+      <div class="comp-table-container">
+        <h1 class="detail-comp-hadding">Comp Detail</h1>
+        <table width="100%" border="0">
+          <tr>
+            <td height="104"><h1 class="comp-table-hadding">Sale</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+            <td><h1 class="comp-table-hadding">Building</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Size (SF) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.land_size%></p></td>
+            <td><p class="comp-table-pre">Property Name </p></td>
+            <td><p class="comp-table-pre">The Bank Building</p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Sale Price </p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.price.to_f, {:precision=>2})%> </p></td>
+            <td><p class="comp-table-pre">Property Type </p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize! %></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Date Sold </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.sold_date.strftime('%m/%d/%Y')%></p></td>
+            <td><p class="comp-table-pre">Class Type </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize!%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Cap Rate (%) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.cap_rate%>%</p></td>
+            <td><p class="comp-table-pre">Year Built </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.build_date.strftime('%Y')%></p></td>
+          </tr>
+        </table>
+        <table width="48%" border="0" class="pull-left">
+          <tr>
+            <td width="214" height="104"><h1 class="comp-table-hadding">Location</h1></td>
+            <td width="272" height="104"><h1 class="comp-table-hadding"></h1></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Address</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.address1%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Suite</p></td>
+            <td><p class="comp-table-pre">
+              <!--402-->
+            </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">City</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.city%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">State</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.state%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Zip Code</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.zipcode%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Submarket</p></td>
+            <td><p class="comp-table-pre">
+              <!--Downtown-->
+            </p></td>
+          </tr>
+        </table>
+        <table width="50%" border="0" class="pull-left">
+          <tr>
+            <td width="214" height="104"><h1 class="comp-table-hadding">Comments</h1></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex </p></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12 comp-bottom-btn">
+      <div class="col-md-8 pull-right">
+        <p class="custom-pdf-btn"><a href="#!"> Create Custom PDF</a></p>
+        <p class="creat-pdf-btn"><a href="<%=search_sale_comp_pdf_path(@comp_record.id)%>" target="_blank"> Create  PDF</a></p>
+        <!--<p class="edit-record-btn"><a href="#!">Edit Record</a></p>-->
+      </div>
+    </div>
+  </div>
+</div>
