@@ -1,34 +1,37 @@
-<div class="main_body_section_grey" style=" z-index: 999; position: relative">
-    <div class="container">
-      <div class="search_content">
-        <h2>
-          Database
-        </h2>
-        <div class="col-md-4 col-sm-4">
-          <div class="col-md-6 col-sm-6">
-            <div class="btn-group tx_btn_group">
-                <span> Select Data Type</span>
-                <div class="tx_dropdown_toggl tx-drop-down-select">
-                  <select class="selectpicker filters_type" id="data_type">
-                    <option value="lease"><%= link_to "Lease", back_end_lease_comps_path %></option>
-                    <option value="sale"><%= link_to "Sale", back_end_sale_comps_path %></option>
-                  </select>
-                </div>
-              </div>
-          </div>
+<div style=" z-index: 999; position: relative; background-color: #fafafa">
+  <div class="container" style="background-color: #d9dadd;z-index: 999; position: relative;">
+    <div class="search_content">
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <h2 style="font-weight: bold">Database</h2>
         </div>
-        <div class="col-md-8 col-sm-8">
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <div class="btn-group tx_btn_group">
+            <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
+            <div class="tx_dropdown_toggl tx-drop-down-select">
+              <select class="selectpicker" id="data_type" style="text-align: center;">
+                <option value="lease"><%= link_to "Lease", back_end_lease_comps_path %></option>
+                <option value="sale"><%= link_to "Sales", back_end_sale_comps_path %></option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-10 col-sm-10">
           <div class="col-md-2 col-sm-2 both-pad-none" style="float: right;">
-            <%= link_to "Save", {:controller => 'back_end_lease_comps', :action => 'create', :id => @file.file, :temp => @file_temp.id }, :class =>"advance_search_btn advanced_map_search"%>
+            <%= link_to "Save Changes", {:controller => 'back_end_lease_comps', :action => 'create', :id => @file.file, :temp => @file_temp.id }, :class =>"tx_linkdin_profile", :style => "width:auto"%>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 <div class="clearfix"></div>
 
-<div style = "margin-top: -62px; z-index: 0">
-  <iframe src="<%= "https://docs.google.com/spreadsheets/d/#{@file_temp.id}/edit?usp=sharing" %>" style="width:100%; height: 700px; margin-top:-62px"></iframe>
+<div style = "margin-top: -63px; z-index: 0">
+  <iframe src="<%= "https://docs.google.com/spreadsheets/d/#{@file_temp.id}/edit?usp=sharing" %>" style="width:100%; height: 700px;"></iframe>
 </div>
 
 <script type="text/javascript" charset="utf-8">

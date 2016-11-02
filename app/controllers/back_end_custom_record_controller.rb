@@ -1,0 +1,2 @@
+class BackEndCustomRecordController < ApplicationController
+end

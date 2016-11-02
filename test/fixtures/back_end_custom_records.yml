@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  custom_record_id: 1
+  file: MyString
+
+two:
+  custom_record_id: 1
+  file: MyString
