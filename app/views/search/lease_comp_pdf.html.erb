@@ -4,251 +4,183 @@
       <div class="comp-detail-container">
         <div class="col-md-12 successfully-added-main">
           <div class="col-md-4">
-            <!--<h3 class="successfully-hadding">Successfully added: </h3>-->
-            <h2 class="broadway-hadding"><%= @comp_record.address1 %></h2>
+
           </div>
-          <div class="col-md-8 pull-right">
-            <p class="custom-pdf-btn"><a href="#!"> Create Custom PDF</a></p>
-            <p class="creat-pdf-btn"><a href="<%=search_lease_comp_pdf_path(@comp_record.id)%>" target="_blank"> Create  PDF</a></p>
-            <!--<p class="edit-record-btn"><a href="#!">Edit Record</a></p>-->
-          </div>
+
         </div>
       </div>
       <div class="adress-bar-main-container">
         <div class="col-md-12 adress-bar-container">
           <div class="adress-detail">
-            <h1 class="nespresso"><%=@comp_record.contact%></h1>
-            <h3 class="adress-content"><%= @comp_record.address1 %><br/>
+            <h1 class=""><%=@comp_record.contact%></h1>
+            <h3 class=""><%= @comp_record.address1 %><br/>
               <%= @comp_record.suite %><br/>
               <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %></h3>
           </div>
-          <img src="<%= image_url 'adress-img.jpg' %>" class="adress-img">
+          <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
         </div>
       </div>
-
-
-
       <div class="comp-table-container">
         <h1 class="detail-comp-hadding">Comp Detail</h1>
-        <div class="row">
-          <div class="table-box">
+        <table width="100%" border="0">
+          <tr>
+            <td height="104"><h1 class="comp-table-hadding">Lease</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+            <td><h1 class="comp-table-hadding">Building</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Tenant Name</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.contact%></p></td>
+            <td><p class="comp-table-pre">Property Name </p></td>
+            <td><p class="comp-table-pre">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Industry </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.industry_type%></p></td>
+            <td><p class="comp-table-pre">Property Type</p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize! %> </p></td>
 
-            <div class="col-md-3 ls-table-box">
-              <h1>Lease</h1>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Size (SF)</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.size%> </p></td>
 
-              <p>Tenant Name    </p>
-              <p>Industry </p>
-              <p>Size (SF) </p>
-              <p>Base Rent ($/SF)</p>
-
-              <p>Escalation (%) </p>
-              <p>Lease Structure   </p>
-              <p>Commencement Date</p>
-              <p>Term (Months) </p>
-              <p>Free Rent (Months) </p>
-              <p>Tenant Improvements ($/SF)</p>
-              <p>Additional Concessions ($/SF)</p>
-              <p>Costs to Tenant ($/SF)</p>
-              <p>Lease Type</p>
-            </div>
-            <div class="col-md-3 ls-table-box">
-              <h1>&nbsp;</h1>
-
-              <p>&nbsp;<%=@comp_record.contact%></p>
-              <p>&nbsp;<%=@comp_record.industry_type%></p>
-              <p>&nbsp;<%=@comp_record.size%></p>
-              <p>&nbsp;<%= number_to_currency(@comp_record.base_rent.to_f, {:precision=>2})%></p>
-              <p>&nbsp;<%=@comp_record.escalation%></p>
-              <p>&nbsp;<%=@comp_record.data['leasestructure_name']%></p>
-              <p>&nbsp;<%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></p>
-              <p>&nbsp;<%=@comp_record.lease_term_months%></p>
-              <p>&nbsp;<%=@comp_record.free_rent%></p>
-              <p>&nbsp;<%= number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2})%></p>
-              <p>&nbsp;<%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p>
-              <p>&nbsp;<%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></p>
-              <p>&nbsp;<%=@comp_record.lease_type%></p>
+            <td><p class="comp-table-pre">Class Type</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize!%> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Base Rent ($/SF) </p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.base_rent.to_f, {:precision=>2})%></p></td>
 
 
+            <td></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Escalation (%) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.escalation%></p></td>
+            <td><p class="comp-table-pre"><h1 class="comp-table-hadding">Location</h1></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Lease Structure </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.data['leasestructure_name']%></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Commencement Date </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></p></td>
+            <td><p class="comp-table-pre">Address</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.address1%> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Term (Months) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.lease_term_months%></p></td>
+            <td><p class="comp-table-pre">Suite</p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.suite %> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Free Rent (Months) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.free_rent%></p></td>
+            <td><p class="comp-table-pre">City</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.city%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Tenant Improvements ($/SF) </p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre">State</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.state%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre">Zip</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.zipcode%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.free_rent%></p></td>
+            <td><p class="comp-table-pre">Submarket</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.submarket%> </p></td>
+
+          </tr>
+
+          <tr>
+            <td><p class="comp-table-pre">Lease Type</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.lease_type%></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+
+          <tr>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><h1 class="comp-table-hadding">Comments</h1></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+
+          <tr>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td width="180px;" colspan="2"><p class="comp-table-pre">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex </p></td>
+            <!--<td><p class="comp-table-pre"> </p></td>-->
+
+          </tr>
 
 
 
 
+        </table>
 
+        <h1 class="detail-comp-hadding">Custom Data</h1>
 
-            </div>
-            <div class="col-md-3 ls-table-box">
-              <h1>Building</h1>
-
-              <p>Property Name </p>
-              <p>Property Type </p>
-              <p>Class Type</p>
-
-              <h1 class="table-hadding-mrg">Location</h1>
-
-              <p>Address </p>
-              <p>Suite </p>
-              <p>City</p>
-              <p>State </p>
-              <p>Zip Code </p>
-              <p>Submarket</p>
-
-            </div>
-            <div class="col-md-3 ls-table-box">
-
-              <h1 class="table-hadding-mrg"></h1>
-
-              <p>&nbsp;<%=@comp_record.property_name.to_s.capitalize!%> </p>
-              <p>&nbsp;<%= @comp_record.property_type.to_s.capitalize! %> </p>
-              <p>&nbsp;<%=@comp_record.class_type.to_s.capitalize!%></p>
-
-
-              <h1 class="table-hadding-mrg"></h1>
-
-              <p>&nbsp;<%=@comp_record.address1%></p>
-              <p>&nbsp;<%= @comp_record.suite %> </p>
-              <p>&nbsp;<%=@comp_record.city%></p>
-              <p>&nbsp;<%=@comp_record.state%> </p>
-              <p>&nbsp;<%=@comp_record.zipcode%></p>
-              <p>&nbsp;<%=@comp_record.submarket%></p>
-
-
-            </div>
-          </div>
-
-          <div class="table-box">
-            <div class="col-md-6 ls-table-box pull-right">
-
-              <h1 class="table-hadding-mrg">Comments</h1>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,  Lorem ipsum dolor sit amet, consectetur adipiscing elit,  Lorem ipsum dolor sit amet, consectetur adipiscing elit,  Lorem ipsum dolor sit amet, consectetur adipiscing elit, </p>
-
-
-
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-
-    </div>
-
-
-
-    <div class="col-md-12 comp-background-container comp-sale-background-container">
-
-
-
-
-      <div class="comp-table-container">
-        <h1 class="detail-comp-hadding sale-detail-comp-hadding">Custom Data</h1>
-        <div class="row">
-          <div class="table-box">
-
-            <div class="col-md-3 ls-table-box">
-
-
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-            </div>
-            <div class="col-md-3 ls-table-box">
-
-
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-            </div>
-            <div class="col-md-3 ls-table-box">
-
-
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-              <p>Header  </p>
-            </div>
-            <div class="col-md-3 ls-table-box">
-
-
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-              <p>Data  </p>
-            </div>
-          </div>
-
-
-        </div>
-
-      </div>
-
-
-    </div>
-    <div class="col-md-12 comp-bottom-btn">
-      <div class="col-md-8 pull-right">
-        <p class="custom-pdf-btn"><a href="#!"> Create Custom PDF</a></p>
-        <p class="creat-pdf-btn"><a href="<%=search_lease_comp_pdf_path(@comp_record.id)%>" target="_blank"> Create  PDF</a></p>
-        <!--<p class="edit-record-btn"><a href="#!">Edit Record</a></p>-->
+        <table width="100%" border="0" >
+          <tr>
+            <td width="214"><p class="comp-table-pre">&nbsp;</p></td>
+            <td width="214"><p class="comp-table-pre"></p></td>
+            <td width="214"><p class="comp-table-pre"></p></td>
+            <td width="214"><p class="comp-table-pre"></p></td>
+          </tr>
+          <tr>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+          </tr>
+          <tr>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+          </tr>
+          <tr>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+          </tr>
+          <tr>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+          </tr>
+          <tr>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+            <td width="214"><p class="comp-table-pre">Header</p></td>
+            <td width="214"><p class="comp-table-pre">Data</p></td>
+          </tr>
+        </table>
       </div>
     </div>
+
   </div>
 </div>
