@@ -25,11 +25,24 @@ class Connection < ActiveRecord::Base
 
   def connection_id(current_user,c)
     if current_user.id == c.user_id
-      return connected_to.account.id
+      ##return connected_to.account.id
+      return c.agent_id
     else
-      return user.account.id
+      ##return user.account.id
+      return c.user_id
     end
 
+  end
+
+  def self.all_connection_ids(current_user)
+    @connection_ids = self.all_connections_of_user(current_user.id).collect {|c|
+      if current_user.id == c.user_id
+        c.agent_id
+      else
+        c.user_id
+      end
+    }
+    return @connection_ids
   end
 
 
