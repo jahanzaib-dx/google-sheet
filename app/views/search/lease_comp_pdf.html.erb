@@ -104,7 +104,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.free_rent%></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.tenant_ti_cost.to_f, {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.submarket%> </p></td>
 
