@@ -190,9 +190,12 @@ Rails.application.routes.draw do
   post "search/sixsigma"
   post "search/export"
   get "search/export"
+  
+  match 'search/lease_comp/(:id)' => 'search#lease_comp', :as => :search_lease_comp , :via => :get
+  match 'search/sale_comp/(:id)' => 'search#sale_comp', :as => :search_sale_comp , :via => :get
 
-  get "search/lease_comp"
-  get "search/sale_comp"
+  get "search/lease_comp_pdf/:id" => "search#lease_comp_pdf", :as => :search_lease_comp_pdf
+  get "search/sale_comp_pdf/:id" => "search#sale_comp_pdf", :as => :search_sale_comp_pdf
 
 
 

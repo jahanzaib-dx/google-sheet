@@ -84,3 +84,6 @@ gem 'google_static_maps_helper'
 gem 'foundation-rails', '6.1.2'
 
 gem 'cancancan'
+
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'

@@ -34,6 +34,7 @@
 //= require map
 //= require jquery.validate.min.js
 //= require dropdown_t
+//= require search
 //= require_self
 
 jQuery(document).ready(function () {

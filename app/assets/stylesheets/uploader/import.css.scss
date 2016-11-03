@@ -130,6 +130,7 @@
     span.link-to-select-file {
       text-decoration: underline;
       color: #8EBBFF;
+      cursor: pointer;
     }
     div.uploaded_file_name{
       display:none;
@@ -137,12 +138,13 @@
   }
   div.wrapper {
     position: relative;
-    display: inline;
+    /*display: inline;*/
   }
   #fileToUpload {
     opacity: 0;
     margin: 0;
     height: 90px;
+    cursor:pointer;
   }
 }
 
@@ -328,3 +330,5 @@
 .standard-font-size {
   font-size: 14px;
 }
+
+.building-row, .land-row{display:none;}

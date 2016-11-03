@@ -29,6 +29,7 @@
  *= require style
  *= require date-time-picker
  *= require about-page-leaserex
+ *= require comps-detail-sale-page
  *= require_self
  */
 
