@@ -25,7 +25,7 @@
           <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
 
 
-          <div class="street_view">
+          <div class="street_view adress-img">
             <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
               <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
               </div>
@@ -142,6 +142,14 @@
           </tr>
 
           <tr>
+            <td><p class="comp-table-pre">&nbsp;</p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+
+          <tr>
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td width="180px;" colspan="2"><p class="comp-table-pre">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex </p></td>
@@ -205,11 +213,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .street_view .street_view_image, .building_image .building_image_view {
-    padding: 0 20px 0 0 !important;
-    width: 316px;
-    height: 200px;
-  }
-</style>
