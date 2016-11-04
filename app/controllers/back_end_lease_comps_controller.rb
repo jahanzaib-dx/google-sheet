@@ -11,16 +11,12 @@ class BackEndLeaseCompsController < ApplicationController
 
     check = BackEndLeaseComp.where('user_id = ?', @current_user)
     if  check.count == 0
-      @file = session.drive.copy_file('10KQmfFzqChd9-ihBwQj-aEbAjeJGOhe3PUl9MhZDMdw', {name: fileName}, {})
+      @file = session.drive.copy_file('1Q3XXUK0EAdyJIDmX531ZVIztnPaB4OOybWo1RZnh6iQ', {name: fileName}, {})
 
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       tenant_records.each do |tenant_record|
-        # if tenant_record.id!=counter-1
-        #   ws[counter, 1] =  counter
-        #   next
-        # end
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = tenant_record.company
         ws[counter, 3] = tenant_record.address1
@@ -53,7 +49,6 @@ class BackEndLeaseCompsController < ApplicationController
         ws.save()
       end
 
-
       # path = "#{Rails.root}/public/back_end_lease_comp/"
       # extension = "4"
       # session.drive.export_file(@file.id,extension,download_dest: "#{path}/#{@file.id}.xlsx")
@@ -63,8 +58,6 @@ class BackEndLeaseCompsController < ApplicationController
       @BackEndLeaseComp.user_id = @current_user.id
       @BackEndLeaseComp.file = @file.id
       @BackEndLeaseComp.save
-
-
 
       @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
 
@@ -77,21 +70,12 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
-      # # dummy view of data
-      # (1..ws.num_rows).each do |row|
-      #   (1..ws.num_cols).each do |col|
-      #     p ws[row, col]
-      #   end
-      # end
     else
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
       counter=2
       tenant_records.each do |tenant_record|
-        # if tenant_record.id!=ws[counter, 1]
-        #   ws.delete_rows(counter, 1)
-        # end
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = tenant_record.company
         ws[counter, 3] = tenant_record.address1
@@ -124,7 +108,6 @@ class BackEndLeaseCompsController < ApplicationController
         ws.save()
       end
 
-
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
 
       session.drive.batch do
@@ -135,15 +118,7 @@ class BackEndLeaseCompsController < ApplicationController
         }
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
-      # dummy view of data
-      (1..ws.num_rows).each do |row|
-        (1..ws.num_cols).each do |col|
-          p ws[row, col]
-        end
-      end
-
     end
-
   end
 
   def create
@@ -161,11 +136,10 @@ class BackEndLeaseCompsController < ApplicationController
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     counter=2
     tenant_records.each do |tenant_record|
-      # if tenant_record.id!=counter-1
-      #   ws[counter, 1] =  counter
-      #   next
-      # end
-
+      if tenant_record.id!=counter-1
+        ws[counter, 1] =  counter
+        next
+      end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
@@ -200,7 +174,6 @@ class BackEndLeaseCompsController < ApplicationController
       end
       counter+=1
     end
-
     redirect_to root_url
   end
 end

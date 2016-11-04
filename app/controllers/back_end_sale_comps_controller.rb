@@ -17,10 +17,6 @@ class BackEndSaleCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       sale_records.each do |sale_record|
-        # if sale_record.id!=counter-1
-        #   ws[counter, 1] =  counter
-        #   next
-        # end
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = sale_record.is_sales_record
         ws[counter, 3] = sale_record.land_size_identifier
@@ -50,8 +46,6 @@ class BackEndSaleCompsController < ApplicationController
       @BackEndSaleComp.file = @file.id
       @BackEndSaleComp.save
 
-
-
       @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
 
       session.drive.batch do
@@ -63,21 +57,12 @@ class BackEndSaleCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
       @file = BackEndSaleComp.where('user_id = ?', @current_user).first
-      # # dummy view of data
-      # (1..ws.num_rows).each do |row|
-      #   (1..ws.num_cols).each do |col|
-      #     p ws[row, col]
-      #   end
-      # end
     else
       @file = BackEndSaleComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
       counter=2
       sale_records.each do |sale_record|
-        # if sale_record.id!=ws[counter, 1]
-        #   ws.delete_rows(counter, 1)
-        # end
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = sale_record.is_sales_record
         ws[counter, 3] = sale_record.land_size_identifier
@@ -107,15 +92,7 @@ class BackEndSaleCompsController < ApplicationController
         }
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
-      # dummy view of data
-      (1..ws.num_rows).each do |row|
-        (1..ws.num_cols).each do |col|
-          p ws[row, col]
-        end
-      end
-
     end
-
   end
 
   def create
@@ -157,7 +134,6 @@ class BackEndSaleCompsController < ApplicationController
       end
       counter+=1
     end
-
     redirect_to root_url
   end
 end
