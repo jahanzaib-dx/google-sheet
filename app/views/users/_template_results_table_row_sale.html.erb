@@ -17,7 +17,16 @@
 
     <td class="result_line"><p></p></td>
 
-   <td class="filter_icon"></td>
+   <td class="filter_icon">
+
+     <div class="dropdown">
+       <span data-toggle="dropdown"><a href="#!"><i class="fa fa-caret-square-o-down fa-lg" aria-hidden="true"></a></i></span>
+       <ul class="dropdown-menu pull-right">
+         <li class="markspam" data-url="<%= flaged_comps_create_path()%>/{{id}}/?type=sale"><a href="#!" >Mark Spam</a></li>
+       </ul>
+     </div>
+
+   </td>
 </tr>
 {{/id}}
 {{^id}}

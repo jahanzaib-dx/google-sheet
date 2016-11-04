@@ -70,4 +70,21 @@ $(function() {
     });
   });
   
+  $( document ).on( "click", ".markspam", function() {
+    spamurl = $(this).data("url");
+	
+	if (spamurl != "") {
+		$(this).addClass("disabled");
+		
+		$.ajax({
+		  type: "GET",
+		  url: spamurl
+		});
+	}
+	
+	$(this).removeClass("active");
+	$(this).data("url","");
+		
+  });
+  
   
