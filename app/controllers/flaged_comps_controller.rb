@@ -3,7 +3,13 @@ class FlagedCompsController < ApplicationController
     @f_comp = FlagedComp.new
     @f_comp.user_id = current_user.id
     @f_comp.comp_id= params[:id]
+    @f_comp.comp_type= params[:type]
     @f_comp.save
+
+    respond_to do |format|
+      format.json { render :json => "" }
+    end
+
   end
 
   def delete
