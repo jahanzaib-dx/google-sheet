@@ -14,6 +14,7 @@
               <select class="selectpicker" id="data_type" style="text-align: center;">
                 <option value="lease"><%= link_to "Lease", back_end_lease_comps_path %></option>
                 <option value="sale"><%= link_to "Sales", back_end_sale_comps_path %></option>
+                <option value="custom"><%= link_to "Custome Record", {:action => 'index', :controller => 'back_end_custom_record'} %></option>
               </select>
             </div>
           </div>
@@ -40,5 +41,9 @@
       window.location = '<%= back_end_lease_comps_path %>';
     else if($('#data_type').val()=="sale")
       window.location = '<%= back_end_sale_comps_path %>';
+    else
+    {
+      window.location = '<%= '/back_end_custom_record' %>';
+    }
   });
 </script>

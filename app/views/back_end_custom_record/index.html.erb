@@ -13,8 +13,8 @@
             <div class="tx_dropdown_toggl tx-drop-down-select">
               <select class="selectpicker" id="data_type" style="text-align: center;">
                 <option value="lease"><%= link_to "Lease", back_end_lease_comps_path %></option>
-                <option value="sale" selected><%= link_to "Sales", back_end_sale_comps_path %></option>
-                <option value="custom"><%= link_to "Custome Record", {:action => 'index', :controller => 'back_end_custom_record'} %></option>
+                <option value="sale" ><%= link_to "Sales", back_end_sale_comps_path %></option>
+                <option value="custom" selected><%= link_to "Custome Record", {:action => 'index', :controller => 'back_end_custom_record'} %></option>
               </select>
             </div>
           </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-10 col-sm-10">
           <div class="col-md-2 col-sm-2 both-pad-none" style="float: right;">
-            <%= link_to "Save Changes", {:controller => 'back_end_sale_comps', :action => 'create', :id => @file.file, :temp => @file_temp.id }, :class =>"tx_linkdin_profile", :style => "width:auto"%>
+            <%= link_to "Save Changes", {:controller => 'back_end_custom_record', :action => 'create', :id => @file.file, :temp => @file_temp.id }, :class =>"tx_linkdin_profile", :style => "width:auto"%>
           </div>
         </div>
       </div>
