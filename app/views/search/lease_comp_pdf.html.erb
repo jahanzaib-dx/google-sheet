@@ -18,13 +18,21 @@
               <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %></h3>
           </div>
           <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
+
+          <div class="street_view adress-img">
+            <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
+              <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
+              </div>
+            </a>
+          </div>
+
         </div>
       </div>
       <div class="comp-table-container">
         <h1 class="detail-comp-hadding">Comp Detail</h1>
         <table width="100%" border="0">
           <tr>
-            <td height="104"><h1 class="comp-table-hadding">Lease</h1></td>
+            <td height="90"><h1 class="comp-table-hadding">Lease</h1></td>
             <td><h1 class="comp-table-hadding"></h1></td>
             <td><h1 class="comp-table-hadding">Building</h1></td>
             <td><h1 class="comp-table-hadding"></h1></td>
@@ -184,3 +192,5 @@
 
   </div>
 </div>
+
+<%= render "comp_pdf_css" %>
