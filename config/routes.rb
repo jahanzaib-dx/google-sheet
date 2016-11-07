@@ -123,6 +123,8 @@ Rails.application.routes.draw do
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
   resources :back_end_custom_record
   get 'back_end_custom_record/create/:id/:temp' => 'back_end_custom_record#create'
+  resources :database_back_end
+  get 'database_back_end' => 'database_back_end#index'
 
 
 
