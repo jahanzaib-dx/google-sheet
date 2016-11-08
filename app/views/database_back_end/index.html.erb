@@ -19,10 +19,22 @@
               </select>
             </div>
           </div>
-
         </div>
-        <div class="col-md-10 col-sm-10">
-          <div class="col-md-2 col-sm-2 both-pad-none" style="float: right;">
+        <div class="col-md-2 col-sm-2" style="display: none" id="custom_record">
+          <div class="btn-group tx_btn_group">
+            <span style="font-size: 14px;font-weight: bold;"> Select Custom Record</span>
+            <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
+              <select class="selectpicker" id="custom_record_list"  style="text-align: center;">
+                <option value="">Select Custom Record</option>
+                <% @custom_records.each do |custom_record| %>
+                <option value="<%= custom_record.id %>"><%= custom_record.name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2 pull-right">
+          <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
             <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
           </div>
         </div>
@@ -43,6 +55,8 @@
 <script type="text/javascript" charset="utf-8">
   $('#data_type').change(function(){
     $('#myiframe').find('iframe').attr('src','');
+    $('.tx_linkdin_profile').hide('slow');
+    $('#custom_record').hide('slow');
     if($('#data_type').val()=="lease")
     {
       $.ajax({
@@ -67,24 +81,28 @@
 
     else if($('#data_type').val()=="custom")
     {
-      $.ajax({
-        url: '<%= '/back_end_custom_record' %>',
+      $('#custom_record').show('slow');
+    }
+  });
+  $('#custom_record_list').change(function(){
+    $('#myiframe').find('iframe').attr('src','');
+    $.ajax({
+        url: '/back_end_custom_record/index/'+$(this).val(),
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp);
+          $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
         }
       });
-    }
   });
 
   $(document).ready(function(){
     $(document).ajaxStart(function(){
-      $("#wait").css("display", "block");
-      $('.tx_linkdin_profile').css('display', 'none');
+      $("#wait").show('slow');
+      $('.tx_linkdin_profile').hide('slow');
     });
     $(document).ajaxComplete(function(){
-      $("#wait").css("display", "none");
-      $('.tx_linkdin_profile').css('display', 'block');
+      $("#wait").hide('slow')
+      $('.tx_linkdin_profile').show('slow');
     });
   });
 </script>
