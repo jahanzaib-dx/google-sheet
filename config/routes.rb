@@ -124,9 +124,9 @@ Rails.application.routes.draw do
   resources :back_end_custom_record
   get 'back_end_custom_record/create/:id/:temp/:custom_record_id' => 'back_end_custom_record#create'
   get 'back_end_custom_record/index/:id' => 'back_end_custom_record#index'
-  resources :database_back_end
-  get 'database_back_end' => 'database_back_end#index'
-  get 'uploader/database_back_end' => 'database_back_end#index'
+  resources :database_back_ends
+  get 'database_back_ends' => 'database_back_ends#index'
+  get 'uploader/database_back_ends' => 'database_back_ends#index'
 
 
 
