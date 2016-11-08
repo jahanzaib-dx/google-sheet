@@ -126,6 +126,7 @@ Rails.application.routes.draw do
   get 'back_end_custom_record/index/:id' => 'back_end_custom_record#index'
   resources :database_back_end
   get 'database_back_end' => 'database_back_end#index'
+  get 'uploader/database_back_end' => 'database_back_end#index'
 
 
 
