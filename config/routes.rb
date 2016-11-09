@@ -86,6 +86,9 @@ Rails.application.routes.draw do
   get 'about-leaserex' => 'pages#about_lease'
   get 'about-tenantrex' => 'pages#about_tenant'
 
+  get 'leaserex-faqs' => 'pages#faqs_lease'
+  get 'tenantrex-faqs' => 'pages#faqs_tenant'
+
   resource :users
 
   get 'dashboard' => 'users#dashboard'
