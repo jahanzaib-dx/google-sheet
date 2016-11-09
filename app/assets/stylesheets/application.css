@@ -27,10 +27,10 @@
  *= require cost
  *= require groups
  *= require style
- *= require date-time-picker
- *= require about-page-leaserex
+ *= require date-time-picker 
  *= require comps-detail-sale-page
  *= require about-page-tenantrex
+ *= require about-page-leaserex
  *= require about-page
  *= require_self
  */
