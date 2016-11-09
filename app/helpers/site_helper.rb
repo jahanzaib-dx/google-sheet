@@ -42,5 +42,18 @@ module SiteHelper
     return image_check
   end
 
+  def self.getComp(cid,type='lease')
+
+    if type == 'lease'
+      @comp = TenantRecord.where("id"=>cid).first
+    else
+      @comp = SaleRecord.where("id"=>cid).first
+    end
+
+    #unless comp.blank?
+      return @comp
+    #end
+  end
+
 end
 
