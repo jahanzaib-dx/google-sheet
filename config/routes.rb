@@ -100,7 +100,7 @@ Rails.application.routes.draw do
   post 'comp_requests/remind' => 'comp_requests#remind'
   post 'comp_requests/update' => 'comp_requests#update'
   post 'delete_comp_requests' => 'comp_requests#destroy'
-
+  post 'create_comp_requests' => 'comp_requests#create'
 
 
 
