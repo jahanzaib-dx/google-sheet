@@ -84,6 +84,7 @@ Rails.application.routes.draw do
   get 'subscription-plans' => 'pages#plans'
   get 'marketrex-faqs' => 'pages#faqs'
   get 'about-leaserex' => 'pages#about_lease'
+  get 'about-tenantrex' => 'pages#about_tenant'
 
   resource :users
 
