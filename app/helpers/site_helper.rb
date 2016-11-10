@@ -21,13 +21,13 @@ module SiteHelper
 
       when 'pages/about_lease'
         [ {:text => 'FAQ', :href => leaserex_faqs_path},
-          {:text => 'ABOUT', :href => about_marketrex_path},
+          {:text => 'ABOUT', :href => about_leaserex_path},
           {:text => 'CONTACT', :href => '#'},
         ]
 
       when 'pages/about_tenant'
         [ {:text => 'FAQ', :href => tenantrex_faqs_path},
-          {:text => 'ABOUT', :href => tenantrex_faqs_path},
+          {:text => 'ABOUT', :href => about_tenantrex_path},
           {:text => 'CONTACT', :href => '#'},
         ]
 
