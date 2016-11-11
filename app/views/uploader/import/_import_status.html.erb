@@ -38,12 +38,12 @@
                         <%= image_tag("small-ajax-loader.gif", :class => 'status_image') %>
                     <% end %>
                   </td>
-                  <td class="import-row custom-vertical-align"><%= i.created_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_with_date) %></td>
+                  <td class="import-row custom-vertical-align"><%=i.created_at.strftime('%b %-d, %Y %l:%M %P')%></td>
                   <% if can? :manage, Firm %>
                       <td class="vertical-align"><%= simple_format i.office.firm.name if i.office %></td>
                   <% end %>
                   <% if can? :manage, Office %>
-                      <td class="vertical-align"><%= simple_format i.office.name if i.office %></td>
+                      <td class="vertical-align"><%= simple_format "#{i.office.name} #{i.office.address1}" if i.office %></td>
                   <% end %>
                   <td class="status vertical-align"><%= simple_format i.status %></td>
                   <td class="count import-row custom-vertical-align"><%="#{i.num_imported_records} of #{i.total_record_count} imported"%> </td>

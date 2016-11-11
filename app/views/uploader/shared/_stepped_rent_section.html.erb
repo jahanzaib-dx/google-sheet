@@ -1,10 +1,10 @@
 <tr class="stepped-rent-row">
   <td>Step {{index}} Cost Per SF*</td>
-  <td><%= text_field_tag 'tenant_record[stepped_rents_attributes][{{index}}][cost_per_month]', "", class: 'stepped-rent-cost-per-month', id: "stepped-rent-cost-per-month_{{index}}" %></td>
+  <td><%= text_field_tag 'tenant_record[stepped_rents_attributes][{{index}}][cost_per_month]', "", class: 'stepped-rent-cost-per-month  validate[required]', id: "stepped-rent-cost-per-month_{{index}}" %></td>
 </tr>
 <tr class="stepped-rent-row">
   <td># of Months*</td>
-  <td><%= text_field_tag 'tenant_record[stepped_rents_attributes][{{index}}][months]', "", class: 'number-of-months-field' %></td>
+  <td><%= text_field_tag 'tenant_record[stepped_rents_attributes][{{index}}][months]', "", class: 'number-of-months-field  validate[required]' %></td>
 </tr>
 {{#last}}
 <tr class="stepped-rent-row error-message">

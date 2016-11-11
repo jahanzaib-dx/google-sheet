@@ -78,7 +78,7 @@
   </div>
 </li>
 
-<!---->
+<!-- -->
 <li class="accordion-item accordian-item4 invalid" data-accordion-item>
   <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 4: Mapping</span><span class="tick"><span>&#x2713;</span></span></a>
   <div class="accordion-content clearfix" data-tab-content>
@@ -105,7 +105,7 @@
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[view_type]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[view_type]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -118,7 +118,7 @@
               <td>Address Line 1*</td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[address1]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[address1]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value  validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -131,7 +131,7 @@
               <td>City*</td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -144,7 +144,7 @@
               <td>State*</td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[state]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[state]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -153,23 +153,28 @@
                 </div>
               </td>
             </tr>
-
+                        <tr>
+                          <td>Submarket*</td>
+                          <td>
+                            <div class="header-name-container">
+                              <div class="first"><input class="bulk-column-header-value validate[required]" type="text" name="sale_record[submarket]" placeholder="{ Please select }"></div>
+                              <div class="second">
+                                <select class="bulk-column-header-dd">
+                                  <option value="property type">Property type</option>
+                                  <option value="property type2">Property type2</option>
+                                </select>
+                              </div>
+                              <div style="clear: both"></div>
+                            </div>
+                          </td>
+                        </tr>
 
             <tr class="land-row">
-              <td>
-                Land Size*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
+              <td> Land Size*</div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[land_size]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[land_size]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -182,18 +187,10 @@
             <tr class="building-row">
               <td>
                 Property Name*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[property_name]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[property_name]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -206,18 +203,10 @@
             <tr class="building-row">
               <td>
                 Year Built*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[year_built]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[year_built]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -230,18 +219,10 @@
             <tr class="building-row">
               <td>
                 Property Type*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[property_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[property_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -254,18 +235,10 @@
             <tr class="building-row">
               <td>
                 Class Type*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[class_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[class_type]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -278,18 +251,10 @@
             <tr class="building-row">
               <td>
                 Building Size*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[land_size]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[land_size]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -303,18 +268,10 @@
             <tr>
               <td>
                 Sale Price*
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[price]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[price]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -327,18 +284,10 @@
             <tr>
               <td>
                 Date Sold
-                <div class="no-padding" style="float: right;">
-                  <div class="hover-info">?
-                    <div class="tooltip-custom">
-                      <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
-                    </div>
-                  </div>
-                </div>
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[date_sold]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[sold_date]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
                         <div class="second">
                           <select class="bulk-column-header-dd">
                           </select>
@@ -362,7 +311,7 @@
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[cap_rate]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[cap_rate]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>

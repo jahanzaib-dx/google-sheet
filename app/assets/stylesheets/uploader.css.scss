@@ -3,6 +3,15 @@
  *= require_tree ./uploader
  *= require font-awesome
  *= require jqueryui.custom
- *= require validationEngine.jquery
+ *= require uploader/validationEngine.jquery.css
 */
 
+#content{
+  overflow:hidden;
+}
+
+.columns.large-12{
+  .comp-width-container{
+    width:auto;
+  }
+}

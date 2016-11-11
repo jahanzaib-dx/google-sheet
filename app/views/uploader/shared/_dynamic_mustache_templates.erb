@@ -1,7 +1,7 @@
 <script type="text/html" id="default-fields-geo-code-selection">
-  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]' %></td></tr>
-  <tr><td><%= label_tag nil, 'City*' %></td><td><%= text_field_tag 'custom_record[city]' %></td></tr>
-  <tr><td><%= label_tag nil, 'State*' %></td><td><%= select_tag "custom_record[state]", options_for_select(us_states), class: 'required custom-select', style: "margin: 0px;" %></td></tr>
+  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]', nil, class: ' validate[required]' %></td></tr>
+  <tr><td><%= label_tag nil, 'City*' %></td><td><%= text_field_tag 'custom_record[city]', nil, class: ' validate[required]' %></td></tr>
+  <tr><td><%= label_tag nil, 'State*' %></td><td><%= select_tag "custom_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]', style: "margin: 0px;" %></td></tr>
 </script>
 <!-- for bulk upload-->
 <script type="text/html" id="bulk-default-fields-geo-code-selection">
@@ -9,7 +9,7 @@
     <td><%= label_tag nil, 'Address Line 1*' %></td>
     <td>
       <div class="header-name-container">
-        <div class="first"><%= text_field_tag 'custom_record[address1]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+        <div class="first"><%= text_field_tag 'custom_record[address1]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
         <div class="second">
           <select class="bulk-column-header-dd">
           </select>
@@ -22,7 +22,7 @@
     <td><%= label_tag nil, 'City*' %></td>
     <td>
       <div class="header-name-container">
-        <div class="first"><%= text_field_tag 'custom_record[city]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+        <div class="first"><%= text_field_tag 'custom_record[city]', nil, placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
         <div class="second">
           <select class="bulk-column-header-dd">
           </select>
@@ -35,7 +35,7 @@
     <td><%= label_tag nil, 'State*' %></td>
     <td>
       <div class="header-name-container">
-        <div class="first"><%= text_field_tag "custom_record[state]", nil, placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
+        <div class="first"><%= text_field_tag "custom_record[state]", nil, placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
         <div class="second">
           <select class="bulk-column-header-dd">
           </select>
