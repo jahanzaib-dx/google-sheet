@@ -127,6 +127,7 @@ Rails.application.routes.draw do
   resources :database_back_ends
   get 'database_back_ends' => 'database_back_ends#index'
   get 'uploader/database_back_ends' => 'database_back_ends#index'
+  post 'database_back_ends/upload_image' => 'database_back_ends#upload_image'
 
 
 

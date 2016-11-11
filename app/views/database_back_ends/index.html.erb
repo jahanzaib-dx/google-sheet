@@ -7,19 +7,25 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 col-sm-2">
-          <div class="btn-group tx_btn_group">
-            <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
-            <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
-              <select class="selectpicker" id="data_type" style="text-align: center;">
-                <option value="">Select Data type</option>
-                <option value="lease">Lease</option>
-                <option value="sale" >Sales</option>
-                <option value="custom">Custom Record</option>
-              </select>
+        <form enctype="multipart/form-data" method="post" id="imageUploadForm" action="/database_back_ends/upload_image">
+          <div class="col-md-2 col-sm-2">
+            <div class="btn-group tx_btn_group">
+              <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
+              <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
+                <select class="selectpicker" id="data_type" style="text-align: center;" name="type">
+                  <option value="">Select Data type</option>
+                  <option value="lease">Lease</option>
+                  <option value="sale" >Sales</option>
+                  <option value="custom">Custom Record</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="col-md-2 col-sm-2">
+            <input type="file" name="image" id="ImageBrowse" style="display: none;">
+          </div>
+        </form>
+        <textarea id="link" style="display: none"></textarea>
         <div class="col-md-2 col-sm-2" style="display: none" id="custom_record">
           <div class="btn-group tx_btn_group">
             <span style="font-size: 14px;font-weight: bold;"> Select Custom Record</span>
@@ -56,7 +62,10 @@
   $('#data_type').change(function(){
     $('#myiframe').find('iframe').attr('src','');
     $('.tx_linkdin_profile').hide('slow');
+    $('#link').hide('slow');
+    $('#ImageBrowse').hide('slow');
     $('#custom_record').hide('slow');
+
     if($('#data_type').val()=="lease")
     {
       $.ajax({
@@ -64,6 +73,7 @@
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+          $('#ImageBrowse').show('slow');
         }
       });
     }
@@ -75,6 +85,7 @@
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+          $('#ImageBrowse').show('slow');
         }
       });
     }
@@ -105,6 +116,35 @@
       $('.tx_linkdin_profile').show('slow');
     });
   });
+  $(document).ready(function () {
+    $('#imageUploadForm').on('submit',(function(e) {
+      e.preventDefault();
+      var formData = new FormData(this);
+      console.log(formData);
+
+      $.ajax({
+        type:'POST',
+        url: $(this).attr('action'),
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          $('#link').val("=image("+data.file_name+"),2");
+          $('#link').show();
+        },
+        error: function(data){
+          console.log("error");
+          console.log(data);
+        }
+      });
+    }));
+
+    $("#ImageBrowse").on("change", function() {
+      $("#imageUploadForm").submit();
+    });
+  });
+
 </script>
 <style>
   .tx_dropdown_toggl .bootstrap-select.btn-group .dropdown-menu > ul > li > a{
