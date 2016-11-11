@@ -33,7 +33,7 @@
         <% if controller.action_name == 'show' %>
             <%= render partial: '/import/templates/column_errors', locals: { import: @import, column_errors: column_errors } %>
         <% else %>
-            <%= form_for @import, url: marketrex_import_path(@import), remote: true, html: {:'data-update-target' => "edit_tenant_record_import_#{@import.id}" } do |t| %>
+            <%= form_for @import, url: uploader_import_path(@import), remote: true, html: {:'data-update-target' => "edit_tenant_record_import_#{@import.id}" } do |t| %>
                 <% if ( (not @records.empty?) and ((params['action'] == 'filter_by_valid' and @validation_errors > 0) or (params['action'] == 'filter_by_geocode' and @geocode_errors > 0))) %>
                     <%= render partial: '/import/templates/validation_errors', locals: { records: @records, t:t } %>
                 <% else %>

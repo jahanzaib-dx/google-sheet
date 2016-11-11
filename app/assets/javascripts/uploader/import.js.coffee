@@ -29,10 +29,10 @@ $(document).ready ->
     open_next_accordian_item 'accordian-item4', 'accordian-item3'
     $('.is-active .tick span').css 'color', '#ececef'
 
-  $('#bulk-comp-continue-4').on 'click', ->
+  ###$('#bulk-comp-continue-4').on 'click', ->
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item5', 'accordian-item4'
-    $('.is-active .tick span').css 'color', '#ececef'
+    $('.is-active .tick span').css 'color', '#ececef'###
 
   $(document).on 'change', '.bulk-column-header-dd', (e) ->
     $(@).parent().siblings('.first').find('.bulk-column-header-value').val($(@).find(":selected").text())
@@ -43,19 +43,27 @@ $(document).ready ->
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
 
   $(document).on 'click', '#bulk-comp-continue-4, #bulk-sales-comp-continue-4, #bulk-custom-comp-continue-3', (e) ->
-    form_data = $('.accordion-custom :input').serializeArray();
+    error = false;
+    $('.accordion-custom :input').each (e) ->
+      if $(this).hasClass('validate[required]') && $(this).is(':visible')
+        console.log($(this))
+        console.log($(this).hasClass('validate[required]'))
+        if( !$(this).validationEngine('validate') )
+          error = true;
 
-    xhr = $.ajax
-      url: 'create_and_process_upload'
-      method: 'post'
-      dataType: 'json',
-      data: form_data
-    xhr.done (response) ->
-      console.log "succesful"
-      window.location = "/uploader/import";
-    xhr.error (response) ->
-      console.log "failed..."
-      console.log response
+    if(!error)
+      form_data = $('.accordion-custom :input').serializeArray();
+      xhr = $.ajax
+        url: 'create_and_process_upload'
+        method: 'post'
+        dataType: 'json',
+        data: form_data
+      xhr.done (response) ->
+        console.log "succesful"
+        window.location = "/uploader/import";
+      xhr.error (response) ->
+        console.log "failed..."
+        console.log response
 
 
   $('#bulk-sales-comp-continue-2').on 'click', (e) ->

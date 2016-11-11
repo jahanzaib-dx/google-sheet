@@ -78,13 +78,17 @@ class Uploader::ImportController < ApplicationController
 
   def create_and_process_upload
     file_path = CustomImportTemplateUtil.marketrex_default_file_path(params[:upload_file_tmp_url])
+    puts "--------------------------------------file_path: #{file_path}"
     original_file_name = params[:upload_file_tmp_url]
+
     #@sheet = Roo::Excelx.new("#{file_path}")
 
     ext = File.extname("#{file_path}")[1..-1]
 
     @sheet = Roo::Excel.new("#{file_path}") if( ext.eql?('xls') )
     @sheet = Roo::Excelx.new("#{file_path}") if( ext.eql?('xlsx'))
+
+    puts "-----------------sheet: #{@sheet.info} "
 
     required_params = {}
     not_for_sheet = {}
@@ -138,6 +142,12 @@ class Uploader::ImportController < ApplicationController
         required_params["#{index}"] = { id: "", record_column: key, spreadsheet_column: value, default_value: "" }
       }
     end
+
+    puts "required_params: "
+    puts required_params
+    puts "**************************************************************************************"
+    puts "not_for_sheet: "
+    puts not_for_sheet
 
     name = SecureRandom.hex
     import_template_attributes = { name: name, import_mappings_attributes: required_params }

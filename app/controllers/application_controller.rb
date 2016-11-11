@@ -4,8 +4,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  #around_filter :get_user
   before_filter :get_user, :get_role, :count_comp_request
 
+  before_action :get_user
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   layout  :resolve_layout

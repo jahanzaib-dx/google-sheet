@@ -261,6 +261,102 @@ ALTER SEQUENCE attached_files_id_seq OWNED BY attached_files.id;
 
 
 --
+-- Name: back_end_custom_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE back_end_custom_records (
+    id integer NOT NULL,
+    custom_record_id integer,
+    file character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: back_end_custom_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE back_end_custom_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: back_end_custom_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE back_end_custom_records_id_seq OWNED BY back_end_custom_records.id;
+
+
+--
+-- Name: back_end_lease_comps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE back_end_lease_comps (
+    id integer NOT NULL,
+    user_id integer,
+    file character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: back_end_lease_comps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE back_end_lease_comps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: back_end_lease_comps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE back_end_lease_comps_id_seq OWNED BY back_end_lease_comps.id;
+
+
+--
+-- Name: back_end_sale_comps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE back_end_sale_comps (
+    id integer NOT NULL,
+    user_id integer,
+    file character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: back_end_sale_comps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE back_end_sale_comps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: back_end_sale_comps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE back_end_sale_comps_id_seq OWNED BY back_end_sale_comps.id;
+
+
+--
 -- Name: comp_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -501,7 +597,8 @@ CREATE TABLE flaged_comps (
     comp_id integer,
     user_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    comp_type character varying
 );
 
 
@@ -1331,7 +1428,10 @@ CREATE TABLE sale_records (
     property_type character varying,
     build_date date,
     sold_date date,
-    user_id integer
+    user_id integer,
+    custom hstore,
+    property_name character varying,
+    date_built date
 );
 
 
@@ -1663,7 +1763,8 @@ CREATE TABLE tenant_records (
     sale_price double precision,
     build_date date,
     sold_date date,
-    record_type character varying DEFAULT 'lease'::character varying
+    record_type character varying DEFAULT 'lease'::character varying,
+    custom hstore
 );
 
 
@@ -1795,6 +1896,27 @@ ALTER TABLE ONLY activity_logs ALTER COLUMN id SET DEFAULT nextval('activity_log
 --
 
 ALTER TABLE ONLY attached_files ALTER COLUMN id SET DEFAULT nextval('attached_files_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY back_end_custom_records ALTER COLUMN id SET DEFAULT nextval('back_end_custom_records_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY back_end_lease_comps ALTER COLUMN id SET DEFAULT nextval('back_end_lease_comps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY back_end_sale_comps ALTER COLUMN id SET DEFAULT nextval('back_end_sale_comps_id_seq'::regclass);
 
 
 --
@@ -2073,6 +2195,30 @@ ALTER TABLE ONLY archive_migration_tenant_records
 
 ALTER TABLE ONLY attached_files
     ADD CONSTRAINT attached_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: back_end_custom_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY back_end_custom_records
+    ADD CONSTRAINT back_end_custom_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: back_end_lease_comps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY back_end_lease_comps
+    ADD CONSTRAINT back_end_lease_comps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: back_end_sale_comps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY back_end_sale_comps
+    ADD CONSTRAINT back_end_sale_comps_pkey PRIMARY KEY (id);
 
 
 --
@@ -3041,9 +3187,25 @@ INSERT INTO schema_migrations (version) VALUES ('20161019053445');
 
 INSERT INTO schema_migrations (version) VALUES ('20161019053658');
 
+INSERT INTO schema_migrations (version) VALUES ('20161019064841');
+
+INSERT INTO schema_migrations (version) VALUES ('20161027071106');
+
 INSERT INTO schema_migrations (version) VALUES ('20161027110604');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027111025');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027121442');
+
+INSERT INTO schema_migrations (version) VALUES ('20161102133336');
+
+INSERT INTO schema_migrations (version) VALUES ('20161103094724');
+
+INSERT INTO schema_migrations (version) VALUES ('20161110114014');
+
+INSERT INTO schema_migrations (version) VALUES ('20161110114027');
+
+INSERT INTO schema_migrations (version) VALUES ('20161110115341');
+
+INSERT INTO schema_migrations (version) VALUES ('20161110115542');
 

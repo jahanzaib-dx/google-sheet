@@ -107,8 +107,9 @@ $('.tenant-record-map-view').each ->
 
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
-  submit_is = $(@)
-  submit_is.closest('form').submit()
+  submit_is = $(@).closest('form')
+  if submit_is.validationEngine('validate')
+    submit_is.submit()
 
 $(document).ready ->
   localStorage.removeItem("expense_types");
@@ -278,9 +279,9 @@ $(document).ready ->
         $('#custom_record_is_geo_coded').prop 'checked', true
         html_default_fields = Mustache.render $('#default-fields-geo-code-selection').html()
         $('.fields-table-custom-data table tbody').html html_default_fields
-        $('#custom_record_address1').val(response.address1) if response.address1
-        $('#custom_record_city').val(response.city) if response.city
-        $('#custom_record_state').val(response.state) if response.state
+        #$('#custom_record_address1').val(response.address1) if response.address1
+        #$('#custom_record_city').val(response.city) if response.city
+        #$('#custom_record_state').val(response.state) if response.state
 
         container = $('.fields-table-custom-data table tbody')
         $.each response.custom_record_properties, (row, obj)->
@@ -368,8 +369,9 @@ $(document).ready ->
   $(document).on 'click', '.processed', ->
     open_processed_accordian_item($(this))
   #***********************************************#
+
   #************************ Single comp DropDowns Expenses *****************************#
-  $(document).on 'change', '.custom-expense-dd', (e) ->
+  ###$(document).on 'change', '.custom-expense-dd', (e) ->
     dropdown_value = $(this).val()
     if dropdown_value == 'other'
       $(this).siblings('.custom-expense-tf').removeAttr('disabled')
@@ -381,65 +383,16 @@ $(document).ready ->
       $(this).siblings('.custom-expense-actual-value').val($(this).val())
 
   $(document).on 'blur', '.custom-expense-tf', (e) ->
-    $(this).siblings('.custom-expense-actual-value').val($(this).val())
+    $(this).siblings('.custom-expense-actual-value').val($(this).val()) ###
   #********************************************************************************#
 
-  #**************** Check lease structure and property type existence **************#
-  $('#single-comp-continue-3').on 'click', ->
-
-    property_type_exist = check_propertyType_leaseStructure_existence($('#tenant_record_property_type'))
-    lease_structure_exist = check_propertyType_leaseStructure_existence($('#lease_structure_name'))
-
-    if property_type_exist and lease_structure_exist
-      $('.operating-expense-help-div').css 'display', 'block'
-
-      #***************** Ajax for Market **********#
-      xhr = $.ajax
-        url: $AJAX_BASE_URL + 'opex_market_list/' + $('#tenant_record_property_type').val()
-        method: 'get'
-        dataType: 'json'
-      xhr.done (response) ->
-        $('.market-for-expense').empty().append $('<option/>',
-          value: ""
-          text: "Select Market")
-
-        $.each response, (index, obj) ->
-          $('.market-for-expense').append $('<option/>',
-            value: obj.id
-            text: obj.name)
-      #**********************************************#
-
-      selected = $("input[type='radio'][name='has_operating_expenses']:checked")
-      if selected.length > 0 and selected.val() == 'yes'
-        $('.operating-expense-market-div').css 'display', 'block'
-    if property_type_exist
-      $('.property-type-expense-section').text($('#temp_comp_property_type_dd option:selected').text().toUpperCase())
-    else
-      $('.property-type-expense-section').text($('#tenant_record_property_type').val().toUpperCase())
-    $('.lease-structure-expense-section').text($('#lease_structure_name').val().toUpperCase())
 
 
-  $("input[type='radio'][name='has_operating_expenses']").on 'click', ->
-    selected = $("input[type='radio'][name='has_operating_expenses']:checked")
-    if selected.length > 0 and selected.val() == 'no'
-      $('.operating-expense-market-div').css 'display', 'none'
-    else
-      $('.operating-expense-market-div').css 'display', 'block'
+
 
   #**********************************************************************************#
   # Unbind Accordian events
   $('.accordion .invalid a').unbind 'click'
-  #***************** Ajax for Market **********#
-  $('.market-for-expense').on 'change', ->
-    container = $('#expense-table tbody')
-
-    if $('.market-for-expense').val() == ""
-      container.empty()
-    else
-      call_ajax_and_setup_expense(container)
-
-
-  #**********************************************#
 
 
   ###$('.accordian-item > a').on 'click', ->

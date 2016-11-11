@@ -684,13 +684,15 @@ class TenantRecord < ActiveRecord::Base
 
   private
   def default_values
+    puts "***********************@current user: #{User.current_user.name}"
+    self.user_id = User.current_user.id
     self.address1 = self.address1.to_s.strip
     self.base_rent ||= 0.00
     self.class_type = class_type.to_s.downcase
     self.comp_type = comp_type.to_s.downcase
     self.comp_type ||= 'internal'
     self.escalation ||= 0.00
-
+    self.lease_structure ||= TenantRecord::LEASE_STRUTURE[0]
     self.lease_type = lease_type.to_s.strip.presence || '-'
 
     # Need to set default first_year_base_rent to base rent

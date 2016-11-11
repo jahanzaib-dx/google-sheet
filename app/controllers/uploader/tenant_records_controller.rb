@@ -31,12 +31,16 @@ class Uploader::TenantRecordsController < ApplicationController
         @tenant_record.base_rent = @tenant_record.base_rent.to_f * 12.0
       end
 
+      puts "before calling save_tenant_record ------------"
       save_tenant_record @tenant_record
 
 
     elsif @property_type == 'sales_comps'
       @sale_record = SaleRecord.new(sale_record_params)
       @sale_record.is_sales_record = (params[:sale_record][:is_sales_record] == 'yes' ? true : false)
+
+      puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      puts @sale_record.custom
 
       ## find lat/lon if it hasn't been done already
       begin
@@ -148,10 +152,11 @@ class Uploader::TenantRecordsController < ApplicationController
     #   attributes.merge!(cushman_net_effective_per_sf: cushman_results[:net_effective_rent])
     # end
 
-    trec.validate_all= true
+    trec.validate_all = true
     #trec.assign_attributes(attributes) # pull attributes from CalculatorUtil
     puts "ccccccccccccccccccccccccccccccccccccccccccccc"
-    puts trec.valid?
+    puts trec.valid? ? "true":"false"
+
     unless(trec.save)
       Rails.logger.debug trec.errors.full_messages
     end
@@ -253,8 +258,10 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def sale_record_params
     params.require(:sale_record).permit(:is_sales_record, :land_size_identifier, :view_type,
-                                :address1, :city, :state, :land_size, :price, :cap_rate,
-                                :latitude, :longitude, :zipcode, :zipcode_plus, :office_id)
+                                :address1, :city, :state, :land_size, :price, :cap_rate, :custom,
+                                :latitude, :longitude, :zipcode, :zipcode_plus, :office_id,
+                                :property_name, :build_date, :property_type, :class_type, :sold_date
+    )
   end
 
   def custom_record_params

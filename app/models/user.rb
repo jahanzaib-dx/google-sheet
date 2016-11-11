@@ -197,6 +197,7 @@ class User < ActiveRecord::Base
 	settings = UserSetting.create(values)
   end
 
+  ## in order to access current_user variable in model files
   def self.current_user
     Thread.current[:user]
   end
@@ -204,6 +205,7 @@ class User < ActiveRecord::Base
   def self.current_user=(user)
     Thread.current[:user] = user
   end
+  ## -------------------------
 
   def create_account
     role = get_role
