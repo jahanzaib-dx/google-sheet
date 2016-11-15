@@ -5,21 +5,12 @@
 <%##= javascript_include_tag "mediaelement-and-player.min", "data-turbolinks-track" => true  %>
 
 
-
-
 <div class="banner">
   <img src="<%= image_url 'about-bc.jpg' %>" width="100%" id="videoplay">
 
-  <video controls="controls" width="100%" id="marketrexvideo">      
+  <video controls="true" width="100%" height="100%" id="marketrexvideo" style="width: 100%; height: 100%;">      
     <source type="video/mp4" src="<%= image_url 'market_rex_final_cut.mp4' %>" />
-       
-    <object width="100%" height="100%" type="application/x-shockwave-flash" data="<%= asset_path('flashmediaelement.swf') %>" id="marketrexvideo_flash">
-      <param name="movie" value="<%= asset_path('flashmediaelement.swf') %>" />
-      <param name="flashvars" value="controls=true&file= <%= image_url 'market_rex_final_cut.mp4' %>" />
-    </object>
- </video>
- 
- 
+  </video>
 
 
 </div> 
@@ -192,26 +183,76 @@
   </div>
 </div>
 
-<!--<video width="400" controls>-->
-  <!--<source src="<%#= image_url 'manual.mp4' %>" type="video/mp4" >-->
-  <!--&lt;!&ndash;<source src="<%#= image_url 'manual.mp4' %>" type="video/mp4" poster="<%#= image_url 'about-bc.jpg' %>">&ndash;&gt;-->
-
-  <!--Your browser does not support HTML5 video.-->
-<!--</video>-->
 
 <style>
   video {
-    display:none ;
-    /*width: 100%;*/
-    /*height: 400px;*/
+    
+    width: 0px;
+    height: 0px;
+	
     /*z-index: -100;*/
     /*!*background: url;*!*/
     /*background-image: url("assets/about-bc.jpg");*/
     /*overflow: none;*/
   }
+  
+  .mejs-container{position:absolute; top:0px; z-index:-100;}
 </style>
 
+
+
 <script>
+
+$(document).ready(function() {
+
+	$('#videoplay').click(function() {
+		
+		$('#videoplay').hide();
+		
+		//$('.mejs-container').show();
+		
+		
+		$('video').css({'height':'100%'});
+		$('video').css({'width':'100%'});
+		
+		$('.mejs-container').css({position: 'relative'});
+		$('.mejs-container').css({'z-index':'100'});
+		$('.mejs-container').css({'z-index':'100'});
+		
+		
+		
+		
+		
+		//$('.mejs-container').show();
+		
+		$('video, audio').each(function() {
+			  //$(this)[0].player.pause();		  
+			  $(this)[0].player.play();		  
+		});
+		
+		
+		//$('#marketrexvideo').player.play();
+		
+		
+	});
+
+	$('video').mediaelementplayer({
+			success: function(media, node, player) {
+				//$('#' + node.id + '-mode').html('mode: ' + media.pluginType);
+			}
+	});
+
+});
+</script>
+
+
+
+
+
+
+<script>
+  /*
+  
   (function() {
 
     // cache vars
@@ -238,19 +279,6 @@
 	  ///cmn_marketrexvideo_flash.click();
 	  
 	  
-	  
-	  //cmn_marketrexvideo_flash = document.getElementById("marketrexvideo_flash");
-//cmn_marketrexvideo_flash.play();
-
-//var player = new MediaElementPlayer('#marketrexvideo_flash',{});
-// ... more code ...
-//player.pause();
-//player.setSrc('mynewfile.mp4');
-//player.play();
-
-
-
-
 
     } );
 	
@@ -272,12 +300,11 @@
 
   })();
 
-
+*/
   
-  $("#videoplay").click(function(){
-    $("#marketrexvideo_flash").click(); 
-    //return false;
-});
+
 </script>
+
+
 
 

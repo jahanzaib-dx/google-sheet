@@ -42,7 +42,7 @@ module MarketRex
     }
 	
 	  #config.autoload_paths += %W(#{config.root}/lib/util #{config.root}/lib/util/marketrex #{config.root}/app/workers/marketrex)
-    config.autoload_paths << Rails.root.join('lib/util')
+    config.autoload_paths << Rails.root.join('lib/util','flash')
 
     config.middleware.use Rack::ContentLength
 	config.middleware.use WickedPdf::Middleware
