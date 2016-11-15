@@ -183,21 +183,18 @@
   </div>
 </div>
 
+<% 
+p request.remote_ip
+
+if request.remote_ip!='115.186.56.134'%>
 
 <style>
-  video {
-    
-    width: 0px;
-    height: 0px;
-	
-    /*z-index: -100;*/
-    /*!*background: url;*!*/
-    /*background-image: url("assets/about-bc.jpg");*/
-    /*overflow: none;*/
-  }
+  video { width: 0px; height: 0px; }
   
   .mejs-container{position:absolute; top:0px; z-index:-100;}
 </style>
+
+<% end %>
 
 
 
@@ -207,31 +204,18 @@ $(document).ready(function() {
 
 	$('#videoplay').click(function() {
 		
-		$('#videoplay').hide();
-		
-		//$('.mejs-container').show();
-		
+		$('#videoplay').hide();		
 		
 		$('video').css({'height':'100%'});
 		$('video').css({'width':'100%'});
 		
 		$('.mejs-container').css({position: 'relative'});
 		$('.mejs-container').css({'z-index':'100'});
-		$('.mejs-container').css({'z-index':'100'});
 		
 		
-		
-		
-		
-		//$('.mejs-container').show();
-		
-		$('video, audio').each(function() {
-			  //$(this)[0].player.pause();		  
+		$('video, audio').each(function() {	  
 			  $(this)[0].player.play();		  
 		});
-		
-		
-		//$('#marketrexvideo').player.play();
 		
 		
 	});
