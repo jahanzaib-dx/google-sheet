@@ -35,7 +35,8 @@
 //= require jquery.validate.min.js
 //= require dropdown_t
 //= require search
-//= require mediaelement-and-player.min
+////// require mediaelement-and-player.min
+//= require mediaelement_rails
 //= require_self
 
 jQuery(document).ready(function () {
