@@ -224,16 +224,29 @@ $(document).ready(function() {
 		
 	});
 
+	/*
 	$('video').mediaelementplayer({
 			success: function(media, node, player) {
 				//$('#' + node.id + '-mode').html('mode: ' + media.pluginType);
 			}
 	});
+	*/
+	
 
 });
 </script>
 
-
+<script>
+$('audio,video').mediaelementplayer({
+	features: ['playpause','current','progress','duration','markers'], //Adding the feature 'markers' enables this plugin
+    markerColor: '#FCD730', // Optional : Specify the color of the marker
+    markers:['4','16','20','25','35','40'], // Specify marker times in seconds 
+    markerCallback:function(media,time){ // Callback function invoked when a marker position is reached
+       /* Your Code */
+       console.log(time);
+    }
+});
+</script>
 
 
 
