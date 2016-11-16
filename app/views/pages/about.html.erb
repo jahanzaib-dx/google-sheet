@@ -9,7 +9,7 @@
 
 if request.remote_ip=='115.186.56.134'%>
 
-<script src="http://test.tenantrex.com/flash/jquery.js"></script>
+
 
 <% end %>
 <script src="http://test.tenantrex.com/flash/mediaelement-and-player.min.js"></script>
@@ -26,6 +26,17 @@ if request.remote_ip=='115.186.56.134'%>
 
 
 </div> 
+
+if request.remote_ip=='115.186.56.134'%>
+<video width="360" height="203" id="player2" controls="controls">
+	<source src="http://test.tenantrex.com/flash/market_rex_final_cut.mp4" type="video/mp4" title="mp4">
+	<source src="flash/echo-hereweare.webm" type="video/webm" title="webm">
+	<source src="flash/echo-hereweare.ogv" type="video/ogg" title="ogg">
+	<p>Your browser leaves much to be desired.</p>
+
+	<link rel="postroll" href="./mediaelementplayer-postroll-content.html" />
+</video>
+<% end %>
 	
 <div class="tx_creat_freeaccount"> <a href="<%=new_user_registration_url%>"> Create & start using your FREE MarketRex Account Today <img src="<%= image_url 'lefte-anker.png' %>"></a> </div>
 <div class="tx_commercial_contant">
