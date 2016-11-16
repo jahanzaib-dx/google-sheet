@@ -4,9 +4,17 @@
 <%##= stylesheet_link_tag("mediaelementplayer")%>
 <%##= javascript_include_tag "mediaelement-and-player.min", "data-turbolinks-track" => true  %>
 
-<script src="http://test.tenantrex.com/flash/mediaelement-and-player.min.js" data-turbolinks-track="true"></script>
+<% 
+##p request.remote_ip
 
-<link rel="stylesheet" media="all" href="http://test.tenantrex.com/flash/mediaelementplayer.min.css" data-turbolinks-track="true" />
+if request.remote_ip!='115.186.56.134'%>
+
+<script src="http://test.tenantrex.com/flash/jquery.js"></script>
+
+<% end %>
+<script src="http://test.tenantrex.com/flash/mediaelement-and-player.min.js"></script>
+
+<link rel="stylesheet" media="all" href="http://test.tenantrex.com/flash/mediaelementplayer.min.css" />
 
 
 <div class="banner">
