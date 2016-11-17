@@ -2,11 +2,7 @@
 <% 
 ##p request.remote_ip
 
-if request.remote_ip=='115.186.56.134'%>
-
-
-
-<% end %>
+if request.remote_ip=='115.186.56.134444'%>
 
 <script src="http://test.tenantrex.com/flash/mediaelement-and-player.min.js"></script>
 
@@ -22,6 +18,34 @@ if request.remote_ip=='115.186.56.134'%>
 
 
 </div> 
+
+<% end %>
+
+
+
+
+
+<script src="<%= Rails.public_path.join('flash/mediaelement-and-player.min.js')%>"></script>
+
+<link rel="stylesheet" media="all" href="<%= Rails.public_path.join('flash/mediaelementplayer.min.css')%>" />
+
+
+<div class="banner">
+  <img src="<%= image_url 'about-bc.jpg' %>" width="100%" id="videoplay">
+
+  <video controls="true" width="100%" height="100%" id="marketrexvideo" style="width: 100%; height: 100%;">      
+    
+	<source type="video/mp4" src="<%= image_url 'market_rex_final_cut.mp4' %>" />
+	
+  </video>
+
+
+</div> 
+
+
+
+
+
 	
 <div class="tx_creat_freeaccount"> <a href="<%=new_user_registration_url%>"> Create & start using your FREE MarketRex Account Today <img src="<%= image_url 'lefte-anker.png' %>"></a> </div>
 <div class="tx_commercial_contant">
