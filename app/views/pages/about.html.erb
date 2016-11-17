@@ -22,7 +22,7 @@ if request.remote_ip=='115.186.56.134'%>
   <img src="<%= image_url 'about-bc.jpg' %>" width="100%" id="videoplay">
 
   <video controls="true" width="100%" height="100%" id="marketrexvideo" style="width: 100%; height: 100%;">      
-    <source type="video/mp4" src="<%= image_url 'market_rex_final_cut.mp4' %>" />
+    <source type="video/youtube" src="http://www.youtube.com/watch?v=g5im1Km_88E" />
   </video>
 
 
@@ -223,7 +223,7 @@ if request.remote_ip=='115.186.56.134'%>
 <% 
 ##p request.remote_ip
 
-if request.remote_ip!='115.186.56.134'%>
+##if request.remote_ip!='115.186.56.134'%>
 
 <style>
   video { width: 0px; height: 0px; }
@@ -231,7 +231,7 @@ if request.remote_ip!='115.186.56.134'%>
   .mejs-container{position:absolute; top:0px; z-index:-100;}
 </style>
 
-<% end %>
+<% ##end %>
 
 
 
