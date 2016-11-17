@@ -1,0 +1,15 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C config.yml
+:verbose: true
+:pidfile: tmp/pids/sidekiq.pid
+:concurrency:  25
+:queues:
+  - [import, 6]
+  - [validate_import, 6]
+  - [geocode, 6]
+  - [final_import, 6]
+  - [agreements, 5]
+  - [calculator, 5]
+  - [pdf, 4]
+  - [xls, 4]

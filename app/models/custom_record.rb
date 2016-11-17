@@ -9,6 +9,8 @@ class CustomRecord < ActiveRecord::Base
   has_many :custom_record_properties
   accepts_nested_attributes_for :custom_record_properties
 
+  belongs_to :user
+
   before_save :default_values
   before_validation :default_values
 
@@ -20,7 +22,7 @@ class CustomRecord < ActiveRecord::Base
 
   private
   def default_values
-    self.user_id = User.current_user.id
+    self.user_id ||= User.current_user.id
 
     # this true keeps validation from failing...
     true

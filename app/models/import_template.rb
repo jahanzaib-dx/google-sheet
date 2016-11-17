@@ -1,7 +1,7 @@
 class ImportTemplate < ActiveRecord::Base
   include ConditionalValidations
 
-  belongs_to :office
+  belongs_to :user
   has_many :import_mappings, :dependent => :destroy
   has_many :tenant_record_imports
   accepts_nested_attributes_for :import_mappings
@@ -15,7 +15,7 @@ class ImportTemplate < ActiveRecord::Base
   def check_name_uniqueness
     # using this method to check because this ", uniqueness: { :scope => [:account_id] }"
     # doesn't catch global and account scoped uniqueness of name
-    found = ImportTemplate.where(:name => name, :office_id => [nil, office_id]).map(&:id)
+    found = ImportTemplate.where(:name => name, :user_id => [nil, user_id]).map(&:id)
     if not id.nil? # not new remove self from unique check
       found.delete(id)
     end
