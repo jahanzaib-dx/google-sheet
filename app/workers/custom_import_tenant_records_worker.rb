@@ -1,4 +1,5 @@
 #require 'sidekiq/testing/inline'
+Sidekiq::Logging.logger.level = Logger::DEBUG
 
 class CustomImportTenantRecordsWorker
   include Sidekiq::Worker

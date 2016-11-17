@@ -60,7 +60,7 @@ $(document).ready ->
         data: form_data
       xhr.done (response) ->
         console.log "succesful"
-        window.location = "/uploader/import";
+        #window.location = "/uploader/import";
       xhr.error (response) ->
         console.log "failed..."
         console.log response

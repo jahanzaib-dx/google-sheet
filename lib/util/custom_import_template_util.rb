@@ -83,12 +83,11 @@ module CustomImportTemplateUtil
 
     import = TenantRecordImport.find(import_id)
     begin
-
       File.open(tmp_file_path, "rb") do |file|
         case File.extname(original_filename)
-        when ".xls"  then @sheet = Roo::Excel.new(file.path, nil, :ignore)
-        when ".xlsx" then @sheet = Roo::Excelx.new(file.path, nil, :ignore)
-        when ".csv"  then @sheet = Roo::CSV.new(file.path, nil, :ignore)
+        when ".xls"  then @sheet = Roo::Excel.new(file.path)
+        when ".xlsx" then @sheet = Roo::Excelx.new(file.path)
+        when ".csv"  then @sheet = Roo::CSV.new(file.path)
         else raise Exception.new("Unknown file type: #{File.extname(original_filename)}")
         end
       end
@@ -175,15 +174,19 @@ module CustomImportTemplateUtil
                 }
               end
             end
-            if not_for_sheet['stepped_rents'].count > 0
-              counter = 0
-              not_for_sheet['stepped_rents'].each { |step|
-                lease_stepped_rents[counter] = {'cost_per_month' => row[step.last['cost_per_month']].to_f , 'months' => row[step.last['months']].to_i}
-                counter += 1
-              }
-              not_for_sheet.merge!({
-                                       'lease_stepped_rents' => lease_stepped_rents
-                                   })
+            Sidekiq::Logging.logger.debug "*****************************************************"
+            Sidekiq::Logging.logger.debug not_for_sheet['rent_escalation_type_stepped']
+            if !(not_for_sheet['stepped_rents'].nil?)
+              if (not_for_sheet['rent_escalation_type_stepped'] and not_for_sheet['stepped_rents'].count > 0 )
+                counter = 0
+                not_for_sheet['stepped_rents'].each { |step|
+                  lease_stepped_rents[counter] = {'cost_per_month' => row[step.last['cost_per_month']].to_f , 'months' => row[step.last['months']].to_i}
+                  counter += 1
+                }
+                not_for_sheet.merge!({
+                                         'lease_stepped_rents' => lease_stepped_rents
+                                     })
+              end
             end
           end
           parsed_spreadsheet_record = Importer.hash_format(import_id, row)

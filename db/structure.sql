@@ -660,10 +660,10 @@ ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 CREATE TABLE import_logs (
     id integer NOT NULL,
     tenant_record_import_id integer,
-    office_id integer,
     tenant_record_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -761,11 +761,11 @@ ALTER SEQUENCE import_records_id_seq OWNED BY import_records.id;
 
 CREATE TABLE import_templates (
     id integer NOT NULL,
-    office_id integer,
     name character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    reusable boolean DEFAULT true
+    reusable boolean DEFAULT true,
+    user_id integer
 );
 
 
@@ -1431,7 +1431,7 @@ CREATE TABLE sale_records (
     user_id integer,
     custom hstore,
     property_name character varying,
-    date_built date
+    submarket character varying
 );
 
 
@@ -1636,7 +1636,6 @@ ALTER SEQUENCE tenant_record_images_id_seq OWNED BY tenant_record_images.id;
 
 CREATE TABLE tenant_record_imports (
     id integer NOT NULL,
-    office_id integer,
     import_template_id integer,
     complete boolean DEFAULT false,
     import_valid boolean DEFAULT false,
@@ -1648,8 +1647,8 @@ CREATE TABLE tenant_record_imports (
     total_record_count integer DEFAULT 0,
     num_imported_records integer DEFAULT 0,
     lease_structure_id integer,
-    team_id integer,
-    total_traversed_count integer DEFAULT 0
+    total_traversed_count integer DEFAULT 0,
+    user_id integer
 );
 
 
@@ -2620,10 +2619,17 @@ CREATE INDEX index_groups_on_user_id ON groups USING btree (user_id);
 
 
 --
--- Name: index_import_templates_on_name_and_office_id_and_reusable; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_import_logs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_import_templates_on_name_and_office_id_and_reusable ON import_templates USING btree (name, office_id, reusable);
+CREATE INDEX index_import_logs_on_user_id ON import_logs USING btree (user_id);
+
+
+--
+-- Name: index_import_templates_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_import_templates_on_user_id ON import_templates USING btree (user_id);
 
 
 --
@@ -2732,6 +2738,13 @@ CREATE INDEX index_stepped_rents_on_deleted_at ON stepped_rents USING btree (del
 
 
 --
+-- Name: index_tenant_record_imports_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tenant_record_imports_on_user_id ON tenant_record_imports USING btree (user_id);
+
+
+--
 -- Name: index_tenant_records_on_address1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2788,6 +2801,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_397a54e5d9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY import_logs
+    ADD CONSTRAINT fk_rails_397a54e5d9 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_3c7e78cb8f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2833,6 +2854,22 @@ ALTER TABLE ONLY schedule_accesses
 
 ALTER TABLE ONLY memberships
     ADD CONSTRAINT fk_rails_94ef0a20e3 FOREIGN KEY (member_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_e27b9d37ed; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tenant_record_imports
+    ADD CONSTRAINT fk_rails_e27b9d37ed FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_e32d9e6e0a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY import_templates
+    ADD CONSTRAINT fk_rails_e32d9e6e0a FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -3208,4 +3245,20 @@ INSERT INTO schema_migrations (version) VALUES ('20161110114027');
 INSERT INTO schema_migrations (version) VALUES ('20161110115341');
 
 INSERT INTO schema_migrations (version) VALUES ('20161110115542');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116233418');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116233517');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116233527');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116233707');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116233730');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116235323');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116235350');
+
+INSERT INTO schema_migrations (version) VALUES ('20161117125255');
 

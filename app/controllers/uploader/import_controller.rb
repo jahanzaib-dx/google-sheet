@@ -78,7 +78,7 @@ class Uploader::ImportController < ApplicationController
 
   def create_and_process_upload
     file_path = CustomImportTemplateUtil.marketrex_default_file_path(params[:upload_file_tmp_url])
-    puts "--------------------------------------file_path: #{file_path}"
+    Rails.logger.debug  "--------------------------------------file_path: #{file_path}"
     original_file_name = params[:upload_file_tmp_url]
 
     #@sheet = Roo::Excelx.new("#{file_path}")
@@ -88,7 +88,7 @@ class Uploader::ImportController < ApplicationController
     @sheet = Roo::Excel.new("#{file_path}") if( ext.eql?('xls') )
     @sheet = Roo::Excelx.new("#{file_path}") if( ext.eql?('xlsx'))
 
-    puts "-----------------sheet: #{@sheet.info} "
+    Rails.logger.debug  "-----------------sheet: #{@sheet.info} "
 
     required_params = {}
     not_for_sheet = {}
@@ -143,19 +143,21 @@ class Uploader::ImportController < ApplicationController
       }
     end
 
-    puts "required_params: "
-    puts required_params
-    puts "**************************************************************************************"
-    puts "not_for_sheet: "
-    puts not_for_sheet
+    Rails.logger.debug  "required_params: "
+    Rails.logger.debug  required_params
+    Rails.logger.debug  "**************************************************************************************"
+    Rails.logger.debug  "not_for_sheet: "
+    Rails.logger.debug  not_for_sheet
 
     name = SecureRandom.hex
     import_template_attributes = { name: name, import_mappings_attributes: required_params }
 
+    Rails.logger.debug  "-----"
+    Rails.logger.debug  "User's office Id: #{current_user.account.office_id}"
     pre_existing = ImportTemplate.new(import_template_attributes.merge({
                                                              :name => name,
                                                              :reusable => false,
-                                                             :office => current_user.account.office
+                                                             :user => current_user
                                                            }))
 
     mapping_structure = pre_existing.dup
@@ -164,12 +166,12 @@ class Uploader::ImportController < ApplicationController
 
     import_mappings_dup = Marshal.load(Marshal.dump(import_mappings))
     CustomImportTemplateUtil.update_import_mappings mapping_structure, import_mappings
-    import = TenantRecordImport.create(:office => current_user.account.office,
+    import = TenantRecordImport.create(:user => current_user,
                                        #:team_id => current_user.account.own_team.id,
                                        :import_template => mapping_structure )
 
     import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
-    #CustomImportTemplateUtil.create_template_spreadsheet(mapping_structure)
+
 
    render json: { text: "ok" }
     # respond_to do |format|
@@ -266,11 +268,11 @@ class Uploader::ImportController < ApplicationController
                                               :created_at => 1.week.ago..Time.now).count
       @firm_imports_count = ImportLog.where(:office_id => offices).count
     else
-      office_id = current_user.account.office.id
-      @imports = TenantRecordImport.where(:office_id => office_id)
-      @recent_imports_count = ImportLog.where(:office_id => office_id,
+      user_id = current_user.id
+      @imports = TenantRecordImport.where(:user_id => user_id)
+      @recent_imports_count = ImportLog.where(:user_id => user_id,
                                               :created_at => 1.week.ago..Time.now).count
-      @office_imports_count = ImportLog.where(:office_id => office_id).count
+      @office_imports_count = ImportLog.where(:user_id => user_id).count
 
     end
     if @imports.respond_to?(:each)

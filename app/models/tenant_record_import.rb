@@ -1,12 +1,14 @@
 class TenantRecordImport < ActiveRecord::Base
 
-  belongs_to :office
+  belongs_to :user
   belongs_to :import_template
   belongs_to :lease_structure
   # belongs_to :team
   has_many :import_records, :dependent => :destroy
 
-  # attr_accessible :team_id, :office, :import_template, :status, :complete, :completed_at, :total_traversed_count, :total_record_count, :num_imported_records, :import_template_attributes, :lease_structure_attributes
+  #attr_accessible :complete, :completed_at, :total_traversed_count, :total_record_count, :num_imported_records, :import_template_attributes, :lease_structure_attributes
+  attr_accessor :error
+
   accepts_nested_attributes_for :import_records
   accepts_nested_attributes_for :import_template
   accepts_nested_attributes_for :lease_structure
@@ -18,10 +20,12 @@ class TenantRecordImport < ActiveRecord::Base
     rescue NoMethodError => e
       self.update_attributes(:status => "Invalid file.\n")
       # self.status = "Invalid file.\n"
+      self.error = true
       Rails.logger.debug [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
     rescue Exception => e
       # self.status = "File Could not be uploaded.\n"
       self.update_attributes(:status => "File Could not be uploaded.\n")
+      self.error = true
       Rails.logger.debug [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
     end
     # import = TenantRecordImport.find(self.id)
@@ -34,11 +38,13 @@ class TenantRecordImport < ActiveRecord::Base
       CustomImportTenantRecordsWorker.perform_async(self.id, file_path, original_file_name, import_template.id, current_user_info, import_mappings_dup, not_for_sheet)
     rescue NoMethodError => e
       self.update_attributes(:status => "Invalid file.\n")
+      self.error = true
       # self.status = "Invalid file.\n"
       Rails.logger.debug [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
     rescue Exception => e
       # self.status = "File Could not be uploaded.\n"
       self.update_attributes(:status => "File Could not be uploaded.\n")
+      self.error = true
       Rails.logger.debug [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
     end
     # import = TenantRecordImport.find(self.id)
@@ -82,6 +88,7 @@ class TenantRecordImport < ActiveRecord::Base
 
 
   def update_flags
+
 
     self.import_valid = ImportRecord.where(:tenant_record_import_id => id, :record_valid => false).count == 0
     self.geocode_valid = ImportRecord.where(:tenant_record_import_id => id, :geocode_valid => false).count == 0

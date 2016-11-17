@@ -684,8 +684,8 @@ class TenantRecord < ActiveRecord::Base
 
   private
   def default_values
-    puts "***********************@current user: #{User.current_user.name}"
-    self.user_id = User.current_user.id
+    #puts "***********************@current user: #{User.current_user.name}"
+    self.user_id ||= User.current_user.id
     self.address1 = self.address1.to_s.strip
     self.base_rent ||= 0.00
     self.class_type = class_type.to_s.downcase

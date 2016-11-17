@@ -7,7 +7,7 @@ module CustomImporter
 
     import = TenantRecordImport.find import_id
     record = self.template_converted_data(import, original_record)
-    params = record.merge( :office_id => import.office_id )
+    params = record.merge( :user_id => import.user_id )
 
     klass = Object.const_get not_for_sheet['class']
 
@@ -116,7 +116,8 @@ module CustomImporter
     # just save custom
     #tenant_record.custom = original_record[:custom] if original_record[:custom]
     # just set the team
-    tenant_record.team = import.team
+    #tenant_record.team = import.team
+    tenant_record.user = import.user
 
     # checking stepped rent and if it has errors
     has_stepped_errors = self.validate_stepped_rents(record)
@@ -224,7 +225,7 @@ module CustomImporter
 
     TenantRecordImport.increment_counter(:num_imported_records, import_id)
     ImportLog.create(tenant_record_import_id: import_id,
-                     office_id: tenant_record.office.id,
+                     user_id: tenant_record.user.id,
                      tenant_record_id: tenant_record.id )
     if record_id
       ImportRecord.destroy record_id
