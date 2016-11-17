@@ -25,9 +25,9 @@ if request.remote_ip=='115.186.56.134444'%>
 
 
 
-<script src="<%= Rails.public_path.join('flash/mediaelement-and-player.min.js')%>"></script>
+<script src="<%= request.host_with_port%>/flash/mediaelement-and-player.min.js"></script>
 
-<link rel="stylesheet" media="all" href="<%= Rails.public_path.join('flash/mediaelementplayer.min.css')%>" />
+<link rel="stylesheet" media="all" href="<%= request.host_with_port%>/flash/mediaelementplayer.min.css" />
 
 
 <div class="banner">
