@@ -9,80 +9,49 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
 SET search_path = public, pg_catalog;
-
---
--- Name: hex_to_int(character varying); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hex_to_int(hexval character varying) RETURNS integer
-    LANGUAGE plpgsql IMMUTABLE STRICT
-    AS $$DECLARE
-    result  bigint;
-BEGIN
-    EXECUTE 'SELECT x''' || hexval || '''::int' INTO result;
-    RETURN result;
-END;
-$$;
-
-
---
--- Name: tenantrex_depopulate_office_from_agreement(integer, integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION tenantrex_depopulate_office_from_agreement(pagreementid integer, pofficeid integer, OUT counttenantrecords integer) RETURNS integer
-    LANGUAGE plpgsql
-    AS $$
- BEGIN
-
-    create temp table tDepopulateOfficeFromAgreement(
-        tenant_record_id int not null primary key
-    );
-
-    insert into tDepopulateOfficeFromAgreement(tenant_record_id)
-    select tenant_records.id from tenant_records
-      join agreements_tenant_records on tenant_records.id = agreements_tenant_records.tenant_record_id
-      join agreements                on agreements.id = agreements_tenant_records.agreement_id
-      join agreements_offices        on agreements_offices.agreement_id = agreements.id
-    where agreements.office_default = true
-      and agreements_offices.office_id = pOfficeId;
-
-    delete from agreements_tenant_records
-      where agreement_id = pAgreementId
-        and tenant_record_id IN ( SELECT tenant_record_id FROM tDepopulateOfficeFromAgreement);
-
-    drop table if exists tDepopulateOfficeFromAgreement;
-
-    select count(tenant_record_id) into countTenantRecords from agreements_tenant_records where agreement_id = pAgreementId;
-
-END ;
-$$;
-
-
---
--- Name: tenantrex_populate_office_into_agreement(integer, integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION tenantrex_populate_office_into_agreement(pagreementid integer, pofficeid integer, OUT counttenantrecords integer) RETURNS integer
-    LANGUAGE plpgsql
-    AS $$
- BEGIN
-
-    insert into agreements_tenant_records(agreement_id, tenant_record_id)
-    select pAgreementId, tenant_records.id from tenant_records
-      join agreements_tenant_records on tenant_records.id = agreements_tenant_records.tenant_record_id
-      join agreements                on agreements.id = agreements_tenant_records.agreement_id
-      join agreements_offices        on agreements_offices.agreement_id = agreements.id
-    where agreements.office_default = true
-      and agreements_offices.office_id = pOfficeId
-      and tenant_records.comp_type = 'internal'
-      and tenant_records.view_type NOT IN ('private');
-
-    select count(tenant_record_id) into countTenantRecords from agreements_tenant_records where agreement_id = pAgreementId;
-
-END ;
-$$;
-
 
 SET default_tablespace = '';
 
@@ -123,6 +92,24 @@ ALTER SEQUENCE account_features_id_seq OWNED BY account_features.id;
 
 
 --
+-- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE accounts (
+    id integer NOT NULL,
+    fullname character varying(255),
+    role character varying(255),
+    user_id integer,
+    firm_id integer,
+    office_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    market_id integer,
+    accepted_terms_of_service boolean DEFAULT false
+);
+
+
+--
 -- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -135,21 +122,10 @@ CREATE SEQUENCE accounts_id_seq
 
 
 --
--- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE accounts (
-    id integer DEFAULT nextval('accounts_id_seq'::regclass) NOT NULL,
-    fullname character varying(255),
-    role character varying(255),
-    user_id integer,
-    firm_id integer,
-    office_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    market_id integer,
-    accepted_terms_of_service boolean DEFAULT false
-);
+ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
 
 
 --
@@ -188,15 +164,22 @@ ALTER SEQUENCE activity_logs_id_seq OWNED BY activity_logs.id;
 
 
 --
--- Name: agreements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: archive_migration_tenant_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE SEQUENCE agreements_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE TABLE archive_migration_tenant_records (
+    id integer NOT NULL,
+    image_url character varying(255),
+    confidential integer,
+    website character varying(255),
+    tenant_improvement_modifier numeric(20,0),
+    insurance numeric(20,0),
+    maintenance numeric(20,0),
+    utilities numeric(20,0),
+    taxes numeric(20,0),
+    lease_commencement date,
+    lease_expiration date
+);
 
 
 --
@@ -212,22 +195,10 @@ CREATE SEQUENCE archive_migration_tenant_records_id_seq
 
 
 --
--- Name: archive_migration_tenant_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: archive_migration_tenant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE archive_migration_tenant_records (
-    id integer DEFAULT nextval('archive_migration_tenant_records_id_seq'::regclass) NOT NULL,
-    image_url character varying(255),
-    confidential integer,
-    website character varying(255),
-    tenant_improvement_modifier numeric(20,0),
-    insurance numeric(20,0),
-    maintenance numeric(20,0),
-    utilities numeric(20,0),
-    taxes numeric(20,0),
-    lease_commencement date,
-    lease_expiration date
-);
+ALTER SEQUENCE archive_migration_tenant_records_id_seq OWNED BY archive_migration_tenant_records.id;
 
 
 --
@@ -367,7 +338,8 @@ CREATE TABLE comp_requests (
     receiver_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    status boolean DEFAULT false
+    status boolean DEFAULT false,
+    comp_type character varying
 );
 
 
@@ -388,6 +360,36 @@ CREATE SEQUENCE comp_requests_id_seq
 --
 
 ALTER SEQUENCE comp_requests_id_seq OWNED BY comp_requests.id;
+
+
+--
+-- Name: comp_unlock_fields; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comp_unlock_fields (
+    id integer NOT NULL,
+    shared_comp_id integer,
+    field_name integer
+);
+
+
+--
+-- Name: comp_unlock_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comp_unlock_fields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comp_unlock_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comp_unlock_fields_id_seq OWNED BY comp_unlock_fields.id;
 
 
 --
@@ -561,6 +563,22 @@ ALTER SEQUENCE expenses_id_seq OWNED BY expenses.id;
 
 
 --
+-- Name: firms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE firms (
+    id integer NOT NULL,
+    name character varying(255),
+    contact_name character varying(255),
+    contact_email character varying(255),
+    contact_phone character varying(255),
+    deleted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: firms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -573,19 +591,10 @@ CREATE SEQUENCE firms_id_seq
 
 
 --
--- Name: firms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: firms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE firms (
-    id integer DEFAULT nextval('firms_id_seq'::regclass) NOT NULL,
-    name character varying(255),
-    contact_name character varying(255),
-    contact_email character varying(255),
-    contact_phone character varying(255),
-    deleted_at timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
+ALTER SEQUENCE firms_id_seq OWNED BY firms.id;
 
 
 --
@@ -820,6 +829,23 @@ ALTER SEQUENCE industries_id_seq OWNED BY industries.id;
 
 
 --
+-- Name: industry_sic_codes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE industry_sic_codes (
+    id integer NOT NULL,
+    value character varying(255),
+    description character varying(255),
+    division character varying(255),
+    major_group character varying(255),
+    industry_group character varying(255),
+    division_desc character varying(255),
+    major_group_desc character varying(255),
+    industry_group_desc character varying(255)
+);
+
+
+--
 -- Name: industry_sic_codes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -832,19 +858,24 @@ CREATE SEQUENCE industry_sic_codes_id_seq
 
 
 --
--- Name: industry_sic_codes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: industry_sic_codes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE industry_sic_codes (
-    id integer DEFAULT nextval('industry_sic_codes_id_seq'::regclass) NOT NULL,
-    value character varying(255),
-    description character varying(255),
-    division character varying(255),
-    major_group character varying(255),
-    industry_group character varying(255),
-    division_desc character varying(255),
-    major_group_desc character varying(255),
-    industry_group_desc character varying(255)
+ALTER SEQUENCE industry_sic_codes_id_seq OWNED BY industry_sic_codes.id;
+
+
+--
+-- Name: learn_more_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE learn_more_requests (
+    id integer NOT NULL,
+    fullname character varying(255),
+    brokerage_firm character varying(255),
+    email character varying(255),
+    market_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -861,18 +892,10 @@ CREATE SEQUENCE learn_more_requests_id_seq
 
 
 --
--- Name: learn_more_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: learn_more_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE learn_more_requests (
-    id integer DEFAULT nextval('learn_more_requests_id_seq'::regclass) NOT NULL,
-    fullname character varying(255),
-    brokerage_firm character varying(255),
-    email character varying(255),
-    market_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
+ALTER SEQUENCE learn_more_requests_id_seq OWNED BY learn_more_requests.id;
 
 
 --
@@ -921,7 +944,7 @@ CREATE TABLE lease_structures (
     account_id integer,
     discount_rate numeric(4,2),
     office_id integer,
-    interest_rate numeric(4,2) DEFAULT 0
+    interest_rate numeric(4,2) DEFAULT 0.0
 );
 
 
@@ -942,38 +965,6 @@ CREATE SEQUENCE lease_structures_id_seq
 --
 
 ALTER SEQUENCE lease_structures_id_seq OWNED BY lease_structures.id;
-
-
---
--- Name: lookup_address_zipcodes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE lookup_address_zipcodes (
-    id integer NOT NULL,
-    name character varying(255),
-    city character varying(255),
-    state character varying(255),
-    location geometry(Point,3785)
-);
-
-
---
--- Name: lookup_address_zipcodes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE lookup_address_zipcodes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: lookup_address_zipcodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE lookup_address_zipcodes_id_seq OWNED BY lookup_address_zipcodes.id;
 
 
 --
@@ -1104,6 +1095,23 @@ CREATE TABLE lookup_submarkets_tenant_records (
 
 
 --
+-- Name: maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE maps (
+    id integer NOT NULL,
+    account_id integer,
+    office_id integer,
+    name character varying(255),
+    mode character varying(255),
+    latitude text,
+    longitude text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: maps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1116,20 +1124,10 @@ CREATE SEQUENCE maps_id_seq
 
 
 --
--- Name: maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE maps (
-    id integer DEFAULT nextval('maps_id_seq'::regclass) NOT NULL,
-    account_id integer,
-    office_id integer,
-    name character varying(255),
-    mode character varying(255),
-    latitude text,
-    longitude text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
+ALTER SEQUENCE maps_id_seq OWNED BY maps.id;
 
 
 --
@@ -1176,6 +1174,18 @@ ALTER SEQUENCE market_expenses_id_seq OWNED BY market_expenses.id;
 
 
 --
+-- Name: markets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE markets (
+    id integer NOT NULL,
+    name character varying(255),
+    is_preferred boolean DEFAULT false,
+    description character varying(255)
+);
+
+
+--
 -- Name: markets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1188,15 +1198,10 @@ CREATE SEQUENCE markets_id_seq
 
 
 --
--- Name: markets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: markets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE markets (
-    id integer DEFAULT nextval('markets_id_seq'::regclass) NOT NULL,
-    name character varying(255),
-    is_preferred boolean DEFAULT false,
-    description character varying(255)
-);
+ALTER SEQUENCE markets_id_seq OWNED BY markets.id;
 
 
 --
@@ -1266,23 +1271,11 @@ ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
 
 
 --
--- Name: offices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE offices_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: offices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE offices (
-    id integer DEFAULT nextval('offices_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     firm_id integer,
     name character varying(255),
     contact_name character varying(255),
@@ -1305,6 +1298,25 @@ CREATE TABLE offices (
     updated_at timestamp without time zone NOT NULL,
     registration_code character varying(255)
 );
+
+
+--
+-- Name: offices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE offices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE offices_id_seq OWNED BY offices.id;
 
 
 --
@@ -1430,8 +1442,7 @@ CREATE TABLE sale_records (
     sold_date date,
     user_id integer,
     custom hstore,
-    property_name character varying,
-    date_built date
+    property_name character varying
 );
 
 
@@ -1493,8 +1504,41 @@ ALTER SEQUENCE schedule_accesses_id_seq OWNED BY schedule_accesses.id;
 --
 
 CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
+    version character varying NOT NULL
 );
+
+
+--
+-- Name: shared_comps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE shared_comps (
+    id integer NOT NULL,
+    comp_id integer,
+    agent_id integer,
+    comp_type character varying,
+    comp_status character varying,
+    ownership boolean DEFAULT false
+);
+
+
+--
+-- Name: shared_comps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE shared_comps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: shared_comps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE shared_comps_id_seq OWNED BY shared_comps.id;
 
 
 --
@@ -1673,23 +1717,11 @@ ALTER SEQUENCE tenant_record_imports_id_seq OWNED BY tenant_record_imports.id;
 
 
 --
--- Name: tenant_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tenant_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: tenant_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE tenant_records (
-    id integer DEFAULT nextval('tenant_records_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     office_id integer,
     comments text,
     industry_sic_code_id integer,
@@ -1716,13 +1748,13 @@ CREATE TABLE tenant_records (
     latitude numeric(30,9),
     longitude numeric(30,9),
     size integer,
-    net_effective_per_sf numeric(20,9) DEFAULT 0,
-    landlord_concessions_per_sf numeric(20,9) DEFAULT 0,
-    landlord_margins numeric(20,9) DEFAULT 0,
+    net_effective_per_sf numeric(20,9) DEFAULT 0.0,
+    landlord_concessions_per_sf numeric(20,9) DEFAULT 0.0,
+    landlord_margins numeric(20,9) DEFAULT 0.0,
     base_rent numeric(20,9),
     escalation numeric(4,2),
-    tenant_improvement numeric(20,9) DEFAULT 0,
-    tenant_ti_cost numeric(20,9) DEFAULT 0,
+    tenant_improvement numeric(20,9) DEFAULT 0.0,
+    tenant_ti_cost numeric(20,9) DEFAULT 0.0,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     deleted_at timestamp without time zone,
@@ -1733,13 +1765,13 @@ CREATE TABLE tenant_records (
     main_image_file_size integer,
     main_image_updated_at timestamp without time zone,
     avg_base_rent_per_annum_by_sf numeric,
-    landlord_effective_rent numeric(20,9) DEFAULT 0,
+    landlord_effective_rent numeric(20,9) DEFAULT 0.0,
     submarket character varying(255),
     property_name character varying(255),
     free_rent_total integer DEFAULT 0,
     free_rent character varying(255) DEFAULT '0'::character varying,
     industry_type character varying(255),
-    cushman_net_effective_per_sf numeric(20,2) DEFAULT 0,
+    cushman_net_effective_per_sf numeric(20,2) DEFAULT 0.0,
     is_stepped_rent boolean DEFAULT false,
     company_logo_file_name character varying(255),
     company_logo_content_type character varying(255),
@@ -1748,8 +1780,8 @@ CREATE TABLE tenant_records (
     user_id integer,
     has_additional_tenant_cost boolean DEFAULT false,
     has_additional_ll_allowance boolean DEFAULT false,
-    additional_ll_allowance numeric(20,2) DEFAULT 0,
-    additional_tenant_cost numeric(20,2) DEFAULT 0,
+    additional_ll_allowance numeric(20,2) DEFAULT 0.0,
+    additional_tenant_cost numeric(20,2) DEFAULT 0.0,
     gross_free_rent boolean DEFAULT false,
     comp_view_type character varying,
     deal_type character varying,
@@ -1766,6 +1798,25 @@ CREATE TABLE tenant_records (
     record_type character varying DEFAULT 'lease'::character varying,
     custom hstore
 );
+
+
+--
+-- Name: tenant_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tenant_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tenant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tenant_records_id_seq OWNED BY tenant_records.id;
 
 
 --
@@ -1859,22 +1910,10 @@ CREATE SEQUENCE users_id_seq
 
 
 --
--- Name: users_id_seq1; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE users_id_seq1
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE users_id_seq1 OWNED BY users.id;
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
@@ -1888,7 +1927,21 @@ ALTER TABLE ONLY account_features ALTER COLUMN id SET DEFAULT nextval('account_f
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY activity_logs ALTER COLUMN id SET DEFAULT nextval('activity_logs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_migration_tenant_records ALTER COLUMN id SET DEFAULT nextval('archive_migration_tenant_records_id_seq'::regclass);
 
 
 --
@@ -1930,6 +1983,13 @@ ALTER TABLE ONLY comp_requests ALTER COLUMN id SET DEFAULT nextval('comp_request
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comp_unlock_fields ALTER COLUMN id SET DEFAULT nextval('comp_unlock_fields_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY connection_requests ALTER COLUMN id SET DEFAULT nextval('connection_requests_id_seq'::regclass);
 
 
@@ -1959,6 +2019,13 @@ ALTER TABLE ONLY custom_records ALTER COLUMN id SET DEFAULT nextval('custom_reco
 --
 
 ALTER TABLE ONLY expenses ALTER COLUMN id SET DEFAULT nextval('expenses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY firms ALTER COLUMN id SET DEFAULT nextval('firms_id_seq'::regclass);
 
 
 --
@@ -2014,6 +2081,20 @@ ALTER TABLE ONLY industries ALTER COLUMN id SET DEFAULT nextval('industries_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY industry_sic_codes ALTER COLUMN id SET DEFAULT nextval('industry_sic_codes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY learn_more_requests ALTER COLUMN id SET DEFAULT nextval('learn_more_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY lease_structure_expenses ALTER COLUMN id SET DEFAULT nextval('lease_structure_expenses_id_seq'::regclass);
 
 
@@ -2022,13 +2103,6 @@ ALTER TABLE ONLY lease_structure_expenses ALTER COLUMN id SET DEFAULT nextval('l
 --
 
 ALTER TABLE ONLY lease_structures ALTER COLUMN id SET DEFAULT nextval('lease_structures_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY lookup_address_zipcodes ALTER COLUMN id SET DEFAULT nextval('lookup_address_zipcodes_id_seq'::regclass);
 
 
 --
@@ -2056,7 +2130,21 @@ ALTER TABLE ONLY lookup_submarkets ALTER COLUMN id SET DEFAULT nextval('lookup_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY maps ALTER COLUMN id SET DEFAULT nextval('maps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY market_expenses ALTER COLUMN id SET DEFAULT nextval('market_expenses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY markets ALTER COLUMN id SET DEFAULT nextval('markets_id_seq'::regclass);
 
 
 --
@@ -2071,6 +2159,13 @@ ALTER TABLE ONLY memberships ALTER COLUMN id SET DEFAULT nextval('memberships_id
 --
 
 ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY offices ALTER COLUMN id SET DEFAULT nextval('offices_id_seq'::regclass);
 
 
 --
@@ -2112,6 +2207,13 @@ ALTER TABLE ONLY schedule_accesses ALTER COLUMN id SET DEFAULT nextval('schedule
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY shared_comps ALTER COLUMN id SET DEFAULT nextval('shared_comps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY stepped_rents ALTER COLUMN id SET DEFAULT nextval('stepped_rents_id_seq'::regclass);
 
 
@@ -2147,6 +2249,13 @@ ALTER TABLE ONLY tenant_record_imports ALTER COLUMN id SET DEFAULT nextval('tena
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tenant_records ALTER COLUMN id SET DEFAULT nextval('tenant_records_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY user_settings ALTER COLUMN id SET DEFAULT nextval('user_settings_id_seq'::regclass);
 
 
@@ -2154,7 +2263,7 @@ ALTER TABLE ONLY user_settings ALTER COLUMN id SET DEFAULT nextval('user_setting
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq1'::regclass);
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
@@ -2227,6 +2336,14 @@ ALTER TABLE ONLY back_end_sale_comps
 
 ALTER TABLE ONLY comp_requests
     ADD CONSTRAINT comp_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comp_unlock_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comp_unlock_fields
+    ADD CONSTRAINT comp_unlock_fields_pkey PRIMARY KEY (id);
 
 
 --
@@ -2366,14 +2483,6 @@ ALTER TABLE ONLY lease_structures
 
 
 --
--- Name: lookup_address_zipcodes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY lookup_address_zipcodes
-    ADD CONSTRAINT lookup_address_zipcodes_pkey PRIMARY KEY (id);
-
-
---
 -- Name: lookup_companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2483,6 +2592,14 @@ ALTER TABLE ONLY sale_records
 
 ALTER TABLE ONLY schedule_accesses
     ADD CONSTRAINT schedule_accesses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shared_comps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY shared_comps
+    ADD CONSTRAINT shared_comps_pkey PRIMARY KEY (id);
 
 
 --
@@ -2641,20 +2758,6 @@ CREATE UNIQUE INDEX index_lease_structures_on_name_and_account_id ON lease_struc
 
 
 --
--- Name: index_lookup_address_zipcodes_on_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_lookup_address_zipcodes_on_location ON lookup_address_zipcodes USING gist (location);
-
-
---
--- Name: index_lookup_address_zipcodes_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_lookup_address_zipcodes_on_name ON lookup_address_zipcodes USING btree (name);
-
-
---
 -- Name: index_lookup_companies_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2732,13 +2835,6 @@ CREATE INDEX index_stepped_rents_on_deleted_at ON stepped_rents USING btree (del
 
 
 --
--- Name: index_tenant_records_on_address1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_tenant_records_on_address1 ON tenant_records USING btree (lower((address1)::text) varchar_pattern_ops);
-
-
---
 -- Name: index_tenant_records_on_industry_sic_code_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2788,284 +2884,58 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: fk_rails_3c7e78cb8f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_230b5be97a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sale_records
-    ADD CONSTRAINT fk_rails_3c7e78cb8f FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_230b5be97a FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_48b85557f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_52c772bed9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY groups
-    ADD CONSTRAINT fk_rails_48b85557f6 FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_52c772bed9 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_4a84b89a87; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_bc1741e432; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY custom_records
-    ADD CONSTRAINT fk_rails_4a84b89a87 FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_bc1741e432 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_57756577a8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_dea63341f6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_57756577a8 FOREIGN KEY (group_id) REFERENCES groups(id);
+    ADD CONSTRAINT fk_rails_dea63341f6 FOREIGN KEY (member_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_61821e7f84; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_f168d43179; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT fk_rails_f168d43179 FOREIGN KEY (group_id) REFERENCES groups(id);
+
+
+--
+-- Name: fk_rails_fd76783a6d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schedule_accesses
-    ADD CONSTRAINT fk_rails_61821e7f84 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_94ef0a20e3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_94ef0a20e3 FOREIGN KEY (member_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_fd76783a6d FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO public,postgis;
-
-INSERT INTO schema_migrations (version) VALUES ('20121220204625');
-
-INSERT INTO schema_migrations (version) VALUES ('20130115191454');
-
-INSERT INTO schema_migrations (version) VALUES ('20130120051746');
-
-INSERT INTO schema_migrations (version) VALUES ('20130120060439');
-
-INSERT INTO schema_migrations (version) VALUES ('20130120172201');
-
-INSERT INTO schema_migrations (version) VALUES ('20130314043037');
-
-INSERT INTO schema_migrations (version) VALUES ('20130314044403');
-
-INSERT INTO schema_migrations (version) VALUES ('20130314051041');
-
-INSERT INTO schema_migrations (version) VALUES ('20130314190445');
-
-INSERT INTO schema_migrations (version) VALUES ('20130318153838');
-
-INSERT INTO schema_migrations (version) VALUES ('20130318154939');
-
-INSERT INTO schema_migrations (version) VALUES ('20130319175556');
-
-INSERT INTO schema_migrations (version) VALUES ('20130320152554');
-
-INSERT INTO schema_migrations (version) VALUES ('20130321054417');
-
-INSERT INTO schema_migrations (version) VALUES ('20130321061545');
-
-INSERT INTO schema_migrations (version) VALUES ('20130401202942');
-
-INSERT INTO schema_migrations (version) VALUES ('20130401202944');
-
-INSERT INTO schema_migrations (version) VALUES ('20130403181628');
-
-INSERT INTO schema_migrations (version) VALUES ('20130411025320');
-
-INSERT INTO schema_migrations (version) VALUES ('20130411030320');
-
-INSERT INTO schema_migrations (version) VALUES ('20130415034754');
-
-INSERT INTO schema_migrations (version) VALUES ('20130415190908');
-
-INSERT INTO schema_migrations (version) VALUES ('20130417001540');
-
-INSERT INTO schema_migrations (version) VALUES ('20130417154209');
-
-INSERT INTO schema_migrations (version) VALUES ('20130422153342');
-
-INSERT INTO schema_migrations (version) VALUES ('20130423042000');
-
-INSERT INTO schema_migrations (version) VALUES ('20130425191006');
-
-INSERT INTO schema_migrations (version) VALUES ('20130501171049');
-
-INSERT INTO schema_migrations (version) VALUES ('20130508142030');
-
-INSERT INTO schema_migrations (version) VALUES ('20130603190640');
-
-INSERT INTO schema_migrations (version) VALUES ('20130603210015');
-
-INSERT INTO schema_migrations (version) VALUES ('20130604035258');
-
-INSERT INTO schema_migrations (version) VALUES ('20130612182854');
-
-INSERT INTO schema_migrations (version) VALUES ('20130618153122');
-
-INSERT INTO schema_migrations (version) VALUES ('20130618153756');
-
-INSERT INTO schema_migrations (version) VALUES ('20130618212213');
-
-INSERT INTO schema_migrations (version) VALUES ('20130626145531');
-
-INSERT INTO schema_migrations (version) VALUES ('20130628183219');
-
-INSERT INTO schema_migrations (version) VALUES ('20130628185020');
-
-INSERT INTO schema_migrations (version) VALUES ('20130628192731');
-
-INSERT INTO schema_migrations (version) VALUES ('20130702171901');
-
-INSERT INTO schema_migrations (version) VALUES ('20130702210415');
-
-INSERT INTO schema_migrations (version) VALUES ('20130703041758');
-
-INSERT INTO schema_migrations (version) VALUES ('20130705172404');
-
-INSERT INTO schema_migrations (version) VALUES ('20130710150533');
-
-INSERT INTO schema_migrations (version) VALUES ('20130710185915');
-
-INSERT INTO schema_migrations (version) VALUES ('20130718183920');
-
-INSERT INTO schema_migrations (version) VALUES ('20130723212157');
-
-INSERT INTO schema_migrations (version) VALUES ('20130729034230');
-
-INSERT INTO schema_migrations (version) VALUES ('20130814160019');
-
-INSERT INTO schema_migrations (version) VALUES ('20130815152102');
-
-INSERT INTO schema_migrations (version) VALUES ('20130816144512');
-
-INSERT INTO schema_migrations (version) VALUES ('20131021152338');
-
-INSERT INTO schema_migrations (version) VALUES ('20131211161925');
-
-INSERT INTO schema_migrations (version) VALUES ('20131216051114');
-
-INSERT INTO schema_migrations (version) VALUES ('20131216174643');
-
-INSERT INTO schema_migrations (version) VALUES ('20140110222652');
-
-INSERT INTO schema_migrations (version) VALUES ('20140116193000');
-
-INSERT INTO schema_migrations (version) VALUES ('20140120193613');
-
-INSERT INTO schema_migrations (version) VALUES ('20140203163318');
-
-INSERT INTO schema_migrations (version) VALUES ('20140225154036');
-
-INSERT INTO schema_migrations (version) VALUES ('20140227190334');
-
-INSERT INTO schema_migrations (version) VALUES ('20140303203354');
-
-INSERT INTO schema_migrations (version) VALUES ('20140304191349');
-
-INSERT INTO schema_migrations (version) VALUES ('20140317154808');
-
-INSERT INTO schema_migrations (version) VALUES ('20140320182914');
-
-INSERT INTO schema_migrations (version) VALUES ('20140324171917');
-
-INSERT INTO schema_migrations (version) VALUES ('20140325152003');
-
-INSERT INTO schema_migrations (version) VALUES ('20140331144714');
-
-INSERT INTO schema_migrations (version) VALUES ('20140423233640');
-
-INSERT INTO schema_migrations (version) VALUES ('20140505143028');
-
-INSERT INTO schema_migrations (version) VALUES ('20140505193140');
-
-INSERT INTO schema_migrations (version) VALUES ('20140514210524');
-
-INSERT INTO schema_migrations (version) VALUES ('20140519194931');
-
-INSERT INTO schema_migrations (version) VALUES ('20140520142730');
-
-INSERT INTO schema_migrations (version) VALUES ('20140522031959');
-
-INSERT INTO schema_migrations (version) VALUES ('20140530185215');
-
-INSERT INTO schema_migrations (version) VALUES ('20140530194427');
-
-INSERT INTO schema_migrations (version) VALUES ('20140602140931');
-
-INSERT INTO schema_migrations (version) VALUES ('20140603160634');
-
-INSERT INTO schema_migrations (version) VALUES ('20140806191843');
-
-INSERT INTO schema_migrations (version) VALUES ('20140806201843');
-
-INSERT INTO schema_migrations (version) VALUES ('20140808205141');
-
-INSERT INTO schema_migrations (version) VALUES ('20140910155833');
-
-INSERT INTO schema_migrations (version) VALUES ('20140918171801');
-
-INSERT INTO schema_migrations (version) VALUES ('20140919195323');
-
-INSERT INTO schema_migrations (version) VALUES ('20141015141857');
-
-INSERT INTO schema_migrations (version) VALUES ('20141021073728');
-
-INSERT INTO schema_migrations (version) VALUES ('20141104154432');
-
-INSERT INTO schema_migrations (version) VALUES ('20141125051716');
-
-INSERT INTO schema_migrations (version) VALUES ('20141127065733');
-
-INSERT INTO schema_migrations (version) VALUES ('20141128080537');
-
-INSERT INTO schema_migrations (version) VALUES ('20141211053014');
-
-INSERT INTO schema_migrations (version) VALUES ('20141211060616');
-
-INSERT INTO schema_migrations (version) VALUES ('20141213092020');
-
-INSERT INTO schema_migrations (version) VALUES ('20141218092725');
-
-INSERT INTO schema_migrations (version) VALUES ('20141223053914');
-
-INSERT INTO schema_migrations (version) VALUES ('20141229105652');
-
-INSERT INTO schema_migrations (version) VALUES ('20141231093914');
-
-INSERT INTO schema_migrations (version) VALUES ('20141231094406');
-
-INSERT INTO schema_migrations (version) VALUES ('20150113071414');
-
-INSERT INTO schema_migrations (version) VALUES ('20150113074112');
-
-INSERT INTO schema_migrations (version) VALUES ('20150113074409');
-
-INSERT INTO schema_migrations (version) VALUES ('20150115060338');
-
-INSERT INTO schema_migrations (version) VALUES ('20150119060919');
-
-INSERT INTO schema_migrations (version) VALUES ('20150122125245');
-
-INSERT INTO schema_migrations (version) VALUES ('20150127074130');
-
-INSERT INTO schema_migrations (version) VALUES ('20150127074215');
-
-INSERT INTO schema_migrations (version) VALUES ('20150127133645');
-
-INSERT INTO schema_migrations (version) VALUES ('20150130102518');
-
-INSERT INTO schema_migrations (version) VALUES ('20150210115645');
-
-INSERT INTO schema_migrations (version) VALUES ('20150213064219');
-
-INSERT INTO schema_migrations (version) VALUES ('20150218094814');
+SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20160719080631');
 
@@ -3079,17 +2949,11 @@ INSERT INTO schema_migrations (version) VALUES ('20160728073310');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818062546');
 
-INSERT INTO schema_migrations (version) VALUES ('20160818062637');
-
 INSERT INTO schema_migrations (version) VALUES ('20160818092344');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818093208');
 
 INSERT INTO schema_migrations (version) VALUES ('20160822062727');
-
-INSERT INTO schema_migrations (version) VALUES ('20160822194258');
-
-INSERT INTO schema_migrations (version) VALUES ('20160822194260');
 
 INSERT INTO schema_migrations (version) VALUES ('20160823123054');
 
@@ -3153,6 +3017,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161006130211');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006182940');
 
+INSERT INTO schema_migrations (version) VALUES ('20161007065215');
+
 INSERT INTO schema_migrations (version) VALUES ('20161007085810');
 
 INSERT INTO schema_migrations (version) VALUES ('20161007090254');
@@ -3189,6 +3055,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161019053658');
 
 INSERT INTO schema_migrations (version) VALUES ('20161019064841');
 
+INSERT INTO schema_migrations (version) VALUES ('20161027070517');
+
 INSERT INTO schema_migrations (version) VALUES ('20161027071106');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027110604');
@@ -3197,15 +3065,21 @@ INSERT INTO schema_migrations (version) VALUES ('20161027111025');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027121442');
 
+INSERT INTO schema_migrations (version) VALUES ('20161102100332');
+
 INSERT INTO schema_migrations (version) VALUES ('20161102133336');
 
 INSERT INTO schema_migrations (version) VALUES ('20161103094724');
+
+INSERT INTO schema_migrations (version) VALUES ('20161107070850');
+
+INSERT INTO schema_migrations (version) VALUES ('20161107073627');
+
+INSERT INTO schema_migrations (version) VALUES ('20161108102156');
 
 INSERT INTO schema_migrations (version) VALUES ('20161110114014');
 
 INSERT INTO schema_migrations (version) VALUES ('20161110114027');
 
 INSERT INTO schema_migrations (version) VALUES ('20161110115341');
-
-INSERT INTO schema_migrations (version) VALUES ('20161110115542');
 

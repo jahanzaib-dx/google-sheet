@@ -61,3 +61,4 @@ config/nginx.config
 
 /public/back_end_lease_comp
 /public/back_end_sale_comp
+/db/structure.sql
