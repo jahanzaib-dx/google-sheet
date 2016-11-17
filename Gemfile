@@ -87,3 +87,6 @@ gem 'cancancan'
 
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+
+gem 'sidekiq'
+gem "mediaelement_rails"

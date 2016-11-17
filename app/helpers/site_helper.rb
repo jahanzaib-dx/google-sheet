@@ -18,6 +18,19 @@ module SiteHelper
           {:text => 'ABOUT', :href => about_marketrex_path},
           {:text => 'CONTACT', :href => '#'},
         ]
+
+      when 'pages/about_lease'
+        [ {:text => 'FAQ', :href => leaserex_faqs_path},
+          {:text => 'ABOUT', :href => about_leaserex_path},
+          {:text => 'CONTACT', :href => '#'},
+        ]
+
+      when 'pages/about_tenant'
+        [ {:text => 'FAQ', :href => tenantrex_faqs_path},
+          {:text => 'ABOUT', :href => about_tenantrex_path},
+          {:text => 'CONTACT', :href => '#'},
+        ]
+
       when 'pages/home'
       when 'pages/plans'
       when 'sessions/new'
@@ -40,6 +53,19 @@ module SiteHelper
     end
 
     return image_check
+  end
+
+  def self.getComp(cid,type='lease')
+
+    if type == 'lease'
+      @comp = TenantRecord.where("id"=>cid).first
+    else
+      @comp = SaleRecord.where("id"=>cid).first
+    end
+
+    #unless comp.blank?
+      return @comp
+    #end
   end
 
 end

@@ -744,10 +744,10 @@ body {
             .accordion-content-continue {
               float: right;
               text-align: center;
-              padding: 27px 46px 27px 47px;
+              padding: 21px 46px 27px 47px;
               background-color: #5B6BAF;
               color: #ffffff;
-              height: 100px;
+              height: 108px;
               position: absolute;
               cursor: pointer;
               bottom: 0;
@@ -756,7 +756,13 @@ body {
               p {
                 margin: 0;
                 color: #ffffff;
+                line-height: 1.4em;
+
+                img{
+                  padding-top:8px;
+                }
               }
+
 
             }
             .accordion-content-continue-add-record {

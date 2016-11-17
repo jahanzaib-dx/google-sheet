@@ -22,7 +22,17 @@
               <%= @comp_record.suite %><br/>
               <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %></h3>
           </div>
-          <img src="<%= image_url 'adress-img.jpg' %>" class="adress-img">
+          <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
+
+
+          <div class="street_view adress-img">
+            <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
+              <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
+              </div>
+            </a>
+          </div>
+
+
         </div>
       </div>
       <div class="comp-table-container">
@@ -127,6 +137,14 @@
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td><h1 class="comp-table-hadding">Comments</h1></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+
+          <tr>
+            <td><p class="comp-table-pre">&nbsp;</p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
             <td><p class="comp-table-pre"> </p></td>
 
           </tr>

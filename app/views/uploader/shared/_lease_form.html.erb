@@ -33,7 +33,7 @@
       <!-- repeat div -->
       <div class="columns large-12 no-padding">
         <div class="columns large-8 no-padding">
-          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_percent" %> This record includes a base rent w/ an annual % increase. </label>
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_percent", false, class: 'validate[required]' %> This record includes a base rent w/ an annual % increase. </label>
         </div>
         <div class="columns large-4 no-padding">
           <div class="hover-info">?
@@ -46,7 +46,7 @@
       </div>
       <div class="columns large-12 no-padding">
         <div class="columns large-8 no-padding">
-          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_fixed_increase" %> This record includes a base rent w/ an annual $/SF increase. </label>
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "base_rent_fixed_increase", false, class: 'validate[required]' %> This record includes a base rent w/ an annual $/SF increase. </label>
         </div>
         <div class="columns large-4 no-padding">
           <div class="hover-info">?
@@ -59,10 +59,10 @@
       </div>
       <div class="columns large-12 no-padding">
         <div class="columns large-8 no-padding">
-          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "stepped_rent" %> This record includes stepped rents. </label>
+          <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "stepped_rent", false, class: 'validate[required]' %> This record includes stepped rents. </label>
           <div> <label>
                 <span class="stepped-rent-text">Max # of steps</span><br>
-                <%= select_tag "steps_count", options_for_select((1..20).to_a), class: 'stepped-rent-count', prompt: 'Please Choose' %>
+                <%= select_tag "steps_count", options_for_select((1..20).to_a), class: 'stepped-rent-count validate[required]', prompt: 'Please Choose' %>
             </label>
           </div>
         </div>
@@ -187,32 +187,32 @@
           <tr><td>Internal or External*</td>
             <td>
               <%= select_tag 'tenant_record[comp_view_type]',
-                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>
               <%#= text_field_tag 'temp_comp_view_type_tf', "", class: 'custom-value-input', :disabled => true %>
 
               <%#= hidden_field_tag 'tenant_record[comp_view_type]', "", class: 'actual-value' %>
             </td>
           </tr>
-          <tr><td>Company*</td><td><%= text_field_tag "tenant_record[company]" %></td></tr>
+          <tr><td>Company*</td><td><%= text_field_tag "tenant_record[company]", nil, class: ' validate[required]' %></td></tr>
           <tr><td>Industry*</td>
             <td>
               <%= select_tag 'temp_comp_industry_dd',
-                             options_for_select(industry_list.map { |s| [s.name, s.name] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+                             options_for_select(industry_list.map { |s| [s.name, s.name] }), prompt: 'Please Choose', class: 'custom-value-dropdown  validate[required]' %>
               <%= text_field_tag 'temp_comp_industry_tf', "", class: 'custom-value-input', :disabled => true %>
 
               <%= hidden_field_tag 'tenant_record[industry_type]', "", class: 'actual-value' %>
             </td>
           </tr>
-          <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]" %></td></tr>
+          <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]", nil, class: ' validate[required]' %></td></tr>
           <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
-          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]" %></td></tr>
-          <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
-          <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', "", class: 'required' %></td></tr>
+          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]", nil, class: ' validate[required]' %></td></tr>
+          <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select  validate[required]' %></td></tr>
+          <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
           <tr>
             <td>Class Type*</td>
             <td>
               <%= select_tag 'temp_comp_class_type_dd',
-                             options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+                             options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown validate[required]' %>
               <%= text_field_tag 'temp_comp_class_type_tf', "", class: 'custom-value-input', :disabled => true %>
               <%= hidden_field_tag 'tenant_record[class_type]', "", class: 'actual-value' %>
             </td>
@@ -220,32 +220,33 @@
           <tr><td>Property Type*</td>
             <td>
               <%= select_tag 'temp_comp_property_type_dd',
-                             options_for_select(TenantRecord::NEW_PROPERTY_TYPE.map { |pt| [pt.name, pt.id] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+                             options_for_select(TenantRecord::NEW_PROPERTY_TYPE.map { |pt| [pt.name, pt.id] }), prompt: 'Please Choose', class: 'custom-value-dropdown  validate[required]' %>
               <%= text_field_tag 'temp_comp_property_type_tf', "", class: 'custom-value-input', :disabled => true %>
               <%= hidden_field_tag 'tenant_record[property_type]', "", class: 'actual-value' %>
             </td>
           </tr>
+          <tr><td>Property Name</td><td><%= text_field_tag 'tenant_record[property_name]' %></td></tr>
           <tr>
             <td>Lease Commencement Date*</td>
             <td>
-              <%= text_field_tag 'tenant_record[lease_commencement_date]', "", class: 'date-picker-inline' %>
+              <%= text_field_tag 'tenant_record[lease_commencement_date]', "", class: 'date-picker-inline validate[required]' %>
               <span> <% #= hidden_field_tag "tenant_record[lease_commencement_date]"
               %> </span>
             </td>
           </tr>
-          <tr><td>Lease Term Months*</td><td><%= text_field_tag "tenant_record[lease_term_months]" %></td></tr>
-          <tr><td>Free Rent Months*</td><td><%= text_field_tag "tenant_record[free_rent]", '' %></td></tr>
-          <tr><td>Size*</td><td><%= text_field_tag "tenant_record[size]" , nil, placeholder: 'SF' %></td></tr>
-          <tr class="tenant-improvement-row"><td>Tenant Improvement*</td><td><%= text_field_tag "tenant_record[tenant_improvement]", nil, placeholder: '$/SF' %></td></tr>
+          <tr><td>Lease Term Months*</td><td><%= text_field_tag "tenant_record[lease_term_months]", nil,  class: "validate[required]" %></td></tr>
+          <tr><td>Free Rent Months*</td><td><%= text_field_tag "tenant_record[free_rent]", nil, class: " validate[required]" %></td></tr>
+          <tr><td>Size*</td><td><%= text_field_tag "tenant_record[size]" , nil, placeholder: 'SF', class: " validate[required]" %></td></tr>
+          <tr class="tenant-improvement-row"><td>Tenant Improvement*</td><td><%= text_field_tag "tenant_record[tenant_improvement]", nil, placeholder: '$/SF', class: " validate[condRequired['tenant_record[is_tenant_improvement]']" %></td></tr>
           <tr><td>Deal Type*</td>
             <td>
               <%= select_tag 'temp_comp_deal_type_dd',
-                             options_for_select(TenantRecord::DEAL_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+                             options_for_select(TenantRecord::DEAL_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown validate[required]' %>
               <%= text_field_tag 'temp_comp_deal_type_tf', "", class: 'custom-value-input', :disabled => true %>
               <%= hidden_field_tag 'tenant_record[deal_type]', "", class: 'actual-value' %>
             </td>
           </tr>
-          <tr><td>Lease Structure*</td>
+          <tr><td>Lease Structure</td>
             <td>
               <%= select_tag 'temp_comp_lease_structure_dd',
                              options_for_select(TenantRecord::LEASE_STRUTURE), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
@@ -254,7 +255,7 @@
             </td>
           </tr>
 
-          <tr class="base-rent-row"><td>Base rent*</td><td><%= text_field_tag "tenant_record[base_rent]", nil, placeholder: '$/SF' %></td></tr>
+          <tr class="base-rent-row"><td>Base rent*</td><td><%= text_field_tag "tenant_record[base_rent]", nil, placeholder: '$/SF', class: " validate[required]" %></td></tr>
 
           <tr class="sf-percent-increase-row">
             <td>
@@ -268,9 +269,9 @@
                 </div>
               </div>
             </td>
-            <td><%= text_field_tag 'tenant_record[escalation]' %></td>
+            <td><%= text_field_tag 'tenant_record[escalation]', nil, class: ' validate[required]' %></td>
           </tr>
-          <tr class="sf-fixed-increase-row"><td>$/SF increase*</td><td><%= text_field_tag "tenant_record[fixed_escalation]" %></td></tr>
+          <tr class="sf-fixed-increase-row"><td>$/SF increase*</td><td><%= text_field_tag "tenant_record[fixed_escalation]", nil, class: ' validate[required]' %></td></tr>
         </table>
         <div class="stepped-rent-increment-bpopup">
           <div style="position: relative">
@@ -305,7 +306,7 @@
                           <div class="right-box">
                             <div class="accordion-content-continue accordion-content-continue-add-record" id="single-comp-continue-4">
                               <p>Add Record</p>
-                              <p><%= image_tag("/assets/cloud.png") %></p>
+                              <p><%= image_tag("/assets/uploader/cloud.png") %></p>
                             </div>
                           </div>
 

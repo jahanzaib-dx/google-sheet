@@ -55,5 +55,22 @@ class SaleRecord < ActiveRecord::Base
   #                :latitude, :longitude, :zipcode, :zipcode_plus, :office_id
 
 
+  before_save :default_values
+  before_validation :default_values
 
+
+  private
+  def default_values
+    puts "***********************@current user: #{User.current_user.name}"
+    self.user_id = User.current_user.id
+    self.address1 = self.address1.to_s.strip
+    self.class_type = class_type.to_s.downcase
+    self.view_type = view_type.to_s.downcase
+    self.view_type ||= 'internal'
+    self.property_type = property_type.to_s.downcase
+    self.price ||= 0.00
+
+    # this true keeps validation from failing...
+    true
+  end
 end

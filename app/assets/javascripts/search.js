@@ -70,4 +70,46 @@ $(function() {
     });
   });
   
+  $( document ).on( "click", ".markspam", function() {
+    spamurl = $(this).data("url");
+	
+	if (spamurl != "") {
+		$(this).addClass("disabled");
+		
+		$.ajax({
+		  type: "GET",
+		  url: spamurl
+		});
+	}
+	
+	$(this).removeClass("active");
+	$(this).data("url","");
+		
+  });
+  
+    $( document ).on( "click", ".requestunlock", function() {
+		
+	var unobj = $(this);
+	createRequesturl = unobj.data("url");
+	
+	if (createRequesturl != "") {
+		/*$(this).addClass("disabled");*/
+		
+		$.ajax({
+		  type: "POST",
+		  url: createRequesturl
+		}).done(function( msg ) {
+		  /*alert( unobj.data("url") );*/
+		  unobj.removeClass("requestunlock");
+		  unobj.html("Request Sent");
+		});
+	}
+	
+	/*$(this).removeClass("active");*/
+	/*$(this).data("url","");*/
+		
+  });
+  
+ 
+  
   

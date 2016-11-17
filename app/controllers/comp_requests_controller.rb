@@ -52,6 +52,18 @@ class CompRequestsController < ApplicationController
   def create
     if is_comp_request_valid?
       # TODO:
+      @compdata = SiteHelper.getComp(params[:cid],params[:type])
+
+      #p @compdata
+
+      comp = CompRequest.new()
+      comp.comp_id = params[:cid]
+      comp.initiator_id = current_user.id
+      comp.receiver_id = @compdata.user_id
+      comp.comp_type = params[:type]
+      comp.save
+      render json: {:status => :success}
+
     end
   end
 

@@ -73,8 +73,8 @@ Rails.application.routes.draw do
   get 'sub_users/delete/:id' => 'users#sub_users_delete'
   get 'sub_users/edit/:id' => 'users#sub_users_edit'
   patch 'sub_users/edit/:id' => 'users#sub_users_update'
-
-  get 'flaged_comps/create/:id' => 'flaged_comps#create'
+  
+  get 'flaged_comps/create/(:id)' => 'flaged_comps#create', :as => :flaged_comps_create
   get 'flaged_comps/delete'
   get 'flaged_comps/delete_comp'
   post 'flaged_comps/email/:id' => 'flaged_comps#email'
@@ -84,6 +84,10 @@ Rails.application.routes.draw do
   get 'subscription-plans' => 'pages#plans'
   get 'marketrex-faqs' => 'pages#faqs'
   get 'about-leaserex' => 'pages#about_lease'
+  get 'about-tenantrex' => 'pages#about_tenant'
+
+  get 'leaserex-faqs' => 'pages#faqs_lease'
+  get 'tenantrex-faqs' => 'pages#faqs_tenant'
 
   resource :users
 
@@ -100,7 +104,7 @@ Rails.application.routes.draw do
   post 'comp_requests/remind' => 'comp_requests#remind'
   post 'comp_requests/update' => 'comp_requests#update'
   post 'delete_comp_requests' => 'comp_requests#destroy'
-
+  post 'create_comp_requests' => 'comp_requests#create'
 
 
 

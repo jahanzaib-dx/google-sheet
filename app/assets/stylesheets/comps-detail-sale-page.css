@@ -152,13 +152,9 @@
 }
 /*sale-detail*/
 
-
-
-
-
-
-
-
-
-
-
+  .street_view .street_view_image, .building_image .building_image_view {
+    padding: 0 20px 0 0 !important;
+    width: 316px;
+    height: 200px;
+  }
+  

@@ -50,12 +50,13 @@
             </td>
             <td>
               <%= select_tag 'sale_record[view_type]',
-                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>
                   </td>
                   </tr>
-                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
-                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
-                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]', nil, class: 'validate[required]' %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]' %></td></tr>
+                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]' %></td></tr>
+                  <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
                             Property Name*
@@ -68,7 +69,7 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[property_name]' %></td>
+                          <td><%= text_field_tag 'sale_record[property_name]', nil, class: 'validate[required]' %></td>
                         </tr>
                         <tr>
                           <td>
@@ -82,7 +83,7 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[date_built]', "", class: 'date-picker-inline' %>
+                          <td><%= text_field_tag 'sale_record[build_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_built]"
                                       %> </span></td>
                                 </tr>
@@ -99,7 +100,7 @@
                                     </div>
                                   </td>
                                   <td><%= select_tag 'sale_record[property_type]',
-                                                     options_for_select(TenantRecord::SALES_PROPERTY_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                                                     options_for_select(TenantRecord::SALES_PROPERTY_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>
 
                                         </td>
                                         </tr>
@@ -117,7 +118,7 @@
                                           </td>
                                           <td>
                                             <%= select_tag 'sale_record[class_type]',
-                                                           options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown' %>
+                                                           options_for_select(TenantRecord::CLASS_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-value-dropdown validate[required]' %>
 
 
                                                 </td>
@@ -134,7 +135,7 @@
                                                       </div>
                                                     </div>
                                                   </td>
-                                                  <td><%= text_field_tag 'sale_record[building_size]' %></td>
+                                                  <td><%= text_field_tag 'sale_record[land_size]', nil, class: ' validate[required]' %></td>
                                                 </tr>
                                                 <tr>
                                                   <td>
@@ -148,7 +149,7 @@
                                                       </div>
                                                     </div>
                                                   </td>
-                                                  <td><%= text_field_tag 'sale_record[sale_price]' %></td>
+                                                  <td><%= text_field_tag 'sale_record[price]', nil, class: ' validate[required]' %></td>
                                                 </tr>
                                                 <tr>
                                                   <td>
@@ -162,7 +163,7 @@
                                                       </div>
                                                     </div>
                                                   </td>
-                                                  <td><%= text_field_tag 'sale_record[date_sold]', "", class: 'date-picker-inline' %>
+                                                  <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
                                       %> </span></td>
                                                 </tr>
@@ -178,7 +179,7 @@
                                                       </div>
                                                     </div>
                                                   </td>
-                                                  <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
+                                                  <td><%= text_field_tag 'sale_record[cap_rate]', nil, class: ' validate[required]' %></td>
                                                 </tr>
         </table>
 
@@ -198,12 +199,13 @@
             </td>
             <td>
               <%= select_tag 'sale_record[view_type]',
-                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select' %>
+                             options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>
                   </td>
                   </tr>
-                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]' %></td></tr>
-                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]' %></td></tr>
-                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select' %></td></tr>
+                  <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]',nil, class: ' validate[required]'  %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]' %></td></tr>
+                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]' %></td></tr>
+                  <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
                             Land Size*
@@ -216,7 +218,7 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[land_size]' %></td>
+                          <td><%= text_field_tag 'sale_record[land_size]', nil, class: ' validate[required]' %></td>
                         </tr>
                         <tr>
                           <td>
@@ -230,7 +232,7 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[price]' %></td>
+                          <td><%= text_field_tag 'sale_record[price]', nil, class: ' validate[required]' %></td>
                         </tr>
 
                         <tr>
@@ -245,7 +247,7 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[date_sold]', "", class: 'date-picker-inline' %>
+                          <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
                                       %> </span></td>
                                 </tr>
@@ -262,19 +264,19 @@
                               </div>
                             </div>
                           </td>
-                          <td><%= text_field_tag 'sale_record[cap_rate]' %></td>
+                          <td><%= text_field_tag 'sale_record[cap_rate]', nil, class: ' validate[required]' %></td>
                         </tr>
         </table>
 
       </div>
-
+      <%= render partial: "uploader/shared/custom_fields_sales" %>
 
     </div>
 
     <div class="right-box">
       <div class="accordion-content-continue accordion-content-continue-add-record" id="sales-comp-continue-3" >
         <p>Add Record</p>
-        <p><%= image_tag("/assets/cloud.png") %></p>
+        <p><%= image_tag("/assets/uploader/cloud.png") %></p>
       </div>
     </div>
 
