@@ -52,13 +52,17 @@ config/nginx.config
 # Backup Files
 *.*~
 # Ignore application configuration
-/config/application.yml
+config/application.yml
 
 .vagrant/
 
 # Ignore uploaded excel
-/public/system/marketrex_uploads/*
+public/system/marketrex_uploads/*
 
-/public/back_end_lease_comp
-/public/back_end_sale_comp
-/db/structure.sql
+public/back_end_lease_comp
+public/back_end_sale_comp
+db/structure.sql
+
+
+*.mp4
+*.flv
