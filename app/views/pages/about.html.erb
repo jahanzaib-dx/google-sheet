@@ -239,10 +239,14 @@ $(document).ready(function() {
 	$('#videoplay').click(function() {
 		
 		/*$('#videoplay').hide();*/
-		$('#videoplay').css('visibility', 'hidden');	
+		/*$('#videoplay').css('visibility', 'hidden');	*/
+		$("#videoplay").css({ opacity: 0 });
+		$('.mejs-container').css({'z-index':'-100'});
 		
 		$('video').css({'height':'100%'});
 		$('video').css({'width':'100%'});
+		
+		
 		
 		$('.mejs-container').css({position: 'relative'});
 		$('.mejs-container').css({'z-index':'100'});
