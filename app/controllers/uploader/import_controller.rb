@@ -235,7 +235,7 @@ class Uploader::ImportController < ApplicationController
     # respond_to do |format|
     #   format.js
     # end
-    redirect_to marketrex_import_index_path
+    redirect_to uploader_import_index_path
   end
 
   private
