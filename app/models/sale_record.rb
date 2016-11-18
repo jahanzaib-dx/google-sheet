@@ -2,6 +2,8 @@ class SaleRecord < ActiveRecord::Base
 
   has_one :ownership ,class_name: 'Ownership', foreign_key: :comp_id
 
+  belongs_to :user
+
   scope :address_only, lambda { |office_id = nil|
     #office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("sale_records.id, zipcode, city, state, address1, 'address_only' as in_scope ")
@@ -61,8 +63,8 @@ class SaleRecord < ActiveRecord::Base
 
   private
   def default_values
-    puts "***********************@current user: #{User.current_user.name}"
-    self.user_id = User.current_user.id
+    #puts "***********************@current user: #{User.current_user.name}"
+    self.user_id ||= User.current_user.id
     self.address1 = self.address1.to_s.strip
     self.class_type = class_type.to_s.downcase
     self.view_type = view_type.to_s.downcase

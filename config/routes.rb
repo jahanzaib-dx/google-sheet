@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
 
@@ -210,6 +212,7 @@ Rails.application.routes.draw do
 
 
 
+  mount Sidekiq::Web, at: '/sidekiq'
   namespace :uploader do
     resources :tenant_records, only: [:index, :new, :create, :show] do
       match 'display_custom_record' => 'tenant_records#display_custom_record', via: :get
