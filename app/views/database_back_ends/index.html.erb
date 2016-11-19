@@ -87,14 +87,42 @@
 <div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
   <iframe src="" style="width:100%; height: 700px; "></iframe>
 </div>
-<div id="map_filter" class="map_container criteria_layout">
-  <div id="the_map"></div>
+<!--<div id="map_filter" class="map_container criteria_layout">-->
+  <!--<div id="the_map"></div>-->
+<!--</div>-->
+<% # render :partial => 'partials/simple_search_form' %>
+
+
+<% # render "users/template_map_display" %>
+<% # render :partial =>  'partials/advance_search_panel', locals: { search_params: @search_params } %>
+<% # render "users/template_search_results" %>
+
+
+
+<%= render :partial => 'simple_search_form' %>
+
+<!--body_section-inner-->
+<div class="body_section_inner">
+  <div class=" tx_accordion">
+    <div class="panel-group" id="accordion">
+
+      <%= render :partial =>  'lease_search', locals: { search_params: @search_params } %>
+
+
+
+      <%= render "users/template_map_display" %>
 </div>
-<%= render "users/template_map_display" %>
-<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;"></div>
+    </div>
+  </div>
+
+
+
+
+
+
+<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;">
   <%= image_tag "database-loader.gif" %>
-
-
+</div>
 
 
 
