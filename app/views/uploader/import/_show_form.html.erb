@@ -19,23 +19,23 @@
       <% end %>
       <div class="error-column-btn-section">
         <%#= link_to tenant_record_import_path(@import), :class => "btn column_errors" do %>
-        <%= link_to marketrex_import_index_path, :class => "btn column_errors" do %>
+        <%= link_to uploader_import_index_path, :class => "btn column_errors" do %>
             <span class="error-column">Duplicate Errors</span><span class="count"><%= column_errors.count %></span><%end%>
         <%#= link_to (tenant_record_import_filter_by_geocode_path @import), :class => "btn geocode" do %>
-        <%= link_to (filter_by_geocode_marketrex_import_path @import), :class => "btn geocode" do %>
+        <%= link_to (filter_by_geocode_uploader_import_path @import), :class => "btn geocode" do %>
             <span class="error-column">Location Errors</span><span class="count"><%= @geocode_errors %></span><%end%>
         <%#= link_to (tenant_record_import_filter_by_valid_path @import), :class => "btn valid" do %>
-        <%= link_to (filter_by_valid_marketrex_import_path @import), :class => "btn valid" do %>
+        <%= link_to (filter_by_valid_uploader_import_path @import), :class => "btn valid" do %>
             <span class="error-column">Validation Errors</span><span class="count"><%= @validation_errors %></span><%end%>
         <div style="clear: both"></div>
       </div>
       <div class="section">
         <% if controller.action_name == 'show' %>
-            <%= render partial: '/import/templates/column_errors', locals: { import: @import, column_errors: column_errors } %>
+            <%= render partial: '/uploader/import/templates/column_errors', locals: { import: @import, column_errors: column_errors } %>
         <% else %>
             <%= form_for @import, url: uploader_import_path(@import), remote: true, html: {:'data-update-target' => "edit_tenant_record_import_#{@import.id}" } do |t| %>
                 <% if ( (not @records.empty?) and ((params['action'] == 'filter_by_valid' and @validation_errors > 0) or (params['action'] == 'filter_by_geocode' and @geocode_errors > 0))) %>
-                    <%= render partial: '/import/templates/validation_errors', locals: { records: @records, t:t } %>
+                    <%= render partial: '/uploader/import/templates/validation_errors', locals: { records: @records, t:t } %>
                 <% else %>
                     <div class="large-12 columns bulk-error-description">
                       <% if @import.import_valid %>
