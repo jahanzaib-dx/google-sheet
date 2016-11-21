@@ -43,40 +43,11 @@
           <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
             <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div class="exists main_body_section_grey" id="dashboard">
-                <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
-
-                  <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
-
-                </form>
-
-
+            <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
+              <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
+            </form>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
       </div>
     </div>
@@ -87,60 +58,14 @@
 <div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
   <iframe src="" style="width:100%; height: 700px; "></iframe>
 </div>
-<!--<div id="map_filter" class="map_container criteria_layout">-->
-  <!--<div id="the_map"></div>-->
-<!--</div>-->
-<% # render :partial => 'partials/simple_search_form' %>
-
-
-<% # render "users/template_map_display" %>
-<% # render :partial =>  'partials/advance_search_panel', locals: { search_params: @search_params } %>
-<% # render "users/template_search_results" %>
-
-
 
 <%= render :partial => 'simple_search_form' %>
-
-<!--body_section-inner-->
-<div class="body_section_inner">
-  <div class=" tx_accordion">
-    <div class="panel-group" id="accordion">
-
-      <%= render :partial =>  'lease_search', locals: { search_params: @search_params } %>
-
-
-
-      <%= render "users/template_map_display" %>
-</div>
-    </div>
-  </div>
-
-
-
-
-
+<%= render :partial =>  'lease_search', locals: { search_params: @search_params } %>
+<%= render "users/template_map_display" %>
 
 <div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;">
   <%= image_tag "database-loader.gif" %>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <script type="text/javascript" charset="utf-8">
   $('#data_type').change(function(){

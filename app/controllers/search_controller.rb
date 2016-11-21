@@ -719,27 +719,14 @@ class SearchController < ApplicationController
         ws.save()
       end
 
-
-      @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
-
       session.drive.batch do
         user_permission = {
             value: 'default',
             type: 'anyone',
             role: 'writer'
         }
-        session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
+        session.drive.create_permission(@file.id, user_permission, fields: 'id')
       end
-      @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
-
-
-
-
-
-
-
-
-
 
     # respond_to do |format|
     #   if (params[:tenant_record][:summary].blank?)
@@ -758,8 +745,7 @@ class SearchController < ApplicationController
     #
     #   end
       render :json => {
-          :file_temp => @file_temp.id,
-          :file => @file.file
+          :file => @file.id
       }
 
 

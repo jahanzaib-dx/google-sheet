@@ -248,8 +248,8 @@ $('#advanced-search-form').on 'submit different_data', (e) ->
     data: params[0],
     success: (data, ts, xhr) ->
       if $('#myiframe').find('iframe')
-        $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+data.file_temp+'/edit?usp=sharing');
-        $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+data.file+'/'+data.file_temp);
+        $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+data.file+'/edit?usp=sharing');
+        $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+data.file);
         $('#ImageBrowse').show('slow');
         $dashboard_popup.close()
       else
