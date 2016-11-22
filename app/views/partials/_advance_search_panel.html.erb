@@ -123,22 +123,12 @@
                     <input type="checkbox" id="checkbox7" >
                     <label for="checkbox7"> Select All </label>
                   </div>
-                  <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="office">
-                    <label for="checkbox8"> Office </label>
-                  </div>
-                  <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox9" name="tenant_record[property_type][]" value="family">
-                    <label for="checkbox9"> Multi-family </label>
-                  </div>
-                  <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox9" name="tenant_record[property_type][]" value="land">
-                    <label for="checkbox9"> Land </label>
-                  </div>
-                  <div class="checkbox checkbox-info all_clicked">
-                    <input type="checkbox" id="checkbox10" name="tenant_record[property_type][]" value="hotel">
-                    <label for="checkbox10"> Hotel </label>
-                  </div>
+                  <% TenantRecord::NEW_PROPERTY_TYPE.all.each do |pt|  %>
+					   <div class="checkbox checkbox-info all_clicked">
+	                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>">
+	                    <label for="checkbox8"> <%= pt.name.capitalize %> </label>
+	                  </div>                  
+				  <% end %>
                 </div>
               </div>
             </div>
@@ -149,7 +139,7 @@
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>SQ FT Range</span>
               <div class="btn-group tx_btn_group">
               <div class="tx_dropdown_toggl tx-drop-down-select">
-              <select class="selectpicker resetit" name="tenant_record[sq_ft_range]">
+              <select class="selectpicker lease_filter resetit" name="tenant_record[sq_ft_range]">
                 <option value="">Choose</option>
                 <option value="0-49000">0 - 49,000</option>
                 <option value="50000-99999">50,000 - 99,999</option>
@@ -157,6 +147,18 @@
                 <option value="500000-999000">500,000 - 999,000</option>
                 <option value="999000">1MM+</option>
               </select>
+              
+              <select class="selectpicker sales_filter resetit" name="tenant_record[sq_ft_range]" >
+                <option value="">Choose</option>
+                <option value="0-3999">0 - 3,999</option>
+                <option value="4000-9999">4,000 - 9,999</option>
+                <option value="10000-19999">10,000 - 19,999</option>
+                <option value="20000-49000">20,000 - 49,000</option>
+                <option value="50000">50,000+</option>
+              </select>
+              
+              
+              
               </div>
               </div>
 			
@@ -218,13 +220,38 @@
             <div class="clearfix"></div>
             <div class="col-md-12 col-sm-12 both-pad-none lease_filter">
               <div class="col-md-3 col-sm-3  formgroup_range"> <span>Deal type</span>
-                <input id="tenant_record_lease_type" class="col-12 lease_filter_input" name="tenant_record[lease_type]" placeholder="Select Lease Type" type="text" tabindex="17" value="<%= search_params[:tenant_record][:lease_type] if search_params and search_params[:tenant_record].present? %>" />
-                <!--<input type="text" placeholder="" class="col-12 lease_filter_input">-->
+              	
+              	
+              <div class="tx_dropdown_toggl tx-drop-down-select">              	
+              			 <%= select_tag 'tenant_record[lease_type]',
+                             options_for_select(TenantRecord::DEAL_TYPE.map { |s| [s.titleize, s] }),
+                             prompt: 'Select Lease Type', 
+                             class: 'selectpicker', 
+                             id: "tenant_record_lease_type" 
+                		  %>
+              </div>
+              
+                             
+                
               </div>
               <div class="col-md-3 col-sm-3  formgroup_range"> <span>Industry</span>
 
+
+
+			  
+			  <div class="tx_dropdown_toggl tx-drop-down-select">
+			  	
+			  	
+						 <%= select_tag 'tenant_record[industry_type]',
+                             options_for_select(industry_list.map { |s| [s.name, s.name] }), 
+                             prompt: 'Select Industry Type', 
+                             class: 'selectpicker lease_filter_input', 
+                             id: 'industry_type' 
+                         %>
+                             
                 <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
-                <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+                <!-- <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
+			  </div>
 
                 <!--<input type="text" placeholder="" class="col-12 lease_filter_input" name="tenant_record[industry_type]" id="tenant_record_lease_type">-->
               </div>
