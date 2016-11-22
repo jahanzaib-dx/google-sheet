@@ -12,9 +12,11 @@ $(function() {
 
       $('.resetit').val('').selectpicker('refresh');
 
-      $(".lease_filter").css("display", "none");
+      /////$(".lease_filter").css("display", "none");
+      $('.lease_filter').attr('style','display: none !important');
       $(".lease_filter_input").prop("disabled", true);
-      $(".sales_filter").css("display", "block");
+      /////$(".sales_filter").css("display", "block");
+      $('.sales_filter').attr('style','display: block !important');
       $(".sales_filter_input").prop("disabled", false);
       $(".filters_type").val("sale");
       //$(".h_filters_type").val("sale");
@@ -27,9 +29,14 @@ $(function() {
 
       $('.resetit').val('').selectpicker('refresh');
 
-      $(".sales_filter").css("display", "none");
+      ////$(".sales_filter").css("display", "none");
+      $('.sales_filter').attr('style','display: none !important');
+      
       $(".sales_filter_input").prop("disabled", true);
-      $(".lease_filter").css("display", "block");
+      ////$(".lease_filter").css("display", "block");
+      $('.lease_filter').attr('style','display: block !important');
+      
+      
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
       //$(".h_filters_type").val("lease");
