@@ -114,10 +114,10 @@ class BackEndSaleCompsController < ApplicationController
     sale_records = SaleRecord.where('user_id = ?', @current_user)
     counter=2
     sale_records.each do |sale_record|
-      if sale_record.id!=counter-1
-        ws[counter, 1] =  counter
-        next
-      end
+      # if sale_record.id!=counter-1
+      #   ws[counter, 1] =  counter
+      #   next
+      # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(

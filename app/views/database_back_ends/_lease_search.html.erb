@@ -1,53 +1,6 @@
-
-
-
-
-
-
-
-<!------------------------------------------------------------------------------------------------->
-
-<!--<form id="advanced-search-form" action="<%= search_advanced_path() %>" method="post">-->
-
-<!--<div id="<%= 'run_search' if search_params %>" class="hidden_fields">-->
-<!--<input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />-->
-<!--<input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />-->
-<!--<input type="hidden" id="tenant_record_page" name="tenant_record[page]" value="<%= (search_params[:tenant_record][:page] if search_params and search_params[:tenant_record].present?) || 1 %>" />-->
-<!--<input type="hidden" id="tenant_record_latitude" name="tenant_record[latitude]" value="<%= search_params[:tenant_record][:latitude] if search_params and search_params[:tenant_record].present? %>" />-->
-<!--<input type="hidden" id="tenant_record_longitude" name="tenant_record[longitude]" value="<%= search_params[:tenant_record][:longitude] if search_params and search_params[:tenant_record].present? %>" />-->
-<!--<input type="hidden" id="tenant_record_map_mode" name="tenant_record[map_mode]" value="<%= search_params[:tenant_record][:map_mode] if search_params and search_params[:tenant_record].present? %>" />-->
-<!--<input type="hidden" id="tenant_record_cost_display" name="tenant_record[cost_display]" value="<%= (search_params[:tenant_record][:cost_display] if search_params and search_params[:tenant_record].present?) || 'yr' %>" />-->
-<!--&lt;!&ndash;<input type="hidden" id="tenant_record_property_type" name="tenant_record[property_type][]" value="<%= (search_params[:tenant_record][:property_type].first if search_params and search_params[:tenant_record].present? and search_params[:tenant_record][:property_type].present?) || TenantRecord.const_get('PROPERTY_TYPE').first %>" />&ndash;&gt;-->
-<!---->
-<!--&lt;!&ndash;<input type="checkbox" id="tenant_record_disable_internal_comps" name="tenant_record[disable_comp_type][]" value="internal" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'internal' %> />-->
-<!---->
-<!--<input type="checkbox" id="tenant_record_disable_market_comps" name="tenant_record[disable_comp_type][]" value="market" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_comp_type and search_params[:tenant_record][:disable_comp_type].include? 'market' %> />-->
-<!---->
-<!--<input type="checkbox" id="tenant_record_disable_confidential_comps" name="tenant_record[disable_view_type][]" value="confidential" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'confidential' %>  />-->
-<!---->
-<!--<input type="checkbox" id="tenant_record_disable_private_comps" name="tenant_record[disable_view_type][]" value="private"<%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_view_type and search_params[:tenant_record][:disable_view_type].include? 'private' %>  />-->
-<!---->
-<!--<input type="checkbox" id="tenant_record_disable_network" name="tenant_record[disable_network]" value="true" <%= "checked" if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_network %> />-->
-<!--&ndash;&gt;-->
-<!---->
-<!---->
-<!--<% if search_params and search_params[:tenant_record].present? and search_params[:tenant_record].has_key? :disable_tenant_record_id %>-->
-    <!--<% search_params[:tenant_record][:disable_tenant_record_id].each do |tid| %>-->
-        <!--<input id="tenant_record_disabled_tenant_record_<%= tid %>" name="tenant_record[disable_tenant_record_id][]" type="hidden" class="disabled_tenant_record_id" value="<%= tid %>" />-->
-        <!--<% end  %>-->
-    <!--<% end %>-->
-<!--</div>-->
-
 <div id="map_filter" class="map_container criteria_layout"><!--{{{-->
   <div id="the_map"></div>
 </div><!--}}}-->
-
-
-
-
-
-
-
 
   <form id="advanced-search-form" action="/search/database_lease" method="post">
     <div id="<%= 'run_search' if search_params %>" class="hidden_fields">
@@ -74,17 +27,9 @@
 
 <!--</form>-->
 
-<style>
-  .ui-widget-header .ui-icon{background-image:url("assets/ui-icons.png");}
-</style>
-
 <script>
   var search_basic_path_js = '<%= search_basic_path() %>';
   var search_advanced_path_js = '<%= "/search/database_lease" %>';
-
-  var search_simple_path_js = '<%= search_simple_path() %>';
-  var search_sales_path_js = '<%= search_sales_path() %>';
-
 
 </script>
 
