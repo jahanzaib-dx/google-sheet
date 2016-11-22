@@ -5,23 +5,20 @@ class CompRequestsController < ApplicationController
 
   def index
     direction = params[:direction]
-    comp_type = params[:comp_type]
-
     if direction == 'incoming'
-
+      comp_type = params[:comp_type]
       if !comp_type.blank?
-
-         @comp_requests=CompRequest.incoming_sale_lease(current_user.id,comp_type)
-        # @comp_requests.each do |comp_request|
-        #   comp = CompRequest.find(comp_request)
-        #   comp.status='TRUE'
-        #   comp.save
-        # end
+        @comp_requests=CompRequest.incoming_sale_lease(current_user.id,comp_type)
+        @comp_requests.each do |comp_request|
+          comp = CompRequest.find(comp_request)
+          comp.status='TRUE'
+          comp.save
+        end
       else
-        @comp_requests = CompRequest.received_by current_user.id,comp_type
+        @comp_requests = CompRequest.received_by current_user.id
       end
     else
-      @comp_requests = CompRequest.initiated_by current_user.id,comp_type
+      @comp_requests = CompRequest.initiated_by current_user.id
     end
 
   end
@@ -75,10 +72,11 @@ class CompRequestsController < ApplicationController
   # DELETE /connection_requests/1
   # DELETE /connection_requests/1.json
   def destroy
-    comp_requests = CompRequest.where(:id =>  params[:ids])
+
+    comp_requests = CompRequest.where(:id => params[:ids])
     comp_requests.each do |comp_request|
       comp_request.ignore
-      ##comp_request.destroy
+      comp_request.destroy
     end
     render json: {:status => :success}
 
