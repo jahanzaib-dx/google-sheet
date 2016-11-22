@@ -1,21 +1,21 @@
 <div class="tx_activiti_fiulter">
   <div class="col-md-1">
     <div class="tx_tracker_box_round_content tx_small_round tx_small_round_red">
-      <p> L</p>
+      <p> <% if (params[:comp_type]=='lease')%>L<% else %>S<% end %></p>
     </div>
   </div>
   <div class="col-md-11 tx_activiti_fiulter_content">
-    <h1>Lease Comps Activity</h1>
+    <h1><% if (params[:comp_type]=='lease')%>Lease<% else %>Sale<% end %> Comps Activity</h1>
     <div class="col-md-11 tx_activiti_fiulter_content">
       <div class="btn-group tx_btn_group">
         <div class=" tx_dropdown_toggl">
 
-          <%= form_tag activity_log_path do %>
+          <%= form_tag activity_logs_path do %>
 
               <select id="activity_select" name="atype" class="selectpicker">
-                <option value="out"  data-href="<%= comp_requests_path('outgoing') %>"  <%= "selected" if params[:direction] == 'outgoing' %> >Outgoing Request</option>
-                <option value="in"  data-href="<%= comp_requests_path('incoming') %>" <%= "selected" if params[:direction] == 'incoming' %> >Incoming Request</option>
-                <option value="log" data-href="<%= activity_logs_url %>" <%= "selected" if controller_name == 'activity_logs' %>  > Activity Log</option>
+                <option value="out"  data-href="<%= comp_requests_path('outgoing') %>/<%= params[:comp_type]%>"  <%= "selected" if params[:direction] == 'outgoing' %> >Outgoing Request</option>
+                <option value="in"  data-href="<%= comp_requests_path('incoming') %>/<%= params[:comp_type]%>" <%= "selected" if params[:direction] == 'incoming' %> >Incoming Request</option>
+                <option value="log" data-href="<%= activity_logs_url %>/<%= params[:comp_type]%>" <%= "selected" if params[:controller] == :activity_log %>  > Activity Log</option>
               </select>
 
           <% end %>
