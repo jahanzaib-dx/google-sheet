@@ -1,3 +1,4 @@
+
 <%= render :partial => 'partials/simple_search_form' %>
 
 <!--body_section-inner-->
@@ -148,8 +149,8 @@
                       <div class="col-md-8 tx_tracker_box_text_content">
                         <h2>253</h2>
                         <h3>Lease Comps</h3>
-                        <a href="<%= comp_requests_path('incoming') %>/lease">Incoming Request <span>(<%= User.incoming_comp_requests_type(current_user,'lease').count %>)</span></a>
-                        <a href="<%= comp_requests_path('outgoing') %>/lease">Outgoing Request <span>(<%= User.outgoing_comp_requests_type(current_user,'lease').count %>)</span></a>
+                        <a href="<%= comp_requests_path('incoming') %>">Incoming Request <span>(<%= @user.incoming_comp_requests.count %>)</span></a>
+                        <a href="<%= comp_requests_path('outgoing') %>">Outgoing Request <span>(<%= @user.outgoing_comp_requests.count %>)</span></a>
                       </div>
                     </div>
                     <div class="tx_tracker_box tx_tracker_box_color_orange">
@@ -162,8 +163,8 @@
                       <div class="col-md-8 tx_tracker_box_text_content">
                         <h2>253</h2>
                         <h3>Sales Comps</h3>
-                        <a href="<%= comp_requests_path('incoming') %>/sale">Incoming Request <span>(<%= User.incoming_comp_requests_type(current_user,'sale').count %>)</span></a>
-                        <a href="<%= comp_requests_path('outgoing') %>/sale">Outgoing Request <span>(<%= User.outgoing_comp_requests_type(current_user,'sale').count %>)</span></a>
+                        <a href="<%= comp_requests_path('incoming') %>">Incoming Request <span>(<%= @user.incoming_comp_requests.count %>)</span></a>
+                        <a href="<%= comp_requests_path('outgoing') %>">Outgoing Request <span>(<%= @user.outgoing_comp_requests.count %>)</span></a>
                       </div>
                     </div>
                     <div class="tx_tracker_box tx_tracker_box_yellow ">
@@ -289,4 +290,3 @@
 
 <% end %>
 
-<%= render "template_comp_details" %>
