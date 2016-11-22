@@ -1613,7 +1613,7 @@ fieldset.dashboard_export_result legend{
 /*--------------custom css ---------------------*/
 
 /*.lease_filter {display: none;}*/
-.sales_filter {display: none;}
+.sales_filter {display: none !important;}
 .ui-datepicker-calendar {
   display: none;
 }​
