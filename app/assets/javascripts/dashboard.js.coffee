@@ -247,23 +247,29 @@ $('#advanced-search-form').on 'submit different_data', (e) ->
     dataType: 'json',
     data: params[0],
     success: (data, ts, xhr) ->
-      populateResults(data, ts, xhr, false)
-      if data.params['tenant_record']['latitude']
-        $('#tenant_record_latitude').val(data.params['tenant_record']['latitude'])
-
-      if data.params['tenant_record']['longitude']
-        $('#tenant_record_longitude').val(data.params['tenant_record']['longitude'])
-
-      # Only on submit do we load the summary, the other trigger is different_data, and
-      # we don't need the summary to the data to repopluate because it is the same
-      if data.params['trigger'] and data.params['trigger'] == 'submit' and data.res 
-        window.setTimeout ->
-          #####populateSummary(data.params)
-          $dashboard_popup.close()
-        , 1000
-      else
-        $body.fadeTo('fast', 1).addClass('search_complete')
+      if $('#myiframe').find('iframe').length > 0
+        $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+data.file+'/edit?usp=sharing');
+        $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+data.file);
+        $('#ImageBrowse').show('slow');
         $dashboard_popup.close()
+      else
+        populateResults(data, ts, xhr, false)
+        if data.params['tenant_record']['latitude']
+          $('#tenant_record_latitude').val(data.params['tenant_record']['latitude'])
+
+        if data.params['tenant_record']['longitude']
+          $('#tenant_record_longitude').val(data.params['tenant_record']['longitude'])
+
+        # Only on submit do we load the summary, the other trigger is different_data, and
+        # we don't need the summary to the data to repopluate because it is the same
+        if data.params['trigger'] and data.params['trigger'] == 'submit' and data.res
+          window.setTimeout ->
+            #####populateSummary(data.params)
+            $dashboard_popup.close()
+          , 1000
+        else
+          $body.fadeTo('fast', 1).addClass('search_complete')
+          $dashboard_popup.close()
     error: (xhr, ts, et) ->
       #####$('#advanced-search-form').hide()
       #####$('#advanced-search').removeClass('active')
