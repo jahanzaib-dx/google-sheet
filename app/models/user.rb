@@ -44,6 +44,9 @@ class User < ActiveRecord::Base
   has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id
   has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
 
+  scope :outgoing_comp_requests_type, ->(user,comp_type) { joins(:outgoing_comp_requests).where("initiator_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
+  scope :incoming_comp_requests_type, ->(user,comp_type) { joins(:incoming_comp_requests).where("receiver_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
+
   # Association for sub-user
 
   has_many :children, class_name: 'User', :foreign_key => 'parent_id'
