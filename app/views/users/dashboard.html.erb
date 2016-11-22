@@ -179,7 +179,7 @@
                           <%= '<i class="fa fa-star" aria-hidden="true"></i>'.html_safe  if @user.connection_requests_received.count > 0 %>
                         </h2>
                         <h3><%= "Connection".pluralize(@user.all_connections.count) %></h3>
-                        <%= link_to "Pending <span>(#{@user.connection_requests_received.count})</span>".html_safe, connection_requests_path(:direction => "incoming") %>
+                        <%= link_to "Incoming <span>(#{@user.connection_requests_received.count})</span>".html_safe, connection_requests_path(:direction => "incoming") %>
                         <%= link_to "Sent <span>(#{@user.connection_requests_sent.count})</span>".html_safe, connection_requests_path(:direction => "outgoing") %>
 
                       </div>
@@ -288,4 +288,5 @@
 
 
 <% end %>
+
 <%= render "template_comp_details" %>
