@@ -34,6 +34,11 @@ $(document).ready(function(){
     $("#checkbox7").change(function () {
         $(".all_clicked input:checkbox").prop('checked', $(this).prop("checked"));
     });
+    
+    $("#checkbox77").change(function () {
+        $(".all_clicked input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+
 
     $("#checkbox1").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
