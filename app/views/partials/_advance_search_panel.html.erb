@@ -117,50 +117,20 @@
               </div>
             </div>
             <div class="col-md-6 col-sm-6 formgroup_input"> <span>Property Type </span>
-              <div class="boxes lease_filter">
+              <div class="boxes">
                 <div class="col-md-12">
                   <div class="checkbox checkbox-info">
                     <input type="checkbox" id="checkbox7" >
                     <label for="checkbox7"> Select All </label>
                   </div>
-                  
-				  <% TenantRecord::all_property_type.each do |pt|  %>
+                  <% TenantRecord::NEW_PROPERTY_TYPE.all.each do |pt|  %>
 					   <div class="checkbox checkbox-info all_clicked">
-	                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input">
+	                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>">
 	                    <label for="checkbox8"> <%= pt.name.capitalize %> </label>
 	                  </div>                  
-				  <% end %>  
-				  
-				           
-                             
-                </div>   
-                
+				  <% end %>
+                </div>
               </div>
-              
-              
-              
-              <div class="boxes sales_filter">
-                <div class="col-md-12">
-                  <div class="checkbox checkbox-info">
-                    <input type="checkbox" id="checkbox77" >
-                    <label for="checkbox7"> Select All </label>
-                  </div>
-                  				  
-				  <% SaleRecord::all_property_type.each do |pt|  %>
-					   <div class="checkbox checkbox-info all_clicked">
-	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt.name%>" class="sales_filter_input">
-	                    <label for="checkbox88"> <%= pt.name.capitalize %> </label>
-	                  </div>                  
-				  <% end %>         
-                             
-                </div>   
-                
-              </div>
-              
-              
-              
-              
-              
             </div>
           </div>
 
@@ -254,7 +224,7 @@
               	
               <div class="tx_dropdown_toggl tx-drop-down-select">              	
               			 <%= select_tag 'tenant_record[lease_type]',
-                             options_for_select(TenantRecord::all_deal_type.map { |s| [s.titleize, s] }),
+                             options_for_select(TenantRecord::DEAL_TYPE.map { |s| [s.titleize, s] }),
                              prompt: 'Select Lease Type', 
                              class: 'selectpicker', 
                              id: "tenant_record_lease_type" 
@@ -272,21 +242,12 @@
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
 			  	
 			  	
-						 <%#= select_tag 'tenant_record[industry_type]',
+						 <%= select_tag 'tenant_record[industry_type]',
                              options_for_select(industry_list.map { |s| [s.name, s.name] }), 
                              prompt: 'Select Industry Type', 
                              class: 'selectpicker lease_filter_input', 
                              id: 'industry_type' 
                          %>
-                         
-                         <%= select_tag 'tenant_record[industry_type]',
-                             options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.titleize, s.name] }), 
-                             prompt: 'Select Industry Type', 
-                             class: 'selectpicker lease_filter_input', 
-                             id: 'industry_type' 
-                         %>
-                         
-                         
                              
                 <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
                 <!-- <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
