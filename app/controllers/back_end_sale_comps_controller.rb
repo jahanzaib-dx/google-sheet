@@ -102,15 +102,18 @@ class BackEndSaleCompsController < ApplicationController
   def create
 
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
-    session.drive.delete_file(params[:id])
-    @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
+    if !params[:temp].present?
+      ws = session.spreadsheet_by_key(params[:id]).worksheets[0]
+    else
+      session.drive.delete_file(params[:id])
+      @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
 
-    @BackEndSaleComp = BackEndSaleComp.where("user_id = ?",@current_user.id).first
-    @BackEndSaleComp.update_attributes(:file => @file.id)
+      @BackEndSaleComp = BackEndSaleComp.where("user_id = ?",@current_user.id).first
+      @BackEndSaleComp.update_attributes(:file => @file.id)
 
-    session.drive.delete_file(params[:temp])
-    ws = session.spreadsheet_by_key(@file.id).worksheets[0]
-
+      session.drive.delete_file(params[:temp])
+      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
+    end
     sale_records = SaleRecord.where('user_id = ?', @current_user)
     counter=2
     sale_records.each do |sale_record|

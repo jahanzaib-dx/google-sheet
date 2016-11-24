@@ -45,7 +45,7 @@
           </div>
           <div class="exists main_body_section_grey" id="dashboard">
             <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
-              <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
+              <div class="col-md-12 col-sm-12 both-pad-none" style = "display: none" id="database_map_search"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
             </form>
           </div>
         </div>
@@ -60,8 +60,7 @@
 </div>
 
 <%= render :partial => 'simple_search_form' %>
-<%= render :partial =>  'sale_search', locals: { search_params: @search_params } %>
-<% # render :partial =>  'lease_search', locals: { search_params: @search_params } %>
+<%= render :partial =>  'advance_search', locals: { search_params: @search_params } %>
 <%= render "users/template_map_display" %>
 
 <div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;">
@@ -75,6 +74,7 @@
     $('#link').hide('fast');
     $('#ImageBrowse').hide('fast');
     $('#custom_record').hide('fast');
+    $('#database_map_search').hide('fast');
 
     if($('#data_type').val()=="lease")
     {
@@ -85,6 +85,8 @@
           $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
           $('.tx_linkdin_profile').show('fast');
           $('#ImageBrowse').show('fast');
+          $('#database_map_search').show('fast');
+          $('#advanced-search-form').attr('action','/search/database_lease');
         }
       });
     }
@@ -98,6 +100,8 @@
           $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
           $('.tx_linkdin_profile').show('fast');
           $('#ImageBrowse').show('fast');
+          $('#database_map_search').show('fast');
+          $('#advanced-search-form').attr('action','/search/database_sale');
         }
       });
     }
@@ -127,13 +131,9 @@
     $(document).ajaxComplete(function(){
       $("#wait").hide('slow')
     });
-  });
-  $(document).ready(function () {
     $('#imageUploadForm').on('submit',(function(e) {
       e.preventDefault();
       var formData = new FormData(this);
-      console.log(formData);
-
       $.ajax({
         type:'POST',
         url: $(this).attr('action'),
@@ -142,12 +142,12 @@
         contentType: false,
         processData: false,
         success:function(data){
-          $('#link').val("=image("+data.file_name+"),2");
+          $('#link').val('=image("'+data.file_name+'",2)');
           $('#link').show();
+          $('#ImageBrowse').val('');
         },
         error: function(data){
           console.log("error");
-          console.log(data);
         }
       });
     }));
@@ -155,6 +155,10 @@
     $("#ImageBrowse").on("change", function() {
       $("#imageUploadForm").submit();
     });
+    var search_basic_path_js = '<%= search_basic_path() %>';
+    var search_advanced_path_js = '<%= "/search/database_lease" %>';
+    var search_simple_path_js = '<%= search_simple_path() %>';
+    var search_sales_path_js = '<%= "/search/database_sale" %>';
   });
 
 </script>

@@ -2,7 +2,7 @@
   <div id="the_map"></div>
 </div><!--}}}-->
 
-  <form id="advanced-search-form" action="/search/database_lease" method="post">
+  <form id="advanced-search-form" action="" method="post">
     <div id="<%= 'run_search' if search_params %>" class="hidden_fields">
       <input type="hidden" id="tenant_record_order" name="tenant_record[order]" value="<%= (search_params[:tenant_record][:order] if search_params and search_params[:tenant_record].present?) || 'address1' %>" />
       <input type="hidden" id="tenant_record_offset" name="tenant_record[offset]" value="<%= (search_params[:tenant_record][:offset] if search_params and search_params[:tenant_record].present?) || 0 %>" />
@@ -27,9 +27,4 @@
 
 <!--</form>-->
 
-<script>
-  var search_basic_path_js = '<%= search_basic_path() %>';
-  var search_advanced_path_js = '<%= "/search/database_lease" %>';
-
-</script>
 
