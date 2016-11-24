@@ -3,16 +3,14 @@
   <li class="active"> <a href="<%= about_marketrex_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a> </li>
   <li class=""> <a href="<%= about_tenantrex_url %>"><img src="<%= image_url 'TenantRex_active.svg' %>"></a> </li>
   <li class=""> <a href="<%= about_leaserex_url %>"><img src="<%= image_url 'LeaseRex_active.svg' %>"></a> </li>
-  <li class=""> <div class="research_rex_disable"><img src="<%= image_url 'ResearchRex_active.svg' %>"></div> </li>
+  <li class=""> <a href="#"><img src="<%= image_url 'ResearchRex_active.svg' %>"></a> </li>
 
 
 </ul>
 <ul class="nav navbar-nav tx_nav_right navbar-right">
-  <li  class="dropdown tx_dropdown "> <a href="http://projects.discretelogix.com/tenantblog/index.php/blog/" class="tx_cap_letters" target="_blank"> blog</a> </li>
+  <li  class="dropdown tx_dropdown "> <a href="http://projects.discretelogix.com/tenantblog/index.php/blog-page/" class="tx_cap_letters" target="_blank"> blog</a> </li>
   <li id="fat-menu" class="dropdown tx_dropdown">
-  	
-    <a href="#" id="drop3" role="button" > Sign In <b class="caret"></b></a>
-    
+    <a href="#" id="drop3" role="button" class="dropdown-toggle tx-drop-down " data-toggle="dropdown" aria-expanded="true"> Sign In <b class="caret"></b></a>
     <ul class="dropdown-menu tx_drop_menu" role="menu" aria-labelledby="drop3">
       <li role="presentation">
         <div class="tx_sign_drop_down">
@@ -29,7 +27,3 @@
     </ul>
   </li>
 </ul>
-
-<style>
-	.research_rex_disable{padding:20px 13px;}
-</style>
