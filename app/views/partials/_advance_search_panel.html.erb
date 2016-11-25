@@ -148,8 +148,8 @@
                   				  
 				  <% SaleRecord::all_property_type.each do |pt|  %>
 					   <div class="checkbox checkbox-info all_clicked">
-	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt.name%>" class="sales_filter_input">
-	                    <label for="checkbox88"> <%= pt.name.capitalize %> </label>
+	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt%>" class="sales_filter_input">
+	                    <label for="checkbox88"> <%= pt.capitalize %> </label>
 	                  </div>                  
 				  <% end %>         
                              
