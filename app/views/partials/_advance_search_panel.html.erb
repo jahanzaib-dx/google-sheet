@@ -169,7 +169,7 @@
             <div class="col-md-3 col-sm-3 formgroup_input"> <span>SQ FT Range</span>
               <div class="btn-group tx_btn_group">
               <div class="tx_dropdown_toggl tx-drop-down-select">
-              <select class="selectpicker lease_filter resetit" name="tenant_record[sq_ft_range]">
+              <select class="selectpicker lease_filter lease_filter_input resetit" name="tenant_record[sq_ft_range]">
                 <option value="">Choose</option>
                 <option value="0-49000">0 - 49,000</option>
                 <option value="50000-99999">50,000 - 99,999</option>
@@ -178,7 +178,7 @@
                 <option value="999000">1MM+</option>
               </select>
               
-              <select class="selectpicker sales_filter resetit" name="tenant_record[sq_ft_range]" >
+              <select class="selectpicker sales_filter sales_filter_input resetit" name="tenant_record[sq_ft_range]" disabled="disabled" >
                 <option value="">Choose</option>
                 <option value="0-3999">0 - 3,999</option>
                 <option value="4000-9999">4,000 - 9,999</option>
@@ -288,7 +288,7 @@
                          
                          
                              
-                <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" />
+                <!-- <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
                 <!-- <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
 			  </div>
 
