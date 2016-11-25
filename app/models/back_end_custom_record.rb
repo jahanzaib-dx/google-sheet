@@ -14,7 +14,7 @@ class BackEndCustomRecord < ActiveRecord::Base
     File.open(image_root + "#{name_folder}/" + new_file_name_with_type, "wb")  do |f|
       f.write(file)
     end
-    return "#{image_root}#{name_folder}/#{new_file_name_with_type}"
+    return "/public/uploads/custom_record/#{name_folder}/#{new_file_name_with_type}"
 
   end
 end
