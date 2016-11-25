@@ -347,11 +347,11 @@ module SearchControllerUtil
       size_arr = params['sq_ft_range'].split('-')
 
       if (!size_arr[0].blank?)
-        tenant_records = tenant_records.where("sale_records.land_size >= ?", params['size_min'].to_f)
+        tenant_records = tenant_records.where("sale_records.land_size >= ?", size_arr[0].to_f)
       end
 
       if (!size_arr[1].blank?)
-        tenant_records = tenant_records.where("sale_records.land_size <= ?", params['size_max'].to_f)
+        tenant_records = tenant_records.where("sale_records.land_size <= ?", size_arr[1].to_f)
       end
     end
 
@@ -365,8 +365,8 @@ module SearchControllerUtil
     # end
 
     if (!params['build_year_min'].blank? && !params['build_year_max'].blank?)
-      min_date = Date.strptime(params['build_year_min'], '%Y')
-      max_date = Date.strptime(params['build_year_max'], '%Y') + 1.month - 1.day
+      min_date = Date.strptime(params['build_year_min'], '%m/%Y')
+      max_date = Date.strptime(params['build_year_max'], '%m/%Y') + 1.month - 1.day
       tenant_records = tenant_records.where(:build_date => min_date..max_date)
     elsif (!params['build_year_min'].blank?)
       min_date = Date.strptime(params['build_year_min'], '%m/%Y')
@@ -377,8 +377,8 @@ module SearchControllerUtil
     end
 
     if (!params['sold_year_min'].blank? && !params['sold_year_max'].blank?)
-      min_date = Date.strptime(params['sold_year_min'], '%Y')
-      max_date = Date.strptime(params['sold_year_max'], '%Y') + 1.month - 1.day
+      min_date = Date.strptime(params['sold_year_min'], '%m/%Y')
+      max_date = Date.strptime(params['sold_year_max'], '%m/%Y') + 1.month - 1.day
       tenant_records = tenant_records.where(:sold_date => min_date..max_date)
     elsif (!params['sold_year_min'].blank?)
       min_date = Date.strptime(params['sold_year_min'], '%m/%Y')
