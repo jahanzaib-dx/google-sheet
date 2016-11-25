@@ -14,6 +14,7 @@
 
   <%= content_for?(:html_head) ? yield(:html_head) : "" %>
 
+  <%= analytics_init if GoogleAnalytics.valid_tracker? %>
 </head>
 <body class="grey_background  <%= controller.controller_name %> <%= controller.action_name %>">
 

@@ -96,6 +96,7 @@ GEM
     geocoder (1.4.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    google-analytics-rails (1.1.0)
     google-api-client (0.9.19)
       addressable (~> 2.3)
       googleauth (~> 0.5)
@@ -305,6 +306,7 @@ DEPENDENCIES
   finance
   foundation-rails (= 6.1.2)
   geocoder
+  google-analytics-rails
   google-api-client
   google_drive
   google_static_maps_helper
