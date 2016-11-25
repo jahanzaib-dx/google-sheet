@@ -61,7 +61,7 @@ class SaleRecord < ActiveRecord::Base
   before_validation :default_values
   
   def self.all_property_type
-    arr2 = TenantRecord::SALES_PROPERTY_TYPE-['other']
+    arr2 = TenantRecord::SALES_PROPERTY_TYPE-['other'] 
     arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all.map{|v| v.name }
     arr = arr2 + arr1
   end
