@@ -125,8 +125,10 @@ Rails.application.routes.draw do
   resources :groups
   resources :back_end_lease_comps
   get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
+  get 'back_end_lease_comps/create/:id' => 'back_end_lease_comps#create'
   resources :back_end_sale_comps
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
+  get 'back_end_sale_comps/create/:id/' => 'back_end_sale_comps#create'
   resources :back_end_custom_record
   get 'back_end_custom_record/create/:id/:temp/:custom_record_id' => 'back_end_custom_record#create'
   get 'back_end_custom_record/index/:id' => 'back_end_custom_record#index'
@@ -203,7 +205,9 @@ Rails.application.routes.draw do
   post "search/sixsigma"
   post "search/export"
   get "search/export"
-  
+  post "search/database_lease"
+  post "search/database_sale"
+
   match 'search/lease_comp/(:id)' => 'search#lease_comp', :as => :search_lease_comp , :via => :get
   match 'search/sale_comp/(:id)' => 'search#sale_comp', :as => :search_sale_comp , :via => :get
 

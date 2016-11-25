@@ -600,6 +600,289 @@ class SearchController < ApplicationController
     render :pdf => "sale_comp_pdf"
   end
 
+  def database_lease
+    require "google_drive"
+    require 'digest/sha1'
+    require 'time'
+    scope = scope_records_by_params(params[:tenant_record], current_user)
+    #if this is the first page than calculate summary
+    $order = 'address1'
+
+    original_params = Marshal.load(Marshal.dump(params))
+
+    # if summary, calculate quarters and find avg weighted market effective
+    if params[:tenant_record][:summary]
+      current = Date.today.beginning_of_quarter
+      q1, q2, q3, q4 = (1..4).map { |i| Date.today.beginning_of_quarter.months_ago(i*3) }
+      params['avg_weighted_tenant_effective'] = []
+      # a = q1_avg.avg_cushman_market_effective.to_f
+      #b = a
+      q1_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q1.end_of_quarter, current.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q1_avg.avg_cushman_market_effective.to_f : q1_avg.avg_weighted_market_effective.to_f)
+
+      q2_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q2.end_of_quarter, q1.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q2_avg.avg_cushman_market_effective.to_f : q2_avg.avg_weighted_market_effective.to_f)
+
+      q3_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q3.end_of_quarter, q2.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q3_avg.avg_cushman_market_effective.to_f : q3_avg.avg_weighted_market_effective.to_f)
+
+      q4_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q4.end_of_quarter, q3.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q4_avg.avg_cushman_market_effective.to_f : q4_avg.avg_weighted_market_effective.to_f)
+
+      params['avg_weighted_tenant_effective_quarters'] = ["Current", get_quarter(q1), get_quarter(q2), get_quarter(q3)].reverse
+      params['avg_weighted_tenant_effective'].reverse!
+
+      if params[:tenant_record][:cost_display] == 'mo'
+        params['avg_weighted_tenant_effective'].each_with_index do |single_avg, index|
+          params['avg_weighted_tenant_effective'][index] = single_avg / 12.0
+        end
+      end
+
+      #params['avg_weighted_tenant_effective'] = [53.0772056141280498,53.9177455557559932,54.4592933213889421,54.4012608930364223].reverse
+    end
+
+    if params.has_key? :radius and params[:tenant_record][:summary].blank?
+      # no records found but we just need a record with a latitude/longitude pair, so we'll get rid of other parameters that
+      # will prevent us from looking for an address
+      scope = scope_records_by_params({"search_type" => params[:tenant_record][:search_type], "address1" => params[:tenant_record][:address1], "zipcode" => params[:tenant_record][:zipcode], "q" => params[:tenant_record][:q]}, current_user)
+      t = scope.where('tenant_records.latitude is not null and tenant_records.longitude is not null').first
+
+      latitude, longitude = apply_radius(params[:radius], t.latitude, t.longitude)
+      params[:tenant_record][:latitude] = latitude
+      params[:tenant_record][:longitude] = longitude
+      params[:tenant_record].delete(:address1) if params[:tenant_record].has_key? :address1
+      params[:tenant_record].delete(:zipcode) if params[:tenant_record].has_key? :zipcode
+      params[:tenant_record].delete(:q)  if params[:tenant_record].has_key? :q
+      tenant_records = scope_records_by_params params[:tenant_record], current_user
+    end
+
+    ####params['is_cushman_user'] = cushman_user
+    # @NOTE specifying the table name, otherwise, the field returns sorted as a string, rather then integer
+    $order = params[:tenant_record][:order] if (! params[:tenant_record][:order].blank?)
+
+
+    tenant_records ||= scope
+
+
+    @summary = tenant_records.all.first
+
+
+
+
+
+
+
+
+
+
+
+    time = Time.now.getutc
+    fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
+
+      @file = session.drive.copy_file('1Q3XXUK0EAdyJIDmX531ZVIztnPaB4OOybWo1RZnh6iQ', {name: fileName}, {})
+
+      # put data to sheet
+      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
+      counter=2
+      tenant_records.each do |tenant_record|
+        ws[counter, 1] = tenant_record.id
+        ws[counter, 2] = tenant_record.company
+        ws[counter, 3] = tenant_record.address1
+        ws[counter, 4] = tenant_record.suite
+        ws[counter, 5] = tenant_record.city
+        ws[counter, 6] = tenant_record.state
+        ws[counter, 7] = tenant_record.zipcode
+        ws[counter, 8] = tenant_record.base_rent
+        ws[counter, 9] = tenant_record.class_type
+        ws[counter, 10] = tenant_record.comp_type
+        ws[counter, 11] = tenant_record.contact
+        ws[counter, 12] = tenant_record.contact_email
+        ws[counter, 13] = tenant_record.contact_phone
+        ws[counter, 14] = tenant_record.lease_type
+        ws[counter, 15] = tenant_record.escalation
+        ws[counter, 16] = tenant_record.free_rent
+        ws[counter, 17] = ''
+        ws[counter, 18] = tenant_record.lease_commencement_date
+        ws[counter, 19] = tenant_record.lease_term_months
+        ws[counter, 20] = tenant_record.property_type
+        ws[counter, 21] = tenant_record.size
+        ws[counter, 22] = tenant_record.tenant_improvement
+        ws[counter, 23] = tenant_record.tenant_ti_cost
+        ws[counter, 24] = tenant_record.view_type
+        ws[counter, 25] = tenant_record.comments
+        ws[counter, 26] = tenant_record.property_name
+        ws[counter, 27] = tenant_record.submarket
+        ws[counter, 28] = tenant_record.industry_type
+        counter+=1
+        ws.save()
+      end
+
+      session.drive.batch do
+        user_permission = {
+            value: 'default',
+            type: 'anyone',
+            role: 'writer'
+        }
+        session.drive.create_permission(@file.id, user_permission, fields: 'id')
+      end
+
+    # respond_to do |format|
+    #   if (params[:tenant_record][:summary].blank?)
+    #     session[:search_params] = original_params unless params.has_key? :previous # only if store if it's not a previous requery
+    #     #format.json { render json: { type: 'advanced', res: @tenant_records.limit(100).offset(params['tenant_record'][:offset]).order($order), count: @tenant_records.length, params:params } }
+    #
+    #     format.html  # index.html.erb
+    #
+    #     format.json { render json: { type: 'advanced', res: tenant_records, count: tenant_records.length, params:params } }
+    #   else
+    #     format.json { render json: { type: 'advanced', summary: tenant_records.all.first, count: tenant_records.all.first.total_count, params:params } }
+    #
+    #
+    #     format.html { render html }
+    #
+    #
+    #   end
+      render :json => {
+          :file => @file.id
+      }
+
+
+  end
+
+  def database_sale
+
+    require "google_drive"
+    require 'digest/sha1'
+    require 'time'
+    scope = sales_scope_records_by_params(params[:tenant_record], current_user)
+    #if this is the first page than calculate summary
+    $order = 'address1'
+
+    original_params = Marshal.load(Marshal.dump(params))
+
+    # if summary, calculate quarters and find avg weighted market effective
+    if params[:tenant_record][:summary]
+      current = Date.today.beginning_of_quarter
+      q1, q2, q3, q4 = (1..4).map { |i| Date.today.beginning_of_quarter.months_ago(i*3) }
+      params['avg_weighted_tenant_effective'] = []
+      # a = q1_avg.avg_cushman_market_effective.to_f
+      #b = a
+      q1_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q1.end_of_quarter, current.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q1_avg.avg_cushman_market_effective.to_f : q1_avg.avg_weighted_market_effective.to_f)
+
+      q2_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q2.end_of_quarter, q1.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q2_avg.avg_cushman_market_effective.to_f : q2_avg.avg_weighted_market_effective.to_f)
+
+      q3_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q3.end_of_quarter, q2.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q3_avg.avg_cushman_market_effective.to_f : q3_avg.avg_weighted_market_effective.to_f)
+
+      q4_avg = scope.where(id: TenantRecord.scoped.lease_term_overlap(q4.end_of_quarter, q3.end_of_quarter).select("id")).first
+      params['avg_weighted_tenant_effective'] << (cushman_user ? q4_avg.avg_cushman_market_effective.to_f : q4_avg.avg_weighted_market_effective.to_f)
+
+      params['avg_weighted_tenant_effective_quarters'] = ["Current", get_quarter(q1), get_quarter(q2), get_quarter(q3)].reverse
+      params['avg_weighted_tenant_effective'].reverse!
+
+      if params[:tenant_record][:cost_display] == 'mo'
+        params['avg_weighted_tenant_effective'].each_with_index do |single_avg, index|
+          params['avg_weighted_tenant_effective'][index] = single_avg / 12.0
+        end
+      end
+
+      #params['avg_weighted_tenant_effective'] = [53.0772056141280498,53.9177455557559932,54.4592933213889421,54.4012608930364223].reverse
+    end
+
+    if params.has_key? :radius and params[:tenant_record][:summary].blank?
+      # no records found but we just need a record with a latitude/longitude pair, so we'll get rid of other parameters that
+      # will prevent us from looking for an address
+      scope = scope_records_by_params({"search_type" => params[:tenant_record][:search_type], "address1" => params[:tenant_record][:address1], "zipcode" => params[:tenant_record][:zipcode], "q" => params[:tenant_record][:q]}, current_user)
+      t = scope.where('tenant_records.latitude is not null and tenant_records.longitude is not null').first
+
+      latitude, longitude = apply_radius(params[:radius], t.latitude, t.longitude)
+      params[:tenant_record][:latitude] = latitude
+      params[:tenant_record][:longitude] = longitude
+      params[:tenant_record].delete(:address1) if params[:tenant_record].has_key? :address1
+      params[:tenant_record].delete(:zipcode) if params[:tenant_record].has_key? :zipcode
+      params[:tenant_record].delete(:q)  if params[:tenant_record].has_key? :q
+      tenant_records = scope_records_by_params params[:tenant_record], current_user
+    end
+
+    ####params['is_cushman_user'] = cushman_user
+    # @NOTE specifying the table name, otherwise, the field returns sorted as a string, rather then integer
+    $order = params[:tenant_record][:order] if (! params[:tenant_record][:order].blank?)
+
+
+    tenant_records ||= scope
+
+
+
+
+    @summary = tenant_records.all.first
+
+    sale_records = tenant_records
+    time = Time.now.getutc
+    fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
+
+    @file = session.drive.copy_file('1Gc-2YU8anJma16JsWYIk6-Ym6gsq_kwvLqyOxBfD8R0', {name: fileName}, {})
+
+    # put data to sheet
+    ws = session.spreadsheet_by_key(@file.id).worksheets[0]
+    counter=2
+    sale_records.each do |sale_record|
+      ws[counter, 1] = sale_record.id
+      ws[counter, 2] = sale_record.is_sales_record
+      ws[counter, 3] = sale_record.land_size_identifier
+      ws[counter, 4] = sale_record.view_type
+      ws[counter, 5] = sale_record.address1
+      ws[counter, 6] = sale_record.city
+      ws[counter, 7] = sale_record.state
+      ws[counter, 8] = sale_record.land_size
+      ws[counter, 9] = sale_record.price
+      ws[counter, 10] = sale_record.cap_rate
+      ws[counter, 11] = sale_record.latitude
+      ws[counter, 12] = sale_record.longitude
+      ws[counter, 13] = sale_record.zipcode
+      ws[counter, 14] = sale_record.zipcode_plus
+      counter+=1
+      ws.save()
+    end
+
+    session.drive.batch do
+      user_permission = {
+          value: 'default',
+          type: 'anyone',
+          role: 'writer'
+      }
+      session.drive.create_permission(@file.id, user_permission, fields: 'id')
+    end
+
+
+    # respond_to do |format|
+    #   if (params[:tenant_record][:summary].blank?)
+    #     session[:search_params] = original_params unless params.has_key? :previous # only if store if it's not a previous requery
+    #     #format.json { render json: { type: 'advanced', res: @tenant_records.limit(100).offset(params['tenant_record'][:offset]).order($order), count: @tenant_records.length, params:params } }
+    #
+    #     format.html  # index.html.erb
+    #
+    #     format.json { render json: { type: 'advanced', res: tenant_records.paginate(:page => params['tenant_record'][:page].to_i, :per_page => 100).order($order), count: tenant_records.length, params:params } }
+    #   else
+    #     format.json { render json: { type: 'advanced', summary: tenant_records.all.first, count: tenant_records.all.first.total_count, params:params } }
+    #
+    #
+    #     format.html { render html }
+    #
+    #
+    #   end
+    # end
+
+    render :json => {
+        :file => @file.id
+    }
+
+
+  end
+
   protected
 
   def get_dashboard_query_url(result_hash = { previous: true })

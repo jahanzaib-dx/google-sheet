@@ -43,40 +43,11 @@
           <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
             <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div class="exists main_body_section_grey" id="dashboard">
-                <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
-
-                  <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
-
-                </form>
-
-
+            <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
+              <div class="col-md-12 col-sm-12 both-pad-none" style = "display: none" id="database_map_search"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
+            </form>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
       </div>
     </div>
@@ -87,40 +58,23 @@
 <div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
   <iframe src="" style="width:100%; height: 700px; "></iframe>
 </div>
-<div id="map_filter" class="map_container criteria_layout">
-  <div id="the_map"></div>
-</div>
+
+<%= render :partial => 'simple_search_form' %>
+<%= render :partial =>  'advance_search', locals: { search_params: @search_params } %>
 <%= render "users/template_map_display" %>
-<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;"></div>
+
+<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;">
   <%= image_tag "database-loader.gif" %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 <script type="text/javascript" charset="utf-8">
   $('#data_type').change(function(){
     $('#myiframe').find('iframe').attr('src','');
-    $('.tx_linkdin_profile').hide('slow');
-    $('#link').hide('slow');
-    $('#ImageBrowse').hide('slow');
-    $('#custom_record').hide('slow');
+    $('.tx_linkdin_profile').hide('fast');
+    $('#link').hide('fast');
+    $('#ImageBrowse').hide('fast');
+    $('#custom_record').hide('fast');
+    $('#database_map_search').hide('fast');
 
     if($('#data_type').val()=="lease")
     {
@@ -129,7 +83,10 @@
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
-          $('#ImageBrowse').show('slow');
+          $('.tx_linkdin_profile').show('fast');
+          $('#ImageBrowse').show('fast');
+          $('#database_map_search').show('fast');
+          $('#advanced-search-form').attr('action','/search/database_lease');
         }
       });
     }
@@ -141,14 +98,17 @@
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
-          $('#ImageBrowse').show('slow');
+          $('.tx_linkdin_profile').show('fast');
+          $('#ImageBrowse').show('fast');
+          $('#database_map_search').show('fast');
+          $('#advanced-search-form').attr('action','/search/database_sale');
         }
       });
     }
 
     else if($('#data_type').val()=="custom")
     {
-      $('#custom_record').show('slow');
+      $('#custom_record').show('fast');
     }
   });
   $('#custom_record_list').change(function(){
@@ -158,26 +118,22 @@
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+          $('.tx_linkdin_profile').show('fast');
+          $('#ImageBrowse').show('fast');
         }
       });
   });
 
   $(document).ready(function(){
     $(document).ajaxStart(function(){
-      $("#wait").show('slow');
-      $('.tx_linkdin_profile').hide('slow');
+      $("#wait").show('fast');
     });
     $(document).ajaxComplete(function(){
       $("#wait").hide('slow')
-      $('.tx_linkdin_profile').show('slow');
     });
-  });
-  $(document).ready(function () {
     $('#imageUploadForm').on('submit',(function(e) {
       e.preventDefault();
       var formData = new FormData(this);
-      console.log(formData);
-
       $.ajax({
         type:'POST',
         url: $(this).attr('action'),
@@ -186,12 +142,12 @@
         contentType: false,
         processData: false,
         success:function(data){
-          $('#link').val("=image("+data.file_name+"),2");
+          $('#link').val('=image("'+data.file_name+'",2)');
           $('#link').show();
+          $('#ImageBrowse').val('');
         },
         error: function(data){
           console.log("error");
-          console.log(data);
         }
       });
     }));
@@ -199,6 +155,10 @@
     $("#ImageBrowse").on("change", function() {
       $("#imageUploadForm").submit();
     });
+    var search_basic_path_js = '<%= search_basic_path() %>';
+    var search_advanced_path_js = '<%= "/search/database_lease" %>';
+    var search_simple_path_js = '<%= search_simple_path() %>';
+    var search_sales_path_js = '<%= "/search/database_sale" %>';
   });
 
 </script>

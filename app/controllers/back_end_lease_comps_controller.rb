@@ -126,24 +126,25 @@ class BackEndLeaseCompsController < ApplicationController
   end
 
   def create
-
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
-    session.drive.delete_file(params[:id])
-    @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
-
-    @BackEndLeaseComp = BackEndLeaseComp.where("user_id = ?",@current_user.id).first
-    @BackEndLeaseComp.update_attributes(:file => @file.id)
-
-    session.drive.delete_file(params[:temp])
-    ws = session.spreadsheet_by_key(@file.id).worksheets[0]
+    if !params[:temp].present?
+      ws = session.spreadsheet_by_key(params[:id]).worksheets[0]
+    else
+      session.drive.delete_file(params[:id])
+      @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
+      @BackEndLeaseComp = BackEndLeaseComp.where("user_id = ?",@current_user.id).first
+      @BackEndLeaseComp.update_attributes(:file => @file.id)
+      session.drive.delete_file(params[:temp])
+      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
+    end
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     counter=2
     tenant_records.each do |tenant_record|
-      if tenant_record.id!=counter-1
-        ws[counter, 1] =  counter
-        next
-      end
+      # if tenant_record.id!=counter-1
+      #   ws[counter, 1] =  counter
+      #   next
+      # end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(

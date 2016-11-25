@@ -58,7 +58,4 @@ config/nginx.config
 
 # Ignore uploaded excel
 /public/system/marketrex_uploads/*
-
-/public/back_end_lease_comp
-/public/back_end_sale_comp
 /db/structure.sql
