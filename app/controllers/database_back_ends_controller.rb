@@ -14,9 +14,8 @@ class DatabaseBackEndsController < ApplicationController
         @file = BackEndCustomRecord.save_file(params)
       end
     end
-    p request.domain+@file
     render :json => {
-        :file_name => @file
+        :file_name => "http://"+request.host_with_port+@file
     }
   end
 end
