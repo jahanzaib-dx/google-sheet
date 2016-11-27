@@ -367,7 +367,8 @@ CREATE TABLE comp_requests (
     receiver_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    status boolean DEFAULT false
+    status boolean DEFAULT false,
+    comp_type character varying
 );
 
 
@@ -388,6 +389,36 @@ CREATE SEQUENCE comp_requests_id_seq
 --
 
 ALTER SEQUENCE comp_requests_id_seq OWNED BY comp_requests.id;
+
+
+--
+-- Name: comp_unlock_fields; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comp_unlock_fields (
+    id integer NOT NULL,
+    shared_comp_id integer,
+    field_name integer
+);
+
+
+--
+-- Name: comp_unlock_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comp_unlock_fields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comp_unlock_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comp_unlock_fields_id_seq OWNED BY comp_unlock_fields.id;
 
 
 --
@@ -1498,6 +1529,39 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: shared_comps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE shared_comps (
+    id integer NOT NULL,
+    comp_id integer,
+    agent_id integer,
+    comp_type character varying,
+    comp_status character varying,
+    ownership boolean DEFAULT false
+);
+
+
+--
+-- Name: shared_comps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE shared_comps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: shared_comps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE shared_comps_id_seq OWNED BY shared_comps.id;
+
+
+--
 -- Name: stepped_rents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1877,6 +1941,39 @@ ALTER SEQUENCE users_id_seq1 OWNED BY users.id;
 
 
 --
+-- Name: visitors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE visitors (
+    id integer NOT NULL,
+    page character varying(100),
+    email character varying,
+    ip character varying(15),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: visitors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE visitors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: visitors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE visitors_id_seq OWNED BY visitors.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1923,6 +2020,13 @@ ALTER TABLE ONLY back_end_sale_comps ALTER COLUMN id SET DEFAULT nextval('back_e
 --
 
 ALTER TABLE ONLY comp_requests ALTER COLUMN id SET DEFAULT nextval('comp_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comp_unlock_fields ALTER COLUMN id SET DEFAULT nextval('comp_unlock_fields_id_seq'::regclass);
 
 
 --
@@ -2111,6 +2215,13 @@ ALTER TABLE ONLY schedule_accesses ALTER COLUMN id SET DEFAULT nextval('schedule
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY shared_comps ALTER COLUMN id SET DEFAULT nextval('shared_comps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY stepped_rents ALTER COLUMN id SET DEFAULT nextval('stepped_rents_id_seq'::regclass);
 
 
@@ -2154,6 +2265,13 @@ ALTER TABLE ONLY user_settings ALTER COLUMN id SET DEFAULT nextval('user_setting
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq1'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY visitors ALTER COLUMN id SET DEFAULT nextval('visitors_id_seq'::regclass);
 
 
 --
@@ -2226,6 +2344,14 @@ ALTER TABLE ONLY back_end_sale_comps
 
 ALTER TABLE ONLY comp_requests
     ADD CONSTRAINT comp_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comp_unlock_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comp_unlock_fields
+    ADD CONSTRAINT comp_unlock_fields_pkey PRIMARY KEY (id);
 
 
 --
@@ -2485,6 +2611,14 @@ ALTER TABLE ONLY schedule_accesses
 
 
 --
+-- Name: shared_comps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY shared_comps
+    ADD CONSTRAINT shared_comps_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: stepped_rents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2546,6 +2680,14 @@ ALTER TABLE ONLY user_settings
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: visitors_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY visitors
+    ADD CONSTRAINT visitors_pkey PRIMARY KEY (id);
 
 
 --
@@ -3238,6 +3380,12 @@ INSERT INTO schema_migrations (version) VALUES ('20161102133336');
 
 INSERT INTO schema_migrations (version) VALUES ('20161103094724');
 
+INSERT INTO schema_migrations (version) VALUES ('20161107070850');
+
+INSERT INTO schema_migrations (version) VALUES ('20161107073627');
+
+INSERT INTO schema_migrations (version) VALUES ('20161108102156');
+
 INSERT INTO schema_migrations (version) VALUES ('20161110114014');
 
 INSERT INTO schema_migrations (version) VALUES ('20161110114027');
@@ -3261,4 +3409,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161116235323');
 INSERT INTO schema_migrations (version) VALUES ('20161116235350');
 
 INSERT INTO schema_migrations (version) VALUES ('20161117125255');
+
+INSERT INTO schema_migrations (version) VALUES ('20161127194026');
 
