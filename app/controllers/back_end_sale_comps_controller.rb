@@ -11,30 +11,30 @@ class BackEndSaleCompsController < ApplicationController
 
     check = BackEndSaleComp.where('user_id = ?', @current_user)
     if  check.count == 0
-      @file = session.drive.copy_file('1Gc-2YU8anJma16JsWYIk6-Ym6gsq_kwvLqyOxBfD8R0', {name: fileName}, {})
+      @file = session.drive.copy_file('1xPvNyWzcah6fbf_VlunbE_GDfMG1ufw3Gb2UeLa0MGo', {name: fileName}, {})
 
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
-        ws[counter, 2] = sale_record.is_sales_record
-        ws[counter, 3] = sale_record.land_size_identifier
-        ws[counter, 4] = sale_record.view_type
-        ws[counter, 5] = sale_record.address1
-        ws[counter, 6] = sale_record.city
-        ws[counter, 7] = sale_record.state
-        ws[counter, 8] = sale_record.land_size
-        ws[counter, 9] = sale_record.price
-        ws[counter, 10] = sale_record.cap_rate
-        ws[counter, 11] = sale_record.latitude
-        ws[counter, 12] = sale_record.longitude
-        ws[counter, 13] = sale_record.zipcode
-        ws[counter, 14] = sale_record.zipcode_plus
+        # ws[counter, 2] = sale_record.image
+        # ws[counter, 3] = sale_record.comp_type
+        ws[counter, 4] = sale_record.address1
+        ws[counter, 5] = sale_record.city
+        ws[counter, 6] = sale_record.state
+        ws[counter, 7] = sale_record.submarket
+        ws[counter, 8] = sale_record.property_name
+        ws[counter, 9] = sale_record.build_date
+        ws[counter, 10] = sale_record.property_type
+        ws[counter, 11] = sale_record.class_type
+        ws[counter, 12] = sale_record.land_size
+        ws[counter, 13] = sale_record.price
+        ws[counter, 14] = sale_record.sold_date
+        ws[counter, 15] = sale_record.cap_rate
         counter+=1
-        ws.save()
       end
-
+      ws.save()
 
       # path = "#{Rails.root}/public/back_end_sale_comp/"
       # extension = "4"
@@ -64,22 +64,23 @@ class BackEndSaleCompsController < ApplicationController
       counter=2
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
-        ws[counter, 2] = sale_record.is_sales_record
-        ws[counter, 3] = sale_record.land_size_identifier
-        ws[counter, 4] = sale_record.view_type
-        ws[counter, 5] = sale_record.address1
-        ws[counter, 6] = sale_record.city
-        ws[counter, 7] = sale_record.state
-        ws[counter, 8] = sale_record.land_size
-        ws[counter, 9] = sale_record.price
-        ws[counter, 10] = sale_record.cap_rate
-        ws[counter, 11] = sale_record.latitude
-        ws[counter, 12] = sale_record.longitude
-        ws[counter, 13] = sale_record.zipcode
-        ws[counter, 14] = sale_record.zipcode_plus
+        # ws[counter, 2] = sale_record.image
+        # ws[counter, 3] = sale_record.comp_type
+        ws[counter, 4] = sale_record.address1
+        ws[counter, 5] = sale_record.city
+        ws[counter, 6] = sale_record.state
+        ws[counter, 7] = sale_record.submarket
+        ws[counter, 8] = sale_record.property_name
+        ws[counter, 9] = sale_record.build_date
+        ws[counter, 10] = sale_record.property_type
+        ws[counter, 11] = sale_record.class_type
+        ws[counter, 12] = sale_record.land_size
+        ws[counter, 13] = sale_record.price
+        ws[counter, 14] = sale_record.sold_date
+        ws[counter, 15] = sale_record.cap_rate
         counter+=1
-        ws.save()
       end
+      ws.save()
 
 
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
@@ -124,19 +125,20 @@ class BackEndSaleCompsController < ApplicationController
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
-            :is_sales_record => ws[counter, 2],
-            :land_size_identifier => ws[counter, 3],
-            :view_type => ws[counter, 4],
-            :address1 =>  ws[counter, 5],
-            :city => ws[counter, 6],
-            :state => ws[counter, 7],
-            :land_size => ws[counter, 8],
-            :price => ws[counter, 9],
-            :cap_rate => ws[counter, 10],
-            :latitude => ws[counter, 11],
-            :longitude => ws[counter, 12],
-            :zipcode => ws[counter, 13],
-            :zipcode_plus => ws[counter, 14]
+            # :image => ws[counter, 2],
+            # :comp_type => ws[counter, 3],
+            :address1 => ws[counter, 4],
+            :city =>  ws[counter, 5],
+            :state => ws[counter, 6],
+            :submarket => ws[counter, 7],
+            :property_name => ws[counter, 8],
+            :build_date => ws[counter, 9],
+            :property_type => ws[counter, 10],
+            :class_type => ws[counter, 11],
+            :land_size => ws[counter, 12],
+            :price => ws[counter, 13],
+            :sold_date => ws[counter, 14],
+            :cap_rate => ws[counter, 15]
         )
       end
       counter+=1
