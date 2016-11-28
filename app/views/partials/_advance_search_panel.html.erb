@@ -117,7 +117,7 @@
               </div>
             </div>
             <div class="col-md-6 col-sm-6 formgroup_input"> <span>Property Type </span>
-              <div class="boxes">
+              <div class="boxes lease_filter">
                 <div class="col-md-12">
                   <div class="checkbox checkbox-info">
                     <input type="checkbox" id="checkbox7" >
@@ -131,6 +131,29 @@
 				  <% end %>
                 </div>
               </div>
+             
+              
+              
+              <div class="boxes sales_filter">
+                <div class="col-md-12">
+                  <div class="checkbox checkbox-info">
+                    <input type="checkbox" id="checkbox77" >
+                    <label for="checkbox7"> Select All </label>
+                  </div>
+                  				  
+				  <% SaleRecord::all_property_type.each do |pt|  %>
+					   <div class="checkbox checkbox-info all_clicked">
+	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt%>" class="sales_filter_input">
+	                    <label for="checkbox88"> <%= pt.capitalize %> </label>
+	                  </div>                  
+				  <% end %>         
+                             
+                </div>   
+                
+              </div>
+              
+              
+              
             </div>
           </div>
 
