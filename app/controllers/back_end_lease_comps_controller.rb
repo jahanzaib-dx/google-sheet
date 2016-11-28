@@ -11,44 +11,35 @@ class BackEndLeaseCompsController < ApplicationController
 
     check = BackEndLeaseComp.where('user_id = ?', @current_user)
     if  check.count == 0
-      @file = session.drive.copy_file('1Q3XXUK0EAdyJIDmX531ZVIztnPaB4OOybWo1RZnh6iQ', {name: fileName}, {})
+      @file = session.drive.copy_file('1simT-7peFhoY-k9zrov3XYP4XpWJKPQRMz2sQYA5F1Y', {name: fileName}, {})
 
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = tenant_record.company
-        ws[counter, 3] = tenant_record.address1
-        ws[counter, 4] = tenant_record.suite
-        ws[counter, 5] = tenant_record.city
-        ws[counter, 6] = tenant_record.state
-        ws[counter, 7] = tenant_record.zipcode
-        ws[counter, 8] = tenant_record.base_rent
-        ws[counter, 9] = tenant_record.class_type
-        ws[counter, 10] = tenant_record.comp_type
-        ws[counter, 11] = tenant_record.contact
-        ws[counter, 12] = tenant_record.contact_email
-        ws[counter, 13] = tenant_record.contact_phone
-        ws[counter, 14] = tenant_record.lease_type
-        ws[counter, 15] = tenant_record.escalation
+        # ws[counter, 2] = tenant_record.image
+        ws[counter, 3] = tenant_record.comp_type
+        ws[counter, 4] = tenant_record.company
+        ws[counter, 5] = tenant_record.industry_type
+        ws[counter, 6] = tenant_record.address1
+        ws[counter, 7] = tenant_record.suite
+        ws[counter, 8] = tenant_record.city
+        ws[counter, 9] = tenant_record.state
+        ws[counter, 10] = tenant_record.submarket
+        ws[counter, 11] = tenant_record.class_type
+        ws[counter, 12] = tenant_record.property_type
+        ws[counter, 13] = tenant_record.property_name
+        ws[counter, 14] = tenant_record.lease_commencement_date
+        ws[counter, 15] = tenant_record.lease_term_months
         ws[counter, 16] = tenant_record.free_rent
-        ws[counter, 17] = tenant_record.industry_sic_code_id
-        ws[counter, 18] = tenant_record.lease_commencement_date
-        ws[counter, 19] = tenant_record.lease_term_months
-        ws[counter, 20] = tenant_record.property_type
-        ws[counter, 21] = tenant_record.size
-        ws[counter, 22] = tenant_record.tenant_improvement
-        ws[counter, 23] = tenant_record.tenant_ti_cost
-        ws[counter, 24] = tenant_record.view_type
-        ws[counter, 25] = tenant_record.comments
-        ws[counter, 26] = tenant_record.property_name
-        ws[counter, 27] = tenant_record.submarket
-        ws[counter, 28] = tenant_record.industry_type
+        ws[counter, 17] = tenant_record.size
+        ws[counter, 18] = tenant_record.deal_type
+        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 20] = tenant_record.base_rent
         counter+=1
-        ws.save()
       end
-
+      ws.save()
       # path = "#{Rails.root}/public/back_end_lease_comp/"
       # extension = "4"
       # session.drive.export_file(@file.id,extension,download_dest: "#{path}/#{@file.id}.xlsx")
@@ -77,37 +68,28 @@ class BackEndLeaseCompsController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = tenant_record.company
-        ws[counter, 3] = tenant_record.address1
-        ws[counter, 4] = tenant_record.suite
-        ws[counter, 5] = tenant_record.city
-        ws[counter, 6] = tenant_record.state
-        ws[counter, 7] = tenant_record.zipcode
-        ws[counter, 8] = tenant_record.base_rent
-        ws[counter, 9] = tenant_record.class_type
-        ws[counter, 10] = tenant_record.comp_type
-        ws[counter, 11] = tenant_record.contact
-        ws[counter, 12] = tenant_record.contact_email
-        ws[counter, 13] = tenant_record.contact_phone
-        ws[counter, 14] = tenant_record.lease_type
-        ws[counter, 15] = tenant_record.escalation
+        # ws[counter, 2] = tenant_record.image
+        ws[counter, 3] = tenant_record.comp_type
+        ws[counter, 4] = tenant_record.company
+        ws[counter, 5] = tenant_record.industry_type
+        ws[counter, 6] = tenant_record.address1
+        ws[counter, 7] = tenant_record.suite
+        ws[counter, 8] = tenant_record.city
+        ws[counter, 9] = tenant_record.state
+        ws[counter, 10] = tenant_record.submarket
+        ws[counter, 11] = tenant_record.class_type
+        ws[counter, 12] = tenant_record.property_type
+        ws[counter, 13] = tenant_record.property_name
+        ws[counter, 14] = tenant_record.lease_commencement_date
+        ws[counter, 15] = tenant_record.lease_term_months
         ws[counter, 16] = tenant_record.free_rent
-        ws[counter, 17] = tenant_record.industry_sic_code_id
-        ws[counter, 18] = tenant_record.lease_commencement_date
-        ws[counter, 19] = tenant_record.lease_term_months
-        ws[counter, 20] = tenant_record.property_type
-        ws[counter, 21] = tenant_record.size
-        ws[counter, 22] = tenant_record.tenant_improvement
-        ws[counter, 23] = tenant_record.tenant_ti_cost
-        ws[counter, 24] = tenant_record.view_type
-        ws[counter, 25] = tenant_record.comments
-        ws[counter, 26] = tenant_record.property_name
-        ws[counter, 27] = tenant_record.submarket
-        ws[counter, 28] = tenant_record.industry_type
+        ws[counter, 17] = tenant_record.size
+        ws[counter, 18] = tenant_record.deal_type
+        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 20] = tenant_record.base_rent
         counter+=1
-        ws.save()
       end
-
+      ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
 
       session.drive.batch do
@@ -148,33 +130,25 @@ class BackEndLeaseCompsController < ApplicationController
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
-            :company => ws[counter, 2],
-            :address1 => ws[counter, 3],
-            :suite => ws[counter, 4],
-            :city => ws[counter, 5],
-            :state => ws[counter, 6],
-            :zipcode => ws[counter, 7],
-            :base_rent => ws[counter, 8],
-            :class_type => ws[counter, 9],
-            :comp_type => ws[counter, 10],
-            :contact => ws[counter, 11],
-            :contact_email => ws[counter, 12],
-            :contact_phone => ws[counter, 13],
-            :lease_type => ws[counter, 14],
-            :escalation => ws[counter, 15],
+            # :image => ws[counter, 2],
+            :comp_type => ws[counter, 3],
+            :company => ws[counter, 4],
+            :industry_type => ws[counter, 5],
+            :address1 => ws[counter, 6],
+            :suite => ws[counter, 7],
+            :city => ws[counter, 8],
+            :state => ws[counter, 9],
+            :submarket => ws[counter, 10],
+            :class_type => ws[counter, 11],
+            :property_type => ws[counter, 12],
+            :property_name => ws[counter, 13],
+            :lease_commencement_date => ws[counter, 14],
+            :lease_term_months => ws[counter, 15],
             :free_rent => ws[counter, 16],
-            :industry_sic_code_id => ws[counter, 17],
-            :lease_commencement_date => ws[counter, 18],
-            :lease_term_months => ws[counter, 19],
-            :property_type => ws[counter, 20],
-            :size => ws[counter, 21],
-            :tenant_improvement => ws[counter, 22],
-            :tenant_ti_cost => ws[counter, 23],
-            :view_type => ws[counter, 24],
-            :comments => ws[counter, 25],
-            :property_name => ws[counter, 26],
-            :submarket => ws[counter, 27],
-            :industry_type => ws[counter, 28]
+            :size => ws[counter, 17],
+            :deal_type => ws[counter, 18],
+            :lease_structure => ws[counter, 19],
+            :base_rent => ws[counter, 20]
         )
       end
       counter+=1

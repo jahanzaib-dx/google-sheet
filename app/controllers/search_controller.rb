@@ -680,44 +680,35 @@ class SearchController < ApplicationController
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
-      @file = session.drive.copy_file('1Q3XXUK0EAdyJIDmX531ZVIztnPaB4OOybWo1RZnh6iQ', {name: fileName}, {})
+      @file = session.drive.copy_file('1simT-7peFhoY-k9zrov3XYP4XpWJKPQRMz2sQYA5F1Y', {name: fileName}, {})
 
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = tenant_record.company
-        ws[counter, 3] = tenant_record.address1
-        ws[counter, 4] = tenant_record.suite
-        ws[counter, 5] = tenant_record.city
-        ws[counter, 6] = tenant_record.state
-        ws[counter, 7] = tenant_record.zipcode
-        ws[counter, 8] = tenant_record.base_rent
-        ws[counter, 9] = tenant_record.class_type
-        ws[counter, 10] = tenant_record.comp_type
-        ws[counter, 11] = tenant_record.contact
-        ws[counter, 12] = tenant_record.contact_email
-        ws[counter, 13] = tenant_record.contact_phone
-        ws[counter, 14] = tenant_record.lease_type
-        ws[counter, 15] = tenant_record.escalation
+        # ws[counter, 2] = tenant_record.image
+        ws[counter, 3] = tenant_record.comp_type
+        ws[counter, 4] = tenant_record.company
+        ws[counter, 5] = tenant_record.industry_type
+        ws[counter, 6] = tenant_record.address1
+        ws[counter, 7] = tenant_record.suite
+        ws[counter, 8] = tenant_record.city
+        ws[counter, 9] = tenant_record.state
+        ws[counter, 10] = tenant_record.submarket
+        ws[counter, 11] = tenant_record.class_type
+        ws[counter, 12] = tenant_record.property_type
+        ws[counter, 13] = tenant_record.property_name
+        ws[counter, 14] = tenant_record.lease_commencement_date
+        ws[counter, 15] = tenant_record.lease_term_months
         ws[counter, 16] = tenant_record.free_rent
-        ws[counter, 17] = ''
-        ws[counter, 18] = tenant_record.lease_commencement_date
-        ws[counter, 19] = tenant_record.lease_term_months
-        ws[counter, 20] = tenant_record.property_type
-        ws[counter, 21] = tenant_record.size
-        ws[counter, 22] = tenant_record.tenant_improvement
-        ws[counter, 23] = tenant_record.tenant_ti_cost
-        ws[counter, 24] = tenant_record.view_type
-        ws[counter, 25] = tenant_record.comments
-        ws[counter, 26] = tenant_record.property_name
-        ws[counter, 27] = tenant_record.submarket
-        ws[counter, 28] = tenant_record.industry_type
+        ws[counter, 17] = tenant_record.size
+        # ws[counter, 18] = tenant_record.deal_type
+        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 20] = tenant_record.base_rent
         counter+=1
-        ws.save()
       end
-
+      ws.save()
       session.drive.batch do
         user_permission = {
             value: 'default',
@@ -824,29 +815,30 @@ class SearchController < ApplicationController
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
-    @file = session.drive.copy_file('1Gc-2YU8anJma16JsWYIk6-Ym6gsq_kwvLqyOxBfD8R0', {name: fileName}, {})
+    @file = session.drive.copy_file('1xPvNyWzcah6fbf_VlunbE_GDfMG1ufw3Gb2UeLa0MGo', {name: fileName}, {})
 
     # put data to sheet
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     counter=2
     sale_records.each do |sale_record|
       ws[counter, 1] = sale_record.id
-      ws[counter, 2] = sale_record.is_sales_record
-      ws[counter, 3] = sale_record.land_size_identifier
-      ws[counter, 4] = sale_record.view_type
-      ws[counter, 5] = sale_record.address1
-      ws[counter, 6] = sale_record.city
-      ws[counter, 7] = sale_record.state
-      ws[counter, 8] = sale_record.land_size
-      ws[counter, 9] = sale_record.price
-      ws[counter, 10] = sale_record.cap_rate
-      ws[counter, 11] = sale_record.latitude
-      ws[counter, 12] = sale_record.longitude
-      ws[counter, 13] = sale_record.zipcode
-      ws[counter, 14] = sale_record.zipcode_plus
+      # ws[counter, 2] = sale_record.image
+      # ws[counter, 3] = sale_record.comp_type
+      ws[counter, 4] = sale_record.address1
+      ws[counter, 5] = sale_record.city
+      ws[counter, 6] = sale_record.state
+      ws[counter, 7] = sale_record.submarket
+      ws[counter, 8] = sale_record.property_name
+      ws[counter, 9] = sale_record.build_date
+      ws[counter, 10] = sale_record.property_type
+      ws[counter, 11] = sale_record.class_type
+      ws[counter, 12] = sale_record.land_size
+      ws[counter, 13] = sale_record.price
+      ws[counter, 14] = sale_record.sold_date
+      ws[counter, 15] = sale_record.cap_rate
       counter+=1
-      ws.save()
     end
+    ws.save()
 
     session.drive.batch do
       user_permission = {
