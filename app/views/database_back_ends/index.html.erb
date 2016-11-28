@@ -144,6 +144,12 @@
         success:function(data){
           $('#link').val('=image("'+data.file_name+'",2)');
           $('#link').show();
+//          $('#link').focus();
+//          $('#link').setSelectionRange(0, field.value.length)
+//          var copysuccess = copySelectionText()
+//          if (copysuccess){
+//            showtooltip(e)
+//          }
           $('#ImageBrowse').val('');
         },
         error: function(data){
