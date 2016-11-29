@@ -1,5 +1,5 @@
-<div style=" z-index: 99; position: relative; background-color: #fafafa">
-  <div class="container" style="background-color: #d9dadd;z-index: 999; position: relative;">
+<div style="  position: relative; background-color: #fafafa">
+  <div class="container" style="background-color: #d9dadd; position: relative;">
     <div class="search_content">
       <div class="row">
         <div class="col-md-2 col-sm-2">
@@ -11,7 +11,7 @@
           <div class="col-md-2 col-sm-2">
             <div class="btn-group tx_btn_group">
               <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
-              <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
+              <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 99;">
                 <select class="selectpicker" id="data_type" style="text-align: center;" name="type">
                   <option value="">Select Data type</option>
                   <option value="lease">Lease</option>
@@ -21,11 +21,30 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 col-sm-2">
-            <input type="file" name="image" id="ImageBrowse" style="display: none;">
+          <div class="modal fade" id="exampleModa2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-user" role="document">
+              <div class="modal-content modal-content-user">
+                <div class="modal-header modal-header-new-user">
+
+                  <h4 class="modal-title modal-title-user-hd" id="exampleModalLabel2">Add Photo</h4>
+
+                </div>
+                <div class="modal-body modal-body-new-user">
+                  <div class="gust-email full-width">
+                    <div class="col-md-2 col-sm-2">
+                      <input type="file" name="image" id="ImageBrowse" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+                <textarea id="link" style="display: none" class="form-control" rows="5" cols="55"></textarea>
+               <center id="link_txt" style="display: none">Copy the above link and paste it into the desired cell.</center>
+                <div class="modal-footer modal-footer-user">
+                  <button type="button" class="btn btn-primary close-user-btn" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
-        <textarea id="link" style="display: none"></textarea>
         <div class="col-md-2 col-sm-2" style="display: none" id="custom_record">
           <div class="btn-group tx_btn_group">
             <span style="font-size: 14px;font-weight: bold;"> Select Custom Record</span>
@@ -41,13 +60,18 @@
         </div>
         <div class="col-md-2 col-sm-2 pull-right">
           <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
-            <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
+            <a class ="tx_linkdin_profile" id="tx_linkdin_profile"  style = "width:100%; display: none">Save Changes</a>
           </div>
           <div class="exists main_body_section_grey" id="dashboard">
             <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
               <div class="col-md-12 col-sm-12 both-pad-none" style = "display: none" id="database_map_search"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
             </form>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <a href="#" class="tx_linkdin_profile" id="media-button" data-toggle="modal"  style = "width:auto; display: none; margin: 10px; width: 100%" data-target="#exampleModa2" data-whatever="@mdo0">Add Photo</a>
         </div>
       </div>
     </div>
@@ -58,6 +82,7 @@
 <div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
   <iframe src="" style="width:100%; height: 700px; "></iframe>
 </div>
+
 
 <%= render :partial => 'simple_search_form' %>
 <%= render :partial =>  'advance_search', locals: { search_params: @search_params } %>
@@ -70,8 +95,10 @@
 <script type="text/javascript" charset="utf-8">
   $('#data_type').change(function(){
     $('#myiframe').find('iframe').attr('src','');
-    $('.tx_linkdin_profile').hide('fast');
+    $('#tx_linkdin_profile').hide('fast');
     $('#link').hide('fast');
+    $('#link_txt').hide('fast');
+    $('#media-button').hide('fast');
     $('#ImageBrowse').hide('fast');
     $('#custom_record').hide('fast');
     $('#database_map_search').hide('fast');
@@ -82,8 +109,9 @@
         url: '<%= back_end_lease_comps_path %>',
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
-          $('.tx_linkdin_profile').show('fast');
+          $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+          $('#tx_linkdin_profile').show('fast');
+          $('#media-button').show('fast');
           $('#ImageBrowse').show('fast');
           $('#database_map_search').show('fast');
           $('#advanced-search-form').attr('action','/search/database_lease');
@@ -97,8 +125,9 @@
         url: '<%= back_end_sale_comps_path %>',
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
-          $('.tx_linkdin_profile').show('fast');
+          $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+          $('#tx_linkdin_profile').show('fast');
+          $('#media-button').show('fast');
           $('#ImageBrowse').show('fast');
           $('#database_map_search').show('fast');
           $('#advanced-search-form').attr('action','/search/database_sale');
@@ -117,8 +146,9 @@
         url: '/back_end_custom_record/index/'+$(this).val(),
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
-          $('.tx_linkdin_profile').show('fast');
+          $('#tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+          $('#tx_linkdin_profile').show('fast');
+          $('#media-button').show('fast');
           $('#ImageBrowse').show('fast');
         }
       });
@@ -144,12 +174,10 @@
         success:function(data){
           $('#link').val('=image("'+data.file_name+'",2)');
           $('#link').show();
-//          $('#link').focus();
-//          $('#link').setSelectionRange(0, field.value.length)
-//          var copysuccess = copySelectionText()
-//          if (copysuccess){
-//            showtooltip(e)
-//          }
+          $('#link_txt').show();
+          var field = document.getElementById('link');
+          field.focus();
+          field.setSelectionRange(0, field.value.length);
           $('#ImageBrowse').val('');
         },
         error: function(data){
