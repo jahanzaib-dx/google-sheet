@@ -148,8 +148,8 @@
                   				  
 				  <% SaleRecord::all_property_type.each do |pt|  %>
 					   <div class="checkbox checkbox-info all_clicked">
-	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt%>" class="sales_filter_input">
-	                    <label for="checkbox88"> <%= pt.capitalize %> </label> 
+	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
+	                    <label for="checkbox88"> <%= pt.capitalize %> </label>
 	                  </div>                  
 				  <% end %>         
                              
@@ -171,20 +171,20 @@
               <div class="tx_dropdown_toggl tx-drop-down-select">
               <select class="selectpicker lease_filter lease_filter_input resetit" name="tenant_record[sq_ft_range]">
                 <option value="">Choose</option>
-                <option value="0-49000">0 - 49,000</option>
-                <option value="50000-99999">50,000 - 99,999</option>
-                <option value="100000-499999">100,000 - 499,999</option>
-                <option value="500000-999000">500,000 - 999,000</option>
-                <option value="999000">1MM+</option>
-              </select>
-              
-              <select class="selectpicker sales_filter sales_filter_input resetit" name="tenant_record[sq_ft_range]" disabled="disabled" >
-                <option value="">Choose</option>
                 <option value="0-3999">0 - 3,999</option>
                 <option value="4000-9999">4,000 - 9,999</option>
                 <option value="10000-19999">10,000 - 19,999</option>
                 <option value="20000-49000">20,000 - 49,000</option>
                 <option value="50000">50,000+</option>
+              </select>
+              
+              <select class="selectpicker sales_filter sales_filter_input resetit" name="tenant_record[sq_ft_range]" disabled="disabled" >
+                <option value="">Choose</option>
+                <option value="0-49000">0 - 49,000</option>
+                <option value="50000-99999">50,000 - 99,999</option>
+                <option value="100000-499999">100,000 - 499,999</option>
+                <option value="500000-999000">500,000 - 999,000</option>
+                <option value="999000">1MM+</option>
               </select>
               
               
