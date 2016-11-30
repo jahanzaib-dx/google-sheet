@@ -23,7 +23,7 @@
           <th><input type="text" class="normal-element"></th>
           <tr>
             <td colspan="2">
-              <%= form_tag '/uploader/import/process_file', multipart: true, remote: true do |f| %>
+              <%= form_tag '/uploader/import/process_file', multipart: true, autocomplete: "nope",  remote: true do |f| %>
                   <div class="wrapper">
                     <div class="text">
                       <span class="text-to-drop-file">To <strong>UPLOAD</strong> files drag & drop here or </span><span class="link-to-select-file">Select file from your computer</span>

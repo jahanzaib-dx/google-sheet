@@ -5,7 +5,7 @@ class Uploader::ImportController < ApplicationController
 
   before_filter :authenticate_user!
 
-  before_filter :save_temp_file, only: :process_file
+  before_filter :save_temp_file, only: [:process_file, :white_glove_service_request]
 
   layout 'uploader'
 
@@ -237,6 +237,22 @@ class Uploader::ImportController < ApplicationController
     # end
     redirect_to uploader_import_index_path
   end
+
+  def white_glove_service_request
+    if params[:fileToUpload]
+      #ext = File.extname(@file_path)[1..-1]
+      import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
+      WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
+      TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
+      redirect_to uploader_import_index_path
+    else
+      flash[:error] = "Import file was not found. Please make sure you have uploaded it."
+      redirect_to new_uploader_import_path
+    end
+
+
+  end
+
 
   private
 

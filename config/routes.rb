@@ -203,7 +203,7 @@ Rails.application.routes.draw do
 
 
 
-  mount Sidekiq::Web, at: '/sidekiq'
+  #mount Sidekiq::Web, at: '/sidekiq'
   namespace :uploader do
     resources :tenant_records, only: [:index, :new, :create, :show] do
       match 'display_custom_record' => 'tenant_records#display_custom_record', via: :get
@@ -214,6 +214,7 @@ Rails.application.routes.draw do
         match 'process_file' => "import#process_file", via: :post
         match 'create_and_process_upload' => "import#create_and_process_upload", via: :post
         match 'marketrex_import_status' => 'import#import_status', :as => :marketrex_import_status, via: :get
+        match 'white_glove_service_request' => 'import#white_glove_service_request', :as => :white_glove_service_request, via: :post
       end
       member do
         get :filter_by_geocode

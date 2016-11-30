@@ -1974,6 +1974,40 @@ ALTER SEQUENCE visitors_id_seq OWNED BY visitors.id;
 
 
 --
+-- Name: white_glove_service_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE white_glove_service_requests (
+    id integer NOT NULL,
+    user_id integer,
+    file_path character varying,
+    import_template_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    name character varying
+);
+
+
+--
+-- Name: white_glove_service_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE white_glove_service_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: white_glove_service_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE white_glove_service_requests_id_seq OWNED BY white_glove_service_requests.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2272,6 +2306,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq1'::regc
 --
 
 ALTER TABLE ONLY visitors ALTER COLUMN id SET DEFAULT nextval('visitors_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY white_glove_service_requests ALTER COLUMN id SET DEFAULT nextval('white_glove_service_requests_id_seq'::regclass);
 
 
 --
@@ -2691,6 +2732,14 @@ ALTER TABLE ONLY visitors
 
 
 --
+-- Name: white_glove_service_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY white_glove_service_requests
+    ADD CONSTRAINT white_glove_service_requests_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_accounts_on_firm_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2936,6 +2985,20 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 
 
 --
+-- Name: index_white_glove_service_requests_on_import_template_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_white_glove_service_requests_on_import_template_id ON white_glove_service_requests USING btree (import_template_id);
+
+
+--
+-- Name: index_white_glove_service_requests_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_white_glove_service_requests_on_user_id ON white_glove_service_requests USING btree (user_id);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2991,11 +3054,27 @@ ALTER TABLE ONLY schedule_accesses
 
 
 --
+-- Name: fk_rails_799188606f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY white_glove_service_requests
+    ADD CONSTRAINT fk_rails_799188606f FOREIGN KEY (import_template_id) REFERENCES import_templates(id);
+
+
+--
 -- Name: fk_rails_94ef0a20e3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY memberships
     ADD CONSTRAINT fk_rails_94ef0a20e3 FOREIGN KEY (member_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_def332083f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY white_glove_service_requests
+    ADD CONSTRAINT fk_rails_def332083f FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -3411,4 +3490,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161116235350');
 INSERT INTO schema_migrations (version) VALUES ('20161117125255');
 
 INSERT INTO schema_migrations (version) VALUES ('20161127194026');
+
+INSERT INTO schema_migrations (version) VALUES ('20161129214838');
+
+INSERT INTO schema_migrations (version) VALUES ('20161130051234');
 

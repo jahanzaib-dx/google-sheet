@@ -4,15 +4,17 @@ $(document).ready ->
     if property_type_value != ''
       $('#bulk_property_type_switch').val property_type_value
       $('.is-active .tick span').css 'color', 'green'
-      open_next_accordian_item 'accordian-item2', 'accordian-item1'
       $('.is-active .tick span').css 'color', '#ececef'
       if property_type_value == 'lease_comps'
+        open_next_accordian_item 'accordian-item1-a', 'accordian-item1'
         $('#bulk-custom-comp-dynamic-content, #bulk-sales-comp-dynamic-content').hide()
         $('#bulk-lease-comp-dynamic-content').show()
       else if property_type_value == 'custom_data'
+        open_next_accordian_item 'accordian-item2', 'accordian-item1'
         $('#bulk-lease-comp-dynamic-content, #bulk-sales-comp-dynamic-content').hide()
         $('#bulk-custom-comp-dynamic-content').show()
       else if property_type_value == 'sales_comps'
+        open_next_accordian_item 'accordian-item2', 'accordian-item1'
         $('#bulk-lease-comp-dynamic-content, #bulk-custom-comp-dynamic-content').hide()
         $('#bulk-sales-comp-dynamic-content').show()
     else
@@ -34,6 +36,20 @@ $(document).ready ->
     open_next_accordian_item 'accordian-item5', 'accordian-item4'
     $('.is-active .tick span').css 'color', '#ececef'###
 
+  $('#bulk-comp-continue-1-a').on 'click', (e) ->
+      radio = $('input[type=radio][name=service_type]:checked')
+      if(radio.val() == 'self')
+        $('#self-service-content').show();
+        $('#white-glove-service').hide();
+        open_next_accordian_item 'accordian-item2', 'accordian-item1-a'
+      else
+        $('#white-glove-service').show();
+        $('#self-service-content').hide();
+        open_next_accordian_item 'accordian-item2-a', 'accordian-item1-a'
+
+  $('#bulk-comp-continue-2-a').on 'click' , (e) ->
+    $(this).parents('.accordion-content').find('form').trigger('submit');
+
   $(document).on 'change', '.bulk-column-header-dd', (e) ->
     $(@).parent().siblings('.first').find('.bulk-column-header-value').val($(@).find(":selected").text())
 
@@ -46,8 +62,6 @@ $(document).ready ->
     error = false;
     $('.accordion-custom :input').each (e) ->
       if $(this).hasClass('validate[required]') && $(this).is(':visible')
-        console.log($(this))
-        console.log($(this).hasClass('validate[required]'))
         if( !$(this).validationEngine('validate') )
           error = true;
 
