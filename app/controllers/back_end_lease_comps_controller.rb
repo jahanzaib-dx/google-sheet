@@ -122,11 +122,8 @@ class BackEndLeaseCompsController < ApplicationController
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     counter=2
+    ids= Array.new
     tenant_records.each do |tenant_record|
-      # if tenant_record.id!=counter-1
-      #   ws[counter, 1] =  counter
-      #   next
-      # end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
@@ -151,8 +148,13 @@ class BackEndLeaseCompsController < ApplicationController
             :base_rent => ws[counter, 20]
         )
       end
+      if ws[counter,1] != ''
+        ids.push(ws[counter, 1])
+      end
       counter+=1
     end
+    deleted = TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user)
+    deleted.destroy_all
     redirect_to root_url
   end
 end
