@@ -18,5 +18,18 @@ class DatabaseBackEndsController < ApplicationController
         :file_name => "http://"+request.host_with_port+@file
     }
   end
+  def export
+    require 'socket'
+    require "google_drive"
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
+     path = "#{Rails.root}/public/uploads/export"
+    file_id = params[:id]
+    session.drive.export_file(file_id,
+                   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                   download_dest: "#{path}/#{file_id}.xlsx")
+    render :json => {
+        :file => "http://"+request.host_with_port+"/uploads/export/"+file_id+".xlsx"
+    }
+  end
 end
 
