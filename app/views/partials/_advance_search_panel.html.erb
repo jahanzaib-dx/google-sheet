@@ -147,7 +147,7 @@
                   </div>
                   				  
 				  <% SaleRecord::all_property_type.each do |pt|  %>
-					   <div class="checkbox checkbox-info all_clicked">
+					   <div class="checkbox checkbox-info all_clicked77">
 	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
 	                    <label for="checkbox88"> <%= pt.capitalize %> </label>
 	                  </div>                  
@@ -255,8 +255,8 @@
               <div class="tx_dropdown_toggl tx-drop-down-select">              	
               			 <%= select_tag 'tenant_record[lease_type]',
                              options_for_select(TenantRecord::all_deal_type.map { |s| [s.titleize, s] }),
-                             prompt: 'Select Lease Type', 
-                             class: 'selectpicker', 
+                             prompt: 'Choose', 
+                             class: 'selectpicker lease_filter_input resetit', 
                              id: "tenant_record_lease_type" 
                 		  %>
               </div>
@@ -271,18 +271,11 @@
 			  
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
 			  	
-			  	
-						 <%#= select_tag 'tenant_record[industry_type]',
-                             options_for_select(industry_list.map { |s| [s.name, s.name] }), 
-                             prompt: 'Select Industry Type', 
-                             class: 'selectpicker lease_filter_input', 
-                             id: 'industry_type' 
-                         %>
                          
                          <%= select_tag 'tenant_record[industry_type]',
                              options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.titleize, s.name] }), 
-                             prompt: 'Select Industry Type', 
-                             class: 'selectpicker lease_filter_input', 
+                             prompt: 'Choose', 
+                             class: 'selectpicker lease_filter_input resetit', 
                              id: 'industry_type' 
                          %>
                          

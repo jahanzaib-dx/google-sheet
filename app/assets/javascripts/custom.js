@@ -36,9 +36,8 @@ $(document).ready(function(){
     });
     
     $("#checkbox77").change(function () {
-        $(".all_clicked input:checkbox").prop('checked', $(this).prop("checked"));
+        $(".all_clicked77 input:checkbox").prop('checked', $(this).prop("checked"));
     });
-
 
     $("#checkbox1").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
