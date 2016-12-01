@@ -136,6 +136,7 @@ Rails.application.routes.draw do
   get 'database_back_ends' => 'database_back_ends#index'
   get 'uploader/database_back_ends' => 'database_back_ends#index'
   post 'database_back_ends/upload_image' => 'database_back_ends#upload_image'
+  get 'database_back_ends/export/:id' => 'database_back_ends#export'
 
 
 
