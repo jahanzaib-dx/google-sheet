@@ -117,6 +117,12 @@ $(function() {
 		
   });
   
+   $( document ).on( "click", ".clear-btn", function() {
+		$('.resetit').val('').selectpicker('refresh');	
+  });
+  
+  
+  
  
   
   
