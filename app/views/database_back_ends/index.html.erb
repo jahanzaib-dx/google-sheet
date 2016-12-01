@@ -99,7 +99,7 @@
     $('#ImageBrowse').hide('fast');
     $('#custom_record').hide('fast');
     $('#database_map_search').hide('fast');
-    
+
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
       $('#tx_linkdin_profile').hide('fast');
@@ -209,7 +209,6 @@
         type:'get',
         url: $('#export_link').val(),
         success: function(data){
-          alert('+65+65+65+65');
           window.open(data.file);
         }
       });
