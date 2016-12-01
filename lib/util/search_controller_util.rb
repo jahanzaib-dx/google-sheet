@@ -95,6 +95,18 @@ module SearchControllerUtil
       $max_latitude = params['latitude'].split(',').max
       $min_longitude = params['longitude'].split(',').min
       $max_longitude = params['longitude'].split(',').max
+      
+      if (!params['connection'].blank? )
+        ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
+        tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+        else
+        @connections = Connection.all_connection_ids(current_user)
+        ##p @con3
+        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
+
+        ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+      end
+      
       tenant_records = tenant_records.where("(tenant_records.latitude > ? AND tenant_records.latitude < ? AND tenant_records.longitude > ? AND tenant_records.longitude < ?)", $min_latitude.to_f, $max_latitude.to_f, $max_longitude.to_f, $min_longitude.to_f)
     end
 
@@ -165,7 +177,7 @@ module SearchControllerUtil
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
-        tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
+        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
@@ -395,6 +407,18 @@ module SearchControllerUtil
       $max_latitude = params['latitude'].split(',').max
       $min_longitude = params['longitude'].split(',').min
       $max_longitude = params['longitude'].split(',').max
+      
+      if (!params['connection'].blank? )
+        ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
+        tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+        else
+        @connections = Connection.all_connection_ids(current_user)
+        ##p @con3
+        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
+
+        ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+      end
+      
       tenant_records = tenant_records.where("(sale_records.latitude > ? AND sale_records.latitude < ? AND sale_records.longitude > ? AND sale_records.longitude < ?)", $min_latitude.to_f, $max_latitude.to_f, $max_longitude.to_f, $min_longitude.to_f)
     end
 
@@ -460,10 +484,10 @@ module SearchControllerUtil
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
         tenant_records = tenant_records.where("user_id = ?" , params['connection'])
-      else
+        else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
-        tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
+        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
