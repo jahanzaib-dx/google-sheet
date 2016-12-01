@@ -701,7 +701,7 @@ class TenantRecord < ActiveRecord::Base
     arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all
     arr = arr2 + arr1
     ##arr
-  end
+  end 
 
   private
   def default_values
