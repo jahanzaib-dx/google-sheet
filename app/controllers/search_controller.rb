@@ -56,7 +56,7 @@ class SearchController < ApplicationController
   end
 
     @connections = Connection.all_connection_ids(current_user)
-    tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
+    tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
     clause = if address1.present? and zipcode.present?
                { :where => "LOWER(tenant_records.address1) = :address1 AND tenant_records.zipcode = :zipcode",
@@ -425,7 +425,7 @@ class SearchController < ApplicationController
     unless (clause.nil?)
 
       @connections = Connection.all_connection_ids(current_user)
-      tenant_records = tenant_records.where("user_id IN (?)" , @connections.to_a)
+      tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
       tenant_records = tenant_records.where(clause[:where], clause[:params])
       params['summary'] = false
