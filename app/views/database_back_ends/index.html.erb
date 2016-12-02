@@ -206,7 +206,8 @@
 
     $('#export').on('click',function(){
       $.ajax({
-        type:'get',
+        type: 'get',
+        async: false,
         url: $('#export_link').val(),
         success: function(data){
           window.open(data.file, '_blank');
