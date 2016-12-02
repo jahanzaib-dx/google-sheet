@@ -153,7 +153,7 @@ class BackEndLeaseCompsController < ApplicationController
       end
       counter+=1
     end
-    deleted = TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user)
+    deleted = ids.any? ? TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : TenantRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
     redirect_to root_url
   end

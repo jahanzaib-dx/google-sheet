@@ -144,10 +144,10 @@ class BackEndSaleCompsController < ApplicationController
       end
       if ws[counter, 1] != ''
         ids.push(ws[counter, 1])
-        end
+      end
       counter+=1
     end
-    deleted = SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user)
+    deleted = ids.any? ? SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : SaleRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
     redirect_to root_url
   end
