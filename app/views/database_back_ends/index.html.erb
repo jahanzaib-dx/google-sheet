@@ -99,7 +99,7 @@
     $('#ImageBrowse').hide('fast');
     $('#custom_record').hide('fast');
     $('#database_map_search').hide('fast');
-    
+
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
       $('#tx_linkdin_profile').hide('fast');
@@ -209,7 +209,6 @@
         type:'get',
         url: $('#export_link').val(),
         success: function(data){
-          alert('+65+65+65+65');
           window.open(data.file);
         }
       });
@@ -222,34 +221,32 @@
 
 </script>
 <style>
-  .tx_dropdown_toggl .bootstrap-select.btn-group .dropdown-menu > ul > li > a{
-    padding: 3px 15px; !important;
+  .filter-option{
+    height  : 20px !important;
   }
-
-
-
+  .btn .dropdown-toggle .btn-default{
+    padding: 14px 0px !important;
+  }
   .sales-select-list .btn-default .filter-option {
-    font-size: 18px !important;
+    font-size: 14px !important;
+    font-weight: bold;
     text-align: center !important;
   }
-
   .sales-select-list .btn {
-    padding: 18px 0 !important;
+    padding: 14px 0 !important;
   }
   .btn-group.tx_btn_group.tx_btn_group-btn {
     margin: 0;
-  }.select-data-type-text {
+  }
+  .select-data-type-text {
      font-size: 15px;
      font-weight: bold;
      margin: 15px 0 17px;
    }
-
-
   .map-and-save-btn {
     float: right;
     width: 187px;
   }
-
   .add-export-btn {
     float: right;
     margin: 0 32px 0 0;
@@ -268,6 +265,10 @@
     padding: 15px 0;
     width: 100%;
   }
+  .map-search-btn:hover {
+    background: #fff none repeat scroll 0 0;
+    color:#72A943;
+  }
   .save-changes-btn {
     background: #576FB4 none repeat scroll 0 0;
     float: right;
@@ -277,7 +278,6 @@
     padding: 15px 0;
     width: 100%;
   }
-
   .add-photo-btn {
     background: #576FB4 none repeat scroll 0 0;
     float: right;
@@ -287,6 +287,10 @@
     margin: 0 0 8px;
     padding: 15px 0;
     width: 100%;
+  }
+  .add-photo-btn:hover, .save-changes-btn:hover{
+    background: #fff none repeat scroll 0 0;
+    color:#576FB4;
   }
   .export-btn {
     background: #fff none repeat scroll 0 0;
