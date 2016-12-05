@@ -137,7 +137,9 @@ $(document).ready(function(){
           // }
       // });
   // }
-  
+
+$(function() {
+
 if ( $('.date-picker').length > 0)
   {
       $('.date-picker').datepicker({
@@ -169,3 +171,5 @@ if ( $('.date-picker').length > 0)
       
       
   }
+  
+});
