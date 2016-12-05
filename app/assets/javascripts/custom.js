@@ -125,15 +125,47 @@ $(document).ready(function(){
       $("#advanced-search-submit").click();
   });
 
-  if ( $('.date-picker').length > 0)
+  // if ( $('.date-picker').length > 0)
+  // {
+      // $('.date-picker').datepicker({
+          // changeMonth: true,
+          // changeYear: true,
+          // showButtonPanel: false,
+          // dateFormat: 'mm/yy',
+          // onClose: function (dateText, inst) {
+              // $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+          // }
+      // });
+  // }
+  
+if ( $('.date-picker').length > 0)
   {
       $('.date-picker').datepicker({
           changeMonth: true,
           changeYear: true,
-          showButtonPanel: false,
+          showButtonPanel: true,
           dateFormat: 'mm/yy',
-          onClose: function (dateText, inst) {
-              $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-          }
-      });
+          constrainInput: false,
+          closeText: "Select",
+          //showOtherMonths:true,
+          yearRange: "1900:2050",
+          changeYear: true
+       }).focus(function() {
+        var thisCalendar = $(this);
+        $('.ui-datepicker-calendar').detach();
+        $('.ui-datepicker-close').click(function() {
+        	var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            thisCalendar.datepicker('setDate', new Date(year, month, 1));
+            
+              id_str = thisCalendar.prop('id');
+              var next_id = id_str.replace("min","max");
+             
+              if (id_str.indexOf('min') !== -1){
+              	$("#"+next_id).datepicker("show");
+              }
+        });
+    });
+      
+      
   }

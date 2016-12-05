@@ -65,17 +65,17 @@ $(function() {
 
   });
 
-  $(function() {
-    $('.date-picker').datepicker( {
-      changeMonth: true,
-      changeYear: true,
-      showButtonPanel: false,
-      dateFormat: 'mm/yy',
-      onClose: function(dateText, inst) {
-        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-      }
-    });
-  });
+  // $(function() {
+    // $('.date-picker').datepicker( {
+      // changeMonth: true,
+      // changeYear: true,
+      // showButtonPanel: false,
+      // dateFormat: 'mm/yy',
+      // onClose: function(dateText, inst) {
+        // $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+      // }
+    // });
+  // });
   
   $( document ).on( "click", ".markspam", function() {
     spamurl = $(this).data("url");
