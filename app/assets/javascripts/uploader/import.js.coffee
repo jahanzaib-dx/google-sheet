@@ -25,6 +25,8 @@ $(document).ready ->
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
+    add_operating_expenses_rows()
+
 
   $('#bulk-comp-continue-3').on 'click', ->
     $('.is-active .tick span').css 'color', 'green'
@@ -67,6 +69,7 @@ $(document).ready ->
 
     if(!error)
       form_data = $('.accordion-custom :input').serializeArray();
+      console.log(form_data)
       xhr = $.ajax
         url: 'create_and_process_upload'
         method: 'post'
@@ -107,6 +110,31 @@ $(document).ready ->
       $('.land-row input, #sales-land-table select').attr('disabled','disabled')
 
 
+  $('input[type=radio][name=lease_structure]').on 'change', (e) ->
+    radio = $(this)
+    if( radio.val() == 'yes')
+      $('.operating-expenses-wrapper').show();
+      $('.lease-structure-mapping-row').show();
+    else
+      $('.operating-expenses-wrapper').hide();
+      $('.lease-structure-mapping-row').hide();
+
+  $('input[type=radio][name=operating_expenses]').on 'change', (e) ->
+    radio = $(this)
+    if( radio.val() == 'yes')
+      $('.operating-expenses-columm-count').show();
+    else
+      $('.operating-expenses-columm-count').hide();
+
+add_operating_expenses_rows = ->
+  html = $('.operating-expenses-mapping-row').html()
+  count = $('#oe_column_count').val()
+  $('.operating-expenses-mapping-row').show()
+  if ( count > 1 )
+    for i in [2..count]
+      $('.operating-expenses-mapping-row:last').after('<tr class="operating-expenses-mapping-row">'+html+'</tr>')
+      $('.operating-expenses-mapping-row:last td:first-child span:first-child').html(i)
+      $('.operating-expenses-mapping-row:last').show()
 
 
 open_next_accordian_item = (to_show,to_hide) ->

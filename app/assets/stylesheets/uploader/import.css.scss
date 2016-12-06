@@ -333,6 +333,12 @@
 
 .building-row, .land-row{display:none;}
 
-#white-glove-service{
+#white-glove-service, .operating-expenses-wrapper, .operating-expenses-columm-count, .lease-structure-mapping-row,
+.operating-expenses-mapping-row{
   display:none;
+}
+
+#oe_column_count{
+  width:auto;
+  padding-right: 10px;
 }

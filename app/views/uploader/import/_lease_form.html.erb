@@ -4,11 +4,11 @@
     <div class="accordion-content-data">
       <div class="">
         <p>How would you like to add your comp data?</p>
-        <%= radio_button_tag 'service_type', 'white-glove' %>
-        <%= label "service_type", "Complimentary white glove service. Please upload my spreadsheet for me." %>
+        <%= radio_button_tag 'service_type', 'white_glove' %>
+        <%= label "service_type",'white_glove', "Complimentary white glove service. Please upload my spreadsheet for me." %>
         <br>
         <%= radio_button_tag 'service_type', 'self' %>
-        <%= label "service_type", "Self  service. I’ll give it a try myself." %>
+        <%= label "service_type",'self', "Self  service. I’ll give it a try myself." %>
       </div>
     </div>
 
@@ -29,7 +29,7 @@
         <div class="accordion-content-data">
           <div class="">
             <div class="columns large-12 no-padding bulk-upload-file-section">
-              <%= form_tag '/uploader/import/white_glove_service_request', multipart: true, autocomplete: "nope" do |f| %>
+              <% # = form_tag '/uploader/import/white_glove_service_request', multipart: true, html:{autocomplete: "off"} do |f| %>
               <table>
                 <th>Name your upload</th>
                 <th><input type="text" class="normal-element" name="request_name"></th>
@@ -45,7 +45,7 @@
                   </td>
                 </tr>
               </table>
-              <% end %>
+              <% # end %>
             </div>
           </div>
         </div>
@@ -128,6 +128,41 @@
             </div>
           </div>
 
+                    <div class="columns large-12 default-bg no-padding">
+                      <p class="section-title-heading">Lease Structure</p>
+                      <div class="lease-structure-section">
+                        <p>
+                          Does your spreadsheet have Lease Structures?
+                        </p>
+                        <%= radio_button_tag 'lease_structure', 'yes' %>
+                        <%= label "lease_structure", "yes" %>
+                        <br>
+                        <%= radio_button_tag 'lease_structure', 'no' %>
+                        <%= label "lease_structure", "no" %>
+                      </div>
+                      <div class="operating-expenses-wrapper">
+                          <p class="section-title-heading">Operating Expenses</p>
+                          <div class="columns large-12 no-padding operating-expenses-section">
+                            <p>
+                              Does your spreadsheet have Operating Expenses?
+                            </p>
+                            <%= radio_button_tag 'operating_expenses', 'yes' %>
+                            <%= label "operating_expenses", "yes" %>
+                            <br>
+                            <%= radio_button_tag 'operating_expenses', 'no' %>
+                            <%= label "operating_expenses", "no" %>
+
+                            <div class="operating-expenses-columm-count" >
+                                <p>
+                                  How many operating expense columns are in your spreadsheet? <br/>
+                                  <%= select_tag "oe_column_count", options_for_select((1..10).to_a), class: 'oe-column-count', prompt: 'Please Choose' %>
+                                </p>
+                            </div>
+                          </div>
+                      </div>
+                      <div style="clear: both"></div>
+                    </div>
+                    <div style="clear: both"></div>
           <div class="free-rent-type large-12">
             <p class="section-title-heading">Free Rent</p>
             <div class="columns large-12 no-padding">
@@ -270,7 +305,7 @@
           <th><input type="text" class="normal-element"></th>
           <tr>
             <td colspan="2">
-              <%= form_tag '/uploader/import/process_file', multipart: true, autocomplete: "nope", remote: true do |f| %>
+              <%= form_tag '/uploader/import/process_file', multipart: true, remote: true, html:{autocomplete: "off"} do |f| %>
                   <div class="wrapper">
                     <div class="text">
                       <span class="text-to-drop-file">To <strong>UPLOAD</strong> files drag & drop here or </span><span class="link-to-select-file">Select file from your computer</span>
@@ -504,7 +539,7 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="lease-structure-mapping-row">
               <td>Lease Structure</td>
               <td>
                 <div class="header-name-container">
@@ -519,6 +554,23 @@
                 </div>
               </td>
             </tr>
+
+            <tr class="operating-expenses-mapping-row">
+              <td>Operating Expense <span>1</span>*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value validate[required]" name="tenant_record_import_operating_expense_mapping[column_name][]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                      <option value="property type">Property type</option>
+                      <option value="property type2">Property type2</option>
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+
             <tr>
               <td>Base Rent*</td>
               <td>

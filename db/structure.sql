@@ -1695,6 +1695,38 @@ ALTER SEQUENCE tenant_record_images_id_seq OWNED BY tenant_record_images.id;
 
 
 --
+-- Name: tenant_record_import_operating_expense_mappings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tenant_record_import_operating_expense_mappings (
+    id integer NOT NULL,
+    tenant_record_import_id integer,
+    column_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: tenant_record_import_operating_expense_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tenant_record_import_operating_expense_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tenant_record_import_operating_expense_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tenant_record_import_operating_expense_mappings_id_seq OWNED BY tenant_record_import_operating_expense_mappings.id;
+
+
+--
 -- Name: tenant_record_imports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2284,6 +2316,13 @@ ALTER TABLE ONLY tenant_record_images ALTER COLUMN id SET DEFAULT nextval('tenan
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tenant_record_import_operating_expense_mappings ALTER COLUMN id SET DEFAULT nextval('tenant_record_import_operating_expense_mappings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY tenant_record_imports ALTER COLUMN id SET DEFAULT nextval('tenant_record_imports_id_seq'::regclass);
 
 
@@ -2692,6 +2731,14 @@ ALTER TABLE ONLY tenant_record_images
 
 
 --
+-- Name: tenant_record_import_operating_expense_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tenant_record_import_operating_expense_mappings
+    ADD CONSTRAINT tenant_record_import_operating_expense_mappings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenant_record_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2964,6 +3011,13 @@ CREATE INDEX index_tenant_records_on_user_id ON tenant_records USING btree (user
 
 
 --
+-- Name: index_tr_import_oe_mappings_on_tr_import_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tr_import_oe_mappings_on_tr_import_id ON tenant_record_import_operating_expense_mappings USING btree (tenant_record_import_id);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3067,6 +3121,14 @@ ALTER TABLE ONLY white_glove_service_requests
 
 ALTER TABLE ONLY memberships
     ADD CONSTRAINT fk_rails_94ef0a20e3 FOREIGN KEY (member_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_be165e181f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tenant_record_import_operating_expense_mappings
+    ADD CONSTRAINT fk_rails_be165e181f FOREIGN KEY (tenant_record_import_id) REFERENCES tenant_record_imports(id);
 
 
 --
@@ -3494,4 +3556,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161127194026');
 INSERT INTO schema_migrations (version) VALUES ('20161129214838');
 
 INSERT INTO schema_migrations (version) VALUES ('20161130051234');
+
+INSERT INTO schema_migrations (version) VALUES ('20161206201225');
 
