@@ -5,7 +5,7 @@ class Uploader::ImportController < ApplicationController
 
   before_filter :authenticate_user!
 
-  before_filter :save_temp_file, only: :process_file
+  before_filter :save_temp_file, only: [:process_file, :white_glove_service_request]
 
   layout 'uploader'
 
@@ -78,7 +78,7 @@ class Uploader::ImportController < ApplicationController
 
   def create_and_process_upload
     file_path = CustomImportTemplateUtil.marketrex_default_file_path(params[:upload_file_tmp_url])
-    Rails.logger.debug  "--------------------------------------file_path: #{file_path}"
+    #Rails.logger.debug  "--------------------------------------file_path: #{file_path}"
     original_file_name = params[:upload_file_tmp_url]
 
     #@sheet = Roo::Excelx.new("#{file_path}")
@@ -88,7 +88,7 @@ class Uploader::ImportController < ApplicationController
     @sheet = Roo::Excel.new("#{file_path}") if( ext.eql?('xls') )
     @sheet = Roo::Excelx.new("#{file_path}") if( ext.eql?('xlsx'))
 
-    Rails.logger.debug  "-----------------sheet: #{@sheet.info} "
+    #Rails.logger.debug  "-----------------sheet: #{@sheet.info} "
 
     required_params = {}
     not_for_sheet = {}
@@ -170,6 +170,14 @@ class Uploader::ImportController < ApplicationController
                                        #:team_id => current_user.account.own_team.id,
                                        :import_template => mapping_structure )
 
+    puts "*********************************************************"
+    puts params
+    if params[:tenant_record_import_operating_expense_mapping] and params[:tenant_record_import_operating_expense_mapping][:column_name]
+      params[:tenant_record_import_operating_expense_mapping][:column_name].each do |column|
+        TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import_id, :column_name => column})
+      end
+    end
+
     import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
 
 
@@ -235,8 +243,24 @@ class Uploader::ImportController < ApplicationController
     # respond_to do |format|
     #   format.js
     # end
-    redirect_to marketrex_import_index_path
+    redirect_to uploader_import_index_path
   end
+
+  def white_glove_service_request
+    if params[:fileToUpload]
+      #ext = File.extname(@file_path)[1..-1]
+      import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
+      WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
+      TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
+      redirect_to uploader_import_index_path
+    else
+      flash[:error] = "Import file was not found. Please make sure you have uploaded it."
+      redirect_to new_uploader_import_path
+    end
+
+
+  end
+
 
   private
 
