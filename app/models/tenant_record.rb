@@ -681,6 +681,27 @@ class TenantRecord < ActiveRecord::Base
     puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     puts keys.inspect
   end
+  
+  def self.all_industry_type ()
+    arr2 = Industry.select('lower(name) as name').get_industy_list
+    arr1 = select('industry_type as name').where("industry_type != '' AND lower(industry_type) NOT IN (?)",arr2).group('industry_type').all
+    arr = arr2 + arr1
+    ##arr
+  end
+  
+  def self.all_property_type ()
+    arr2 = PropertyType.select('lower(name) as name').all
+    arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all
+    arr = arr2 + arr1
+    ##arr
+  end
+  
+  def self.all_deal_type ()
+    arr2 = DEAL_TYPE
+    arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all
+    arr = arr2 + arr1
+    ##arr
+  end 
 
   private
   def default_values

@@ -1160,7 +1160,7 @@ div.popup #map_controls {
     &.center-map {
     }
   }
-  input[type="text"] { border: 0; display: block; margin: 15px 0 0 0; padding: 0 10px; height:40px; width: 150px;}
+  input[type="text"] { border: 0; display: block; margin: 15px 0 0 0; padding: 0 10px; height:40px; width: 170px;}
   #mode-select > ul > li {
     height: 30px;
     padding: 0;
@@ -1613,8 +1613,8 @@ fieldset.dashboard_export_result legend{
 /*--------------custom css ---------------------*/
 
 /*.lease_filter {display: none;}*/
-.sales_filter {display: none;}
-.ui-datepicker-calendar {
+.sales_filter {display: none !important;}
+.ui-datepicker-calendar,.ui-datepicker-current {
   display: none;
 }​
 
@@ -1630,8 +1630,8 @@ fieldset.dashboard_export_result legend{
 .ui-datepicker-header{background-color:#556db1 !important; border:#556db1 !important;}
 
 
-.formgroup_range .date_range{padding-left:10px !important; padding-right:10px !important;}
-.formgroup_range .year_sold{padding-left:8px !important; padding-right:8px !important;}
+.formgroup_range .date_range{padding-left:5px !important; padding-right:0px !important;}
+.formgroup_input .year_sold{padding-left:5px !important; padding-right:0px !important;}
 
 .custom_dialog_style #ui-id-3, #ui-id-4{
   margin-top: 0px !important;

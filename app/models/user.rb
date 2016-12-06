@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
   has_many :outgoing_comp_requests, class_name: 'CompRequest', foreign_key: :initiator_id
   has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id
 
+  scope :outgoing_comp_requests_type, ->(user,comp_type) { joins(:outgoing_comp_requests).where("initiator_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
+  scope :incoming_comp_requests_type, ->(user,comp_type) { joins(:incoming_comp_requests).where("receiver_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
 
   #connection request to user model by the specified user
   scope :connection_request_by_current_user, ->(user_id) { joins(:connection_requests_received).where("user_id = #{User.current_user.id} and agent_id = #{user_id}", User.current_user.id, user_id ) }

@@ -22,7 +22,7 @@
                       <option>Relish</option>-->
                     </select>
                   </li>
-                  <li><a class="tx_cline" data-href="<%= delete_comp_requests_url %>" id="btn-decline-comp-request" data-status="Decline">Decline</a></li>
+                  <li><a class="tx_cline" data-href="<%= delete_comp_requests_url %>" data-comptype="<%= params[:comp_type]%>" id="btn-decline-comp-request" data-status="Decline">Ignore</a></li>
                   <li><a class="btn_blue_half" data-href="<%= comp_requests_update_url %>" id="btn-accept-comp-request" data-status="Approve">Approve</a></li>
                 </ul>
 

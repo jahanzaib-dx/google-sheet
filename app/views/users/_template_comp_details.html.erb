@@ -1,0 +1,33 @@
+
+<!--________________________________-->
+
+<div id="update-comp-detail" tabindex="-1" role="dialog" aria-labelledby="update-comp-detail" aria-hidden="true" class="modal fade in">asf</div>
+
+
+
+<script>
+
+//$('.show_comp_detail').live('ajax:success', function(evt, data) {
+//var target = $(this).data('update-target');
+//$('#' + target).html(data);
+//});
+//
+//$(function() {
+//  $('.show_comp_detail').on('ajax:completed', function(evt, data) {
+//    var target = $(this).data('update-target');
+//    $('#' + target).html(data.responseText);
+//  });
+//});
+
+$(document).on('click', '.get_comp', function() {
+  var link = $(this).data('href');
+  $.ajax({
+    type: 'GET',
+    url: link,
+    success: function(result){
+      $("#update-comp-detail").html(result);
+    }
+  });
+});
+
+</script>

@@ -1,82 +1,73 @@
-<div style=" z-index: 99; position: relative; background-color: #fafafa">
-  <div class="container" style="background-color: #d9dadd;z-index: 999; position: relative;">
-    <div class="search_content">
-      <div class="row">
-        <div class="col-md-2 col-sm-2">
-          <h2 style="font-weight: bold">Database</h2>
-        </div>
-      </div>
-      <div class="row">
-        <form enctype="multipart/form-data" method="post" id="imageUploadForm" action="/database_back_ends/upload_image">
-          <div class="col-md-2 col-sm-2">
-            <div class="btn-group tx_btn_group">
-              <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
-              <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
-                <select class="selectpicker" id="data_type" style="text-align: center;" name="type">
+<div style="  position: relative; background-color: #fafafa">
+  <div class="container" style="background-color: #d9dadd; position: relative;">
+    <div class="tx_activiti_fiulter fiulter-container-btn">
+      <h1><b>Database</b></h1>
+      <form enctype="multipart/form-data" method="post" id="imageUploadForm" action="/database_back_ends/upload_image">
+        <div class="col-md-5 left-pad-none">
+          <h4 class="select-data-type-text">Select data type</h4>
+          <div class="col-md-6 both-pad-none">
+            <div class="btn-group tx_btn_group tx_btn_group-btn">
+              <div class=" tx_dropdown_toggl sales-select-list">
+                <select class="selectpicker" id="data_type" name="type">
                   <option value="">Select Data type</option>
                   <option value="lease">Lease</option>
                   <option value="sale" >Sales</option>
                   <option value="custom">Custom Record</option>
                 </select>
               </div>
+
             </div>
           </div>
-          <div class="col-md-2 col-sm-2">
-            <input type="file" name="image" id="ImageBrowse" style="display: none;">
+          <div class="col-md-6 left-pad-none" id="custom_record" style>
+            <div class="btn-group tx_btn_group tx_btn_group-btn">
+              <div class="tx_dropdown_toggl sales-select-list">
+                <select class="selectpicker" id="custom_record_list">
+                  <option value="">Select Custom Record</option>
+                  <% @custom_records.each do |custom_record| %>
+                      <option value="<%= custom_record.id %>"><%= custom_record.name %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
           </div>
-        </form>
-        <textarea id="link" style="display: none"></textarea>
-        <div class="col-md-2 col-sm-2" style="display: none" id="custom_record">
-          <div class="btn-group tx_btn_group">
-            <span style="font-size: 14px;font-weight: bold;"> Select Custom Record</span>
-            <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
-              <select class="selectpicker" id="custom_record_list"  style="text-align: center;">
-                <option value="">Select Custom Record</option>
-                <% @custom_records.each do |custom_record| %>
-                <option value="<%= custom_record.id %>"><%= custom_record.name %></option>
-                <% end %>
-              </select>
+
+        </div>
+        <div class="modal fade" id="exampleModa2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-user" role="document">
+            <div class="modal-content modal-content-user">
+              <div class="modal-header modal-header-new-user">
+
+                <h4 class="modal-title modal-title-user-hd" id="exampleModalLabel2">Add Photo</h4>
+
+              </div>
+              <div class="modal-body modal-body-new-user">
+                <div class="gust-email full-width">
+                  <div class="col-md-2 col-sm-2">
+                    <input type="file" name="image" id="ImageBrowse" style="display: none;">
+                  </div>
+                </div>
+              </div>
+              <textarea id="link" style="display: none" class="form-control" rows="5" cols="55"></textarea>
+              <center id="link_txt" style="display: none">Copy the above link and paste it into the desired cell.</center>
+              <div class="modal-footer modal-footer-user">
+                <button type="button" class="btn btn-primary close-user-btn" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-2 col-sm-2 pull-right">
-          <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
-            <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
-          </div>
+      </form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-          <div class="exists main_body_section_grey" id="dashboard">
-                <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
-
-                  <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
-
-                </form>
-
-
-          </div>
-
-
-
-
-
-
-
-
-
-
-
-
+      <div class="col-md-7 right-pad-none">
+        <div class="map-and-save-btn">
+          <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
+             <a href="#" class="advanced_map_search map-search-btn" id ="database_map_search">Advance Map Search</a>
+          </form>
+          <a href="#!" class="save-changes-btn" id="tx_linkdin_profile">Save Changes</a>
+        </div>
+        <div class="add-export-btn">
+          <a href="#" class="add-photo-btn" id="media-button" data-toggle="modal" data-target="#exampleModa2" data-whatever="@mdo0">Add Photo</a>
+          <a href="#!" class="export-btn" id="export" > Export</a>
+          <input type="hidden" value="" id="export_link">
         </div>
       </div>
     </div>
@@ -87,97 +78,106 @@
 <div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
   <iframe src="" style="width:100%; height: 700px; "></iframe>
 </div>
-<div id="map_filter" class="map_container criteria_layout">
-  <div id="the_map"></div>
-</div>
+
+
+<%= render :partial => 'simple_search_form' %>
+<%= render :partial =>  'advance_search', locals: { search_params: @search_params } %>
 <%= render "users/template_map_display" %>
-<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;"></div>
+
+<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;">
   <%= image_tag "database-loader.gif" %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 <script type="text/javascript" charset="utf-8">
-  $('#data_type').change(function(){
+  $(document).ready(function(){
     $('#myiframe').find('iframe').attr('src','');
-    $('.tx_linkdin_profile').hide('slow');
-    $('#link').hide('slow');
-    $('#ImageBrowse').hide('slow');
-    $('#custom_record').hide('slow');
+    $('#tx_linkdin_profile').hide('fast');
+    $('#export').hide('fast');
+    $('#link').hide('fast');
+    $('#link_txt').hide('fast');
+    $('#media-button').hide('fast');
+    $('#ImageBrowse').hide('fast');
+    $('#custom_record').hide('fast');
+    $('#database_map_search').hide('fast');
 
-    if($('#data_type').val()=="lease")
-    {
-      $.ajax({
-        url: '<%= back_end_lease_comps_path %>',
-        success: function(result){
-          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
-          $('#ImageBrowse').show('slow');
-        }
-      });
-    }
+    $('#data_type').change(function(){
+      $('#myiframe').find('iframe').attr('src','');
+      $('#tx_linkdin_profile').hide('fast');
+      $('#export').hide('fast');
+      $('#link').hide('fast');
+      $('#link_txt').hide('fast');
+      $('#media-button').hide('fast');
+      $('#ImageBrowse').hide('fast');
+      $('#custom_record').hide('fast');
+      $('#database_map_search').hide('fast');
 
-    else if($('#data_type').val()=="sale")
-    {
-      $.ajax({
-        url: '<%= back_end_sale_comps_path %>',
-        success: function(result){
-          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
-          $('#ImageBrowse').show('slow');
-        }
-      });
-    }
+      if($('#data_type').val()=="lease")
+      {
+        $.ajax({
+          url: '<%= back_end_lease_comps_path %>',
+          success: function(result){
+            $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').show('fast');
+            $('#export_link').val('/database_back_ends/export/'+result.file_temp);
+            $('#export').show('fast');
+            $('#media-button').show('fast');
+            $('#ImageBrowse').show('fast');
+            $('#database_map_search').show('fast');
+            $('#advanced-search-form').attr('action','/search/database_lease');
+          }
+        });
+      }
 
-    else if($('#data_type').val()=="custom")
-    {
-      $('#custom_record').show('slow');
-    }
-  });
-  $('#custom_record_list').change(function(){
+      else if($('#data_type').val()=="sale")
+      {
+        $.ajax({
+          url: '<%= back_end_sale_comps_path %>',
+          success: function(result){
+            $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').show('fast');
+            $('#export_link').val('/database_back_ends/export/'+result.file_temp);
+            $('#export').show('fast');
+            $('#media-button').show('fast');
+            $('#ImageBrowse').show('fast');
+            $('#database_map_search').show('fast');
+            $('#advanced-search-form').attr('action','/search/database_sale');
+          }
+        });
+      }
+
+      else if($('#data_type').val()=="custom")
+      {
+        $('#custom_record').show('fast');
+      }
+    });
+    $('#custom_record_list').change(function(){
     $('#myiframe').find('iframe').attr('src','');
     $.ajax({
         url: '/back_end_custom_record/index/'+$(this).val(),
         success: function(result){
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+          $('#tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+          $('#tx_linkdin_profile').show('fast');
+          $('#export_link').val('/database_back_ends/export/'+result.file_temp);
+          $('#export').show('fast');
+          $('#media-button').show('fast');
+          $('#ImageBrowse').show('fast');
         }
       });
   });
 
-  $(document).ready(function(){
+
     $(document).ajaxStart(function(){
-      $("#wait").show('slow');
-      $('.tx_linkdin_profile').hide('slow');
+      $("#wait").show('fast');
     });
     $(document).ajaxComplete(function(){
       $("#wait").hide('slow')
-      $('.tx_linkdin_profile').show('slow');
     });
-  });
-  $(document).ready(function () {
     $('#imageUploadForm').on('submit',(function(e) {
       e.preventDefault();
       var formData = new FormData(this);
-      console.log(formData);
-
       $.ajax({
         type:'POST',
         url: $(this).attr('action'),
@@ -186,12 +186,16 @@
         contentType: false,
         processData: false,
         success:function(data){
-          $('#link').val("=image("+data.file_name+"),2");
+          $('#link').val('=image("'+data.file_name+'",2)');
           $('#link').show();
+          $('#link_txt').show();
+          var field = document.getElementById('link');
+          field.focus();
+          field.setSelectionRange(0, field.value.length);
+          $('#ImageBrowse').val('');
         },
         error: function(data){
           console.log("error");
-          console.log(data);
         }
       });
     }));
@@ -199,11 +203,103 @@
     $("#ImageBrowse").on("change", function() {
       $("#imageUploadForm").submit();
     });
+
+    $('#export').on('click',function(){
+      $.ajax({
+        type: 'get',
+        async: false,
+        url: $('#export_link').val(),
+        success: function(data){
+          window.open(data.file, '_blank');
+        }
+      });
+    });
+    var search_basic_path_js = '<%= search_basic_path() %>';
+    var search_advanced_path_js = '<%= "/search/database_lease" %>';
+    var search_simple_path_js = '<%= search_simple_path() %>';
+    var search_sales_path_js = '<%= "/search/database_sale" %>';
   });
 
 </script>
 <style>
-  .tx_dropdown_toggl .bootstrap-select.btn-group .dropdown-menu > ul > li > a{
-    padding: 3px 15px; !important;
+  .filter-option{
+    height  : 20px !important;
+  }
+  .btn .dropdown-toggle .btn-default{
+    padding: 14px 0px !important;
+  }
+  .sales-select-list .btn-default .filter-option {
+    font-size: 14px !important;
+    font-weight: bold;
+    text-align: center !important;
+  }
+  .sales-select-list .btn {
+    padding: 14px 0 !important;
+  }
+  .btn-group.tx_btn_group.tx_btn_group-btn {
+    margin: 0;
+  }
+  .select-data-type-text {
+     font-size: 15px;
+     font-weight: bold;
+     margin: 15px 0 17px;
+   }
+  .map-and-save-btn {
+    float: right;
+    width: 187px;
+  }
+  .add-export-btn {
+    float: right;
+    margin: 0 32px 0 0;
+    width: 120px;
+  }
+  .export-btn > img {
+    width: 15px;
+  }
+  .map-search-btn {
+    background: #72A943 none repeat scroll 0 0;
+    float: right;
+    color:#fff;
+    text-align: center;
+    margin: 0 0 8px;
+    font-weight: bold;
+    padding: 15px 0;
+    width: 100%;
+  }
+  .map-search-btn:hover {
+    background: #fff none repeat scroll 0 0;
+    color:#72A943;
+  }
+  .save-changes-btn {
+    background: #576FB4 none repeat scroll 0 0;
+    float: right;
+    text-align: center;
+    color:#fff;
+    font-weight: bold;
+    padding: 15px 0;
+    width: 100%;
+  }
+  .add-photo-btn {
+    background: #576FB4 none repeat scroll 0 0;
+    float: right;
+    text-align: center;
+    color:#fff;
+    font-weight: bold;
+    margin: 0 0 8px;
+    padding: 15px 0;
+    width: 100%;
+  }
+  .add-photo-btn:hover, .save-changes-btn:hover{
+    background: #fff none repeat scroll 0 0;
+    color:#576FB4;
+  }
+  .export-btn {
+    background: #fff none repeat scroll 0 0;
+    color: #262626;
+    float: left;
+    font-weight: bold;
+    padding: 15px 0;
+    text-align: center;
+    width: 100%;
   }
 </style>

@@ -1,8 +1,6 @@
 <tr>
 
-  <td width="196" height="58" class="result_line tx_border_right"><p>
-    <%= comp_request.tenant_record.user.name %>
-  </p></td>
+  <td width="196" height="58" class="result_line tx_border_right"><p><%= comp_request.tenant_record.user.name %></p></td>
   <td width="67" class="tx_hand_right">
     <a href="#" data-href="<%= comp_requests_remind_path %>" data-request-id="<%= comp_request.id %>"><%= image_tag("hand-right.png")%></a>
   </td>
