@@ -2,7 +2,12 @@
 <script id="template_results_table_row_sale" type="text/html">
 {{#id}}
 <tr>
-    <td height="51" class="result_img_icon"><%= image_tag("tbl-img.jpg") %></td>
+    <td height="51" class="result_img_icon"><%#= image_tag("tbl-img.jpg") %>
+    		<a href="http://www.google.com/maps?cbll={{latitude}},{{longitude}}&layer=c" target="_blank">
+              <div class="" style="height:40px; width: 40px; background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=50x50&location={{address1}}+{{city}}+{{state}}+{{zipcode}}') no-repeat center;">
+              </div>
+            </a>
+    </td>
     <td class="result_line"><a href="<%= search_sale_comp_path()%>/{{id}}"><i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i></a></td>
     <td class="result_line">
       <!--<a href="#!" class="get_comp" data-href="<%#= search_lease_comp_path()%>?id={{id}}">Details</a>-->
