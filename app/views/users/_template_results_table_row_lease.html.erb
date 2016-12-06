@@ -13,7 +13,11 @@
     <td class="result_line"><p>Locked</p></td>
     <td class="result_line"><p>4,000-9,999</p></td>
     <td class="result_line"><p>{{year}}</p></td>
-    <td class="table_result_amker"><a href="#">Request Unlock</a></td>
+    <td class="table_result_amker">
+      <span class="requestunlock" data-url="<%= create_comp_requests_path()%>?cid={{id}}&type=lease">
+        <a href="#!">Request Unlock</a>
+      </span>
+    </td>
     <td class="result_lock_icon"><a href="#"><%= image_tag("lock.png") %></a></td>
    <td class="filter_icon">
 

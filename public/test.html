@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>HTML5 MediaElement</title>
+
+
+	<script src="flash/jquery.js"></script>
+	<script src="flash/mediaelement-and-player.min.js"></script>
+	<!-- <script src="testforfiles.js"></script>	 -->	
+	<link rel="stylesheet" href="flash/mediaelementplayer.min.css" />
+</head>
+<body>
+
+<h1>MediaElementPlayer.js</h1>
+
+<p>Recommended Setup</p>
+
+
+<h2>M2 video</h2>
+<video width="360" height="203" id="player2" controls="controls">
+	<source src="flash/m2.mp4" type="video/mp4" title="mp4">
+	
+	<p>Your browser leaves much to be desired.</p>
+
+	<link rel="postroll" href="./mediaelementplayer-postroll-content.html" />
+</video>
+
+---------------------------------------------<br>
+
+<h2>MP4/WebM video</h2>
+<video width="360" height="203" id="player2" controls="controls">
+	<source src="flash/market_rex_final_cut.mp4" type="video/mp4" title="mp4">
+	<source src="flash/echo-hereweare.webm" type="video/webm" title="webm">
+	<source src="flash/echo-hereweare.ogv" type="video/ogg" title="ogg">
+	<p>Your browser leaves much to be desired.</p>
+
+	<link rel="postroll" href="./mediaelementplayer-postroll-content.html" />
+</video>
+
+<h2>Youtube</h2>
+<video id="player2" controls="controls" width="100%" height="100%" id="marketrexvideo" style="width: 100%; height: 100%;">
+
+<source type="video/youtube" src="http://www.youtube.com/watch?v=g5im1Km_88E" />
+
+	<!-- <source src="flash/market_rex_final_cut.mp4" type="video/mp4" title="mp4">
+	<source src="flash/echo-hereweare.webm" type="video/webm" title="webm">
+	<source src="flash/echo-hereweare.ogv" type="video/ogg" title="ogg"> -->
+	<p>Your browser leaves much to be desired.</p>
+
+	<link rel="postroll" href="./mediaelementplayer-postroll-content.html" />
+</video>
+
+-----------------------embed-----------------<br>
+
+<video width="640" height="360" id="player2"  controls="controls" preload="none">
+	<!-- MP4 source must come first for iOS -->
+	<source type="video/mp4" src="flash/echo-hereweare.mp4" />
+	
+	<!-- Fallback flash player for no-HTML5 browsers with JavaScript turned off -->
+	<object width="640" height="360" type="application/x-shockwave-flash" data="flash/flashmediaelement.swf"> 		
+		<param name="movie" value="flash/flashmediaelement.swf" /> 
+		<param name="flashvars" value="controls=true&amp;file=http://test.tenantrex.com/flash/m.flv" /> 		
+		<!-- Image fall back for non-HTML5 browser with JavaScript turned off and no Flash player installed -->
+		
+	</object> 	
+</video>
+
+
+<input type="button" id="stopall" value="Stop all">
+
+<script>
+$('#stopall').click(function() {
+    $('video, audio').each(function() {
+          //$(this)[0].player.pause();		  
+		  $(this)[0].player.play();		  
+    });
+});
+</script>
+
+<script>
+
+$('audio,video').mediaelementplayer({});
+</script>
+<style>
+.postroll {
+	padding: 5%;
+	color: #fff;
+}
+</style>
+
+</body>
+</html>

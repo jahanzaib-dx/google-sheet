@@ -86,6 +86,10 @@ Rails.application.routes.draw do
   get 'subscription-plans' => 'pages#plans'
   get 'marketrex-faqs' => 'pages#faqs'
   get 'about-leaserex' => 'pages#about_lease'
+  get 'about-tenantrex' => 'pages#about_tenant'
+
+  get 'leaserex-faqs' => 'pages#faqs_lease'
+  get 'tenantrex-faqs' => 'pages#faqs_tenant'
 
   resource :users
 
@@ -102,7 +106,7 @@ Rails.application.routes.draw do
   post 'comp_requests/remind' => 'comp_requests#remind'
   post 'comp_requests/update' => 'comp_requests#update'
   post 'delete_comp_requests' => 'comp_requests#destroy'
-
+  post 'create_comp_requests' => 'comp_requests#create'
 
 
 
@@ -124,7 +128,12 @@ Rails.application.routes.draw do
   resources :back_end_sale_comps
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
   resources :back_end_custom_record
-  get 'back_end_custom_record/create/:id/:temp' => 'back_end_custom_record#create'
+  get 'back_end_custom_record/create/:id/:temp/:custom_record_id' => 'back_end_custom_record#create'
+  get 'back_end_custom_record/index/:id' => 'back_end_custom_record#index'
+  resources :database_back_ends
+  get 'database_back_ends' => 'database_back_ends#index'
+  get 'uploader/database_back_ends' => 'database_back_ends#index'
+  post 'database_back_ends/upload_image' => 'database_back_ends#upload_image'
 
 
 

@@ -1,0 +1,209 @@
+<div style=" z-index: 99; position: relative; background-color: #fafafa">
+  <div class="container" style="background-color: #d9dadd;z-index: 999; position: relative;">
+    <div class="search_content">
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <h2 style="font-weight: bold">Database</h2>
+        </div>
+      </div>
+      <div class="row">
+        <form enctype="multipart/form-data" method="post" id="imageUploadForm" action="/database_back_ends/upload_image">
+          <div class="col-md-2 col-sm-2">
+            <div class="btn-group tx_btn_group">
+              <span style="font-size: 14px;font-weight: bold;"> Select Data Type</span>
+              <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
+                <select class="selectpicker" id="data_type" style="text-align: center;" name="type">
+                  <option value="">Select Data type</option>
+                  <option value="lease">Lease</option>
+                  <option value="sale" >Sales</option>
+                  <option value="custom">Custom Record</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-2">
+            <input type="file" name="image" id="ImageBrowse" style="display: none;">
+          </div>
+        </form>
+        <textarea id="link" style="display: none"></textarea>
+        <div class="col-md-2 col-sm-2" style="display: none" id="custom_record">
+          <div class="btn-group tx_btn_group">
+            <span style="font-size: 14px;font-weight: bold;"> Select Custom Record</span>
+            <div class="tx_dropdown_toggl tx-drop-down-select" style=" z-index: 999;">
+              <select class="selectpicker" id="custom_record_list"  style="text-align: center;">
+                <option value="">Select Custom Record</option>
+                <% @custom_records.each do |custom_record| %>
+                <option value="<%= custom_record.id %>"><%= custom_record.name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2 pull-right">
+          <div class="col-md-12 col-sm-12 both-pad-none" style="float: right;">
+            <a class ="tx_linkdin_profile" style = "width:auto; display: none">Save Changes</a>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="exists main_body_section_grey" id="dashboard">
+                <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
+
+                  <div class="col-md-12 col-sm-12 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
+
+                </form>
+
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+
+<div style = "margin-top: -63px; z-index: 0"  id = "myiframe">
+  <iframe src="" style="width:100%; height: 700px; "></iframe>
+</div>
+<div id="map_filter" class="map_container criteria_layout">
+  <div id="the_map"></div>
+</div>
+<%= render "users/template_map_display" %>
+<div id="wait" style="display:none;width:100%;height:100%;position:absolute;top:50%;left:45%;padding:2px;"></div>
+  <%= image_tag "database-loader.gif" %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+  $('#data_type').change(function(){
+    $('#myiframe').find('iframe').attr('src','');
+    $('.tx_linkdin_profile').hide('slow');
+    $('#link').hide('slow');
+    $('#ImageBrowse').hide('slow');
+    $('#custom_record').hide('slow');
+
+    if($('#data_type').val()=="lease")
+    {
+      $.ajax({
+        url: '<%= back_end_lease_comps_path %>',
+        success: function(result){
+          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+          $('.tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+          $('#ImageBrowse').show('slow');
+        }
+      });
+    }
+
+    else if($('#data_type').val()=="sale")
+    {
+      $.ajax({
+        url: '<%= back_end_sale_comps_path %>',
+        success: function(result){
+          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+          $('.tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+          $('#ImageBrowse').show('slow');
+        }
+      });
+    }
+
+    else if($('#data_type').val()=="custom")
+    {
+      $('#custom_record').show('slow');
+    }
+  });
+  $('#custom_record_list').change(function(){
+    $('#myiframe').find('iframe').attr('src','');
+    $.ajax({
+        url: '/back_end_custom_record/index/'+$(this).val(),
+        success: function(result){
+          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+          $('.tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+        }
+      });
+  });
+
+  $(document).ready(function(){
+    $(document).ajaxStart(function(){
+      $("#wait").show('slow');
+      $('.tx_linkdin_profile').hide('slow');
+    });
+    $(document).ajaxComplete(function(){
+      $("#wait").hide('slow')
+      $('.tx_linkdin_profile').show('slow');
+    });
+  });
+  $(document).ready(function () {
+    $('#imageUploadForm').on('submit',(function(e) {
+      e.preventDefault();
+      var formData = new FormData(this);
+      console.log(formData);
+
+      $.ajax({
+        type:'POST',
+        url: $(this).attr('action'),
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          $('#link').val("=image("+data.file_name+"),2");
+          $('#link').show();
+        },
+        error: function(data){
+          console.log("error");
+          console.log(data);
+        }
+      });
+    }));
+
+    $("#ImageBrowse").on("change", function() {
+      $("#imageUploadForm").submit();
+    });
+  });
+
+</script>
+<style>
+  .tx_dropdown_toggl .bootstrap-select.btn-group .dropdown-menu > ul > li > a{
+    padding: 3px 15px; !important;
+  }
+</style>

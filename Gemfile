@@ -90,4 +90,8 @@ gem 'wicked_pdf'
 
 gem 'sidekiq'
 
+
 gem 'google-analytics-rails'
+
+gem "mediaelement_rails"
+
