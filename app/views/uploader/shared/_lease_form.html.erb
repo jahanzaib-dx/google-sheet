@@ -60,7 +60,7 @@
       <div class="columns large-12 no-padding">
         <div class="columns large-8 no-padding">
           <label><%= radio_button_tag "tenant_record[rent_escalation_type]", "stepped_rent", false, class: 'validate[required]' %> This record includes stepped rents. </label>
-          <div> <label>
+          <div  style="display:none;"> <label>
                 <span class="stepped-rent-text">Max # of steps</span><br>
                 <%= select_tag "steps_count", options_for_select((1..20).to_a), class: 'stepped-rent-count validate[required]', prompt: 'Please Choose' %>
             </label>

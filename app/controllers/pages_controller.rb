@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
-
+  before_action :log_visitor , only: [:about, :plans]
 
   def home
     if user_signed_in?
@@ -22,5 +22,12 @@ class PagesController < ApplicationController
   def faqs
 
   end
+
+  def log_visitor
+    if params[:src] == 'e'
+      Visitor.create ({:page => action_name, :email => params[:e], :ip => request.remote_ip})
+    end
+  end
+
 
 end
