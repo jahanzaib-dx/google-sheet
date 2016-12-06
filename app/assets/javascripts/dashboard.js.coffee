@@ -897,11 +897,13 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       row_count: row_count,
       id: trid,
       company: humanize(item.company)
-      address1: item.address1
+      address1: item.address1     
       suite: item.suite
       city: item.city
       state: item.state
       zipcode: item.zipcode
+      latitude: item.latitude
+      longitude: item.longitude
       size: size
       year: (if (item.lease_commencement_date) then moment(item.lease_commencement_date, 'YYYY-MM-DD').format('YYYY') else '')
       public: (item.view_type == 'public')
