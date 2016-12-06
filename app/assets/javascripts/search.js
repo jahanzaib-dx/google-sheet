@@ -19,9 +19,9 @@ $(function() {
       $('.sales_filter').attr('style','display: block !important');
       $(".sales_filter_input").prop("disabled", false);
       $(".filters_type").val("sale");
-      //$(".h_filters_type").val("sale");
+      $(".h_filters_type").val("sale");
       $('.filters_type').selectpicker('refresh');
-      $('.h_filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
+      ////$('.h_filters_type option').removeAttr('selected').filter('[value=sale]').attr('selected', true);
       $('#basic-search-form').prop('action' , search_simple_path_js)
       $('#advanced-search-form').prop('action' , search_sales_path_js)
       basic_search_url = $('#basic-search-form').prop('action');
@@ -39,9 +39,9 @@ $(function() {
       
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
-      //$(".h_filters_type").val("lease");
+      $(".h_filters_type").val("lease");
       $('.filters_type').selectpicker('refresh');
-      $('.h_filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
+      ////$('.h_filters_type option').removeAttr('selected').filter('[value=lease]').attr('selected', true);
       $('#basic-search-form').prop('action' , search_basic_path_js)
       $('#advanced-search-form').prop('action' , search_advanced_path_js)
       basic_search_url = $('#basic-search-form').prop('action');
