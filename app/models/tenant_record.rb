@@ -789,6 +789,60 @@ class TenantRecord < ActiveRecord::Base
     end
   end
 
+  def duplicate_list
+ #    SELECT
+ #
+ #    y.id,y.name,y.email
+ #
+ #    FROM @YourTable y
+ #
+ #    INNER JOIN (
+ #                   SELECT
+ #    name,email, COUNT(*) AS CountOf
+ #    FROM @YourTable
+ #    GROUP BY name,email
+ #    HAVING COUNT(*)>1
+ #    ) dt ON y.name=dt.name and y.email=dt.email
+ #
+ #
+ #
+ #    TenantRecord.select('
+ #                        comp_type,
+ #                        company,
+ #                        industry_type,
+ #                        address1,
+ #                        suite,
+ #                        city,
+ #                        state,
+ #                        submarket,
+ #                        class_type,
+ #                        property_type,
+ #                        property_name,
+ #                        lease_commencement_date,
+ #                        lease_term_months,
+ #                        size,
+ #                        deal_type,
+ #                        base_rent
+ #                  ').joins('select
+ #                        comp_type,
+ #                        company,
+ #                        industry_type,
+ #                        address1,
+ #                        suite,
+ #                        city,
+ #                        state,
+ #                        submarket,
+ #                        class_type,
+ #                        property_type,
+ #                        property_name,
+ #                        lease_commencement_date,
+ #                        lease_term_months,
+ #                        size,
+ #                        deal_type,
+ #                        base_rent
+ # * from tenant_records')
+  end
+
 
 
 
