@@ -153,8 +153,8 @@ module SearchControllerUtil
                      }
                    else
                      {
-                       :where => "LOWER(tenant_records.address1) = :address1",
-                       :params => { :address1 => params['q'].downcase }
+                       :where => "LOWER(tenant_records.address1) LIKE :address1",
+                       :params => { :address1 => "#{params['address1'].gsub(/[\.\s]/,'%')}%".downcase }
                      }
                     end
                  else
@@ -464,8 +464,8 @@ module SearchControllerUtil
                        }
                       else
                         {
-                           :where => "LOWER(sale_records.address1) = :address1",
-                           :params => { :address1 => params['q'].downcase }
+                           :where => "LOWER(sale_records.address1) LIKE :address1",
+                           :params => { :address1 => "#{params['address1'].gsub(/[\.\s]/,'%')}%".downcase }
                         }
                    end
                  else
