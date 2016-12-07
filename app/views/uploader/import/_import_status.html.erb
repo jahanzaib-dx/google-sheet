@@ -46,7 +46,11 @@
                       <td class="vertical-align"><%= simple_format "#{i.user.account.office.name} <br /> #{i.user.account.office.address1}" if i.user and i.user.account and i.user.account.office %></td>
                   <% end %>
                   <td class="status vertical-align"><%= simple_format i.status %></td>
-                  <td class="count import-row custom-vertical-align"><%="#{i.num_imported_records} of #{i.total_record_count} imported"%> </td>
+                  <td class="count import-row custom-vertical-align">
+                    <% if i.total_record_count > 0 %>
+                        <%="#{i.num_imported_records} of #{i.total_record_count} imported"%>
+                    <% end %>
+                  </td>
                   <td class="actions" style="padding-top: 10px;">
                     <% if i.complete and i.import_valid and i.geocode_valid %>
                         <span>&#x2713;</span>

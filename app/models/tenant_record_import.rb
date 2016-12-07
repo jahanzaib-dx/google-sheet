@@ -5,6 +5,8 @@ class TenantRecordImport < ActiveRecord::Base
   belongs_to :lease_structure
   # belongs_to :team
   has_many :import_records, :dependent => :destroy
+  has_many :tenant_record_import_operating_expense_mapping, :dependent => :destroy
+
 
   #attr_accessible :complete, :completed_at, :total_traversed_count, :total_record_count, :num_imported_records, :import_template_attributes, :lease_structure_attributes
   attr_accessor :error
@@ -12,6 +14,7 @@ class TenantRecordImport < ActiveRecord::Base
   accepts_nested_attributes_for :import_records
   accepts_nested_attributes_for :import_template
   accepts_nested_attributes_for :lease_structure
+  accepts_nested_attributes_for :tenant_record_import_operating_expense_mapping
 
   def start(uploaded_file, current_user_info, import_mappings_dup)
     self.status = "Verifying the spreadsheet format"

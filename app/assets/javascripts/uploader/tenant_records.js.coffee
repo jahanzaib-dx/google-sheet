@@ -105,6 +105,8 @@ $('.tenant-record-map-view').each ->
       icon: icon
       map: map
 
+
+
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
   submit_is = $(@).closest('form')
@@ -112,6 +114,7 @@ $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custo
     submit_is.submit()
 
 $(document).ready ->
+  select_increase_rent_type()
   localStorage.removeItem("expense_types");
   #*********** Add "other" dynamically in single comp dropdown ***********#
   $('.custom-value-dropdown').each (i, obj) ->
@@ -593,9 +596,9 @@ check_propertyType_leaseStructure_existence = (element_obj) ->
 
 select_increase_rent_type = ->
   rent_increase = $("input:radio[name = 'tenant_record[rent_escalation_type]']:checked").val()
-  unless rent_increase
-    $('#tenant_record_rent_escalation_type_base_rent_percent').prop("checked", "checked")
-    rent_increase = 'base_rent_percent'
+  ###unless rent_increase
+    $("input:radio[name = 'tenant_record[rent_escalation_type]']").trigger("click")
+    #rent_increase = 'base_rent_percent'###
 
   if rent_increase == 'base_rent_percent'
     $('.base-rent-row, .sf-percent-increase-row').show()
@@ -606,6 +609,7 @@ select_increase_rent_type = ->
   else if rent_increase == 'stepped_rent'
     $('.base-rent-row, .sf-percent-increase-row, .sf-fixed-increase-row').hide()
     $('.stepped-rent-row, .stepped-rent-text, #steps_count').show()
+    $('#steps_count').parents('div').show()
 
 
 #************ Delay start popup ******************#
