@@ -30,14 +30,18 @@ class Uploader::TenantRecordsController < ApplicationController
       if @tenant_record.base_rent_type == 'monthly' && !(params[:tenant_record][:stepped_rents_attributes].present?)
         @tenant_record.base_rent = @tenant_record.base_rent.to_f * 12.0
       end
+      @tenant_record.lease_commencement_date = Date.strptime(params[:tenant_record][:lease_commencement_date], "%m/%d/%Y")
+
 
       puts "before calling save_tenant_record ------------"
       save_tenant_record @tenant_record
 
-
+  
     elsif @property_type == 'sales_comps'
       @sale_record = SaleRecord.new(sale_record_params)
       @sale_record.is_sales_record = (params[:sale_record][:is_sales_record] == 'yes' ? true : false)
+      @sale_record.build_date = Date.strptime(params[:sale_record][:build_date], "%m/%d/%Y")
+      @sale_record.sold_date = Date.strptime(params[:sale_record][:sold_date], "%m/%d/%Y")
 
       puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
       puts @sale_record.custom
