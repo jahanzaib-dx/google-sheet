@@ -123,13 +123,18 @@
                     <input type="checkbox" id="checkbox7" >
                     <label for="checkbox7"> Select All </label>
                   </div>
-                  <% TenantRecord::NEW_PROPERTY_TYPE.all.each do |pt|  %>
-					   <div class="checkbox checkbox-info all_clicked">
-	                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>">
-	                    <label for="checkbox8"> <%= pt.name.capitalize %> </label>
-	                  </div>                  
-				  <% end %>
-                </div>
+                  
+				  <% TenantRecord::all_property_type.each do |pt|  %> 
+					   <div class="checkbox checkbox-info all_clicked"> 
+	                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input"> 
+	                    <label for="checkbox8"> <%= pt.name.capitalize %> </label> 
+	                  </div>             
+				  <% end %> 
+				  
+				           
+                             
+                </div>                   
+
               </div>
              
               
@@ -141,12 +146,12 @@
                     <label for="checkbox7"> Select All </label>
                   </div>
                   				  
-				  <% SaleRecord::all_property_type.each do |pt|  %>
-					   <div class="checkbox checkbox-info all_clicked77">
-	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
-	                    <label for="checkbox88"> <%= pt.capitalize %> </label>
-	                  </div>                  
-				  <% end %>         
+				  <% SaleRecord::all_property_type.each do |pt|  %> 
+					   <div class="checkbox checkbox-info all_clicked77"> 
+	                    <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input"> 
+	                    <label for="checkbox88"> <%= pt.capitalize %> </label> 
+	                  </div>                 
+				  <% end %>       
                              
                 </div>   
                 
