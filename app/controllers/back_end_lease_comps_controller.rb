@@ -101,6 +101,7 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
+
     render :json => {
         :file_temp => @file_temp.id,
         :file => @file.file
