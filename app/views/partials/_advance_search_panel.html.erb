@@ -223,12 +223,19 @@
               <div class="btn-group tx_btn_group">
 			  
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <select class="selectpicker resetit" name="tenant_record[class_type]">
-                          <option value="">Choose</option>
-                          <option value="a">A</option>
-                          <option value="b">B</option>
-                          <option value="c">C</option>
-                        </select>
+			  
+			  			  <%= select_tag 'tenant_record[class_type]',
+                             options_for_select(TenantRecord::all_class_type.map { |s| [s.capitalize, s] }),
+                             prompt: 'Choose', 
+                             class: 'selectpicker lease_filter lease_filter_input resetit' 
+                		  %>
+                		  
+                		  <%= select_tag 'tenant_record[class_type]',
+                             options_for_select(SaleRecord::all_class_type.map { |s| [s.capitalize, s] }),
+                             prompt: 'Choose', 
+                             class: 'selectpicker sales_filter sales_filter_input resetit' 
+                		  %>
+                        
                       </div>
 				
               </div>
