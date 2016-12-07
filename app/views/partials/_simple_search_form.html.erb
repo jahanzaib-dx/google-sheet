@@ -31,7 +31,8 @@
 
 
 
-	  <input id="search_type_address_zipcode" name="tenant_record[search_type]" value="address_zipcode" type="radio" <%= ("checked" if @search_params.blank? || (@search_params.has_key?(:search_type) && @search_params[:search_type] == "address_zipcode") ) %> class="hide" />
+	  <!-- <input id="search_type_address_zipcode" name="tenant_record[search_type]" value="address_zipcode" type="radio" <%= ("checked" if @search_params.blank? || (@search_params.has_key?(:search_type) && @search_params[:search_type] == "address_zipcode") ) %> class="hide" /> -->
+	  <input id="search_type_address_zipcode" name="tenant_record[search_type]" value="address" checked="checked" type="radio" class="hide" />
 
               <!--<label for="search_type_address_zipcode">Address</label>-->
 
