@@ -259,7 +259,7 @@
               	
               <div class="tx_dropdown_toggl tx-drop-down-select">              	
               			 <%= select_tag 'tenant_record[lease_type]',
-                             options_for_select(TenantRecord::all_deal_type.map { |s| [s.titleize, s] }),
+                             options_for_select(TenantRecord::all_deal_type.map { |s| [s.capitalize, s] }),
                              prompt: 'Choose', 
                              class: 'selectpicker lease_filter_input resetit', 
                              id: "tenant_record_lease_type" 
@@ -276,7 +276,7 @@
 			  
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
                          <%= select_tag 'tenant_record[industry_type]',
-                             options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.titleize, s.name] }), 
+                             options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.capitalize, s.name] }), 
                              prompt: 'Choose', 
                              class: 'selectpicker lease_filter_input resetit', 
                              id: 'industry_type' 
