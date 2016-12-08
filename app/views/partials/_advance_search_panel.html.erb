@@ -261,7 +261,7 @@
               	
               <div class="tx_dropdown_toggl tx-drop-down-select">              	
               			 <%= select_tag 'tenant_record[lease_type]',
-                             options_for_select(TenantRecord::all_deal_type.map { |s| [s.capitalize, s] }),
+                             options_for_select(TenantRecord::all_deal_type.map { |s| [s, s] }),
                              prompt: 'Choose', 
                              class: 'selectpicker lease_filter_input resetit', 
                              id: "tenant_record_lease_type" 
