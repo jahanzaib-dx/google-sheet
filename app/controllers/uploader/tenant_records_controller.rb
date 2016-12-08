@@ -36,7 +36,7 @@ class Uploader::TenantRecordsController < ApplicationController
       puts "before calling save_tenant_record ------------"
       save_tenant_record @tenant_record
 
-  
+
     elsif @property_type == 'sales_comps'
       @sale_record = SaleRecord.new(sale_record_params)
       @sale_record.is_sales_record = (params[:sale_record][:is_sales_record] == 'yes' ? true : false)
