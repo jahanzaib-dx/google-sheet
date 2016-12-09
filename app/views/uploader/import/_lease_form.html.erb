@@ -77,7 +77,8 @@
           <br>
           <%= radio_button_tag 'tenant_record[base_rent_type]', 'monthly' %>
           <%= label "tenant_record[base_rent_type]", 'monthly', "Monthly" %>
-
+<br>
+        <br>
           <p>
             How does your base rent escalate?
           </p>
@@ -154,8 +155,8 @@
 
                             <div class="operating-expenses-columm-count" >
                                 <p>
-                                  How many operating expense columns are in your spreadsheet? <br/>
-                                  <%= select_tag "oe_column_count", options_for_select((1..10).to_a), class: 'oe-column-count', prompt: 'Please Choose' %>
+                                  How many operating expense columns are in your spreadsheet? <br/> <br/>
+                                  <%= select_tag "oe_column_count", options_for_select((1..10).to_a), class: 'oe-column-count', prompt: 'Please Choose', style:'font-size:13px !important; width:120px' %>
                                 </p>
                             </div>
                           </div>
@@ -288,14 +289,6 @@
       <div class="columns large-12 no-padding">
         <div class="columns large-8 no-padding">
           <label>Note: All column headers in your spreadsheet must be in row 1.</label>
-        </div>
-        <div class="columns large-4 no-padding">
-          <div class="hover-info">?
-            <div class="tooltip-custom">
-              <div class="triangle"></div>
-              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
-            </div>
-          </div>
         </div>
       </div>
 
