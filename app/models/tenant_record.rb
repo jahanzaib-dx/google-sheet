@@ -698,10 +698,17 @@ class TenantRecord < ActiveRecord::Base
   
   def self.all_deal_type ()
     arr2 = DEAL_TYPE
-    arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all
+    arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end 
+  
+ def self.all_class_type ()
+    arr2 = CLASS_TYPE
+    arr1 = select('class_type as name').where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
+    arr = arr2 + arr1
+    ##arr
+  end
 
   private
   def default_values
