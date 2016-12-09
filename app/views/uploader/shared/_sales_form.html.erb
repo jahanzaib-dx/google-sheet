@@ -43,7 +43,7 @@
                 <div class="hover-info">?
                   <div class="tooltip-custom">
                     <div class="triangle"></div>
-                    <strong>Tooltip:</strong>
+                    <strong>Tooltip:</strong> Internal means a broker within your firm participated in the deal.
                   </div>
                 </div>
               </div>
@@ -59,29 +59,13 @@
                   <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
-                            Property Name*
-                            <div class="no-padding" style="float: right;">
-                              <div class="hover-info">?
-                                <div class="tooltip-custom">
-                                  <div class="triangle"></div>
-                                  <strong>Tooltip:</strong>
-                                </div>
-                              </div>
-                            </div>
+                            Property Name
                           </td>
-                          <td><%= text_field_tag 'sale_record[property_name]', nil, class: 'validate[required]' %></td>
+                          <td><%= text_field_tag 'sale_record[property_name]' %></td>
                         </tr>
                         <tr>
                           <td>
                             Date Built*
-                            <div class="no-padding" style="float: right;">
-                              <div class="hover-info">?
-                                <div class="tooltip-custom">
-                                  <div class="triangle"></div>
-                                  <strong>Tooltip:</strong>
-                                </div>
-                              </div>
-                            </div>
                           </td>
                           <td><%= text_field_tag 'sale_record[build_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_built]"
@@ -90,14 +74,6 @@
                                 <tr>
                                   <td>
                                     Property Type*
-                                    <div class="no-padding" style="float: right;">
-                                      <div class="hover-info">?
-                                        <div class="tooltip-custom">
-                                          <div class="triangle"></div>
-                                          <strong>Tooltip:</strong>
-                                        </div>
-                                      </div>
-                                    </div>
                                   </td>
                                   <td><%= select_tag 'sale_record[property_type]',
                                                      options_for_select(TenantRecord::SALES_PROPERTY_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>
@@ -107,14 +83,6 @@
                                         <tr>
                                           <td>
                                             Class Type*
-                                            <div class="no-padding" style="float: right;">
-                                              <div class="hover-info">?
-                                                <div class="tooltip-custom">
-                                                  <div class="triangle"></div>
-                                                  <strong>Tooltip:</strong>
-                                                </div>
-                                              </div>
-                                            </div>
                                           </td>
                                           <td>
                                             <%= select_tag 'sale_record[class_type]',
@@ -126,42 +94,18 @@
                                                 <tr>
                                                   <td>
                                                     Building Size*
-                                                    <div class="no-padding" style="float: right;">
-                                                      <div class="hover-info">?
-                                                        <div class="tooltip-custom">
-                                                          <div class="triangle"></div>
-                                                          <strong>Tooltip:</strong>
-                                                        </div>
-                                                      </div>
-                                                    </div>
                                                   </td>
                                                   <td><%= text_field_tag 'sale_record[land_size]', nil, class: ' validate[required]' %></td>
                                                 </tr>
                                                 <tr>
                                                   <td>
                                                     Sale Price*
-                                                    <div class="no-padding" style="float: right;">
-                                                      <div class="hover-info">?
-                                                        <div class="tooltip-custom">
-                                                          <div class="triangle"></div>
-                                                          <strong>Tooltip:</strong>
-                                                        </div>
-                                                      </div>
-                                                    </div>
                                                   </td>
                                                   <td><%= text_field_tag 'sale_record[price]', nil, class: ' validate[required]' %></td>
                                                 </tr>
                                                 <tr>
                                                   <td>
                                                     Date Sold*
-                                                    <div class="no-padding" style="float: right;">
-                                                      <div class="hover-info">?
-                                                        <div class="tooltip-custom">
-                                                          <div class="triangle"></div>
-                                                          <strong>Tooltip:</strong>
-                                                        </div>
-                                                      </div>
-                                                    </div>
                                                   </td>
                                                   <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
@@ -192,7 +136,7 @@
                 <div class="hover-info">?
                   <div class="tooltip-custom">
                     <div class="triangle"></div>
-                    <strong>Tooltip:</strong>
+                    <strong>Tooltip:</strong> Internal means a broker within your firm participated in the deal.
                   </div>
                 </div>
               </div>
@@ -209,28 +153,12 @@
                         <tr>
                           <td>
                             Land Size*
-                            <div class="no-padding" style="float: right;">
-                              <div class="hover-info">?
-                                <div class="tooltip-custom">
-                                  <div class="triangle"></div>
-                                  <strong>Tooltip:</strong>
-                                </div>
-                              </div>
-                            </div>
                           </td>
                           <td><%= text_field_tag 'sale_record[land_size]', nil, class: ' validate[required]' %></td>
                         </tr>
                         <tr>
                           <td>
                             Sale Price*
-                            <div class="no-padding" style="float: right;">
-                              <div class="hover-info">?
-                                <div class="tooltip-custom">
-                                  <div class="triangle"></div>
-                                  <strong>Tooltip:</strong>
-                                </div>
-                              </div>
-                            </div>
                           </td>
                           <td><%= text_field_tag 'sale_record[price]', nil, class: ' validate[required]' %></td>
                         </tr>
@@ -238,14 +166,6 @@
                         <tr>
                           <td>
                             Date Sold*
-                            <div class="no-padding" style="float: right;">
-                              <div class="hover-info">?
-                                <div class="tooltip-custom">
-                                  <div class="triangle"></div>
-                                  <strong>Tooltip:</strong>
-                                </div>
-                              </div>
-                            </div>
                           </td>
                           <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
