@@ -17,7 +17,7 @@
       <div class="adress-bar-main-container">
         <div class="col-md-12 adress-bar-container">
           <div class="adress-detail">
-            <h1 class="nespresso"><%=@comp_record.contact%></h1>
+            <h1 class="nespresso"><%=@comp_record.company.to_s.capitalize!%></h1>
             <h3 class="adress-content"><%= @comp_record.address1 %><br/>
               <%= @comp_record.suite %><br/>
               <%= @comp_record.city %>, <%= @comp_record.state %> <%= @comp_record.zipcode %></h3>
@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Tenant Name</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.contact%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.company.to_s.capitalize!%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
             <td><p class="comp-table-pre">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
           </tr>
