@@ -184,7 +184,10 @@
 
       <div class="fields-table lease-comp-single">
         <table>
-          <tr><td>Internal or External*</td>
+          <tr><td>Internal or External*
+
+
+          </td>
             <td>
               <%= select_tag 'tenant_record[comp_view_type]',
                              options_for_select(TenantRecord::NEW_VIEW_TYPE.map { |s| [s.titleize, s] }), prompt: 'Please Choose', class: 'custom-select validate[required]' %>

@@ -7,14 +7,6 @@
         <div class="columns large-8 no-padding">
           <label>Note: All column headers in your spreadsheet must be in row 1.</label>
         </div>
-        <div class="columns large-4 no-padding">
-          <div class="hover-info">?
-            <div class="tooltip-custom">
-              <div class="triangle"></div>
-              <strong>Tooltip:</strong> This means that your base rent will escalate every 12 months by the same %.
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="columns large-12 no-padding bulk-upload-file-section">
@@ -98,7 +90,7 @@
                   <div class="hover-info">?
                     <div class="tooltip-custom">
                       <div class="triangle"></div>
-                      <strong>Tooltip:</strong> Use %, not decimal value. For example, use 2, not .02
+                      <strong>Tooltip:</strong> Internal means a broker within your firm participated in the deal.
                     </div>
                   </div>
                 </div>
@@ -186,11 +178,11 @@
 
             <tr class="building-row">
               <td>
-                Property Name*
+                Property Name
               </td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[property_name]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[property_name]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
