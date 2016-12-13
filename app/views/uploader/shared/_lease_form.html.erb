@@ -76,7 +76,7 @@
         </div>
       </div>
 
-
+      <div style="clear: both"></div>
       <div class="free-rent-type large-12">
         <p class="section-title-heading">Free Rent</p>
         <div class="columns large-12 no-padding">
@@ -136,7 +136,7 @@
         <p class="section-title-heading">Tenant Improvement</p>
         <div>
           <label>
-            <%= check_box_tag "tenant_record[is_tenant_improvement]" %><p class="tenant-improvement-description">This record has a landlord tenant improvement allowance.</p>
+            <%= check_box_tag "tenant_record[is_tenant_improvement]" %>This record has a landlord tenant improvement allowance.
           </label>
         </div>
       </div>
@@ -184,9 +184,16 @@
 
       <div class="fields-table lease-comp-single">
         <table>
-          <tr><td>Internal or External*
-
-
+          <tr><td>
+            Internal or External*
+            <div class="no-padding" style="float: right;">
+              <div class="hover-info">?
+                <div class="tooltip-custom">
+                  <div class="triangle"></div>
+                  <strong>Tooltip:</strong> Internal means a broker within your firm participated in the deal.
+                </div>
+              </div>
+            </div>
           </td>
             <td>
               <%= select_tag 'tenant_record[comp_view_type]',
