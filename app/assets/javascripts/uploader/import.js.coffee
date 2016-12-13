@@ -129,12 +129,16 @@ $(document).ready ->
 add_operating_expenses_rows = ->
   html = $('.operating-expenses-mapping-row').html()
   count = $('#oe_column_count').val()
-  $('.operating-expenses-mapping-row').show()
-  if ( count > 1 )
-    for i in [2..count]
-      $('.operating-expenses-mapping-row:last').after('<tr class="operating-expenses-mapping-row">'+html+'</tr>')
-      $('.operating-expenses-mapping-row:last td:first-child span:first-child').html(i)
-      $('.operating-expenses-mapping-row:last').show()
+  if($('input[type=radio][name=operating_expenses]:checked').val()=='yes' && $('input[type=radio][name=lease_structure]:checked').val()=='yes')
+    $('.operating-expenses-mapping-row').show()
+    $('.operating-expenses-mapping-row-count').remove()
+    if ( count > 1 )
+      for i in [2..count]
+        $('.operating-expenses-mapping-row:last').after('<tr class="operating-expenses-mapping-row operating-expenses-mapping-row-count">'+html+'</tr>')
+        $('.operating-expenses-mapping-row:last td:first-child span:first-child').html(i)
+        $('.operating-expenses-mapping-row:last').show()
+  else
+    $('.operating-expenses-mapping-row').hide()
 
 
 open_next_accordian_item = (to_show,to_hide) ->
