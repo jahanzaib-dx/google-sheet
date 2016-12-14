@@ -791,57 +791,31 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def duplicate_list
- #    SELECT
- #
- #    y.id,y.name,y.email
- #
- #    FROM @YourTable y
- #
- #    INNER JOIN (
- #                   SELECT
- #    name,email, COUNT(*) AS CountOf
- #    FROM @YourTable
- #    GROUP BY name,email
- #    HAVING COUNT(*)>1
- #    ) dt ON y.name=dt.name and y.email=dt.email
- #
- #
- #
- #    TenantRecord.select('
- #                        comp_type,
- #                        company,
- #                        industry_type,
- #                        address1,
- #                        suite,
- #                        city,
- #                        state,
- #                        submarket,
- #                        class_type,
- #                        property_type,
- #                        property_name,
- #                        lease_commencement_date,
- #                        lease_term_months,
- #                        size,
- #                        deal_type,
- #                        base_rent
- #                  ').joins('select
- #                        comp_type,
- #                        company,
- #                        industry_type,
- #                        address1,
- #                        suite,
- #                        city,
- #                        state,
- #                        submarket,
- #                        class_type,
- #                        property_type,
- #                        property_name,
- #                        lease_commencement_date,
- #                        lease_term_months,
- #                        size,
- #                        deal_type,
- #                        base_rent
- # * from tenant_records')
+    query = 'SELECT y.comp_type, y.company, y.industry_type, y.address1, y.suite, y.city, y.state, y.submarket, y.class_type, y.property_type, y.property_name, y.lease_commencement_date, y.lease_term_months, y.size, y.base_rent
+            FROM tenant_records y
+            INNER JOIN(
+              SELECT comp_type, company, industry_type, address1, suite, city, state, submarket, class_type, property_type, property_name, lease_commencement_date, lease_term_months, size, deal_type, base_rent,COUNT(*) AS CountOf
+              FROM tenant_records
+              GROUP BY comp_type, company, industry_type, address1, suite, city, state, submarket, class_type, property_type, property_name, lease_commencement_date, lease_term_months, size, base_rent
+              HAVING COUNT(*)>1
+            ) dt ON
+              y.comp_type = dt.comp_type and
+              y.company = dt.company and
+              y.industry_type = dt.industry_type and
+              y.address1 = dt.address1 and
+              y.suite = dt.suite and
+              y.city = dt.city and
+              y.state = dt.state and
+              y.submarket = dt.submarket and
+              y.class_type = dt.class_type and
+              y.property_type = dt.property_type and
+              y.property_name = dt.property_name and
+              y.lease_commencement_date = dt.lease_commencement_date and
+              y.lease_term_months = dt.lease_term_months and
+              y.size = dt.size and
+              y.base_rent = dt.base_rent
+            '
+      results = ActiveRecord::Base.connection.execute(query)
   end
 
 
