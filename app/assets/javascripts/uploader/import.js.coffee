@@ -55,9 +55,13 @@ $(document).ready ->
   $(document).on 'change', '.bulk-column-header-dd', (e) ->
     $(@).parent().siblings('.first').find('.bulk-column-header-value').val($(@).find(":selected").text())
 
-  $(document).on 'click', '#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2', (e) ->
-    submit_is = $(@)
-#    submit_is.closest('form').submit()
+#  $(document).on 'click', '#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2', (e) ->
+#    submit_is = $(@)
+##    submit_is.closest('form').submit()
+#    submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
+
+  $(document).on 'change','#fileToUpload', (e) ->
+    submit_is = $('#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2')
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
 
   $(document).on 'click', '#bulk-comp-continue-4, #bulk-sales-comp-continue-4, #bulk-custom-comp-continue-3', (e) ->
