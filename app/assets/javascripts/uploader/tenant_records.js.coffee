@@ -145,6 +145,9 @@ $(document).ready ->
   # show / hide element on dom ready event
   unless $('#tenant_record_is_tenant_improvement').prop('checked')
     $('tr.tenant-improvement-row').hide()
+
+  unless $('#tenant_record_free_rent_type_consecutive:checked').val()=='consecutive' && $('#tenant_record_free_rent_type_non_consecutive:checked').val()=='non_consecutive'
+    $('tr.free-rent-row').hide()
   # end
 
   $('#steps_count').on 'change', ->
@@ -342,6 +345,12 @@ $(document).ready ->
       elem.show()
     else
       elem.hide()
+
+  $('#tenant_record_free_rent_type_consecutive,#tenant_record_free_rent_type_non_consecutive').on 'change', ->
+    if $('#tenant_record_free_rent_type_consecutive:checked').val()=='consecutive' || $('#tenant_record_free_rent_type_non_consecutive:checked').val()=='non_consecutive'
+      $('tr.free-rent-row').show()
+    else
+      $('tr.free-rent-row').hide()
 
   $('.has-additional-tenant-cost-check, .has-additional-ll-allowance-check').on 'change', ->
     if $(this).is(':checked')
