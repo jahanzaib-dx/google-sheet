@@ -790,11 +790,11 @@ class TenantRecord < ActiveRecord::Base
     end
   end
 
-  def duplicate_list
-    query = 'SELECT y.comp_type, y.company, y.industry_type, y.address1, y.suite, y.city, y.state, y.submarket, y.class_type, y.property_type, y.property_name, y.lease_commencement_date, y.lease_term_months, y.size, y.base_rent
+  def self.duplicate_list user_id
+    query = 'SELECT y.*
             FROM tenant_records y
             INNER JOIN(
-              SELECT comp_type, company, industry_type, address1, suite, city, state, submarket, class_type, property_type, property_name, lease_commencement_date, lease_term_months, size, deal_type, base_rent,COUNT(*) AS CountOf
+              SELECT comp_type, company, industry_type, address1, suite, city, state, submarket, class_type, property_type, property_name, lease_commencement_date, lease_term_months, size, base_rent,COUNT(*) AS CountOf
               FROM tenant_records
               GROUP BY comp_type, company, industry_type, address1, suite, city, state, submarket, class_type, property_type, property_name, lease_commencement_date, lease_term_months, size, base_rent
               HAVING COUNT(*)>1
@@ -813,9 +813,11 @@ class TenantRecord < ActiveRecord::Base
               y.lease_commencement_date = dt.lease_commencement_date and
               y.lease_term_months = dt.lease_term_months and
               y.size = dt.size and
-              y.base_rent = dt.base_rent
+              y.base_rent = dt.base_rent and
+              y.user_id='+user_id.to_s+'
             '
-      results = ActiveRecord::Base.connection.execute(query)
+    TenantRecord.find_by_sql(query)
+    # ActiveRecord::Base.connection.execute(query)
   end
 
 

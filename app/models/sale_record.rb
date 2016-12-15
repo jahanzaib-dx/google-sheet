@@ -74,6 +74,34 @@ class SaleRecord < ActiveRecord::Base
     ##arr
   end
 
+  def self.duplicate_list user_id
+    query = 'SELECT y.*
+            FROM sale_records y
+            INNER JOIN(
+              SELECT address1, city, state, submarket, property_name, build_date, property_type,class_type, land_size, price, sold_date, cap_rate, COUNT(*) AS CountOf
+              FROM sale_records
+              GROUP BY address1, city, state, submarket, property_name, build_date, property_type,class_type, land_size, price, sold_date, cap_rate
+              HAVING COUNT(*)>1
+            ) dt ON
+              y.address1 = dt.address1 and
+              y.city = dt.city and
+              y.state = dt.state and
+              y.submarket = dt.submarket and
+              y.property_name = dt.property_name and
+              y.build_date = dt.build_date and
+              y.property_type = dt.property_type and
+              y.class_type = dt.class_type and
+              y.land_size = dt.land_size and
+              y.price = dt.price and
+              y.sold_date = dt.sold_date and
+              y.cap_rate = dt.cap_rate and
+
+              y.user_id='+user_id.to_s+'
+    '
+    SaleRecord.find_by_sql(query)
+    # ActiveRecord::Base.connection.execute(query)
+  end
+
   private
   def default_values
     #puts "***********************@current user: #{User.current_user.name}"

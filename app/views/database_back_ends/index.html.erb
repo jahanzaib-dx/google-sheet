@@ -70,7 +70,7 @@
           <input type="hidden" value="" id="export_link">
         </div>
       </div>
-      <h5>There are potential dups in results. <a href="#">View Dupes</a></h5>
+      <h5>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></h5>
     </div>
   </div>
 
@@ -214,6 +214,40 @@
         success: function(data){
           window.open(data.file, '_blank');
         }
+      });
+    });
+
+    $('#duplication').on('click',function(){
+      $('#myiframe').find('iframe').attr('src','');
+      $('#tx_linkdin_profile').hide('fast');
+      $('#export').hide('fast');
+      $('#link').hide('fast');
+      $('#link_txt').hide('fast');
+      $('#media-button').hide('fast');
+      $('#ImageBrowse').hide('fast');
+      $('#custom_record').hide('fast');
+      $('#database_map_search').hide('fast');
+      var url;
+      var delete_url;
+      if($('#data_type').val()=="lease")
+      {
+        url = '<%= back_end_lease_comps_duplication_path %>';
+        delete_url = '/back_end_lease_comps/delete_duplication';
+      }
+      else if($('#data_type').val()=="sale")
+      {
+        url= '<%= back_end_sale_comps_duplication_path %>';
+        delete_url= '/back_end_sale_comps/delete_duplication';
+      }
+      $.ajax({
+        type: 'get',
+        url: url,
+        success: function (result) {
+          $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+          $('#tx_linkdin_profile').attr('href',delete_url+'/'+result.file_temp);
+          $('#tx_linkdin_profile').show('fast');
+        }
+
       });
     });
     var search_basic_path_js = '<%= search_basic_path() %>';
