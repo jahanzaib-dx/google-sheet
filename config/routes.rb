@@ -123,15 +123,26 @@ Rails.application.routes.draw do
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
 
   resources :groups
-  resources :back_end_lease_comps
+
+  # resources :back_end_lease_comps
+  get 'back_end_lease_comps/' => 'back_end_lease_comps#index'
   get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
   get 'back_end_lease_comps/create/:id' => 'back_end_lease_comps#create'
-  resources :back_end_sale_comps
+  get 'back_end_lease_comps/duplication' => 'back_end_lease_comps#duplication'
+  get 'back_end_lease_comps/delete_duplication/:id/' => 'back_end_lease_comps#delete_duplication'
+
+  # resources :back_end_sale_comps
+  get 'back_end_sale_comps/' => 'back_end_sale_comps#index'
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
   get 'back_end_sale_comps/create/:id/' => 'back_end_sale_comps#create'
+  get 'back_end_sale_comps/duplication' => 'back_end_sale_comps#duplication'
+  get 'back_end_sale_comps/delete_duplication/:id/' => 'back_end_sale_comps#delete_duplication'
+
+
   resources :back_end_custom_record
   get 'back_end_custom_record/create/:id/:temp/:custom_record_id' => 'back_end_custom_record#create'
   get 'back_end_custom_record/index/:id' => 'back_end_custom_record#index'
+
   resources :database_back_ends
   get 'database_back_ends' => 'database_back_ends#index'
   get 'uploader/database_back_ends' => 'database_back_ends#index'
