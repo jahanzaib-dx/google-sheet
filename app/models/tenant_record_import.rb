@@ -113,6 +113,7 @@ class TenantRecordImport < ActiveRecord::Base
     end
 
     if self.errors.any?
+      self.complete = true
       self.status = self.errors[:upload].to_s
     end
 

@@ -62,6 +62,20 @@ class BackEndLeaseCompsController < ApplicationController
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
+
+      max_rows = ws.num_rows
+      i=2
+      while i<=max_rows
+        if tenant_records.where('id = ?', ws[i,1]) && ws[i,1] != ''
+          p ws[i,1]
+        else
+          p ws[i,1]
+          max_rows-=1
+        end
+        i+=1
+        p i
+        p max_rows
+      end
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
