@@ -22,15 +22,21 @@
                       <option>Relish</option>-->
                     </select>
                   </li>
-                  <li><a class="tx_cline" data-href="<%= delete_comp_requests_url %>" data-comptype="<%= params[:comp_type]%>" id="btn-decline-comp-request" data-status="Decline">Ignore</a></li>
-                  <li><a class="btn_blue_half" data-href="<%= comp_requests_update_url %>" id="btn-accept-comp-request" data-status="Approve">Approve</a></li>
+                  <li><a href="#!" class="tx_cline" data-href="<%= delete_comp_requests_url %>" data-comptype="<%= params[:comp_type]%>" id="btn-decline-comp-request" data-status="Decline">Ignore</a></li>
+                  <!-- <li><a class="btn_blue_half" data-href="<%= comp_requests_update_url %>" id="btn-accept-comp-request" data-status="Approve">Approve</a></li> -->
                 </ul>
 
                 <div class="round_lock">
                   <ul class="tx_lock_list">
-                    <li><a class="btn-comp-request-status" data-status="Partial"><%= image_tag("un-lock.png")%></a></li>
-                    <li><a class="btn-comp-request-status lock-n" data-status="Unlock"><%= image_tag("lock-un.png")%> </a></li>
-                    <li class="active-locl"><a class="btn-comp-request-status selected" data-status="Lock"><%= image_tag("lock-white.png")%></a></li>
+                    <!-- <li><a class="btn-comp-request-status" data-status="Partial"><%= image_tag("un-lock.png")%></a></li> -->
+                    <li>
+                    	<a href="#!" class="btn-comp-request-status lock-n active_trans" data-status="Unlock" data-toggle="modal"  data-target="#Modalfull"><%= image_tag("lock-un.png")%> </a>
+                    	<a class="btn-comp-request-status lock-n inactive_trans"><%= image_tag("lock-un.png")%></a>
+                    </li>
+                    <li>
+                    	<a href="#!" class="btn-comp-request-status lock-p active_trans" data-status="Lock" data-toggle="modal"  data-target="#Modalpartial"><%= image_tag("lock-b.png")%></a>
+                    	<a class="btn-comp-request-status lock-p inactive_trans" ><%= image_tag("lock-b.png")%></a>
+                    </li>
                   </ul>
                 </div>
 
@@ -79,3 +85,73 @@
   </div>
 </div>
 </div>
+
+<div class="modal fade" id="Modalfull" tabindex="-1" role="dialog" aria-labelledby="Modallease" aria-hidden="true">
+  <div class="modal-dialog  tx_invite_modal-dialog">
+    <div class="modal-content">
+      <%= form_tag full_transparency_path do %>
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Full Transparency</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body">
+
+<div class="text-left">
+            <input type="checkbox" name="access" value="full" class="chkfull"> 
+            Tier 1 - your connection is granted full access and the comp is added to your connection’s account. Therefore, your connection CAN unlock the comp for any of their direct connections.
+</div>
+<br />
+<div class="text-left">
+
+			<input type="checkbox" name="access" value="partial" class="chkfull"> 
+			Tier 2 – your connection is granted full access but the comp is NOT added to your connection’s account. Therefore, they DO NOT have the ability to grant access to anyone.
+</div>
+            
+
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="button" class="btn btn-primary invite_save" id="btn-grant-access">Approve</button>
+            <input type="hidden" name="id" id="access_comp_id">
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="Modalpartial" tabindex="-1" role="dialog" aria-labelledby="Modalsale" aria-hidden="true">
+  <div class="modal-dialog  tx_invite_modal-dialog">
+    <div class="modal-content">
+      <%= form_tag create_connection_requests_path do %>
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Partial Transparency</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body">
+
+            <input type="email" placeholder="Invite by email address" class="tx_invite_email" required name="email">
+
+            <div class="text-center">
+              <%= link_to "Add a personal message" , "#!"  , :class => "c_hide_me" %>
+            </div>
+
+            <textarea placeholder="I'd like to share my comp database with you." id="c_show_textarea" style="display:none" name="p_message"></textarea>
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="button" class="btn btn-primary invite_save" id="btn-connection-invite" >Save changes</button>
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<style>
+	.inactive_trans{display: none;}
+	.lock-p > img{width: 15px; margin-left: 1px;}
+</style>
