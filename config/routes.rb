@@ -107,6 +107,7 @@ Rails.application.routes.draw do
   post 'comp_requests/update' => 'comp_requests#update'
   post 'delete_comp_requests' => 'comp_requests#destroy'
   post 'create_comp_requests' => 'comp_requests#create'
+  post 'full_transparency' => 'comp_requests#full_transparency'
 
 
 
