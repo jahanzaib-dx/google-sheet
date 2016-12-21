@@ -34,8 +34,11 @@ class DxMailer < ActionMailer::Base
 	end
 
 	def white_glove_service_email(email,message)
-		mail( :to => email, :subject => message )
-    redirect_to uploader_import_index_path
+		mail( :to => email, :subject => message )do |format|
+      format.text do
+        render :text => '42 owns the World'
+      end
+    end
 	end
 
 end
