@@ -33,4 +33,9 @@ class DxMailer < ActionMailer::Base
 		mail( :to => @user.email, :subject => message )
 	end
 
+	def white_glove_service_request(user,message)
+		@user = user
+		mail( :to => @user.email, :subject => message )
+	end
+
 end
