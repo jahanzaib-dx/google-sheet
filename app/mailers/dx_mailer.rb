@@ -35,6 +35,7 @@ class DxMailer < ActionMailer::Base
 
 	def white_glove_service_email(email,message)
 		mail( :to => email, :subject => message )
+		return
 	end
 
 end
