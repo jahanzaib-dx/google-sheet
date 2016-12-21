@@ -213,10 +213,10 @@
               <%= hidden_field_tag 'tenant_record[industry_type]', "", class: 'actual-value' %>
             </td>
           </tr>
-          <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]", nil, class: ' validate[required]' %></td></tr>
+          <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]", nil, class: ' validate[required]', id: "autocomplete", onFocus: "geolocate()" %></td></tr>
           <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
-          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]", nil, class: ' validate[required]' %></td></tr>
-          <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select  validate[required]' %></td></tr>
+          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]", nil, class: ' validate[required]', id: "locality" %></td></tr>
+          <tr><td>State*</td><td><%= select_tag "tenant_record[state]", options_for_select(us_states), class: 'required custom-select  validate[required]', id: "administrative_area_level_1" %></td></tr>
           <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
           <tr>
             <td>Class Type*</td>
