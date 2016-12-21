@@ -252,7 +252,7 @@ class Uploader::ImportController < ApplicationController
       import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
       TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      DxMailer.white_glove_service_request('muhammad.jahanzaib@discretelogix.com',@file_path).deliver_now
+      # DxMailer.white_glove_service_request('muhammad.jahanzaib@discretelogix.com',@file_path).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."
