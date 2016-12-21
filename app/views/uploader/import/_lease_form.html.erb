@@ -29,7 +29,7 @@
         <div class="accordion-content-data">
           <div class="">
             <div class="columns large-12 no-padding bulk-upload-file-section">
-              <% # = form_tag '/uploader/import/white_glove_service_request', multipart: true, html:{autocomplete: "off"} do |f| %>
+              <%= form_tag '/uploader/import/white_glove_service_request', multipart: true, autocomplete: "off" do |f| %>
               <table>
                 <th>Name your upload</th>
                 <th><input type="text" class="normal-element" name="request_name"></th>
@@ -45,13 +45,13 @@
                   </td>
                 </tr>
               </table>
-              <% # end %>
+              <% end %>
             </div>
           </div>
         </div>
 
          <div class="right-box">
-            <div class="accordion-content-continue" id="bulk-comp-continue-2-a">
+            <div class="accordion-content-continue accordion-content-continue-add-record" id="bulk-comp-continue-2-a">
               <p>Add Records</p>
               <p><%= image_tag("/assets/uploader/cloud.png") %></p>
             </div>
