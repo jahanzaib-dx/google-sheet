@@ -33,7 +33,7 @@ class DxMailer < ActionMailer::Base
 		mail( :to => @user.email, :subject => message )
 	end
 
-	def white_glove_service_request(email,message)
+	def white_glove_service_email(email,message)
 		mail( :to => email, :subject => message )
 	end
 
