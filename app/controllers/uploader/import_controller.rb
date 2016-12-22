@@ -247,12 +247,13 @@ class Uploader::ImportController < ApplicationController
   end
 
   def white_glove_service_request
+    require 'socket'
     if params[:fileToUpload]
       #ext = File.extname(@file_path)[1..-1]
       import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
       TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      DxMailer.white_glove_service_email('muhammad.jahanzaib@discretelogix.com',@updated_file_name).deliver_now
+      DxMailer.white_glove_service_email('muhammad.jahanzaib@discretelogix.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."
