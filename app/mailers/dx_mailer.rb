@@ -34,9 +34,10 @@ class DxMailer < ActionMailer::Base
 	end
 
 	def white_glove_service_email(email,file)
+    require 'socket'
 		mail( :to => email, :subject => 'White glove service' )do |format|
       format.text do
-        render :text => file
+        render :text => "http://"+request.host_with_port+"/system/marketrex_uploads/"+file
       end
     end
 	end
