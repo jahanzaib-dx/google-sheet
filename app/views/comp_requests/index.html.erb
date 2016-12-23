@@ -30,11 +30,13 @@
                   <ul class="tx_lock_list">
                     <!-- <li><a class="btn-comp-request-status" data-status="Partial"><%= image_tag("un-lock.png")%></a></li> -->
                     <li>
-                    	<a href="#!" class="btn-comp-request-status lock-n active_trans" data-status="Unlock" data-toggle="modal"  data-target="#Modalfull"><%= image_tag("lock-un.png")%> </a>
+                    	<a href="#!" class="btn-comp-request-status lock-n active_trans" data-status="Unlock" data-toggle="modal"  data-target="#Modalfull" data-tooltip="tooltip" title="Click to see full transparency options" data-placement="top">
+                    		<%= image_tag("lock-un.png")%> 
+                    	</a>
                     	<a class="btn-comp-request-status lock-n inactive_trans"><%= image_tag("lock-un.png")%></a>
                     </li>
                     <li>
-                    	<a href="#!" class="btn-comp-request-status lock-p active_trans" data-status="Lock" data-toggle="modal"  data-target="#Modalpartial"><%= image_tag("lock-b.png")%></a>
+                    	<a href="#!" class="btn-comp-request-status lock-p active_trans" data-status="Lock" data-toggle="modal"  data-target="#Modalpartial" data-tooltip="tooltip" title="Click to see custom transparency options" data-placement="top"><%= image_tag("lock-b.png")%></a>
                     	<a class="btn-comp-request-status lock-p inactive_trans" ><%= image_tag("lock-b.png")%></a>
                     </li>
                   </ul>
@@ -94,7 +96,7 @@
             <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
             <h4 class="modal-title" id="myModalLabel">Full Transparency</h4>
           </div>
-          <div class="modal-body tx_invite_modal-body">
+          <div class="modal-body tx_invite_modal-body tire12">
 
 <div class="text-left">
             <input type="checkbox" name="access" value="full" class="chkfull"> 
@@ -123,35 +125,27 @@
 
 
 <div class="modal fade" id="Modalpartial" tabindex="-1" role="dialog" aria-labelledby="Modalsale" aria-hidden="true">
-  <div class="modal-dialog  tx_invite_modal-dialog">
-    <div class="modal-content">
-      <%= form_tag create_connection_requests_path do %>
-          <div class="modal-header  tx_invite_modal-header">
-            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
-            <h4 class="modal-title" id="myModalLabel">Partial Transparency</h4>
-          </div>
-          <div class="modal-body tx_invite_modal-body">
-
-            <input type="email" placeholder="Invite by email address" class="tx_invite_email" required name="email">
-
-            <div class="text-center">
-              <%= link_to "Add a personal message" , "#!"  , :class => "c_hide_me" %>
-            </div>
-
-            <textarea placeholder="I'd like to share my comp database with you." id="c_show_textarea" style="display:none" name="p_message"></textarea>
-          </div>
-
-          <div class="modal-footer text-center">
-
-            <button type="button" class="btn btn-primary invite_save" id="btn-connection-invite" >Save changes</button>
-          </div>
-      <% end %>
-
-    </div>
-  </div>
+	
+	<div id="load_popup_modal_show_id">
+		<div id="trans_spinner" style="top: 50%; left: 50%; position: absolute; display: none;"><i class="fa fa-spinner fa-spin" aria-hidden="true" style="font-size: 50px;"></i></div>
+	</div>
+	
 </div>
 
+<script type="text/javascript">
+var partial_popup_path = '<%= partial_popup_path%>';
+
+</script>
+
 <style>
-	.inactive_trans{display: none;}
-	.lock-p > img{width: 15px; margin-left: 1px;}
+	/* line 231, /vagrant/marketrexv4/app/assets/stylesheets/dashboard.css.scss */
+.ui-tooltip-content, .ui-tooltip {
+  min-width: none !important;
+  background: #000;
+  color: #ffffff;
+  border: none;
+  
+}
+
 </style>
+
