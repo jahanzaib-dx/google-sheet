@@ -16,10 +16,10 @@ jQuery("document").ready(function (){
         jQuery(this).parent('li').addClass("active-locl");
         jQuery(this).addClass("selected");
     });
-
-
+    
     jQuery("#btn-decline-comp-request").on("click", function (){
         var $btn = jQuery(this);
+		var comptype = $btn.data("comptype");
         uiConfirm('Remove Request?','Are you sure you want to reject selected requests?', function (){
             closePopup();
             displayOverlay = true;
@@ -28,8 +28,13 @@ jQuery("document").ready(function (){
                 ids.push( $(this).val() );
             });
 
-            jQuery.post($btn.data('href'), {"ids[]": ids}, function (json){
+            jQuery.post($btn.data('href'), {"ids[]": ids,"comptype":comptype}, function (json){
                 if(json.status == 'success') {
+					
+					jQuery('input[name^="comp_request_ids"]:checked').each(function (){
+						$(this).parents('tr').slideUp();
+						/*ids.push( $(this).val() );*/
+					});
                     $btn.parents('tr').slideUp();
                     uiAlert('Success', 'Request removed');
                 }
