@@ -182,3 +182,11 @@ function closePopup()
 
 }
 
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+
+$(document).ready(function(){
+    $('[data-tooltip="tooltip"]').tooltip(); 
+});
+

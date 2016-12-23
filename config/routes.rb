@@ -100,6 +100,7 @@ Rails.application.routes.draw do
 
 
   get 'activity_log' => 'activity_log#index'
+  get 'activity_logs/:comp_type' => 'activity_logs#index'
   match 'comp_requests/:direction', :to => 'comp_requests#index', :as => :comp_requests, :via => [:get]
   get 'comp_requests/:direction/:comp_type' => 'comp_requests#index'
   post 'comp_requests' => 'comp_requests#create'
@@ -108,6 +109,9 @@ Rails.application.routes.draw do
   post 'delete_comp_requests' => 'comp_requests#destroy'
   post 'create_comp_requests' => 'comp_requests#create'
   post 'full_transparency' => 'comp_requests#full_transparency'
+  post 'partial_popup' => 'comp_requests#partial_popup'
+  get 'partial_popup' => 'comp_requests#partial_popup'
+  post 'partial_transparency' => 'comp_requests#partial_transparency'
 
 
 

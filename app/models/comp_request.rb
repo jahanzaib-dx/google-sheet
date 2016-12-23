@@ -16,6 +16,9 @@ class CompRequest < ActiveRecord::Base
   scope :initiated_by, ->(user_id,comp_type) { where("initiator_id = #{user_id} AND comp_requests.comp_type='#{comp_type}'", user_id ).all }
 
 
+  FULL     = "full"
+  PARTIAL     = "partial"
+  
   #scope :lease_requests, ->(){ join(:tenant_record).where("tenant_record.") }
 
 
@@ -52,5 +55,71 @@ class CompRequest < ActiveRecord::Base
     end
     comp_request
   end
+  
+  def log_my_activity comp_request, curent_user
+    parameters = {:comp_id => comp_request.comp_id, :receiver_id => comp_request.agent_id, :initiator_id => curent_user, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
+    activity_log = ActivityLog.new(parameters)
+    activity_log.save()
+  end
+  
+  def create_full_transparency comp_request, params  
+      ## save in shared comp
+      shared = SharedComp.new()
+      shared.comp_id = comp_request.comp_id
+      shared.agent_id = comp_request.initiator_id
+      shared.comp_type = comp_request.comp_type
+      shared.comp_status = FULL
+      shared.ownership = params[:access]==FULL ? true : false
+      ##shared.save
+      
+      if shared.save && comp_request.initiated_by.settings.email
+        DxMailer.comp_request_approved(comp_request)
+      end
+      
+      if shared.ownership
+        ## select lease or sale
+        if shared.comp_type == 'lease'
+          comp_record = TenantRecord.where(:id =>  shared.comp_id).first
+          comp_record_new = TenantRecord.new()
+        elsif  
+          comp_record_new = SaleRecord.new()
+        end
+        
+           ##duplicate comp in agent database
+           comp_record_new = comp_record.dup
+           comp_record_new.user_id = comp_request.initiator_id
+           comp_record_new.save
+        
+      end
+      
+      log_my_activity shared, comp_request.initiator_id
+    
+    end
+    
+    def create_partial_tranprency comp_request, params
+      
+      shared = SharedComp.new()
+      shared.comp_id = comp_request.comp_id
+      shared.agent_id = comp_request.initiator_id
+      shared.comp_type = comp_request.comp_type
+      shared.comp_status = PARTIAL
+      shared.ownership = false
+      shared.save
+      
+      if shared.save && comp_request.initiated_by.settings.email
+        DxMailer.comp_request_approved(comp_request)
+      end
+      
+      ## save each field name in Comp_unlock_field table
+      params[:unlock].each do |unlock|
+        unlock_field = CompUnlockField.new()
+        unlock_field.field_name = unlock[0]
+        unlock_field.shared_comp_id = shared.id
+        unlock_field.save
+      end
+      
+      log_my_activity shared, comp_request.initiator_id
+      
+    end
 
 end
