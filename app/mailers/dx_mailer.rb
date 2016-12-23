@@ -40,5 +40,20 @@ class DxMailer < ActionMailer::Base
       end
     end
 	end
+	
+	def comp_request_unlock(comp_request)    
+    @comp_request = comp_request
+    mail(to: comp_request.received_by.email, subject: "New Unlock Request")
+  end
+  
+  def comp_request_approved(comp_request)
+    @comp_request = comp_request
+    mail(to: comp_request.initiated_by.email, subject: "Request Approved")
+  end
+  
+  def comp_request_declined(comp_request)
+    @comp_request = comp_request
+    mail( :to => comp_request.initiated_by.email, :subject => "Request Declined" )
+  end
 
 end

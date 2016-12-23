@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="comp-width-container">
+    <div class="col-md-12 comp-background-container ">
+      <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+     <br/><br/>
+      <div class="comp-table-container">
+      	
+        <h1 class="detail-comp-hadding">Custom Transparency</h1>
+        <br/>
+        Tier 3 – your connection is NOT granted full access but may access only those details that you give permission to access. Your connection does not have the ability to grant access to the comp or any information in the comp to anyone
+        
+        <%= form_tag partial_transparency_path do %>
+        <table width="100%" border="0">
+          <tr>
+            <td height="104"><h1 class="comp-table-hadding">Lease</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+            <td><h1 class="comp-table-hadding">Building</h1></td>
+            <td><h1 class="comp-table-hadding"></h1></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Tenant Name</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[company]"> <%=@comp_record.company.to_s.capitalize%></p></td>
+            <td><p class="comp-table-pre">Property Name </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[property_name]">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Industry </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[industry_type]"> <%=@comp_record.industry_type%></p></td>
+            <td><p class="comp-table-pre">Property Type</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[property_type]"> <%= @comp_record.property_type.to_s.capitalize! %> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Size (SF)</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[size]"> <%=@comp_record.size%> </p></td>
+
+            <td><p class="comp-table-pre">Class Type</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[class_type]"> <%=@comp_record.class_type.to_s.capitalize!%> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Base Rent ($/SF) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[base_rent]"> <%= number_to_currency(@comp_record.base_rent.to_f, {:precision=>2})%></p></td>
+
+
+            <td></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Escalation (%) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[escalation]"> <%=@comp_record.escalation%></p></td>
+            <td><p class="comp-table-pre"><h1 class="comp-table-hadding">Location</h1></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Lease Structure </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[leasestructure_name]"> <%=@comp_record.data['leasestructure_name']%></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Commencement Date </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="" checked="checked" disabled="disabled"> <%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></p></td>
+            <td><p class="comp-table-pre">Address</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="" checked="checked" disabled="disabled"> <%=@comp_record.address1%> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Term (Months) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[lease_term_months]"> <%=@comp_record.lease_term_months%></p></td>
+            <td><p class="comp-table-pre">Suite</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[suite]"> <%= @comp_record.suite %> </p></td>
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Free Rent (Months) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[free_rent]"> <%=@comp_record.free_rent%></p></td>
+            <td><p class="comp-table-pre">City</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[city]"> <%=@comp_record.city%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Tenant Improvements ($/SF) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[tenant_improvement]"> <%= number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre">State</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[state]"> <%=@comp_record.state%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[landlord_concessions_per_sf]"> <%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre">Zip</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[zipcode]"> <%=@comp_record.zipcode%> </p></td>
+
+          </tr>
+          <tr>
+            <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[tenant_ti_cost]"> <%= number_to_currency(@comp_record.tenant_ti_cost.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre">Submarket</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[submarket]"> <%=@comp_record.submarket%> </p></td>
+
+          </tr>
+
+          <tr>
+            <td><p class="comp-table-pre">Lease Type</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[lease_type]"> <%=@comp_record.lease_type%></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+          
+          <tr>
+            <td><p class="comp-table-pre">&nbsp;</p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"> </p></td>
+
+          </tr>
+          
+          <tr>
+            <td colspan="4" align="center"><button type="button" class="tx_save_profile submitpartial" style="float: none;">Save</button></td>
+            <input type="hidden" name="partial_comp_id" id="partial_comp_id" />
+
+          </tr>
+          
+        </table>
+        <% end %>
+      </div>
+    </div>
+    
+  </div>
+</div>

@@ -73,31 +73,34 @@ jQuery("document").ready(function (){
     });
     
     //-----------------------------------------------------------------------------------------------------------
-    
     // full transprancy
+    
+    var selected_check_obj = $(".tx_search_result_table .checkbox-info input:checkbox:checked");
+    
+    $(".checkbox-info input:checkbox").on("click", function (){
+    	selected_check_obj = $(".tx_search_result_table .checkbox-info input:checkbox:checked");
+    });
+    
+    jQuery(".lock-n").on("click", function (){ 
+    	if (!validate_transprancy()){
+    		$('#Modalfull').modal('hide');
+        	return false;
+        }
+    });
+    
     jQuery("#btn-grant-access").on("click", function (){
-    	$('#Modalfull').modal('hide');
-        displayOverlay = true;
+    	
+    	
+        //displayOverlay = true;
         //$('#basicModal').modal('hide');
         var $btn = jQuery(this);
         
-        var $selected_check_obj = $(".checkbox-info input:checkbox:checked")
-        
-        if ($selected_check_obj.size() > 1) {
-        	// error 
-        	uiAlert('Error!','Select only one comp to grant access');
-        	return;
-        }
-        
-        if ($selected_check_obj.size() < 1) {
-        	// error 
-        	uiAlert('Error!','Select one comp to grant access');
-        	return;
-        }
-        
-        var selected_comp_id = $selected_check_obj.val();
+        var selected_comp_id = selected_check_obj.val();
         $("#access_comp_id").val(selected_comp_id);
         
+        if (!validate_tires()) {        	
+        	return false;
+        }
         
         var $form = $btn.parents('form')
         var dataString = $form.serialize();
@@ -111,7 +114,9 @@ jQuery("document").ready(function (){
             success: function(data) {
                 //console.log(data);
                 if(data.status == 'success'){
-                	$selected_check_obj.parents('tr').slideUp();
+                	$('#Modalfull').modal('hide');
+                	selected_check_obj.attr('checked',false);
+                	selected_check_obj.parents('tr').slideUp();
                     uiAlert('Success','Access for selected comps granted successfully');
                     
                 }else{
@@ -156,6 +161,104 @@ jQuery("document").ready(function (){
 	      $(".inactive_trans").parents('li.active-locl').removeClass("active-locl");  
 	    });
 	});
+	
+	function validate_transprancy(){	
+		        
+        if (selected_check_obj.size() > 1) {
+        	// error 
+        	uiAlert('Error!','Select only one comp to grant access');
+        	return false;
+        }
+        
+        if (selected_check_obj.size() < 1) {
+        	// error 
+        	uiAlert('Error!','Select one comp to grant access');
+        	return false;
+        }
+		
+		return true;
+	}
+	
+	function validate_tires() {
+		if ($(".tire12 input:checkbox:checked").size() < 1){
+			uiAlert('Error!','Please select tire 1 or tire 2');
+        	return false;
+		}
+		return true;
+	}
+	
+	
+	
+		$('.lock-p').on('click', function(){
+		$('#trans_spinner').show();
+		//$( ".trans_spinner" ).toggle();
+		var $modal = $('#load_popup_modal_show_id');
+        
+        //var $selected_check_obj = $(".checkbox-info input:checkbox:checked");
+        
+        if (!validate_transprancy()){
+        	$('#Modalpartial').modal('hide');
+        	return false;
+        }
+        
+        var selected_comp_id = selected_check_obj.val();
+        
+		$modal.load(partial_popup_path,{'id': selected_comp_id},
+			function(){
+				$('#trans_spinner').hide();
+				//$( ".trans_spinner" ).toggle();
+				
+				//$modal.modal('show');
+			});
+		});
+		
+		// ------------------------------partial transprancy---------------------------
+		
+		jQuery(document).on("click", '.submitpartial', function (){
+
+    	
+        //displayOverlay = true;
+        //$('#basicModal').modal('hide');
+        var $btn = jQuery(this);
+        
+        var selected_comp_id = selected_check_obj.val();
+        $("#partial_comp_id").val(selected_comp_id);
+        
+        /*if (!validate_tires()) {
+        	return false;
+        }*/
+        
+        var $form = $btn.parents('form')
+        var dataString = $form.serialize();
+        //console.log($form.attr('action'));
+        //console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: dataString,
+            dataType: "json",
+            success: function(data) {
+                //console.log(data);
+                if(data.status == 'success'){
+                	$('#Modalpartial').modal('hide');
+                	selected_check_obj.attr('checked',false);
+                	selected_check_obj.parents('tr').slideUp();
+                    uiAlert('Success','Access for selected comps granted successfully');
+                    
+                }else{
+                    uiAlert('Error!','Unable to grant access. '+data.message);
+                    // if(data.issue == 'Mobile Validation'){
+                        // document.location.href = data.url;
+                    // }else {
+                        // $('#basicModal').modal('show');
+                    // }
+                }
+            }
+        });
+
+        return false;
+    });
+
 
 
 });

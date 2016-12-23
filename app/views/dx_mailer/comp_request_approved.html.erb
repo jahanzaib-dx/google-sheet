@@ -1,0 +1,13 @@
+<%= render 'partials/email_header' %>
+
+<div class="email-content">
+
+	Hello <%= @comp_request.initiated_by.first_name %>!
+
+<%= @comp_request.received_by.name %> has approved your request.
+
+Please <a href="<%= activity_logs_url %>/<%= @comp_request.comp_type %>">click here</a> to view details.
+	
+</div>
+
+<%= render 'partials/email_footer' %>
