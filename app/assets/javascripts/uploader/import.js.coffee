@@ -52,6 +52,15 @@ $(document).ready ->
   $('#bulk-comp-continue-2-a').on 'click' , (e) ->
     $(this).parents('.accordion-content').find('form').trigger('submit');
 
+  $('.fileToUpload_white_glove').on 'change', ->
+    fullPath = $('.fileToUpload_white_glove').val()
+    if fullPath
+      startIndex = if fullPath.indexOf('\\') >= 0 then fullPath.lastIndexOf('\\') else fullPath.lastIndexOf('/')
+      filename = fullPath.substring(startIndex)
+      if filename.indexOf('\\') == 0 or filename.indexOf('/') == 0
+        filename = filename.substring(1)
+      $('.uploaded_file_name').html('You have selected "<b>' + filename + '</b>"').show()
+
   $(document).on 'change', '.bulk-column-header-dd', (e) ->
     $(@).parent().siblings('.first').find('.bulk-column-header-value').val($(@).find(":selected").text())
 
