@@ -1,0 +1,15 @@
+<%= render 'partials/email_header' %>
+
+<div class="email-content">
+
+Hello <%= @comp_request.received_by.first_name %>! 
+
+<%= @comp_request.initiated_by.name %> has sent you an unlock request. 
+
+Please <a href="<%= comp_requests_url('incoming') %>/<%= @comp_request.comp_type %>">click here</a> to view details.
+
+Want to reach out to <%= @comp_request.initiated_by.first_name %>? Send a message or view <a href="<%= dashboard_url() %>">contact details</a>
+
+</div>
+
+<%= render 'partials/email_footer' %>
