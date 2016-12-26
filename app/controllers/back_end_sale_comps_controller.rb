@@ -3,7 +3,7 @@ class BackEndSaleCompsController < ApplicationController
   require 'digest/sha1'
   require 'time'
   def index
-    sale_records = SaleRecord.where('user_id = ?', @current_user)
+    sale_records = SaleRecord.where('user_id = ?', @current_user).order(:id)
 
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
