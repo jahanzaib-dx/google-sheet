@@ -35,7 +35,7 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 16] = tenant_record.free_rent
         ws[counter, 17] = tenant_record.size
         ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = tenant_record.lease_structure
+        ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
@@ -96,7 +96,7 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 16] = tenant_record.free_rent
         ws[counter, 17] = tenant_record.size
         ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = tenant_record.lease_structure
+        ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
@@ -201,7 +201,7 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 17] = tenant_record.free_rent
        ws[counter, 18] = tenant_record.size
        ws[counter, 19] = tenant_record.deal_type
-       ws[counter, 20] = tenant_record.lease_structure
+       ws[counter, 20] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
        ws[counter, 21] = tenant_record.base_rent
        counter+=1
      end
