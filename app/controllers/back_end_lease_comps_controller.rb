@@ -167,7 +167,7 @@ class BackEndLeaseCompsController < ApplicationController
     end
     deleted = ids.any? ? TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : TenantRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
-    redirect_to root_url
+    redirect_to database_back_ends_path
   end
 
   def duplication
@@ -261,6 +261,6 @@ class BackEndLeaseCompsController < ApplicationController
     end
     deleted = TenantRecord.where('id IN (?) and user_id = ?',ids,@current_user)
     deleted.destroy_all
-    redirect_to root_url
+    redirect_to database_back_ends_path
   end
 end

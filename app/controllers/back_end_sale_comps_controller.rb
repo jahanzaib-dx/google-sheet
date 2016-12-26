@@ -18,8 +18,8 @@ class BackEndSaleCompsController < ApplicationController
       counter=2
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
-        # ws[counter, 2] = sale_record.image
-        # ws[counter, 3] = sale_record.comp_type
+        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 3] = sale_record.view_type
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
         ws[counter, 6] = sale_record.state
@@ -64,8 +64,8 @@ class BackEndSaleCompsController < ApplicationController
       counter=2
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
-        # ws[counter, 2] = sale_record.image
-        # ws[counter, 3] = sale_record.comp_type
+        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 3] = sale_record.view_type
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
         ws[counter, 6] = sale_record.state
@@ -127,7 +127,7 @@ class BackEndSaleCompsController < ApplicationController
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
             # :image => ws[counter, 2],
-            # :comp_type => ws[counter, 3],
+            :view_type => ws[counter, 3],
             :address1 => ws[counter, 4],
             :city =>  ws[counter, 5],
             :state => ws[counter, 6],
@@ -149,7 +149,7 @@ class BackEndSaleCompsController < ApplicationController
     end
     deleted = ids.any? ? SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : SaleRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
-    redirect_to root_url
+    redirect_to database_back_ends_path
   end
 
   def duplication
@@ -167,8 +167,8 @@ class BackEndSaleCompsController < ApplicationController
     sale_records.each do |sale_record|
       ws[counter, 1] = sale_record.id
       ws[counter, 2] = 'Keep'
-      # ws[counter, 3] = sale_record.image
-      # ws[counter, 4] = sale_record.comp_type
+      ws[counter, 3] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+      ws[counter, 4] = sale_record.view_type
       ws[counter, 5] = sale_record.address1
       ws[counter, 6] = sale_record.city
       ws[counter, 7] = sale_record.state
@@ -216,7 +216,7 @@ class BackEndSaleCompsController < ApplicationController
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
             # :image => ws[counter, 3],
-            # :comp_type => ws[counter, 4],
+            :view_type => ws[counter, 4],
             :address1 => ws[counter, 5],
             :city =>  ws[counter, 6],
             :state => ws[counter, 7],
@@ -238,6 +238,6 @@ class BackEndSaleCompsController < ApplicationController
     end
     deleted = SaleRecord.where('id IN (?) and user_id = ?',ids,@current_user)
     deleted.destroy_all
-    redirect_to root_url
+    redirect_to database_back_ends_path
   end
 end
