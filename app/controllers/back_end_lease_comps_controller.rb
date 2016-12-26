@@ -79,7 +79,7 @@ class BackEndLeaseCompsController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = "=image('http://www.google.com/maps?cbll=#{tenant_record.latitude},#{tenant_record.longitude}&layer=c',2)"
+        ws[counter, 2] = '=image("http://www.google.com/maps?cbll=#{tenant_record.latitude},#{tenant_record.longitude}&layer=c",2)'
         ws[counter, 3] = tenant_record.comp_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
