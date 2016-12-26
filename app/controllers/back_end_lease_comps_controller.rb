@@ -3,7 +3,7 @@ class BackEndLeaseCompsController < ApplicationController
   require 'digest/sha1'
   require 'time'
   def index
-    tenant_records = TenantRecord.where('user_id = ?', @current_user)
+    tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
 
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
