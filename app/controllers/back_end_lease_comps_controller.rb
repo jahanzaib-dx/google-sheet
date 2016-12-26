@@ -18,7 +18,7 @@ class BackEndLeaseCompsController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = "=image('http://www.google.com/maps?cbll=#{tenant_record.latitude},#{tenant_record.longitude}&layer=c',2)"
+        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -35,7 +35,7 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 16] = tenant_record.free_rent
         ws[counter, 17] = tenant_record.size
         ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 19] = tenant_record.lease_structure
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
@@ -96,7 +96,7 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 16] = tenant_record.free_rent
         ws[counter, 17] = tenant_record.size
         ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 19] = tenant_record.lease_structure
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
@@ -184,7 +184,7 @@ class BackEndLeaseCompsController < ApplicationController
      tenant_records.each do |tenant_record|
        ws[counter, 1] = tenant_record.id
        ws[counter, 2] = 'Keep'
-       # ws[counter, 3] = tenant_record.image
+       ws[counter, 3] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
        ws[counter, 4] = tenant_record.comp_type
        ws[counter, 5] = tenant_record.company
        ws[counter, 6] = tenant_record.industry_type
@@ -201,7 +201,7 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 17] = tenant_record.free_rent
        ws[counter, 18] = tenant_record.size
        ws[counter, 19] = tenant_record.deal_type
-       ws[counter, 20] = 'Lease Structure'
+       ws[counter, 20] = tenant_record.lease_structure
        ws[counter, 21] = tenant_record.base_rent
        counter+=1
      end
