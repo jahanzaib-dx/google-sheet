@@ -87,10 +87,10 @@ jQuery("document").ready(function (){
     });
     
     jQuery(".lock-n").on("click", function (){ 
-    	if (!validate_transprancy()){
+    	/*if (!validate_transprancy()){
     		$('#Modalfull').modal('hide');
         	return false;
-        }
+        }*/
     });
     
     jQuery("#btn-grant-access").on("click", function (){
@@ -111,10 +111,17 @@ jQuery("document").ready(function (){
         var dataString = $form.serialize();
         //console.log($form.attr('action'));
         //console.log(dataString);
+        var ids = [];
+        jQuery('input[name^="comp_request_ids"]:checked').each(function (){
+            ids.push( $(this).val() );
+        });
+        
+        var access = $('input[name="access"]:checked').val();        
+            
         $.ajax({
             type: "POST",
             url: $form.attr('action'),
-            data: dataString,
+            data: {"ids[]": ids,"access":access},
             dataType: "json",
             success: function(data) {
                 //console.log(data);
@@ -195,17 +202,20 @@ jQuery("document").ready(function (){
 	
 	
 		$('.lock-p').on('click', function(){
-		$('#trans_spinner').show();
+		
 		//$( ".trans_spinner" ).toggle();
 		var $modal = $('#load_popup_modal_show_id');
         
         //var $selected_check_obj = $(".checkbox-info input:checkbox:checked");
-        
+        if ($(".lock-b-gray").is(":visible") ) {
+        	return false;        	
+        }
         if (!validate_transprancy()){
         	$('#Modalpartial').modal('hide');
         	return false;
         }
         
+        $('#trans_spinner').show();
         var selected_comp_id = selected_check_obj.val();
         
 		$modal.load(partial_popup_path,{'id': selected_comp_id},

@@ -56,13 +56,13 @@ class CompRequest < ActiveRecord::Base
     comp_request
   end
   
-  def log_my_activity comp_request, curent_user
+  def self.log_my_activity comp_request, curent_user
     parameters = {:comp_id => comp_request.comp_id, :receiver_id => comp_request.agent_id, :initiator_id => curent_user, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
     activity_log = ActivityLog.new(parameters)
     activity_log.save()
   end
   
-  def create_full_transparency comp_request, params  
+  def self.create_full_transparency comp_request, params  
       ## save in shared comp
       shared = SharedComp.new()
       shared.comp_id = comp_request.comp_id
@@ -80,18 +80,22 @@ class CompRequest < ActiveRecord::Base
         ## select lease or sale
         if shared.comp_type == 'lease'
           comp_record = TenantRecord.where(:id =>  shared.comp_id).first
+          pkid = TenantRecord.maximum(:id).to_i.next
           comp_record_new = TenantRecord.new()
         elsif  
+          comp_record = SaleRecord.where(:id =>  shared.comp_id).first
+          pkid = SaleRecord.maximum(:id).to_i.next
           comp_record_new = SaleRecord.new()
         end
         
            ##duplicate comp in agent database
            comp_record_new = comp_record.dup
+           comp_record_new.id = pkid
            comp_record_new.user_id = comp_request.initiator_id
            comp_record_new.save
         
       end
-      
+      comp_request.destroy
       log_my_activity shared, comp_request.initiator_id
     
     end
