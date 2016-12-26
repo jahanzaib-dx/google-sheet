@@ -96,14 +96,14 @@ class CompRequestsController < ApplicationController
     
     if !params[:access].blank?
       
-      comp_request = CompRequest.where(:id =>  params[:id]).first
-        
-      comp_request.create_full_transparency comp_request, params      
+      comp_requests = CompRequest.where(:id =>  params[:ids])
+      
+      comp_requests.each do |comp_request|
+        CompRequest.create_full_transparency comp_request, params  
+      end     
             
     end
-      
-      comp_request.destroy
-   
+    
     render json: {:status => :success}
   end
   
