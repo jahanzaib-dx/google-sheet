@@ -71,6 +71,7 @@
         </div>
       </div>
       <h5>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></h5>
+      <h5 id="manage_dups" >Manage Dupes.</h5>
     </div>
   </div>
 
@@ -101,6 +102,8 @@
     $('#ImageBrowse').hide('fast');
     $('#custom_record').hide('fast');
     $('#database_map_search').hide('fast');
+    $('#duplication').parent().hide('fast');
+    $('#manage_dups').hide('fast');
 
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
@@ -112,6 +115,8 @@
       $('#ImageBrowse').hide('fast');
       $('#custom_record').hide('fast');
       $('#database_map_search').hide('fast');
+      $('#duplication').parent().hide('fast');
+      $('#manage_dups').hide('fast');
 
       if($('#data_type').val()=="lease")
       {
@@ -127,6 +132,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
+            $('#duplication').parent().show();
+
           }
         });
       }
@@ -145,6 +152,7 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
+            $('#duplication').parent().show();
           }
         });
       }
@@ -227,6 +235,7 @@
       $('#ImageBrowse').hide('fast');
       $('#custom_record').hide('fast');
       $('#database_map_search').hide('fast');
+      $('#duplication').parent().hide('fast');
       var url;
       var delete_url;
       if($('#data_type').val()=="lease")
@@ -246,6 +255,7 @@
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
           $('#tx_linkdin_profile').attr('href',delete_url+'/'+result.file_temp);
           $('#tx_linkdin_profile').show('fast');
+          $('#manage_dups').show('fast');
         }
 
       });
