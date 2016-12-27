@@ -61,8 +61,27 @@ class BackEndSaleCompsController < ApplicationController
       @file = BackEndSaleComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
+      max_rows = ws.num_rows
       counter=2
       sale_records.each do |sale_record|
+        if sale_record.id == ws[counter,1] or ws[counter,1] == ''
+          ws[counter, 1] = ''
+          ws[counter, 2] = ''
+          ws[counter, 3] = ''
+          ws[counter, 4] = ''
+          ws[counter, 5] = ''
+          ws[counter, 6] = ''
+          ws[counter, 7] = ''
+          ws[counter, 8] = ''
+          ws[counter, 9] = ''
+          ws[counter, 10] = ''
+          ws[counter, 11] = ''
+          ws[counter, 12] = ''
+          ws[counter, 13] = ''
+          ws[counter, 14] = ''
+          ws[counter, 15] = ''
+          counter+=1
+        end
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = sale_record.view_type
@@ -80,11 +99,28 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 15] = sale_record.cap_rate
         counter+=1
       end
+      if max_rows>=counter
+        while counter<=max_rows
+          ws[counter, 1] = ''
+          ws[counter, 2] = ''
+          ws[counter, 3] = ''
+          ws[counter, 4] = ''
+          ws[counter, 5] = ''
+          ws[counter, 6] = ''
+          ws[counter, 7] = ''
+          ws[counter, 8] = ''
+          ws[counter, 9] = ''
+          ws[counter, 10] = ''
+          ws[counter, 11] = ''
+          ws[counter, 12] = ''
+          ws[counter, 13] = ''
+          ws[counter, 14] = ''
+          ws[counter, 15] = ''
+          counter+=1
+        end
+      end
       ws.save()
-
-
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
-
       session.drive.batch do
         user_permission = {
             value: 'default',
