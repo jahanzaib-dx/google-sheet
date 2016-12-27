@@ -100,7 +100,7 @@ class CompRequest < ActiveRecord::Base
     
     end
     
-    def create_partial_tranprency comp_request, params
+    def self.create_partial_tranprency comp_request, params
       
       shared = SharedComp.new()
       shared.comp_id = comp_request.comp_id
