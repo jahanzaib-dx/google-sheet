@@ -64,7 +64,7 @@ class BackEndSaleCompsController < ApplicationController
       max_rows = ws.num_rows
       counter=2
       sale_records.each do |sale_record|
-        if ws[counter,1] != sale_record.id.to_s
+        while ws[counter,1] != sale_record.id.to_s
           ws[counter, 2] = ''
           ws[counter, 3] = ''
           ws[counter, 4] = ''
@@ -158,6 +158,9 @@ class BackEndSaleCompsController < ApplicationController
       #   ws[counter, 1] =  counter
       #   next
       # end
+      while ws[counter,1] != sale_record.id.to_s
+        counter+=1
+      end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
