@@ -65,7 +65,6 @@ class BackEndSaleCompsController < ApplicationController
       counter=2
       sale_records.each do |sale_record|
         if ws[counter,1] != sale_record.id.to_s
-          ws[counter, 1] = ''
           ws[counter, 2] = ''
           ws[counter, 3] = ''
           ws[counter, 4] = ''
