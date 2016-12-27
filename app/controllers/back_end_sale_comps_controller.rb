@@ -64,7 +64,7 @@ class BackEndSaleCompsController < ApplicationController
       max_rows = ws.num_rows
       counter=2
       sale_records.each do |sale_record|
-        if sale_record.id == ws[counter,1] or ws[counter,1] == ''
+        if sale_record.id != ws[counter,1] or ws[counter,1] == ''
           ws[counter, 1] = ''
           ws[counter, 2] = ''
           ws[counter, 3] = ''
