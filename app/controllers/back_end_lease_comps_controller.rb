@@ -77,7 +77,7 @@ class BackEndLeaseCompsController < ApplicationController
       # end
       counter=2
       tenant_records.each do |tenant_record|
-        if tenant_record.id == ws[counter,1] or ws[counter,1] == ''
+        if tenant_record.id != ws[counter,1] or ws[counter,1] == ''
           ws[counter, 1] = ''
           ws[counter, 2] = ''
           ws[counter, 3] = ''
