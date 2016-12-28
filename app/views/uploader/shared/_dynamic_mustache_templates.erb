@@ -1,7 +1,7 @@
 <script type="text/html" id="default-fields-geo-code-selection">
-  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]', nil, class: ' validate[required]' %></td></tr>
-  <tr><td><%= label_tag nil, 'City*' %></td><td><%= text_field_tag 'custom_record[city]', nil, class: ' validate[required]' %></td></tr>
-  <tr><td><%= label_tag nil, 'State*' %></td><td><%= select_tag "custom_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]', style: "margin: 0px;" %></td></tr>
+  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]', nil, class: ' validate[required]', id: "autocomplete4", onFocus: "geolocate()"  %></td></tr>
+  <tr><td><%= label_tag nil, 'City*' %></td><td><%= text_field_tag 'custom_record[city]', nil, class: ' validate[required]', id: "locality4" %></td></tr>
+  <tr><td><%= label_tag nil, 'State*' %></td><td><%= text_field_tag "custom_record[state]", nil, class: 'validate[required]', style: "margin: 0px;", id: "administrative_area_level_14" %></td></tr>
 </script>
 <!-- for bulk upload-->
 <script type="text/html" id="bulk-default-fields-geo-code-selection">
