@@ -11,19 +11,19 @@
     </thead>
     <tbody>
       <% if f.object.custom %>
-      <% f.object.custom.each_with_index do |(key, value), index| %>
-      <tr>
-        <td>
-          <%= text_field :custom, index, name: "tenant_record[custom][#{index}][key]", value: key.split('_').map(&:capitalize).join(' ') %>
-        </td>
-        <td>
-          <%= text_field :custom, index, name: "tenant_record[custom][#{index}][value]", value: value %>
-        </td>
-        <td class="actions">
-          <a href="#" type="button" class='btn btn-red delete-custom-field'><span>delete</span></a>
-        </td>
-      </tr>
-      <% end %>
+        <% f.object.custom.each_with_index do |(key, value), index| %>
+        <tr>
+          <td>
+            <%= text_field :custom, index, name: "tenant_record[custom][#{index}][key]", value: key.split('_').map(&:capitalize).join(' ') %>
+          </td>
+          <td>
+            <%= text_field :custom, index, name: "tenant_record[custom][#{index}][value]", value: value %>
+          </td>
+          <td class="actions">
+            <a href="#" type="button" class='btn btn-red delete-custom-field'><span>delete</span></a>
+          </td>
+        </tr>
+        <% end %>
       <% end %>
     </tbody>
     <tfoot>
