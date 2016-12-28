@@ -262,11 +262,11 @@ $(document).ready ->
       if selected.val() == 'yes'
         $('#custom_record_name').prop("disabled", true);
         $('.existing-data-set-container').css 'display', 'block'
-        #$('.new-data-set-container').css 'display', 'none'
+        $('.new-data-set-container').css 'display', 'none'
       else
         $('#custom_record_name').val('').prop("disabled", false);
         $('.existing-data-set-container').css 'display', 'none'
-  #$('.new-data-set-container').css 'display', 'block'
+        $('.new-data-set-container').css 'display', 'block'
 
   $(document).on 'click', '.add-row-custom-data-geocode-single-comp', (e)->
     e.preventDefault()

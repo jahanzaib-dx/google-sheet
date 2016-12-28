@@ -246,7 +246,7 @@
           <tr><td>Lease Term Months*</td><td><%= text_field_tag "tenant_record[lease_term_months]", nil,  class: "validate[required]" %></td></tr>
           <tr class="free-rent-row"><td>Free Rent Months*</td><td><%= text_field_tag "tenant_record[free_rent]", nil, class: " validate[required]" %></td></tr>
           <tr><td>Size*</td><td><%= text_field_tag "tenant_record[size]" , nil, placeholder: 'SF', class: " validate[required]" %></td></tr>
-          <tr class="tenant-improvement-row"><td>Tenant Improvement*</td><td><%= text_field_tag "tenant_record[tenant_improvement]", nil, placeholder: '$/SF', class: " validate[condRequired['tenant_record[is_tenant_improvement]']" %></td></tr>
+          <tr class="tenant-improvement-row"><td>Tenant Improvement*</td><td><%= text_field_tag "tenant_record[tenant_improvement]", nil, placeholder: '$/SF', class: "validate[required]" %></td></tr>
           <tr><td>Deal Type*</td>
             <td>
               <%= select_tag 'temp_comp_deal_type_dd',
