@@ -221,6 +221,7 @@ $(document).ready ->
         if $('.geo-code-my-records').is(':checked')
           html_default_fields = Mustache.render $('#default-fields-geo-code-selection').html()
           $('.fields-table-custom-data table tbody').html html_default_fields
+          initAutocomplete()
         else
           $('.fields-table-custom-data table tbody').empty()
         html_add_row = Mustache.render $('#add-button-geo-code-selection').html()
@@ -721,6 +722,10 @@ initAutocomplete = ->
   autocomplete3 = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete3'), types: [ 'geocode' ])
   autocomplete3.addListener 'place_changed', ->
     fillInAddress autocomplete3, '3'
+
+  autocomplete4 = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete4'), types: [ 'geocode' ])
+  autocomplete4.addListener 'place_changed', ->
+    fillInAddress autocomplete4, '4'
   return
 
 fillInAddress = (autocomplete, unique) ->
