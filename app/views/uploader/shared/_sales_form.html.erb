@@ -55,7 +55,7 @@
                   </tr>
                   <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]', nil, class: 'validate[required]', id: "autocomplete2", onFocus: "geolocate()"  %></td></tr>
                   <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality2" %></td></tr>
-                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]', id: "administrative_area_level_12" %></td></tr>
+                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_12" %></td></tr>
                   <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
@@ -148,7 +148,7 @@
                   </tr>
                   <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]',nil, class: ' validate[required]', id: "autocomplete3", onFocus: "geolocate()"   %></td></tr>
                   <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality3" %></td></tr>
-                  <tr><td>State*</td><td><%= select_tag "sale_record[state]", options_for_select(us_states), class: 'required custom-select validate[required]', id: "administrative_area_level_13" %></td></tr>
+                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_13" %></td></tr>
                   <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
