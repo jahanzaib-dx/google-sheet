@@ -124,7 +124,7 @@ class CompRequestsController < ApplicationController
   def partial_transparency
     comp_request = CompRequest.where(:id =>  params[:partial_comp_id]).first
     
-    comp_request.create_partial_tranprency comp_request, params    
+    CompRequest.create_partial_tranprency comp_request, params    
     
     comp_request.destroy
     
