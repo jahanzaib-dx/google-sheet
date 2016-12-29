@@ -1,5 +1,5 @@
 class SteppedRent < ActiveRecord::Base
-  # acts_as_paranoid
+  acts_as_paranoid
   belongs_to :tenant_record
   ###attr_accessible :tenant_record_id, :order, :months, :cost_per_month
 
