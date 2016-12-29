@@ -166,7 +166,6 @@ class Uploader::TenantRecordsController < ApplicationController
     unless(trec.save)
       Rails.logger.debug trec.errors.full_messages
     end
-    redirect_to '/tenant_records'
 
   end
 
