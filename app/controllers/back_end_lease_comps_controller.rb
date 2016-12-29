@@ -77,7 +77,7 @@ class BackEndLeaseCompsController < ApplicationController
       # end
       counter=2
       tenant_records.each do |tenant_record|
-        if ws[counter,1] != tenant_record.id.to_s
+        while ws[counter,1] != tenant_record.id.to_s
           ws[counter, 2] = ''
           ws[counter, 3] = ''
           ws[counter, 4] = ''
@@ -182,6 +182,9 @@ class BackEndLeaseCompsController < ApplicationController
     counter=2
     ids= Array.new
     tenant_records.each do |tenant_record|
+      while ws[counter,1] != tenant_record.id.to_s
+        counter+=1
+      end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
