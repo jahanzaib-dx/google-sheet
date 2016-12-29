@@ -1,29 +1,5 @@
-<tr>
-  <td height="51" class="result_lock_icon">
-    <% if activity_log.receiver_id == current_user.id %>
-        <%=
-           case activity_log.status
-           when 'Lock'
-             image_tag("lock.png" , :class => "lock_image");
-           when 'Unlock'
-             image_tag("lock-un.png" , :class => "unlock_img");
-           when 'Partial'
-             image_tag("un-lock.png" , :class => "partial_img");
-           end
-        %>
-    <% else %>
-        <%= "#{ activity_log.status=='Rejected'? 'Rejected':'Accepted' }" %>
-    <% end %>
-
-  </td>
-  <td class="result_line border_full"><p><%= activity_log.tenant_record.user.name %></p></td>
-  <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{activity_log.tenant_record.complete_address}"%></p></td>
-  <td class="result_line"><p><%= activity_log.tenant_record.user.firm_name %></p></td>
-  <td class="result_line"><p><%= activity_log.tenant_record.comp_type %></p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>4,000 - 9,999</p></td>
-  <td class="result_line"><p>1985</p></td>
-  <td width="34"></td>
-
-</tr>
+<% if params[:comp_type] == 'lease' || params[:comp_type] == 'sale' %>
+<%= render :partial => "activity_log_#{params[:comp_type]}", :locals => {:activity_log => activity_log} %>
+<% else %>
+<%= render @activity_logs %>
+<% end %>

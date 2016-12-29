@@ -26,24 +26,15 @@
 
 <div class="tx_search_result_table_container padding-hidden  perfectScrollbar-wheel">
   <table width="100%" border="0" class="tx_search_result_table ">
-    <tr class="tx_search_result_first_row">
-      <td height="51">Status <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
-      <td>Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
-      <td>Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
-      <td>Address</td>
-      <td>Header</td>
-      <td>Header</td>
-      <td>Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
-      <td>Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
-      <td>Header </td>
-      <td>Header </td>
-      <td>Header</td>
-      <td></td>
-    </tr>
-
-    <%= render @activity_logs %>
-
-
+  	
+  	<%= render "activity_#{params[:comp_type]}_header"%>
+  	
+  	<% if @activity_logs.count > 0 %>
+  		<%= render @activity_logs %>
+  	<% else %>
+  		<tr><td height="51" class="result_lock_icon" colspan="8">No activity Found</td></tr>
+  	<% end %>
+  	
   </table>
 </div>
 
@@ -52,7 +43,7 @@
     .result_lock_icon{font-size:13px;}
     .lock_img{width:25px !important;}
     .unlock_img{width:23px !important;}
-    .partial_img{width:27px !important;}
+    .partial_img{width:15px !important;}
 </style>
 
 
