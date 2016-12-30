@@ -1,15 +1,17 @@
 <tr>
-  <td height="51" class="result_img_icon border_full"><div class="checkbox checkbox-info">
-    <input type="checkbox" id="request_id_<%= comp_request.id %>" name="comp_request_ids[]" value="<%= comp_request.id %>">
-    <label for="request_id_<%= comp_request.id %>"> </label>
-  </div></td>
+  <td height="51" class="result_img_icon border_full">
+	  <div class="checkbox checkbox-info">
+	    <input type="checkbox" id="request_id_<%= comp_request.id %>" name="comp_request_ids[]" value="<%= comp_request.id %>">
+	    <label for="request_id_<%= comp_request.id %>"> </label>
+	  </div>
+  </td>
   <td class="result_line border_full"><p><%= comp_request.initiated_by.name %></p></td>
   <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{comp_request.tenant_record.complete_address}"%></p></td>
-  <td class="result_line"><p><%= comp_request.tenant_record.user.firm_name %></p></td>
-  <td class="result_line"><p><%= comp_request.tenant_record.comp_type %></p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>4,000 - 9,999</p></td>
-  <td class="result_line"><p>1985</p></td>
-  <td width="34"></td>
+  <td class="result_line"><p><%= comp_request.tenant_record.company %></p></td>
+  <td class="result_line"><p><%= number_to_currency(comp_request.tenant_record.base_rent.to_f, {:precision=>2}) %></p></td>
+  <td class="result_line"><p><%= number_with_precision(comp_request.tenant_record.net_effective_per_sf,:precision => 2) %></p></td>
+  <td class="result_line"><p><%= comp_request.tenant_record.lease_commencement_date.year %></p></td>
+  <!-- <td class="result_line"><p>4,000 - 9,999</p></td> -->
+  <!-- <td class="result_line"><p>1985</p></td> -->
+  <!-- <td width="34"></td> -->
 </tr>

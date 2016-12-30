@@ -30,13 +30,13 @@
                   <ul class="tx_lock_list">
                     <!-- <li><a class="btn-comp-request-status" data-status="Partial"><%= image_tag("un-lock.png")%></a></li> -->
                     <li>
-                    	<a href="#!" class="btn-comp-request-status lock-n active_trans" data-status="Unlock" data-toggle="modal"  data-target="#Modalfull" data-tooltip="tooltip" title="Click to see full transparency options" data-placement="top">
+                    	<a href="#!" class="btn-comp-request-status lock-n " data-status="Unlock" data-toggle="modal"  data-target="#Modalfull" data-tooltip="tooltip" title="Click to see full transparency options" data-placement="top">
                     		<%= image_tag("lock-un.png")%> 
                     	</a>
-                    	<a class="btn-comp-request-status lock-n inactive_trans"><%= image_tag("lock-un.png")%></a>
+                    	<!-- <a class="btn-comp-request-status lock-n inactive_trans"><%= image_tag("lock-un.png")%></a> -->
                     </li>
                     <li>
-                    	<a href="#!" class="btn-comp-request-status lock-p active_trans" data-status="Lock" data-toggle="modal"  data-target="#Modalpartial" data-tooltip="tooltip" title="Click to see custom transparency options" data-placement="top"><%= image_tag("lock-b.png")%></a>
+                    	<a href="#!" class="btn-comp-request-status lock-p active_trans" data-status="Lock" data-toggle="modal"  data-target="#Modalpartial" data-tooltip="tooltip" title="Click to see custom transparency options"><%= image_tag("lock-b.png")%></a>
                     	<a class="btn-comp-request-status lock-p inactive_trans lock-b-gray" ><%= image_tag("lock-b-gray.png")%></a>
                     </li>
                   </ul>
@@ -55,7 +55,10 @@
                 <input type="hidden" name="astatus" id="astatus_id" />
 
                 <table width="100%" border="0" class="tx_search_result_table table_full">
-                  <tr class="tx_search_result_first_row">
+                	
+                	
+                	
+                  <!-- <tr class="tx_search_result_first_row">
                     <td width="56" height="51"></td>
                     <td width="145">Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
                     <td width="334">Address <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
@@ -66,7 +69,11 @@
                     <td width="122">Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
                     <td width="118">Header <a href="#!"> <i class="fa fa-caret-down"></i> </a></td>
                     <td width="34"></td>
-                  </tr>
+                  </tr> -->
+                  
+                  
+                  
+                    <%= render "#{params[:direction]}_#{params[:comp_type]}_header" %>
 
 
                     <%= render @comp_requests %>
@@ -147,6 +154,7 @@ var partial_popup_path = '<%= partial_popup_path%>';
   
 }
 .active-locl a{background: none !important;}
+.short_by_incomming{margin-top: 0px;}
 
 </style>
 
