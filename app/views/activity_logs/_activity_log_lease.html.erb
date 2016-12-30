@@ -1,0 +1,27 @@
+<tr>
+  <td height="51" class="result_lock_icon">
+    <% if activity_log.receiver_id == current_user.id %>
+        <%=
+           case activity_log.status          
+           when 'full'
+             image_tag("lock-un.png" , :class => "unlock_img");
+           when 'partial'
+             #image_tag("un-lock.png" , :class => "partial_img");
+             image_tag("lock-b.png" , :class => "partial_img");
+           end
+        %>
+    <% else %>
+        <%= "#{ activity_log.status=='Rejected'? 'Rejected':'Accepted' }" %>
+    <% end %>
+
+  </td>
+  <td class="result_line border_full"><p><%= activity_log.created_at.strftime('%m/%d/%Y') %></p></td>
+  <td class="result_line border_full"><p><%= activity_log.tenant_record.user.name %></p></td>
+  <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{activity_log.tenant_record.complete_address}"%></p></td>
+  <td class="result_line"><p><%= activity_log.tenant_record.company %></p></td>
+  <td class="result_line"><p><%= activity_log.tenant_record.base_rent %></p></td>
+  <td class="result_line"><p><%= (activity_log.tenant_record.net_effective_per_sf).to_s.sub('-0.0', 'Lock') %></p></td>
+  <td class="result_line"><p><%= activity_log.tenant_record.lease_commencement_date.year %></p></td>
+  
+
+</tr>
