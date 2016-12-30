@@ -59,8 +59,11 @@ class SaleRecord < ActiveRecord::Base
 
   before_save :default_values
   before_validation :default_values
-
- 
+  
+  def complete_address
+    [address1, city, state, zipcode].join(", ")
+  end
+  
   def self.all_property_type
     arr2 = TenantRecord::SALES_PROPERTY_TYPE-['other'] 
     arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all.map{|v| v.name }

@@ -34,13 +34,10 @@ $(document).ready(function(){
     $("#checkbox7").change(function () {
         $(".all_clicked input:checkbox").prop('checked', $(this).prop("checked"));
     });
-<<<<<<< HEAD
-=======
     
     $("#checkbox77").change(function () {
         $(".all_clicked77 input:checkbox").prop('checked', $(this).prop("checked"));
     });
->>>>>>> dbee7d1fda28a1d55fbd8e5fbf15f7e7d1154b76
 
     $("#checkbox1").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
