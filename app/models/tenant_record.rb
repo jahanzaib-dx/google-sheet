@@ -24,7 +24,7 @@ class TenantRecord < ActiveRecord::Base
     [address1, city, state, zipcode].join(", ")
   end
 
-  has_many :stepped_rents, :dependent => :destroy
+  # has_many :stepped_rents, :dependent => :destroy
   accepts_nested_attributes_for :stepped_rents, :allow_destroy => true
 
 
