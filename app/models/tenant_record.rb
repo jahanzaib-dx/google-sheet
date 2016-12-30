@@ -122,7 +122,7 @@ class TenantRecord < ActiveRecord::Base
   validate :validate_stepped_rents
 
   def validate_stepped_rents
-    if stepped_rents.any?
+    if rent_escalation_type_stepped?
       stepped_months = stepped_rents.inject(0){|count, r| count + r.months.to_i }
       if stepped_months != lease_term_months
         errors.add(:stepped_rents, "Stepped Rent Months: #{stepped_months}.")
@@ -651,7 +651,7 @@ class TenantRecord < ActiveRecord::Base
     when "property_information" then [:comments, :class_type, :property_type] #:main_image
     when "lease_details" then [:size, :free_rent, :lease_commencement_date, :lease_term_months, :tenant_improvement, :tenant_ti_cost, :lease_type]
     when "rents" then
-      if self.stepped_rents.any?
+      if self.rent_escalation_type_stepped?
         [:stepped_rents, :stepped_rents_equal_term_months]
       else
         [:base_rent, :escalation]
@@ -663,7 +663,7 @@ class TenantRecord < ActiveRecord::Base
 
 
   def stepped_rents_equal_term_months
-    if stepped_rents.any?
+    if rent_escalation_type_stepped?
       step_months = stepped_rents.reduce(0) { |sum,n| sum + n.months.to_i }
       if step_months != lease_term_months
         errors.add(:stepped_rents, "must equal the number of lease terms")
