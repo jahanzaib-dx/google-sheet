@@ -5,11 +5,8 @@
   </div></td>
   <td class="result_line border_full"><p><%= comp_request.initiated_by.name %></p></td>
   <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{comp_request.sale_record.complete_address}"%></p></td>
-  <td class="result_line"><p><%= comp_request.sale_record.user.firm_name %></p></td>
-  <td class="result_line"><p><%#= comp_request.sale_record.comp_type %></p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>Data</p></td>
-  <td class="result_line"><p>4,000 - 9,999</p></td>
-  <td class="result_line"><p>1985</p></td>
-  <td width="34"></td>
+  <td class="result_line"><p><%= number_to_currency(comp_request.sale_record.price.to_f, {:precision=>2}) %></p></td>
+  <td class="result_line"><p><%= number_with_precision(comp_request.sale_record.land_size,:precision => 2) %></p></td>
+  <td class="result_line"><p><%= comp_request.sale_record.build_date.year %></p></td>
+  
 </tr>
