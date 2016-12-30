@@ -239,7 +239,7 @@ class Uploader::TenantRecordsController < ApplicationController
         :expenses,
         :custom,
         :main_image,
-        :stepped_rents_attributes,
+
         :delete_image,
         :delete_company_image,
         :avg_base_rent_per_annum_by_sf,
@@ -258,7 +258,8 @@ class Uploader::TenantRecordsController < ApplicationController
         :is_tenant_improvement,
         :has_additional_tenant_cost,
         :has_additional_ll_allowance,
-        :lease_structure_expenses_attributes
+        :lease_structure_expenses_attributes,
+        :stepped_rents_attributes => [:months	, :cost_per_month]
     )
   end
 
