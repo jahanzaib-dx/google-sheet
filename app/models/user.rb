@@ -58,6 +58,7 @@ class User < ActiveRecord::Base
   # end sub-user
 
   has_many :tenant_records
+  has_many :sale_records
 
 
   has_many :groups_owned, class_name: 'Group', foreign_key: :user_id
