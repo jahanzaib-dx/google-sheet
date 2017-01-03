@@ -75,7 +75,7 @@ class TenantRecord < ActiveRecord::Base
   conditionally_validate :state,
             :presence => true
   conditionally_validate :base_rent,
-             :presence => true, :numericality => true, :unless => :rent_escalation_type_stepped?
+             :presence => true, :numericality => true, :unless => :stepped_rents.any?
   conditionally_validate :class_type,
              :presence => true#, :inclusion => { :in => CLASS_TYPE }, :allow_nil => true
   conditionally_validate :company,
@@ -83,7 +83,7 @@ class TenantRecord < ActiveRecord::Base
   conditionally_validate :comp_type,
             :presence => true#, :inclusion => { :in => COMP_TYPE }
   conditionally_validate :escalation,
-            :presence => true, :numericality => { :greater_than_equal_to => 0, :less_than_equal_to => 100 }, :allow_nil => true, :unless => :rent_escalation_type_stepped?
+            :presence => true, :numericality => { :greater_than_equal_to => 0, :less_than_equal_to => 100 }, :allow_nil => true, :unless => :stepped_rents.any?
   conditionally_validate :lease_commencement_date,
             :presence => true
   conditionally_validate :property_type,                                                      # required
@@ -122,7 +122,7 @@ class TenantRecord < ActiveRecord::Base
   validate :validate_stepped_rents
 
   def validate_stepped_rents
-    if rent_escalation_type_stepped?
+    if stepped_rents.any?
       stepped_months = stepped_rents.inject(0){|count, r| count + r.months.to_i }
       if stepped_months != lease_term_months
         errors.add(:stepped_rents, "Stepped Rent Months: #{stepped_months}.")
@@ -651,7 +651,7 @@ class TenantRecord < ActiveRecord::Base
     when "property_information" then [:comments, :class_type, :property_type] #:main_image
     when "lease_details" then [:size, :free_rent, :lease_commencement_date, :lease_term_months, :tenant_improvement, :tenant_ti_cost, :lease_type]
     when "rents" then
-      if self.rent_escalation_type_stepped?
+      if self.stepped_rents.any?
         [:stepped_rents, :stepped_rents_equal_term_months]
       else
         [:base_rent, :escalation]
