@@ -663,7 +663,7 @@ class TenantRecord < ActiveRecord::Base
 
 
   def stepped_rents_equal_term_months
-    if rent_escalation_type_stepped?
+    if stepped_rents.any?
       step_months = stepped_rents.reduce(0) { |sum,n| sum + n.months.to_i }
       if step_months != lease_term_months
         errors.add(:stepped_rents, "must equal the number of lease terms")
