@@ -64,10 +64,17 @@ class CompRequestsController < ApplicationController
       comp.initiator_id = current_user.id
       comp.receiver_id = @compdata.user_id
       comp.comp_type = params[:type]
-      ##comp.save      
-      if comp.save && comp.received_by.settings.email
+      ##comp.save
+      
+      ##p comp.received_by.settings.email
+      
+      comp.save()
+      
+      if comp.received_by.settings.email
         DxMailer.comp_request_unlock(comp)
-      end  
+      end
+      ##receiver_user = User.find(comp.receiver_id)
+      ##DxMailer.comp_request_unlock(receiver_user,current_user,comp)
       
       render json: {:status => :success}
 
@@ -82,10 +89,15 @@ class CompRequestsController < ApplicationController
     comp_requests = CompRequest.where(:id =>  params[:ids])
     comp_requests.each do |comp_request|
       comp_request.ignore (params[:comptype])
-      ##comp_request.destroy      
-      if comp_request.destroy && comp_request.initiated_by.settings.email
+      
+      
+      if comp_request.initiated_by.settings.email
         DxMailer.comp_request_declined(comp_request)
       end
+      
+      ##log_my_activity comp_request, comp_request.initiator_id
+      
+      comp_request.destroy
       
     end
     render json: {:status => :success}
@@ -100,10 +112,42 @@ class CompRequestsController < ApplicationController
       
       comp_requests.each do |comp_request|
         CompRequest.create_full_transparency comp_request, params  
-      end     
+      end
+      
+      
+        
+      # shared = SharedComp.new()
+      # shared.comp_id = comp_request.comp_id
+      # shared.agent_id = comp_request.initiator_id
+      # shared.comp_type = comp_request.comp_type
+      # shared.comp_status = 'full'
+      # shared.ownership = params[:access]=='full' ? true : false
+      # shared.save
+#       
+      # if shared.ownership
+        # ##duplicate comp in agent database
+        # if shared.comp_type == 'lease'
+          # comp_record = TenantRecord.where(:id =>  shared.comp_id).first
+          # comp_record_new = TenantRecord.new()
+        # elsif  
+          # comp_record_new = SaleRecord.new()
+        # end
+#         
+           # comp_record_new = comp_record.dup
+           # comp_record_new.user_id = comp_request.initiator_id
+           # comp_record_new.save
+#         
+      # end
             
     end
     
+    ##comp_requests = CompRequest.where(:id => params[:ids])
+    ##comp_requests.each do |comp_request|
+      ##comp_request.approve (params[:access])
+      
+      
+    ##end
+
     render json: {:status => :success}
   end
   
@@ -120,17 +164,25 @@ class CompRequestsController < ApplicationController
    
     
   end
-  
+
   def partial_transparency
     comp_request = CompRequest.where(:id =>  params[:partial_comp_id]).first
     
-    CompRequest.create_partial_tranprency comp_request, params    
+    CompRequest.create_partial_tranprency comp_request, params
+    
+    # params[:unlock].each do |unlock|
+      # unlock_field = CompUnlockField.new()
+      # unlock_field.field_name = unlock[0]
+      # unlock_field.shared_comp_id = comp_request.comp_id
+      # unlock_field.save
+    # end
     
     comp_request.destroy
     
+    ##render :template => "comp_requests/partial_popup"
+    ##render partial: "partial_popup_lease"
     render json: {:status => :success}
   end
-
 
   private
 

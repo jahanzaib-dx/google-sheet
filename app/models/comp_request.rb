@@ -15,10 +15,10 @@ class CompRequest < ActiveRecord::Base
   scope :received_by, ->(user_id,comp_type) { where("receiver_id = #{user_id} AND comp_requests.comp_type='#{comp_type}'", user_id ).all }
   scope :initiated_by, ->(user_id,comp_type) { where("initiator_id = #{user_id} AND comp_requests.comp_type='#{comp_type}'", user_id ).all }
 
-
   FULL     = "full"
   PARTIAL     = "partial"
-  
+  FULL_OWNER     = "full_owner"
+
   #scope :lease_requests, ->(){ join(:tenant_record).where("tenant_record.") }
 
 
@@ -57,10 +57,13 @@ class CompRequest < ActiveRecord::Base
   end
   
   def self.log_my_activity comp_request, curent_user
-    parameters = {:comp_id => comp_request.comp_id, :receiver_id => comp_request.agent_id, :initiator_id => curent_user, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
+    ##parameters = {:comp_id => comp_id, :receiver_id => receiver_id, :sender_id => initiator_id, :status => status}
+    ##parameters = {:comp_id => comp_request.comp_id, :receiver_id => comp_request.agent_id, :initiator_id => curent_user, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
+    parameters = {:comp_id => comp_request.comp_id, :receiver_id => curent_user, :initiator_id => comp_request.agent_id, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
     activity_log = ActivityLog.new(parameters)
     activity_log.save()
   end
+  
   
   def self.create_full_transparency comp_request, params  
       ## save in shared comp
@@ -70,9 +73,9 @@ class CompRequest < ActiveRecord::Base
       shared.comp_type = comp_request.comp_type
       shared.comp_status = FULL
       shared.ownership = params[:access]==FULL ? true : false
-      ##shared.save
+      shared.save
       
-      if shared.save && comp_request.initiated_by.settings.email
+      if comp_request.initiated_by.settings.email
         DxMailer.comp_request_approved(comp_request)
       end
       
@@ -93,10 +96,12 @@ class CompRequest < ActiveRecord::Base
            comp_record_new.id = pkid
            comp_record_new.user_id = comp_request.initiator_id
            comp_record_new.save
+           
+           shared.comp_status = FULL_OWNER
         
       end
       comp_request.destroy
-      log_my_activity shared, comp_request.initiator_id
+      log_my_activity shared, comp_request.receiver_id
     
     end
     
@@ -110,7 +115,7 @@ class CompRequest < ActiveRecord::Base
       shared.ownership = false
       shared.save
       
-      if shared.save && comp_request.initiated_by.settings.email
+      if comp_request.initiated_by.settings.email
         DxMailer.comp_request_approved(comp_request)
       end
       
@@ -125,5 +130,6 @@ class CompRequest < ActiveRecord::Base
       log_my_activity shared, comp_request.initiator_id
       
     end
+      
 
 end
