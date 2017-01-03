@@ -3,6 +3,7 @@ class BackEndLeaseCompsController < ApplicationController
   require 'digest/sha1'
   require 'time'
   def index
+
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
 
     time = Time.now.getutc
@@ -63,42 +64,30 @@ class BackEndLeaseCompsController < ApplicationController
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
       max_rows = ws.num_rows
-      # i=2
-      # while i<=max_rows
-      #   if tenant_records.where('id = ?', ws[i,1]) && ws[i,1] != ''
-      #     p ws[i,1]
-      #   else
-      #     p ws[i,1]
-      #     max_rows-=1
-      #   end
-      #   i+=1
-      #   p i
-      #   p max_rows
-      # end
       counter=2
       tenant_records.each do |tenant_record|
-        while ws[counter,1] != tenant_record.id.to_s
-          ws[counter, 2] = ''
-          ws[counter, 3] = ''
-          ws[counter, 4] = ''
-          ws[counter, 5] = ''
-          ws[counter, 6] = ''
-          ws[counter, 7] = ''
-          ws[counter, 8] = ''
-          ws[counter, 9] = ''
-          ws[counter, 10] = ''
-          ws[counter, 11] = ''
-          ws[counter, 12] = ''
-          ws[counter, 13] = ''
-          ws[counter, 14] = ''
-          ws[counter, 15] = ''
-          ws[counter, 16] = ''
-          ws[counter, 17] = ''
-          ws[counter, 18] = ''
-          ws[counter, 19] = ''
-          ws[counter, 20] = ''
-          counter+=1
-        end
+        # while ws[counter,1] != tenant_record.id.to_s
+        #   ws[counter, 2] = ''
+        #   ws[counter, 3] = ''
+        #   ws[counter, 4] = ''
+        #   ws[counter, 5] = ''
+        #   ws[counter, 6] = ''
+        #   ws[counter, 7] = ''
+        #   ws[counter, 8] = ''
+        #   ws[counter, 9] = ''
+        #   ws[counter, 10] = ''
+        #   ws[counter, 11] = ''
+        #   ws[counter, 12] = ''
+        #   ws[counter, 13] = ''
+        #   ws[counter, 14] = ''
+        #   ws[counter, 15] = ''
+        #   ws[counter, 16] = ''
+        #   ws[counter, 17] = ''
+        #   ws[counter, 18] = ''
+        #   ws[counter, 19] = ''
+        #   ws[counter, 20] = ''
+        #   counter+=1
+        # end
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -121,31 +110,31 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
-      if max_rows>=counter
-        while counter<=max_rows
-          ws[counter, 1] = ''
-          ws[counter, 2] = ''
-          ws[counter, 3] = ''
-          ws[counter, 4] = ''
-          ws[counter, 5] = ''
-          ws[counter, 6] = ''
-          ws[counter, 7] = ''
-          ws[counter, 8] = ''
-          ws[counter, 9] = ''
-          ws[counter, 10] = ''
-          ws[counter, 11] = ''
-          ws[counter, 12] = ''
-          ws[counter, 13] = ''
-          ws[counter, 14] = ''
-          ws[counter, 15] = ''
-          ws[counter, 16] = ''
-          ws[counter, 17] = ''
-          ws[counter, 18] = ''
-          ws[counter, 19] = ''
-          ws[counter, 20] = ''
-          counter+=1
-        end
-      end
+      # if max_rows>=counter
+      #   while counter<=max_rows
+      #     ws[counter, 1] = ''
+      #     ws[counter, 2] = ''
+      #     ws[counter, 3] = ''
+      #     ws[counter, 4] = ''
+      #     ws[counter, 5] = ''
+      #     ws[counter, 6] = ''
+      #     ws[counter, 7] = ''
+      #     ws[counter, 8] = ''
+      #     ws[counter, 9] = ''
+      #     ws[counter, 10] = ''
+      #     ws[counter, 11] = ''
+      #     ws[counter, 12] = ''
+      #     ws[counter, 13] = ''
+      #     ws[counter, 14] = ''
+      #     ws[counter, 15] = ''
+      #     ws[counter, 16] = ''
+      #     ws[counter, 17] = ''
+      #     ws[counter, 18] = ''
+      #     ws[counter, 19] = ''
+      #     ws[counter, 20] = ''
+      #     counter+=1
+      #   end
+      # end
       ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
 

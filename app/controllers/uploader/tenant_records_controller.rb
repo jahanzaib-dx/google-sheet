@@ -239,7 +239,6 @@ class Uploader::TenantRecordsController < ApplicationController
         :expenses,
         :custom,
         :main_image,
-
         :delete_image,
         :delete_company_image,
         :avg_base_rent_per_annum_by_sf,
