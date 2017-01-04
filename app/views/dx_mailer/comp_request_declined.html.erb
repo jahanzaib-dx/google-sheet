@@ -2,15 +2,30 @@
 
 <div class="email-content">
 
-	Hello <%= @comp_request.initiated_by.first_name %>, 
-
-<%= @comp_request.received_by.name %> has declined your request to unlock: 
+	Hello <%= @comp_request.initiated_by.first_name.capitalize %>, 
+<br><br>
+<%= @comp_request.received_by.name.capitalize %> has declined your request to unlock: 
+<br><br>
 Data Type: <%= @comp_request.comp_type %> Comp
-Address: 902 Broadway
-SF: 4000-10,000 (what about sale comp)
-Year: 2016
+<br>
+<% if @comp_request.comp_type == 'lease' %>
 
-	
+Address: <%= @comp_request.tenant_record.address1%>
+<br>
+SF: <%= number_with_precision(@comp_request.tenant_record.net_effective_per_sf,:precision => 2) %>
+<br>
+Year: <%= @comp_request.tenant_record.lease_commencement_date.year%>
+
+<% elsif @comp_request.comp_type == 'sale' %>
+
+Address: <%= @comp_request.sale_record.address1%>
+<br>
+SF: <%= number_with_precision(@comp_request.sale_record.land_size,:precision => 2) %>
+<br>
+Year: <%= @comp_request.sale_record.build_date.year%>
+
+<% end %>
+	<br>
 </div>
 
 <%= render 'partials/email_footer' %>
