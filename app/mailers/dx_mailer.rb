@@ -35,8 +35,18 @@ class DxMailer < ActionMailer::Base
 
 	def white_glove_service_email(email,file,encrypted_data)
 		mail( :to => email, :subject => 'White glove service' )do |format|
-      format.text do
-        render :html => "<p>Click on the link and get file </br><a href='"+file+"'>Download</a></p><p></br> Go to to the following link </br><a href='"+encrypted_data+"'>Link</a></p>".html_safe
+      format.html do
+        render html: "<p>
+												Click on the link and get file
+												</br>
+												<a href='"+file+"'>Download</a>
+											</p>
+											<p>
+												</br>
+												Go to to the following link
+												</br>
+												<a href='"+encrypted_data+"'>Link</a>
+											</p>".html_safe
       end
     end
 	end
