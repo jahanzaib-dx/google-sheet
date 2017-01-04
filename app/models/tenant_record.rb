@@ -75,7 +75,7 @@ class TenantRecord < ActiveRecord::Base
   conditionally_validate :state,
             :presence => true
   conditionally_validate :base_rent,
-             :presence => true, :numericality => true, :unless => :rent_escalation_type_stepped?
+             :presence => true, :numericality => true, :unless => 'stepped_rents.any?'
   conditionally_validate :class_type,
              :presence => true#, :inclusion => { :in => CLASS_TYPE }, :allow_nil => true
   conditionally_validate :company,
@@ -83,7 +83,7 @@ class TenantRecord < ActiveRecord::Base
   conditionally_validate :comp_type,
             :presence => true#, :inclusion => { :in => COMP_TYPE }
   conditionally_validate :escalation,
-            :presence => true, :numericality => { :greater_than_equal_to => 0, :less_than_equal_to => 100 }, :allow_nil => true, :unless => :rent_escalation_type_stepped?
+            :presence => true, :numericality => { :greater_than_equal_to => 0, :less_than_equal_to => 100 }, :allow_nil => true, :unless => 'stepped_rents.any?'
   conditionally_validate :lease_commencement_date,
             :presence => true
   conditionally_validate :property_type,                                                      # required
