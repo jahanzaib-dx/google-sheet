@@ -250,10 +250,14 @@ class Uploader::ImportController < ApplicationController
     require 'socket'
     if params[:fileToUpload]
       #ext = File.extname(@file_path)[1..-1]
+
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
+      encrypted_data = crypt.encrypt_and_sign(@current_user.id)
+
       import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
       TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name).deliver_now
+      DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"uploader/import/new/"+encrypted_data).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."
