@@ -71,7 +71,7 @@ class CompRequestsController < ApplicationController
       comp.save()
       
       if comp.received_by.settings.email
-        DxMailer.comp_request_unlock(comp)
+        DxMailer.comp_request_unlock(comp).deliver
       end
       ##receiver_user = User.find(comp.receiver_id)
       ##DxMailer.comp_request_unlock(receiver_user,current_user,comp)
