@@ -3,13 +3,13 @@
 <div class="email-content">
 
 Hello <%= @comp_request.received_by.first_name.capitalize %>! 
-
+<br><br>
 <%= @comp_request.initiated_by.name.capitalize %> has sent you an unlock request. 
-
+<br><br>
 Please <a href="<%= comp_requests_url('incoming') %>/<%= @comp_request.comp_type %>">click here</a> to view details.
-
+<br><br>
 Want to reach out to <%= @comp_request.initiated_by.first_name %>? Send a message or view <a href="<%= dashboard_url() %>">contact details</a>
-
+<br>
 </div>
 
 <%= render 'partials/email_footer' %>
