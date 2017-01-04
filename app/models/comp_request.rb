@@ -76,7 +76,7 @@ class CompRequest < ActiveRecord::Base
       shared.save
       
       if comp_request.initiated_by.settings.email
-        DxMailer.comp_request_approved(comp_request)
+        DxMailer.comp_request_approved(comp_request).deliver
       end
       
       if shared.ownership
@@ -116,7 +116,7 @@ class CompRequest < ActiveRecord::Base
       shared.save
       
       if comp_request.initiated_by.settings.email
-        DxMailer.comp_request_approved(comp_request)
+        DxMailer.comp_request_approved(comp_request).deliver
       end
       
       ## save each field name in Comp_unlock_field table

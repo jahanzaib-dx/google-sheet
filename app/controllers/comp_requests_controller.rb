@@ -31,7 +31,7 @@ class CompRequestsController < ApplicationController
     @comp_request = CompRequest.find(params[:id])
 
     if @comp_request.received_by.settings.email
-      DxMailer.outgoing_reminder(@comp_request)
+      DxMailer.outgoing_reminder(@comp_request).deliver
     end
     render :json => {:status => 'success'}
 
@@ -92,7 +92,7 @@ class CompRequestsController < ApplicationController
       
       
       if comp_request.initiated_by.settings.email
-        DxMailer.comp_request_declined(comp_request)
+        DxMailer.comp_request_declined(comp_request).deliver
       end
       
       ##log_my_activity comp_request, comp_request.initiator_id
