@@ -33,10 +33,12 @@ class DxMailer < ActionMailer::Base
 		mail( :to => @user.email, :subject => message )
 	end
 
-	def white_glove_service_email(email,file)
+	def white_glove_service_email(email,file,encrypted_data)
 		mail( :to => email, :subject => 'White glove service' )do |format|
       format.text do
-        render :text => file
+        render :text => "Click on the link and get file "+file
+        render :text => 'go to to the following link'
+        render :text => encrypted_data
       end
     end
 	end
