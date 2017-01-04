@@ -2,9 +2,9 @@
 
 <div class="email-content">
 
-Hello <%= @comp_request.received_by.first_name %>! 
+Hello <%= @comp_request.received_by.first_name.capitalize %>! 
 
-<%= @comp_request.initiated_by.name %> has sent you an unlock request. 
+<%= @comp_request.initiated_by.name.capitalize %> has sent you an unlock request. 
 
 Please <a href="<%= comp_requests_url('incoming') %>/<%= @comp_request.comp_type %>">click here</a> to view details.
 
