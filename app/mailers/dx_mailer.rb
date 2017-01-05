@@ -36,7 +36,7 @@ class DxMailer < ActionMailer::Base
 	def white_glove_service_email(email,file,encrypted_data)
 		@file = file
 		@encrypted_data = encrypted_data
-		mail( :to => email, :subject => 'White glove service' )
+		mail( :to => email, :subject => 'White glove service request' )
 	end
 	
 	def comp_request_unlock(comp_request)    
