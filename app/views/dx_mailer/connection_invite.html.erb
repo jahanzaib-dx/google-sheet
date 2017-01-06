@@ -17,9 +17,9 @@
             width: 119px;">
             
 						<% if !@connection_request.sender.linkedin_photo.blank? %>
-                            <%= image_tag current_user.linkedin_photo.to_s %>
+                            <%= image_tag @connection_request.linkedin_photo.to_s %>
                         <% elsif !@connection_request.sender.avatar_url.blank? %>
-                            <%= image_tag current_user.avatar_url.to_s %>
+                            <%= image_tag @connection_request.avatar_url.to_s %>
                         <% end %>
     </div>
     <div style=" float: left;
