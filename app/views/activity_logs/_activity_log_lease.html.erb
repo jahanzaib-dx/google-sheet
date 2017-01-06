@@ -33,7 +33,7 @@
   <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{activity_log.tenant_record.complete_address}"%></p></td>
   <td class="result_line"><p><%= activity_log.tenant_record.company %></p></td>
   <td class="result_line"><p><%= activity_log.tenant_record.base_rent %></p></td>
-  <td class="result_line"><p><%= (activity_log.tenant_record.net_effective_per_sf).to_s.sub('-0.0', 'Lock') %></p></td>
+  <td class="result_line"><p><%= (activity_log.tenant_record.size).to_s.sub('-0.0', 'Lock') %></p></td>
   <td class="result_line"><p><%= activity_log.tenant_record.lease_commencement_date.year %></p></td>
   
 
