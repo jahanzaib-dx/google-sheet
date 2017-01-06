@@ -18,7 +18,7 @@ class BackEndSaleCompsController < ApplicationController
       counter=2
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = sale_record.view_type
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
@@ -64,25 +64,25 @@ class BackEndSaleCompsController < ApplicationController
       max_rows = ws.num_rows
       counter=2
       sale_records.each do |sale_record|
-        while ws[counter,1] != sale_record.id.to_s
-          ws[counter, 2] = ''
-          ws[counter, 3] = ''
-          ws[counter, 4] = ''
-          ws[counter, 5] = ''
-          ws[counter, 6] = ''
-          ws[counter, 7] = ''
-          ws[counter, 8] = ''
-          ws[counter, 9] = ''
-          ws[counter, 10] = ''
-          ws[counter, 11] = ''
-          ws[counter, 12] = ''
-          ws[counter, 13] = ''
-          ws[counter, 14] = ''
-          ws[counter, 15] = ''
-          counter+=1
-        end
+        # while ws[counter,1] != sale_record.id.to_s
+        #   ws[counter, 2] = ''
+        #   ws[counter, 3] = ''
+        #   ws[counter, 4] = ''
+        #   ws[counter, 5] = ''
+        #   ws[counter, 6] = ''
+        #   ws[counter, 7] = ''
+        #   ws[counter, 8] = ''
+        #   ws[counter, 9] = ''
+        #   ws[counter, 10] = ''
+        #   ws[counter, 11] = ''
+        #   ws[counter, 12] = ''
+        #   ws[counter, 13] = ''
+        #   ws[counter, 14] = ''
+        #   ws[counter, 15] = ''
+        #   counter+=1
+        # end
         ws[counter, 1] = sale_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = sale_record.view_type
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
@@ -99,24 +99,24 @@ class BackEndSaleCompsController < ApplicationController
         counter+=1
       end
       if max_rows>=counter
-        while counter<=max_rows
-          ws[counter, 1] = ''
-          ws[counter, 2] = ''
-          ws[counter, 3] = ''
-          ws[counter, 4] = ''
-          ws[counter, 5] = ''
-          ws[counter, 6] = ''
-          ws[counter, 7] = ''
-          ws[counter, 8] = ''
-          ws[counter, 9] = ''
-          ws[counter, 10] = ''
-          ws[counter, 11] = ''
-          ws[counter, 12] = ''
-          ws[counter, 13] = ''
-          ws[counter, 14] = ''
-          ws[counter, 15] = ''
-          counter+=1
-        end
+        # while counter<=max_rows
+        #   ws[counter, 1] = ''
+        #   ws[counter, 2] = ''
+        #   ws[counter, 3] = ''
+        #   ws[counter, 4] = ''
+        #   ws[counter, 5] = ''
+        #   ws[counter, 6] = ''
+        #   ws[counter, 7] = ''
+        #   ws[counter, 8] = ''
+        #   ws[counter, 9] = ''
+        #   ws[counter, 10] = ''
+        #   ws[counter, 11] = ''
+        #   ws[counter, 12] = ''
+        #   ws[counter, 13] = ''
+        #   ws[counter, 14] = ''
+        #   ws[counter, 15] = ''
+        #   counter+=1
+        # end
       end
       ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
@@ -129,9 +129,11 @@ class BackEndSaleCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
+    @is_potential_dupes = SaleRecord.duplicate_list(current_user.id).count
     render :json => {
         :file_temp => @file_temp.id,
-        :file => @file.file
+        :file => @file.file,
+        :is_potential_dupes => @is_potential_dupes
     }
   end
 
@@ -158,13 +160,13 @@ class BackEndSaleCompsController < ApplicationController
       #   ws[counter, 1] =  counter
       #   next
       # end
-      while ws[counter,1] != sale_record.id.to_s
-        counter+=1
-      end
+      # while ws[counter,1] != sale_record.id.to_s
+      #   counter+=1
+      # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         @sale_record.update_attributes(
-            # :image => ws[counter, 2],
+            :main_image_file_name => ws.input_value(counter, 2),
             :view_type => ws[counter, 3],
             :address1 => ws[counter, 4],
             :city =>  ws[counter, 5],
@@ -205,7 +207,7 @@ class BackEndSaleCompsController < ApplicationController
     sale_records.each do |sale_record|
       ws[counter, 1] = sale_record.id
       ws[counter, 2] = 'Keep'
-      ws[counter, 3] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+      ws[counter, 3] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
       ws[counter, 4] = sale_record.view_type
       ws[counter, 5] = sale_record.address1
       ws[counter, 6] = sale_record.city
