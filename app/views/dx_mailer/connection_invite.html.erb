@@ -17,10 +17,9 @@
             width: 119px;">
             
 						<% if !@connection_request.sender.linkedin_photo.blank? %>
-                            <img src="<%= @connection_request.sender.linkedin_photo.to_s %>" style="height: 117px; width: 119px;">
+							<%= image_tag @connection_request.sender.linkedin_photo.to_s, :style => "height: 117px; width: 119px;" %>
                         <% elsif !@connection_request.sender.avatar_url.blank? %>
-                        	<img src="<%= @connection_request.sender.avatar_url.to_s %>" style="height: 117px; width: 119px;">
-                            <%##= image_tag Rails.root.join("uploads/user/avatar/#{@connection_request.id}/#{@connection_request.sender.avatar.to_s}") %>
+                        	<%= image_tag @connection_request.sender.avatar_url.to_s, :style => "height: 117px; width: 119px;" %>
                         <% end %>
     </div>
     <div style=" float: left;
