@@ -68,7 +68,7 @@ class ActivityLogsController < ApplicationController
 
       activity_comp.company = if unlockFields.include?"company" then activity_comp.company else 'Lock' end
       activity_comp.base_rent = if unlockFields.include?"base_rent" then activity_comp.base_rent else 'Lock' end
-      activity_comp.size = if unlockFields.include?"size" then activity_comp.size else "-0.0" end
+      activity_comp.size = if unlockFields.include?"size" then activity_comp.size else "0" end
 
     else
       activity_comp = activity.sale_record
