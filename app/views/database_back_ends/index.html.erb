@@ -132,7 +132,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
 
           }
         });
@@ -152,7 +153,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
           }
         });
       }

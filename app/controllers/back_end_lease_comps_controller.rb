@@ -19,7 +19,7 @@ class BackEndLeaseCompsController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -89,7 +89,7 @@ class BackEndLeaseCompsController < ApplicationController
         #   counter+=1
         # end
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -147,10 +147,11 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
-
+    @is_potential_dupes = TenantRecord.duplicate_list(current_user.id).count
     render :json => {
         :file_temp => @file_temp.id,
-        :file => @file.file
+        :file => @file.file,
+        :is_potential_dupes => @is_potential_dupes
     }
   end
 
@@ -177,7 +178,7 @@ class BackEndLeaseCompsController < ApplicationController
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
-            # :image => ws[counter, 2],
+            :main_image_file_name => ws.input_value(counter, 2),
             :comp_view_type => ws[counter, 3],
             :company => ws[counter, 4],
             :industry_type => ws[counter, 5],
@@ -221,8 +222,8 @@ class BackEndLeaseCompsController < ApplicationController
      counter=2
      tenant_records.each do |tenant_record|
        ws[counter, 1] = tenant_record.id
-       ws[counter, 2] = 'Keep'
-       ws[counter, 3] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+       ws[counter, 2] = 'Keep',
+       ws[counter, 3] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
        ws[counter, 4] = tenant_record.comp_view_type
        ws[counter, 5] = tenant_record.company
        ws[counter, 6] = tenant_record.industry_type
