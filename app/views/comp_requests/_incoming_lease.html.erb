@@ -9,7 +9,7 @@
   <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{comp_request.tenant_record.complete_address}"%></p></td>
   <td class="result_line"><p><%= comp_request.tenant_record.company %></p></td>
   <td class="result_line"><p><%= number_to_currency(comp_request.tenant_record.base_rent.to_f, {:precision=>2}) %></p></td>
-  <td class="result_line"><p><%= number_with_precision(comp_request.tenant_record.net_effective_per_sf,:precision => 2) %></p></td>
+  <td class="result_line"><p><%= number_with_precision(comp_request.tenant_record.size,:precision => 2) %></p></td>
   <td class="result_line"><p><%= comp_request.tenant_record.lease_commencement_date.year %></p></td>
   <!-- <td class="result_line"><p>4,000 - 9,999</p></td> -->
   <!-- <td class="result_line"><p>1985</p></td> -->
