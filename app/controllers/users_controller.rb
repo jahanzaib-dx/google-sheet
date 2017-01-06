@@ -10,7 +10,8 @@ class UsersController  < ApplicationController
 
 
   def show
-
+    @user = User.find(params[:id])
+    @request_id = params[:request_id]
   end
 
   def edit

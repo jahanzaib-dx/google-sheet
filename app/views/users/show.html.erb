@@ -1,14 +1,132 @@
-<h1><%= @user.name %></h1>
+<!--main_body_section-start-->
+<div class="tx_learn_user_about">
+<a href="<%= about_marketrex_url %>" ><h1>Learn More About MarketRex  <i class="fa fa-caret-right" aria-hidden="true"></i></h1></a>
+</div>
+<div class="main_edit_section">
 
-<% if @request_id %>
-    <a href="<%= accept_connection_request_url(@request_id) %> " class="btn btn-primary">Accept</a>
-<% else %>
-    <% if User.connection_request_by_current_user(@user.id).count > 0 %>
-        <a href="<%= accept_connection_request_url(User.connection_request_by_current_user(@user.id).first.id) %>" class="btn btn-primary">Accept</a>
-        <a href="<%= delete_connection_requests_url(User.connection_request_by_current_user(@user.id).first.id)%>" class="btn-link">Ignore</a>
-    <% end %>
-
-    <% if User.connection_request_to_current_user(@user.id).count > 0 %>
-        <a href="<%= delete_connection_requests_url(User..connection_request_to_current_user(@user.id).first.id) %>" class="btn btn-link">Cancel</a>
-    <% end %>
-<% end %>
+  <div class="container">
+    <div class="col-md-12">
+  <div class="edit_content_eria edit_content_user_eria">
+  
+  <div class="edit_content_background">
+  <div class="row">
+  
+  <div class="col-md-9">
+  <div class="tx_edit_full_width tx_edit_margin">
+  <div class="col-md-3 col-sm-3">
+  	<div class="tx_upload_img tx_user_img">
+  		<% if @user.linkedin_photo != "" %>
+		    <%= image_tag @user.linkedin_photo.to_s %>
+		<% else %>
+		    <%= image_tag @user.avatar_url.to_s %>
+		<% end %>
+    <!-- <img src="img/upload.jpg"> -->
+    </div>
+  </div>
+  <div class="col-md-9 col-sm-9">
+  <ul class="tx_profile_information">
+  <li class="tx_bold tx_bold_margin"><%= @user.name.capitalize %></li>
+  <% if !@user.title.blank? %>
+  <li><%= @user.title %></li>
+  <% end %>
+  <li><%= @user.firm_name %></li>
+  <li><%= @user.location %></li>
+  <!-- <li>Average response time: 4 hrs</li> -->
+  </ul>
+  
+  </div>
+  </div>
+   <div class="tx_edit_full_width ">
+  <div class="col-md-3 col-sm-3">
+  	
+  </div>
+  <div class="col-md-9 col-sm-9">
+  <ul class="tx_profile_information">
+  <li class="tx_bold tx_bold_margin">Contact Info</li>
+  <li><%= @user.firm_name %></li>
+  <li><%= @user.email %></li>
+  <!-- <li>P: 410-121-2121</li> -->
+  <% if !@user.mobile.blank? %>
+  <li>M: <%= @user.mobile %></li>
+  <% end%>
+  </ul>
+  
+  </div>
+  </div>
+  
+  
+  </div>
+  <div class="col-md-3">
+  <div class="col-md-12 col-sm-12 tx_acpect_eria">
+  <a class="btn_blue_full" href="<%= accept_connection_request_url(@request_id) %>">Accept Invitation </a>
+  </div>
+  <div class="col-md-12 col-sm-12 both-pad-none"> 
+  <div class="tx_tracker_box tx_tracker_box_white_background boredr_rating_box">
+               <div class="col-md-4">
+               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_green">
+             
+               </div>
+                
+               </div>
+               <div class="col-md-8 tx_tracker_box_text_content tx_round_color_green border_hide">
+                <h4>User Rating:</h4>
+                <h3>Good 
+                	<a class="tx_rating_help" data-original-title="linkin" href="#" data-toggle="tooltip" title="">
+                		<%= image_tag("question-tol-tipp.jpg") %>
+                	</a>
+                </h3>
+                
+                </div>
+               </div>
+               <div class="tx_tracker_box tx_tracker_box_white_background ">
+               <div class="col-md-4">
+               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_red">
+              <p> L</p>
+               </div>
+                
+               </div>
+               <div class="col-md-8 tx_tracker_box_text_content tx_round_color_red border_hide">
+                <h2><%= @user.tenant_records.count%></h2>
+                <h3>Lease Comps</h3>
+                
+                </div>
+               </div>
+               
+               <div class="tx_tracker_box tx_tracker_box_white_background ">
+               <div class="col-md-4">
+               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_orange">
+              <p> S</p>
+               </div>
+                
+               </div>
+               <div class="col-md-8 tx_tracker_box_text_content tx_round_color_orange border_hide">
+                <h2><%= @user.sale_records.count%></h2>
+                <h3>Sale Comps</h3>
+                
+                </div>
+               </div>
+               <div class="tx_tracker_box tx_tracker_box_white_background ">
+               <div class="col-md-4">
+               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_brown">
+              <p> C</p>
+               </div>
+                
+               </div>
+               <div class="col-md-8 tx_tracker_box_text_content tx_round_color_brown border_hide">
+                <h2><%= @user.all_connections.count%></h2>
+                <h3>Connections</h3>
+                
+                </div>
+               </div>
+               
+               
+               </div>
+  </div>
+  </div>
+   </div>
+  
+  </div>
+   </div>
+  </div>
+</div>
+<!--main_body_section-end--> 
