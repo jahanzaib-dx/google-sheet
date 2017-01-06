@@ -18,8 +18,8 @@
             
 						<% if !@connection_request.sender.linkedin_photo.blank? %>
                             <%= image_tag @connection_request.linkedin_photo.to_s %>
-                        <% elsif !@connection_request.sender.avatar_url.blank? %>
-                            <%= image_tag @connection_request.avatar_url.to_s %>
+                        <% elsif !@connection_request.sender.avatar.blank? %>
+                            <%= image_tag Rails.root.join("uploads/user/avatar/#{@connection_request.id}/#{@connection_request.avatar.to_s}") %>
                         <% end %>
     </div>
     <div style=" float: left;
