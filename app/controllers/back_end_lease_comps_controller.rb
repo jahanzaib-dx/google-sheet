@@ -19,7 +19,7 @@ class BackEndLeaseCompsController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -89,7 +89,7 @@ class BackEndLeaseCompsController < ApplicationController
         #   counter+=1
         # end
         ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -147,10 +147,11 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
-
+    @is_potential_dupes = TenantRecord.duplicate_list(current_user.id).count
     render :json => {
         :file_temp => @file_temp.id,
-        :file => @file.file
+        :file => @file.file,
+        :is_potential_dupes => @is_potential_dupes
     }
   end
 
@@ -171,13 +172,13 @@ class BackEndLeaseCompsController < ApplicationController
     counter=2
     ids= Array.new
     tenant_records.each do |tenant_record|
-      while ws[counter,1] != tenant_record.id.to_s
-        counter+=1
-      end
+      # while ws[counter,1] != tenant_record.id.to_s
+      #   counter+=1
+      # end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         @tenant_record.update_attributes(
-            # :image => ws[counter, 2],
+            :main_image_file_name => ws.input_value(counter, 2),
             :comp_view_type => ws[counter, 3],
             :company => ws[counter, 4],
             :industry_type => ws[counter, 5],
@@ -222,7 +223,7 @@ class BackEndLeaseCompsController < ApplicationController
      tenant_records.each do |tenant_record|
        ws[counter, 1] = tenant_record.id
        ws[counter, 2] = 'Keep'
-       ws[counter, 3] = '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+       ws[counter, 3] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
        ws[counter, 4] = tenant_record.comp_view_type
        ws[counter, 5] = tenant_record.company
        ws[counter, 6] = tenant_record.industry_type
@@ -300,5 +301,49 @@ class BackEndLeaseCompsController < ApplicationController
     deleted = TenantRecord.where('id IN (?) and user_id = ?',ids,@current_user)
     deleted.destroy_all
     redirect_to database_back_ends_path
+  end
+
+  def validate_spreadsheet
+    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
+    ws = session.spreadsheet_by_key(params[:temp]).worksheets[0]
+
+    tenant_records = TenantRecord.where('user_id = ?', @current_user)
+    error_string=""
+    counter=2
+    tenant_records.each do |tenant_record|
+      # while ws[counter,1] != tenant_record.id.to_s
+      #   counter+=1
+      # end
+      if TenantRecord.where(:id => ws[counter, 1]).present?
+        @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
+        error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
+        error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
+        error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+        error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
+        error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+        error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+        error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+        error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
+        error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
+        error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+        error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+        error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+        error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
+        error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
+        error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
+        error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
+      end
+      counter+=1
+    end
+    if error_string==''
+      render json:{
+          flag:'ok',
+          url:"/back_end_lease_comps/create/#{params[:id]}/#{params[:temp]}"
+      }
+    else
+      render json:{
+          error_string:error_string
+      }
+    end
   end
 end

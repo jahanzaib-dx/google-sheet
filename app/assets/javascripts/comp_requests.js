@@ -80,20 +80,20 @@ jQuery("document").ready(function (){
     //-----------------------------------------------------------------------------------------------------------
     // full transprancy
     
-    var selected_check_obj = $(".tx_search_result_table .checkbox-info input:checkbox:checked");
+    var selected_check_obj = $("#comprequest_page .tx_search_result_table .checkbox-info input:checkbox:checked");
     
-    $(".checkbox-info input:checkbox").on("click", function (){
-    	selected_check_obj = $(".tx_search_result_table .checkbox-info input:checkbox:checked");
+    $("#comprequest_page .checkbox-info input:checkbox").on("click", function (){
+    	selected_check_obj = $("#comprequest_page .tx_search_result_table .checkbox-info input:checkbox:checked");
     });
     
-    jQuery(".lock-n").on("click", function (){ 
+    jQuery("#comprequest_page .lock-n").on("click", function (){ 
     	/*if (!validate_transprancy()){
     		$('#Modalfull').modal('hide');
         	return false;
         }*/
     });
     
-    jQuery("#btn-grant-access").on("click", function (){
+    jQuery("#comprequest_page #btn-grant-access").on("click", function (){
     	
     	
         //displayOverlay = true;
@@ -201,7 +201,7 @@ jQuery("document").ready(function (){
 	
 	
 	
-		$('.lock-p').on('click', function(){
+		$('#comprequest_page .lock-p').on('click', function(){
 		
 		//$( ".trans_spinner" ).toggle();
 		var $modal = $('#load_popup_modal_show_id');
@@ -229,7 +229,7 @@ jQuery("document").ready(function (){
 		
 		// ------------------------------partial transprancy---------------------------
 		
-		jQuery(document).on("click", '.submitpartial', function (){
+		jQuery(document).on("click", '#comprequest_page .submitpartial', function (){
 
     	
         //displayOverlay = true;
@@ -273,7 +273,217 @@ jQuery("document").ready(function (){
 
         return false;
     });
+    
+    
+    
+    // ------------------------------Activity Log---------------------------
+    // ------------------------------Activity Log---------------------------
+    
+    
+    
+	jQuery(document).on("click", '.set_aid', function (){
+	
+		var aid = $(this).data("aid");
+		$("#activity_id").val(aid);
+	
+	});	
+	
+	jQuery(document).on("click", '.change-status', function (){
+	
+		var a_action = $(this).data("action");
+		//alert(a_action)
+		$("#activity_action").val(a_action);
+		
+	
+	});	
+	
+	
+	jQuery(document).on("click", '#update_permission', function (){
+    	
+        var $btn = jQuery(this);
+        
+        var act_action = $("#activity_action").val();
+        var act_id = $("#activity_id").val();
+        //console.log($form.attr('action'));
+        //console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: act_action,
+            //data: dataString,
+            data: {"activity_id": act_id},
+            dataType: "json",
+            success: function(data) {
+                //console.log(data);
+                if(data.status == 'success'){
+                	//$('#Modalpartial').modal('hide');
+                	//selected_check_obj.attr('checked',false);
+                	//selected_check_obj.parents('tr').slideUp();
+                    //uiAlert('Success','Comp updated successfully!');
+                    uiConfirm('Success','Comp updated successfully!', function (){ window.location.reload(true); }, function (){ window.location.reload(true); })
+                    
+                    
+                    
+                }else{
+                    uiAlert('Error!','Unable to update Comp'+data.message);
+                    // if(data.issue == 'Mobile Validation'){
+                        // document.location.href = data.url;
+                    // }else {
+                        // $('#basicModal').modal('show');
+                    // }
+                }
+            }
+        });
 
+        return false;
+    });
+    
+    //-------------------------------------------------------------------------
+    
+    //-----------------------------------------------------------------------------------------------------------
+    // full transprancy update
+    
+    var a_selected_check_obj = $("#activity_page_options #activity_id");
+    
+    // $(".checkbox-info input:checkbox").on("click", function (){
+    	// selected_check_obj = $("#activity_id");
+    // });
+   
+    
+    jQuery("#activity_page_options #btn-grant-access").on("click", function (){
+    	
+    	
+        //displayOverlay = true;
+        //$('#basicModal').modal('hide');
+        var $btn = jQuery(this);
+        
+        var a_selected_comp_id = a_selected_check_obj.val();
+        $("#access_comp_id").val(a_selected_comp_id);
+        
+        if (!validate_tires()) {        	
+        	return false;
+        }
+        
+        var $form = $btn.parents('form')
+        var dataString = $form.serialize();
+        //console.log($form.attr('action'));
+        //console.log(dataString);
+        
+        // var ids = [];
+        // jQuery('input[name^="comp_request_ids"]:checked').each(function (){
+            // ids.push( $(this).val() );
+        // });
+        
+        var access = $('input[name="access"]:checked').val();        
+            
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: {"id": a_selected_comp_id,"access":access},
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                if(data.status == 'success'){
+                	$('#Modalfull').modal('hide');
+                	selected_check_obj.attr('checked',false);
+                	selected_check_obj.parents('tr').slideUp();
+                    //uiAlert('Success','Access for selected comps granted successfully');
+                    uiConfirm('Success','Access for selected comps granted successfully', function (){ window.location.reload(true); }, function (){ window.location.reload(true); })
+                    
+                }else{
+                    uiAlert('Error!','Unable to grant access. '+data.message);
+                    // if(data.issue == 'Mobile Validation'){
+                        // document.location.href = data.url;
+                    // }else {
+                        // $('#basicModal').modal('show');
+                    // }
+                }
+            }
+        });
+
+        return false;
+    });
+		
+	
+		
+		$('#activity_page_options .partail-img').on('click', function(){
+		
+		//$( ".trans_spinner" ).toggle();
+		var $modal = $('#load_popup_modal_show_id');
+        
+        //var $selected_check_obj = $(".checkbox-info input:checkbox:checked");
+        // if ($(".lock-b-gray").is(":visible") ) {
+        	// return false;        	
+        // }
+        // if (!validate_transprancy()){
+        	// $('#Modalpartial').modal('hide');
+        	// return false;
+        // }
+        
+        $('#activity_page_options #trans_spinner').show();
+        var a_selected_comp_id = a_selected_check_obj.val();
+        
+		$modal.load(partial_popup_edit_path,{'id': a_selected_comp_id},
+			function(){
+				// $('#trans_spinner').hide();
+				// //$( ".trans_spinner" ).toggle();
+// 				
+				// //$modal.modal('show');
+			 });
+		});
+		
+		// ------------------------------partial transprancy update---------------------------
+		
+		jQuery(document).on("click", '.submitpartial', function (){
+
+    	
+        //displayOverlay = true;
+        //$('#basicModal').modal('hide');
+        var $btn = jQuery(this);
+        
+        var a_selected_comp_id = a_selected_check_obj.val();
+        
+        //var selected_comp_id = selected_check_obj.val();
+        $("#partial_id").val(a_selected_comp_id);
+        
+        /*if (!validate_tires()) {
+        	return false;
+        }*/
+        
+        var $form = $btn.parents('form')
+        var dataString = $form.serialize();
+        //console.log($form.attr('action'));
+        //console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: dataString,
+            //data: {"id":a_selected_comp_id},
+            dataType: "json",
+            success: function(data) {
+                //console.log(data);
+                if(data.status == 'success'){
+                	$('#Modalpartial').modal('hide');
+                	selected_check_obj.attr('checked',false);
+                	selected_check_obj.parents('tr').slideUp();
+                    //uiAlert('Success','Access for selected comps granted successfully');
+                    uiConfirm('Success','Access for selected comps granted successfully', function (){ window.location.reload(true); }, function (){ window.location.reload(true); })
+                    
+                }else{
+                    uiAlert('Error!','Unable to grant access. '+data.message);
+                    // if(data.issue == 'Mobile Validation'){
+                        // document.location.href = data.url;
+                    // }else {
+                        // $('#basicModal').modal('show');
+                    // }
+                }
+            }
+        });
+
+        return false;
+    });
+    
+    
+	
 
 
 });

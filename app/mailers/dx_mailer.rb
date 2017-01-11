@@ -25,7 +25,7 @@ class DxMailer < ActionMailer::Base
 
   def connection_invite(request)
     @connection_request = request
-    mail(:to => request.receiver.email, :subject => "Connect Request at MarketRex")
+    mail(:to => request.receiver.email, :subject => "New Connection Request via MarketRex")
 	end
 
 	def connection_request_approved_email(request)
@@ -39,12 +39,10 @@ class DxMailer < ActionMailer::Base
 		mail( :to => @user.email, :subject => message )
 	end
 
-	def white_glove_service_email(email,file)
-		mail( :to => email, :subject => 'White glove service' )do |format|
-      format.text do
-        render :text => file
-      end
-    end
+	def white_glove_service_email(email,file,encrypted_data)
+		@file = file
+		@encrypted_data = encrypted_data
+		mail( :to => email, :subject => 'White glove service request' )
 	end
 	
 	def comp_request_unlock(comp_request)    

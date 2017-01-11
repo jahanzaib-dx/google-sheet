@@ -112,7 +112,11 @@ Rails.application.routes.draw do
   post 'partial_popup' => 'comp_requests#partial_popup'
   get 'partial_popup' => 'comp_requests#partial_popup'
   post 'partial_transparency' => 'comp_requests#partial_transparency'
-
+  post 'relock_comp' => 'comp_requests#relock_comp'
+  post 'full_transparency_update' => 'comp_requests#full_transparency_update'
+  post 'partial_transparency_update' => 'comp_requests#partial_transparency_update'
+  post 'partial_popup_edit' => 'comp_requests#partial_popup_edit'
+  
 
 
   match 'connection_requests/:direction', :to => 'connection_requests#index', :as => :connection_requests, :via => [:get]
@@ -132,12 +136,14 @@ Rails.application.routes.draw do
   # resources :back_end_lease_comps
   get 'back_end_lease_comps/' => 'back_end_lease_comps#index'
   get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
+  get 'back_end_lease_comps/validate_spreadsheet/:id/:temp' => 'back_end_lease_comps#validate_spreadsheet'
   get 'back_end_lease_comps/create/:id' => 'back_end_lease_comps#create'
   get 'back_end_lease_comps/duplication' => 'back_end_lease_comps#duplication'
   get 'back_end_lease_comps/delete_duplication/:id/' => 'back_end_lease_comps#delete_duplication'
 
   # resources :back_end_sale_comps
   get 'back_end_sale_comps/' => 'back_end_sale_comps#index'
+  get 'back_end_sale_comps/validate_spreadsheet/:id/:temp' => 'back_end_sale_comps#validate_spreadsheet'
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
   get 'back_end_sale_comps/create/:id/' => 'back_end_sale_comps#create'
   get 'back_end_sale_comps/duplication' => 'back_end_sale_comps#duplication'
@@ -245,6 +251,7 @@ Rails.application.routes.draw do
         match 'create_and_process_upload' => "import#create_and_process_upload", via: :post
         match 'marketrex_import_status' => 'import#import_status', :as => :marketrex_import_status, via: :get
         match 'white_glove_service_request' => 'import#white_glove_service_request', :as => :white_glove_service_request, via: :post
+        match 'new/:user_id' => 'tenant_records#new', via: :get
       end
       member do
         get :filter_by_geocode

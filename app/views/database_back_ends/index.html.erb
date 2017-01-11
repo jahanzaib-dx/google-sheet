@@ -72,6 +72,7 @@
       </div>
       <h5>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></h5>
       <h5 id="manage_dups" >Manage Dupes.</h5>
+      <h5 id="error_string" ></h5>
     </div>
   </div>
 
@@ -104,6 +105,7 @@
     $('#database_map_search').hide('fast');
     $('#duplication').parent().hide('fast');
     $('#manage_dups').hide('fast');
+    $('#error_string').hide('fast');
 
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
@@ -117,6 +119,7 @@
       $('#database_map_search').hide('fast');
       $('#duplication').parent().hide('fast');
       $('#manage_dups').hide('fast');
+      $('#error_string').hide('fast');
 
       if($('#data_type').val()=="lease")
       {
@@ -124,7 +127,8 @@
           url: '<%= back_end_lease_comps_path %>',
           success: function(result){
             $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+//            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
             $('#tx_linkdin_profile').show('fast');
             $('#export_link').val('/database_back_ends/export/'+result.file_temp);
             $('#export').show('fast');
@@ -132,7 +136,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
 
           }
         });
@@ -144,7 +149,8 @@
           url: '<%= back_end_sale_comps_path %>',
           success: function(result){
             $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+//            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
             $('#tx_linkdin_profile').show('fast');
             $('#export_link').val('/database_back_ends/export/'+result.file_temp);
             $('#export').show('fast');
@@ -152,7 +158,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
           }
         });
       }
@@ -260,6 +267,27 @@
 
       });
     });
+
+    $('#tx_linkdin_profile').click(function (event){
+      event.preventDefault();
+      $.ajax({
+        url: $(this).attr('href'),
+        success: function(result) {
+          if(result.flag=='ok')
+          {
+            $('#error_string').hide('fast');
+            $('#error_string').html('');
+            window.location = result.url;
+          }
+          else
+          {
+            $('#error_string').html(result.error_string);
+            $('#error_string').show('fast');
+          }
+        }
+      });
+      return false; //for good measure
+    });
     var search_basic_path_js = '<%= search_basic_path() %>';
     var search_advanced_path_js = '<%= "/search/database_lease" %>';
     var search_simple_path_js = '<%= search_simple_path() %>';
@@ -347,5 +375,8 @@
     padding: 15px 0;
     text-align: center;
     width: 100%;
+  }
+  #error_string{
+    color: #ee0101;
   }
 </style>

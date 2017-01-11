@@ -9,7 +9,7 @@
         <br/>
         Tier 3 – your connection is NOT granted full access but may access only those details that you give permission to access. Your connection does not have the ability to grant access to the comp or any information in the comp to anyone
         
-        <%= form_tag partial_transparency_path do %>
+        <%= form_tag partial_transparency_update_path do %>
         <table width="100%" border="0">
           <tr>
             <td height="104"><h1 class="comp-table-hadding">Lease</h1></td>
@@ -116,7 +116,7 @@
           
           <tr>
             <td colspan="4" align="center"><button type="button" class="tx_save_profile submitpartial" style="float: none;">Save</button></td>
-            <input type="hidden" name="partial_comp_id" id="partial_comp_id" />
+            <input type="hidden" name="id" id="partial_id" />
 
           </tr>
           
@@ -132,9 +132,20 @@
  $(function() {
 
 		//var ids = [];
+		var unlock_data = <%= raw @unlockFields.to_json %>;
+		
 	    jQuery('input[name^="unlock"]').each(function (){
-	    	//console.log($(this).attr('name'));
+	    	$input_name = $(this).attr('name')
+	    	//console.log($(this).attr('name')); unlock[
+	    	var $input_index = $input_name.substring(7,$input_name.length - 1)
+	    	
+	    	if (unlock_data.indexOf($input_index) > -1) {
+	    		//console.log($input_index)
+	    		$(this).attr("checked",true)
+	    	}
+	    	
 	    	//alert($(this).attr('name'))
+	    	
 	        //ids.push( $(this).val() );
 	    });
 });
