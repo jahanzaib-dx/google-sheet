@@ -190,19 +190,20 @@ class CompRequestsController < ApplicationController
 
     ##if !params[:access].blank?
       
-      activity_log = ActivityLog.where(:id =>  params[:id])
+      activity_log = ActivityLog.where(:id =>  params[:activity_id]).first
       
-      shared = SharedComp.where(:comp_id => activity_log.comp_id, :receiver_id => activity_log.agent_id, :comp_type => activity_log.comptype)
+      shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
       
       if shared.count == 1
+        shared = shared.first
         comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
         comp_unlock_field.destroy_all
-        
-        activity_log.status = "Declined"
-        activity_log.save()
-         
+                 
         shared.destroy
       end
+      
+      activity_log.status = "Rejected"
+      activity_log.save()
 
     render json: {:status => :success}
   end
@@ -243,13 +244,25 @@ class CompRequestsController < ApplicationController
   def full_transparency_update
     
     activity_log = ActivityLog.where(:id =>  params[:id])
-      
-      shared = SharedComp.where(:comp_id => activity_log.comp_id, :receiver_id => activity_log.agent_id, :comp_type => activity_log.comptype)
-      
-      if shared.count == 1
+            
+      if activity_log.count == 1
+         activity_log = activity_log.first
+         
+         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
         
-        shared.comp_status = CompRequest.FULL
-        shared.ownership = params[:access]==FULL ? true : false
+        if shared.count < 1
+          shared = SharedComp.new()
+        else
+          shared = shared.first
+        end
+        
+        
+        shared.comp_id = activity_log.comp_id
+        shared.agent_id = activity_log.receiver_id
+        shared.comp_type = activity_log.comptype
+        
+        shared.comp_status = CompRequest::FULL
+        shared.ownership = params[:access]==CompRequest::FULL ? true : false
         
         
        if shared.ownership
@@ -267,19 +280,24 @@ class CompRequestsController < ApplicationController
           ##duplicate comp in agent database
           comp_record_new = comp_record.dup
           comp_record_new.id = pkid
-          comp_record_new.user_id = comp_request.initiator_id
+          comp_record_new.user_id = activity_log.initiator_id
           comp_record_new.save
     
-          shared.comp_status = FULL_OWNER
+          shared.comp_status = CompRequest::FULL_OWNER
       end
       
       shared.save()
         
-        activity_log.status = "Approved"
+        # activity_log.status = "Approved"
+        # activity_log.save()
+        
+        activity_log.status = shared.comp_status
         activity_log.save()
          
         ##SharedComp.destroy
       end
+      
+      
 
     render json: {:status => :success}
     
@@ -289,30 +307,71 @@ class CompRequestsController < ApplicationController
   
   
 
-  def partial_popup_update
-    comp_request = CompRequest.where(:id =>  params[:id]).first
+   def partial_popup_edit
+  
+    activity_log = ActivityLog.where(:id =>  params[:id])
 
-    if comp_request.comp_type == 'lease'
-      @comp_record = TenantRecord.where(:id => comp_request.comp_id).first
-      render partial: "partial_popup_lease"
-    elsif
-    @comp_record = SaleRecord.where(:id => comp_request.comp_id).first
-      render partial: "partial_popup_sale"
+    if activity_log.count == 1
+      activity_log = activity_log.first
+        
+        @unlockFields = SharedComp.getUnlockData activity_log
+        
+        p @unlockFields
+        
+      if activity_log.comptype == 'lease'
+        @comp_record = TenantRecord.where(:id => activity_log.comp_id).first
+        render partial: "partial_popup_lease_edit"
+      elsif
+        @comp_record = SaleRecord.where(:id => activity_log.comp_id).first
+        render partial: "partial_popup_sale_edit"
+      end
+
     end
 
   end
 
   def partial_transparency_update
-    comp_request = CompRequest.where(:id =>  params[:partial_comp_id]).first
     
-    shared = SharedComp.where(:id =>  params[:id])
-
-    ##comp_requests.each do |comp_request|
-    CompRequest.update_partial_tranprency shared, params
-
-    ##CompRequest.create_partial_tranprency comp_request, params
-
-    ##comp_request.destroy
+    activity_log = ActivityLog.where(:id =>  params[:id])
+    
+    if activity_log.count == 1
+         activity_log = activity_log.first
+         
+         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
+        
+        if shared.count < 1
+          shared = SharedComp.new()
+        else
+          shared = shared.first
+        end
+        
+        
+        shared.comp_id = activity_log.comp_id
+        shared.agent_id = activity_log.receiver_id
+        shared.comp_type = activity_log.comptype
+        
+        shared.comp_status = CompRequest::PARTIAL
+        shared.ownership = false
+        
+        shared.save()
+        
+        comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
+        comp_unlock_field.destroy_all
+        
+        params[:unlock].each do |unlock|
+          unlock_field = CompUnlockField.new()
+          unlock_field.field_name = unlock[0]
+          unlock_field.shared_comp_id = shared.id
+          unlock_field.save
+        end
+        
+        # activity_log.status = "Approved"
+        # activity_log.save()
+        
+        activity_log.status = shared.comp_status
+        activity_log.save()
+        
+    end
 
     render json: {:status => :success}
   end
