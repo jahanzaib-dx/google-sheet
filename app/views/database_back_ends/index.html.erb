@@ -72,6 +72,7 @@
       </div>
       <h5>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></h5>
       <h5 id="manage_dups" >Manage Dupes.</h5>
+      <h5 id="error_string" ></h5>
     </div>
   </div>
 
@@ -104,6 +105,7 @@
     $('#database_map_search').hide('fast');
     $('#duplication').parent().hide('fast');
     $('#manage_dups').hide('fast');
+    $('#error_string').hide('fast');
 
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
@@ -117,6 +119,7 @@
       $('#database_map_search').hide('fast');
       $('#duplication').parent().hide('fast');
       $('#manage_dups').hide('fast');
+      $('#error_string').hide('fast');
 
       if($('#data_type').val()=="lease")
       {
@@ -272,10 +275,15 @@
         success: function(result) {
           if(result.flag=='ok')
           {
+            $('#error_string').hide('fast');
+            $('#error_string').html('');
             window.location = result.url;
           }
           else
-          alert(result.error_string);
+          {
+            $('#error_string').html(result.error_string);
+            $('#error_string').show('fast');
+          }
         }
       });
       return false; //for good measure
@@ -367,5 +375,8 @@
     padding: 15px 0;
     text-align: center;
     width: 100%;
+  }
+  #error_string{
+    color: #ee0101;
   }
 </style>
