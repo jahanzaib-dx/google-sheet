@@ -53,3 +53,162 @@
     </div>
   </div>
 </div>
+
+
+<div id="activity_page_options">
+
+<div class="modal fade" id="Modaloptions1" tabindex="-1" role="dialog" aria-labelledby="Modallease" aria-hidden="true">
+  <div class="modal-dialog  tx_invite_modal-dialog">
+    <div class="modal-content">
+      <%= form_tag do %>
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Change Comp Status</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body ">
+          	
+            <div class="round_lock">
+					<ul class="tx_lock_list" style="padding-left: 5%">
+						<li>
+							<a href="#!" data-action="<%= relock_comp_path%>" title="Relock" class="btn-comp-request-status lock-img change-status "><%= image_tag("lock.png")%> </a>
+						</li>
+						<li>
+							<a href="#!" data-status="Unlock" data-toggle="modal" data-target="#Modalfull" data-tooltip="tooltip" title="Click to see full transparency options" class="btn-comp-request-status change-status" ><%= image_tag("lock-un.png")%></a>
+						</li>
+						<li>
+							<a href="#!" data-status="Lock" data-toggle="modal" data-target="#Modalpartial" data-tooltip="tooltip" title="Click to see custom transparency options" class="btn-comp-request-status partail-img change-status"><%= image_tag("lock-b.png")%></a>
+						</li>
+						<!-- <li>
+							<a href="#!" class="btn-comp-request-status change-status " ><%= image_tag("lock-un.png")%> </a>
+						</li> -->
+					</ul>
+			</div>
+
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="button" class="btn btn-primary invite_save" id="update_permission">Save</button>
+                        
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="modal fade" id="Modaloptions2" tabindex="-1" role="dialog" aria-labelledby="Modallease" aria-hidden="true">
+  <div class="modal-dialog  tx_invite_modal-dialog">
+    <div class="modal-content">
+      <%= form_tag do %>
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Change Comp Status</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body ">
+          	
+            <div class="round_lock">
+					<ul class="tx_lock_list" style="padding-left: 15%">
+						<li>
+							<a href="#!" data-tooltip="tooltip" data-toggle="modal" data-target="#Modalfull" title="Click to see full transparency options" class="btn-comp-request-status change-status "><%= image_tag("lock-un.png")%> </a>
+						</li>
+						<li>
+							<a href="#!" data-tooltip="tooltip" data-toggle="modal" data-target="#Modalpartial"  title="Click to see custom transparency options" class="btn-comp-request-status partail-img change-status "><%= image_tag("lock-b.png")%> </a>
+						</li>
+					</ul>
+			</div>
+
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <!-- <button type="button" class="btn btn-primary invite_save" id="update_permission">Save</button> -->
+            
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="Modalfull" tabindex="-1" role="dialog" aria-labelledby="Modallease" aria-hidden="true">
+  <div class="modal-dialog  tx_invite_modal-dialog">
+    <div class="modal-content">
+      <%= form_tag full_transparency_update_path do %>
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">Full Transparency</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body tire12">
+
+<div class="text-left">
+            <input type="checkbox" name="access" value="full" class="chkfull"> 
+            Tier 1 - your connection is granted full access and the comp is added to your connection’s account. Therefore, your connection CAN unlock the comp for any of their direct connections.
+</div>
+<br />
+<div class="text-left">
+
+			<input type="checkbox" name="access" value="partial" class="chkfull"> 
+			Tier 2 – your connection is granted full access but the comp is NOT added to your connection’s account. Therefore, they DO NOT have the ability to grant access to anyone.
+</div>
+            
+
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="button" class="btn btn-primary invite_save" id="btn-grant-access">Approve</button>
+            <input type="hidden" name="id" id="access_comp_id">
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="Modalpartial" tabindex="-1" role="dialog" aria-labelledby="Modalsale" aria-hidden="true" style="z-index: 1051">
+	
+	<div id="load_popup_modal_show_id">
+		<div id="trans_spinner" style="top: 50%; left: 50%; position: absolute; display: none;"><i class="fa fa-spinner fa-spin" aria-hidden="true" style="font-size: 50px;"></i></div>
+	</div>
+	
+</div>
+
+
+
+
+<input type="hidden" name="activity_id" id="activity_id">
+<input type="hidden" name="activity_action" id="activity_action">
+
+<!-- activity_page_options -->
+</div>
+
+<script type="text/javascript">
+var partial_popup_edit_path = '<%= partial_popup_edit_path%>';
+</script>
+
+<style>
+	.round_lock{float: none;}
+	.lock-img img{width:17px;}
+	.partail-img img{width:17px;}
+	.tx_lock_list {margin: 0;}
+	.tx_lock_list {float: none;}
+	
+	.ui-tooltip-content, .ui-tooltip {
+	  min-width: none !important;
+	  background: #000;
+	  color: #ffffff;
+	  border: none;
+	  
+	}
+	.ui-tooltip {		
+		z-index: 1050;
+	}
+	/*.active-locl a{background: none !important;}
+	.short_by_incomming{margin-top: 0px;}*/
+</style>
+

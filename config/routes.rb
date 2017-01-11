@@ -112,7 +112,11 @@ Rails.application.routes.draw do
   post 'partial_popup' => 'comp_requests#partial_popup'
   get 'partial_popup' => 'comp_requests#partial_popup'
   post 'partial_transparency' => 'comp_requests#partial_transparency'
-
+  post 'relock_comp' => 'comp_requests#relock_comp'
+  post 'full_transparency_update' => 'comp_requests#full_transparency_update'
+  post 'partial_transparency_update' => 'comp_requests#partial_transparency_update'
+  post 'partial_popup_edit' => 'comp_requests#partial_popup_edit'
+  
 
 
   match 'connection_requests/:direction', :to => 'connection_requests#index', :as => :connection_requests, :via => [:get]
