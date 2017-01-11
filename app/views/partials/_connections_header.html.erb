@@ -7,15 +7,16 @@
   </div>
   <div class="col-md-11 tx_activiti_fiulter_content">
     <h1>Connections</h1>
-
+    <div class="font-class">Add a </br>connection</div>
     <div class="btn-group tx_btn_group">
+
       <div class=" tx_dropdown_toggl">
 
         <%= form_tag connections_path do %>
 
             <select id="connections_select" class="selectpicker">
               <option value="1" data-href="<%= connections_url %>"  <%= "selected" if controller_name == 'connections' %> > All</option>
-              <option value="2" data-href="<%= connection_requests_path('incoming') %>"  <%= "selected" if params[:direction] == 'incoming' %> >Pending</option>
+              <option value="2" data-href="<%= connection_requests_path('incoming') %>"  <%= "selected" if params[:direction] == 'incoming' %> >Incoming</option>
               <option value="3" data-href="<%= connection_requests_path('outgoing') %>"  <%= "selected" if params[:direction] == 'outgoing' %> >Sent</option>
               <option value="4" data-href="<%= groups_url %>"  <%= "selected" "selected" if controller_name == 'groups' %> >Groups</option>
             </select>
