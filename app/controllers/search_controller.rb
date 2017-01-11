@@ -687,7 +687,7 @@ class SearchController < ApplicationController
       counter=2
       tenant_records.each do |tenant_record|
         ws[counter, 1] = tenant_record.id
-        # ws[counter, 2] = tenant_record.image
+        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_type
         ws[counter, 4] = tenant_record.company
         ws[counter, 5] = tenant_record.industry_type
@@ -703,8 +703,8 @@ class SearchController < ApplicationController
         ws[counter, 15] = tenant_record.lease_term_months
         ws[counter, 16] = tenant_record.free_rent
         ws[counter, 17] = tenant_record.size
-        # ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = 'Lease Structure'
+        ws[counter, 18] = tenant_record.deal_type
+        ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
         counter+=1
       end
@@ -822,8 +822,8 @@ class SearchController < ApplicationController
     counter=2
     sale_records.each do |sale_record|
       ws[counter, 1] = sale_record.id
-      # ws[counter, 2] = sale_record.image
-      # ws[counter, 3] = sale_record.comp_type
+      ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
+      ws[counter, 3] = sale_record.view_type
       ws[counter, 4] = sale_record.address1
       ws[counter, 5] = sale_record.city
       ws[counter, 6] = sale_record.state

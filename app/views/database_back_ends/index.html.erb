@@ -124,7 +124,8 @@
           url: '<%= back_end_lease_comps_path %>',
           success: function(result){
             $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+//            $('#tx_linkdin_profile').attr('href','/back_end_lease_comps/create/'+result.file+'/'+result.file_temp);
             $('#tx_linkdin_profile').show('fast');
             $('#export_link').val('/database_back_ends/export/'+result.file_temp);
             $('#export').show('fast');
@@ -132,7 +133,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
 
           }
         });
@@ -144,7 +146,8 @@
           url: '<%= back_end_sale_comps_path %>',
           success: function(result){
             $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
+            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+//            $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/create/'+result.file+'/'+result.file_temp);
             $('#tx_linkdin_profile').show('fast');
             $('#export_link').val('/database_back_ends/export/'+result.file_temp);
             $('#export').show('fast');
@@ -152,7 +155,8 @@
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
-            $('#duplication').parent().show();
+            if(result.is_potential_dupes>0)
+              $('#duplication').parent().show();
           }
         });
       }
@@ -259,6 +263,22 @@
         }
 
       });
+    });
+
+    $('#tx_linkdin_profile').click(function (event){
+      event.preventDefault();
+      $.ajax({
+        url: $(this).attr('href'),
+        success: function(result) {
+          if(result.flag=='ok')
+          {
+            window.location = result.url;
+          }
+          else
+          alert(result.error_string);
+        }
+      });
+      return false; //for good measure
     });
     var search_basic_path_js = '<%= search_basic_path() %>';
     var search_advanced_path_js = '<%= "/search/database_lease" %>';
