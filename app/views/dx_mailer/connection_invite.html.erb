@@ -8,58 +8,58 @@
     <% end %>
 </h1>
 
-<div class="email-content">
+    <div class="email-content">
 
-  <div style="width:338px; margin:auto;">
-    <div style="border: 1px solid #ccc;
-            float: left;
-            height: 117px;
-            width: 119px;">
-            
-						<% if !@connection_request.sender.linkedin_photo.blank? %>
-							<%= image_tag @connection_request.sender.linkedin_photo.to_s, :style => "height: 117px; width: 119px;" %>
-                        <% elsif !@connection_request.sender.avatar_url.blank? %>
-                        	<%= image_tag @connection_request.sender.avatar_url.to_s, :style => "height: 117px; width: 119px;" %>
-                        <% end %>
+    <div style="width:338px; margin:auto;">
+      <div style="border: 1px solid #ccc;
+              float: left;
+              height: 117px;
+              width: 119px;">
+
+              <% if !@connection_request.sender.linkedin_photo.blank? %>
+                <%= image_tag @connection_request.sender.linkedin_photo.to_s, :style => "height: 117px; width: 119px;" %>
+                          <% elsif !@connection_request.sender.avatar_url.blank? %>
+                            <%= image_tag @connection_request.sender.avatar_url.to_s, :style => "height: 117px; width: 119px;" %>
+                          <% end %>
+      </div>
+      <div style=" float: left;
+              height: 150px;
+              overflow:hidden;
+              margin: 0 0 0 24px;
+              width: 178px;">
+        <h2 style="font-size:14px;font-family: arial;"><%= @connection_request.sender.name %></h2>
+        <% if !@connection_request.sender.title.blank? %>
+        <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.title %></h3>
+        <% end %>
+        <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.firm_name %>.</h3>
+        <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.location %></h3>
+      </div>
+      <div style="clear:both"></div>
     </div>
-    <div style=" float: left;
-            height: 150px;
-            overflow:hidden;
-            margin: 0 0 0 24px;
-            width: 178px;">
-      <h2 style="font-size:14px;font-family: arial;"><%= @connection_request.sender.name %></h2>
-      <% if !@connection_request.sender.title.blank? %>
-      <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.title %></h3>
-      <% end %>
-      <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.firm_name %>.</h3>
-      <h3 style="font-size:13px;font-family: arial;"><%= @connection_request.sender.location %></h3>
+
+
+    <div style="margin: 48px 0 0 0px;">
+      <a href="<%= public_profile_url(@connection_request.sender.id,@connection_request.id) %>" style=" background: #ebeced; font-family: arial;
+              color: #566eb2;
+              padding: 19px 60px;
+              text-align: center;
+              text-decoration: none; margin: 0 11px;">View My Profile</a>
+      <a href="<%= accept_connection_request_url(@connection_request.id) %> " style=" background: #566eb2; font-family: arial;
+              color: #ebeced;
+              padding: 19px 88px;
+              text-align: center;
+              text-decoration: none; margin: 0 11px;">Accept</a>
+
     </div>
-    <div style="clear:both"></div>
-  </div>
 
 
-  <div style="margin: 48px 0 0 0px;">
-    <a href="<%= public_profile_url(@connection_request.sender.id,@connection_request.id) %>" style=" background: #ebeced; font-family: arial;
-            color: #566eb2;
-            padding: 19px 60px;
-            text-align: center;
-            text-decoration: none; margin: 0 11px;">View My Profile</a>
-    <a href="<%= accept_connection_request_url(@connection_request.id) %> " style=" background: #566eb2; font-family: arial;
-            color: #ebeced;
-            padding: 19px 88px;
-            text-align: center;
-            text-decoration: none; margin: 0 11px;">Accept</a>
-
-  </div>
-
-
-  <div style="margin: 61px 0;text-align: center;">
-    <a href="<%= about_marketrex_url %>" style="color:#566eb2; font-weight:bold;">What is MarketRex?</a>
-  </div>
+    <div style="margin: 61px 0;text-align: center;">
+      <a href="<%= about_marketrex_url %>" style="color:#566eb2; font-weight:bold;">What is MarketRex?</a>
+    </div>
 
 
 
-</div>
+    </div>
 
 
 <%= render 'partials/email_footer' %>

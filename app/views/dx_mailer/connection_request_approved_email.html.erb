@@ -1,36 +1,36 @@
 <%= render 'partials/email_header' %>
 
 
-<div class="email-content">
+    <div class="email-content">
 
-  <div style="width:338px; margin:auto;">
-    <div style="border: 1px solid #ccc;
-        float: left;
-        height: 117px;
-        width: 119px;">
+    <div style="width:338px; margin:auto;">
+      <div style="border: 1px solid #ccc;
+          float: left;
+          height: 117px;
+          width: 119px;">
+
+      </div>
+      <div style=" float: left;
+          height: 150px;
+          overflow:hidden;
+          margin: 0 0 0 24px;
+          width: 178px;">
+        <h2 style="font-size:14px;font-family: arial;"><%= @connection_request.sender.first_name %></h2> <%= @connection_request.sender.last_name %></h2>
+        <p><%= @connection_request.sender.first_name %> <%= @connection_request.sender.last_name %> has approved your connection request.<%= @connection_request.sender.first_name %> <%= @connection_request.sender.last_name %> is now a direct connection.</p>
+        </br>
+        <p>View <%= @connection_request.sender.first_name %> <%= @connection_request.sender.last_name %> profile
+        <a href="<%= public_profile_url(@connection_request.receiver.id,@connection_request.id) %>" style=" background: #ebeced; font-family: arial;
+            color: #566eb2;
+            padding: 19px 60px;
+            text-align: center;
+            text-decoration: none; margin: 0 11px;">here</a></p>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+
 
     </div>
-    <div style=" float: left;
-        height: 150px;
-        overflow:hidden;
-        margin: 0 0 0 24px;
-        width: 178px;">
-      <h2 style="font-size:14px;font-family: arial;"><%= @connection_request.receiver.first_name %></h2> <%= @connection_request.receiver.last_name %></h2>
-      <p><%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> has approved your connection request.<%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> is now a direct connection.</p>
-      </br>
-      <p>View <%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> profile
-      <a href="<%= public_profile_url(@connection_request.sender.id,@connection_request.id) %>" style=" background: #ebeced; font-family: arial;
-          color: #566eb2;
-          padding: 19px 60px;
-          text-align: center;
-          text-decoration: none; margin: 0 11px;">here</a></p>
-    </div>
-    <div style="clear:both"></div>
-  </div>
-
-
-
-</div>
 
 
 <%= render 'partials/email_footer' %>
