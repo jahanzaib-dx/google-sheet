@@ -64,6 +64,7 @@
                         <li><%= current_user.first_name %> <%= current_user.last_name %></li>
                         <li><%= current_user.firm_name %></li>
                         <li><%= current_user.title %></li>
+                        <li><%= current_user.mobile %></li>
                         <li><%= current_user.email.scan(/.{1,25}/m).join("<br>").html_safe %></li>
                       </ul>
                     </div>
