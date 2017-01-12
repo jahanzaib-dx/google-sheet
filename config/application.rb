@@ -1,8 +1,10 @@
+
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require 'active_record/connection_adapters/postgis_adapter'
 require 'yaml'
+
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,7 +31,7 @@ module MarketRex
     config.active_record.schema_format = :sql
 
 	
-	  config.action_mailer.default_options = { from:  ENV['dx_mailer_from'] }
+    config.action_mailer.default_options = { from:  ENV['dx_mailer_from'] }
 
     config.action_mailer.asset_host = "http://#{ ENV['mail_host'] }"
     config.action_mailer.default_url_options = { :host =>  ENV['mail_host'] }
