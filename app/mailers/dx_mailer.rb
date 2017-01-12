@@ -30,7 +30,7 @@ class DxMailer < ActionMailer::Base
 
 	def connection_request_approved_email(request)
 		@connection_request = request
-		mail(:to => request.receiver.email, :subject => "Connect Request Approved at MarketRex")
+		mail(:to => request.sender.email, :subject => "Connect Request Approved at MarketRex")
 
 	end
 
