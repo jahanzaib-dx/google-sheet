@@ -28,6 +28,12 @@ class DxMailer < ActionMailer::Base
     mail(:to => request.receiver.email, :subject => "New Connection Request via MarketRex")
 	end
 
+	def connection_request_approved_email(request)
+		@connection_request = request
+		mail(:to => request.sender.email, :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
+
+	end
+
 	def flag_comp_email(user,message)
 		@user = user
 		mail( :to => @user.email, :subject => message )

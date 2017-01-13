@@ -514,7 +514,7 @@ a {
 .btn-group.tx_btn_group {
     float: left;
     width: 100%;
-	margin: 39px 0 0;
+	margin: 0px;
 }
 
 .formgroup_input .btn-group.tx_btn_group {
@@ -638,7 +638,7 @@ margin: 0 0 30px 129px;
  
     height: 100px;
     padding: 0;
-    text-align: center;
+    text-align: center !important;
     width: 100px;
 }
 .tx_hand_right > img {
@@ -652,7 +652,13 @@ margin: 0 0 30px 129px;
     font-weight: bold;
     position: relative;
     right: 0;
+
 }
+
+
+
+
+
 .tx_small_rund_green{
 	background:#70a642;
 	height: 74px;
@@ -776,7 +782,7 @@ margin: 0 0 30px 129px;
 }
 .tx_profile_image {
     border: 1px solid #ccc;
-    height: 194px;
+    height: 183px;
     overflow: hidden;
     width: 100%;
 }
@@ -791,16 +797,22 @@ margin: 0 0 30px 129px;
 .tx_profile_image > img {
     width: 100%;
 }
+
 .tx_profile_detail_content > li {
     font-family: arial;
     font-size: 16px;
     font-weight: bold;
-    margin: 0 0 16px;
+    margin: 0 0 18px;
+
+
 }
+
 .tx_profile_detail_content {
+    overflow: hidden;
     width:100%;
 	float:left;
-    margin: 19px 0 0px;
+    margin: 0px 0 0px;
+
 }
 
 .tx_raiting_box {
@@ -1266,7 +1278,11 @@ label.myLabel input[type="file"] {
     color: #fff;
 	bottom: -6px;
     font-size: 39px;
+    top: 9px;
 }
+
+
+
 .tx_round_color_orange > h2 {
     color: #f5891f;
     font-size: 18px;
@@ -1558,7 +1574,7 @@ button{
     background: #70a642 none repeat scroll 0 0;
     float: left;
     height: 74px;
-    margin: 0 0 0 -2px;
+    margin: 0 0 0 8px;
     padding: 18px 25px;
 }
 .tx_click img {
@@ -1614,7 +1630,11 @@ button{
 	background:#fff;
 	padding:0;
 }
-
+.bc_white2{
+  background:#fff;
+  padding:0;
+  height: 545px;
+}
 .save_cencel_btn > li {
     display: inline;
 }
@@ -2193,6 +2213,13 @@ input:checked + .slider:before {
     right: 16px;
     top: 20px;
     width: 18px;
+}
+.font-class {
+  font-size: 15px;
+  font-weight: bold;
+  float: right;
+  padding-right: 113px;
+  margin: 30px 0 0;
 }
 .tx_short_list {
     margin: 18px 0 0;

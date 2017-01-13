@@ -35,7 +35,7 @@ class BackEndCustomRecordController < ApplicationController
       @BackEndCustonRecord.file = @file.id
       @BackEndCustonRecord.save
 
-      @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
 
       session.drive.batch do
         user_permission = {
@@ -63,7 +63,7 @@ class BackEndCustomRecordController < ApplicationController
       end
       ws.save()
 
-      @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
       session.drive.batch do
         user_permission = {
             value: 'default',
@@ -89,7 +89,6 @@ class BackEndCustomRecordController < ApplicationController
 
     @BackEndCustomRecord = BackEndCustomRecord.where("custom_record_id = ?",@custom_record_id).first
     @BackEndCustomRecord.update_attributes(:file => @file.id)
-
     session.drive.delete_file(params[:temp])
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     @custom_record_properties = CustomRecordProperty.where("custom_record_id = ?",@custom_record_id)
@@ -107,10 +106,12 @@ class BackEndCustomRecordController < ApplicationController
           @custom_record_properties.key = key
           @custom_record_properties.value = ws[row,col]
           @custom_record_properties.save
-
         end
       end
     end
-    redirect_to root_url
+    render json:{
+        flag: 'ok',
+        url: database_back_ends_path
+    }
   end
 end

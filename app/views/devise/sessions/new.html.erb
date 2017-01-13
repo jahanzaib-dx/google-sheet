@@ -19,11 +19,11 @@
 	  <% end %>
 	  
             <h1>Sign IN</h1>
-            <p>
-			<%= link_to user_linkedin_omniauth_authorize_url  do
+            <!--<p>-->
+			<%#<%= link_to user_linkedin_omniauth_authorize_url  do
 				image_tag("linkedin-default.png", onmouseover: "this.src='#{asset_path('linkedin-hover.png')}'", onmouseout: "this.src='#{asset_path('linkedin-default.png')}'")
 			end %>
-			</p> 
+			<!--</p>-->
 			<%##= link_to "<i class='fa fa-linkedin' aria-hidden='true'></i> Connect with LinkedIn".html_safe, user_linkedin_omniauth_authorize_url , class:"btn btn-social btn-linkedin tx-btn" %>
 			<br>
 			<%= image_tag("login-border-shape.jpg",width: "100%")%>
