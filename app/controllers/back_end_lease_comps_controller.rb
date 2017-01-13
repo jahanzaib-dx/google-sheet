@@ -48,7 +48,7 @@ class BackEndLeaseCompsController < ApplicationController
       @BackEndLeaseComp.file = @file.id
       @BackEndLeaseComp.save
 
-      @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
 
       session.drive.batch do
         user_permission = {
@@ -136,7 +136,7 @@ class BackEndLeaseCompsController < ApplicationController
       #   end
       # end
       ws.save()
-      @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
 
       session.drive.batch do
         user_permission = {
@@ -246,7 +246,7 @@ class BackEndLeaseCompsController < ApplicationController
      end
      ws.save()
 
-     @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
+     @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
 
      session.drive.batch do
        user_permission = {
