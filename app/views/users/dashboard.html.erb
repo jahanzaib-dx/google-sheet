@@ -49,7 +49,7 @@
                     <%= link_to "Edit Profile", profile_update_path, :class => "tx_edit_btn" %>
                   </div>
                   <div class="tx_profile_detail_section">
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-5 col-sm-5">
                       <div class="tx_profile_image">
                         <%####= image_tag("user-img.jpg") %>
                         <% if current_user.linkedin_photo != "" %>
@@ -59,7 +59,7 @@
                         <% end %>
                       </div>
                     </div>
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-7 col-sm-7">
                       <ul class="tx_profile_detail_content">
                         <li><%= current_user.first_name %> <%= current_user.last_name %></li>
                         <li><%= current_user.firm_name %></li>
