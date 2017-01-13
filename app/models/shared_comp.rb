@@ -14,16 +14,16 @@ class SharedComp < ActiveRecord::Base
   
   def self.getUnlockData activity
     
-    # unlockData = SharedComp.select('comp_unlock_fields.id,comp_unlock_fields.field_name').
-    # where("comp_id = ? AND agent_id = ? AND comp_type = ? ", activity.comp_id,activity.initiator_id,activity.comptype ).
-    # joins(:comp_unlock_field).all.map{ |comp|
-      # comp.field_name
-    # }       
     unlockData = SharedComp.select('comp_unlock_fields.id,comp_unlock_fields.field_name').
-    where("comp_id = ? AND agent_id = ? AND comp_type = ? ", activity.comp_id,activity.receiver_id,activity.comptype ).
+    where("comp_id = ? AND agent_id = ? AND comp_type = ? ", activity.comp_id,activity.initiator_id,activity.comptype ).
     joins(:comp_unlock_field).all.map{ |comp|
       comp.field_name
-    }
+    }       
+    # unlockData = SharedComp.select('comp_unlock_fields.id,comp_unlock_fields.field_name').
+    # where("comp_id = ? AND agent_id = ? AND comp_type = ? ", activity.comp_id,activity.receiver_id,activity.comptype ).
+    # joins(:comp_unlock_field).all.map{ |comp|
+      # comp.field_name
+    # }
     
     unlockData
   end

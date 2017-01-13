@@ -892,6 +892,39 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       size = get_tenantsize_range(item.size)
     else if item.view_type != 'confidential' && item.size
       size = number_format(item.size)
+      
+    if item.user_id == current_user_id
+    	requestunlock_class = ""
+    	Request_Unlock_text = "N/A"
+    	cpstatus = "Owner"
+    else
+    	requestunlock_class = "requestunlock"
+    	Request_Unlock_text = "<a href='#!' >Request Unlock</a>"
+    	cpstatus = "N/A"
+        
+    console.log (item.cp_status)
+    
+    if item.cp_status == 'full'
+    	cpstatus = "<a href='#'><img src='assets/lock-un.png'> </a>"
+    	requestunlock_class = ""
+    	Request_Unlock_text = "Request Sent"
+    else if item.cp_status == 'partial'
+    	cpstatus = "<a href='#'><img src='assets/lock-b.png'> </a>"   
+    	requestunlock_class = ""
+    	Request_Unlock_text = "Request Sent"
+    else if item.cp_status == 'Rejected'
+    	cpstatus = "<a href='#'><img src='assets/lock.png'> </a>"
+    	requestunlock_class = ""
+    	Request_Unlock_text = "Request Sent"
+    else if item.cp_status == "Waiting"
+    	cpstatus = "Waiting"
+    	requestunlock_class = ""
+    	Request_Unlock_text = "Request Sent"
+    
+    
+    if size < 1
+    	##size = "Lock"
+    	size = item.size_range
 
     values =
       row_count: row_count,
@@ -906,6 +939,10 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       longitude: item.longitude
       size: size
       year: (if (item.lease_commencement_date) then moment(item.lease_commencement_date, 'YYYY-MM-DD').format('YYYY') else '')
+      base_rent:item.base_rent
+      requestunlock_class:requestunlock_class
+      Request_Unlock_text:Request_Unlock_text
+      cpstatus:cpstatus
       public: (item.view_type == 'public')
       view_type: item.view_type
       tef_class: if data.params.is_cushman_user then "cushman_net_effective_per_sf" else "net_effective_per_sf"
@@ -913,6 +950,8 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       isAppending: doAppend
     r = Mustache.render(table_template, values)
     tb.append r
+    
+    
 
     # Setting to zero to allow the table height to adjust
     row_count = 0
