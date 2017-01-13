@@ -803,11 +803,16 @@ margin: 0 0 30px 129px;
     font-size: 16px;
     font-weight: bold;
     margin: 0 0 18px;
+
+
 }
+
 .tx_profile_detail_content {
+    overflow: hidden;
     width:100%;
 	float:left;
     margin: 0px 0 0px;
+
 }
 
 .tx_raiting_box {
