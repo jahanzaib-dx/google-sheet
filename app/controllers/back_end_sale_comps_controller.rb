@@ -46,7 +46,7 @@ class BackEndSaleCompsController < ApplicationController
       @BackEndSaleComp.file = @file.id
       @BackEndSaleComp.save
 
-      @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
 
       session.drive.batch do
         user_permission = {
@@ -119,7 +119,7 @@ class BackEndSaleCompsController < ApplicationController
         # end
       end
       ws.save()
-      @file_temp = session.drive.copy_file(@file.file, {name: "#{@file.file}_temp"}, {})
+      @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
       session.drive.batch do
         user_permission = {
             value: 'default',
@@ -145,10 +145,8 @@ class BackEndSaleCompsController < ApplicationController
     else
       session.drive.delete_file(params[:id])
       @file = session.drive.copy_file("#{params[:temp]}", {name: params[:id]}, {})
-
       @BackEndSaleComp = BackEndSaleComp.where("user_id = ?",@current_user.id).first
       @BackEndSaleComp.update_attributes(:file => @file.id)
-
       session.drive.delete_file(params[:temp])
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     end
@@ -225,7 +223,7 @@ class BackEndSaleCompsController < ApplicationController
     end
     ws.save()
 
-    @file_temp = session.drive.copy_file(@file.id, {name: "#{@file.id}_temp"}, {})
+    @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
 
     session.drive.batch do
       user_permission = {

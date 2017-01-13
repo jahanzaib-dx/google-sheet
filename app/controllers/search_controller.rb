@@ -680,7 +680,7 @@ class SearchController < ApplicationController
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
-      @file = session.drive.copy_file('1simT-7peFhoY-k9zrov3XYP4XpWJKPQRMz2sQYA5F1Y', {name: fileName}, {})
+      @file = session.drive.copy_file('1simT-7peFhoY-k9zrov3XYP4XpWJKPQRMz2sQYA5F1Y', {name: "#{@current_user.id}_temp"}, {})
 
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
@@ -815,7 +815,7 @@ class SearchController < ApplicationController
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
-    @file = session.drive.copy_file('1xPvNyWzcah6fbf_VlunbE_GDfMG1ufw3Gb2UeLa0MGo', {name: fileName}, {})
+    @file = session.drive.copy_file('1xPvNyWzcah6fbf_VlunbE_GDfMG1ufw3Gb2UeLa0MGo', {name: "#{@current_user.id}_temp"}, {})
 
     # put data to sheet
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
