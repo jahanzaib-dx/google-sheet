@@ -30,7 +30,7 @@ class DxMailer < ActionMailer::Base
 
 	def connection_request_approved_email(request)
 		@connection_request = request
-		mail(:to => request.sender.email, :subject => "New Connection " +request.receiver.first_name + " "+ request.receiver.last_name )
+		mail(:to => request.sender.email, :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
 
 	end
 
