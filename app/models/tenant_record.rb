@@ -1,7 +1,18 @@
 class TenantRecord < ActiveRecord::Base
 
   include ConditionalValidations
+  
+  ##:sizerange = ''
+  ##cattr_reader :size_range123, :instance_reader => false
+  ##cattr_reader :sizerange
+  mattr_accessor :sizerange
+  ##self.sizerange="range"
+  ##cattr_reader :code, :description, :points, :instance_reader => false
 
+ ##@@size_range123 = "EXM"
+ 
+   ##self.test = 123
+  
   #acts_as_paranoid
   store_accessor :data
 
