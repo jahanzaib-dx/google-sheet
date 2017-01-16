@@ -8,7 +8,7 @@ Hello <%= @comp_request.received_by.first_name.capitalize %>!
 <br><br>
 Please <a href="<%= comp_requests_url('incoming') %>/<%= @comp_request.comp_type %>">click here</a> to view details.
 <br><br>
-Want to reach out to <%= @comp_request.initiated_by.first_name %>? Send a message or view <a href="<%= dashboard_url() %>">contact details</a>
+Want to reach out to <%= @comp_request.initiated_by.first_name %>? Send a message or view <a href="<%= public_profile_url(@comp_request.initiated_by.id,@comp_request.received_by.id) %>">contact details</a>
 <br>
 </div>
 

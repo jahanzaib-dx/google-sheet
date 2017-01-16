@@ -29,10 +29,17 @@
   </td>
   <td class="result_line border_full"><p><%= activity_log.created_at.strftime('%m/%d/%Y') %></p></td>
   <td class="result_line border_full"><p><%= activity_log.sale_record.user.name %></p></td>
-  <td class="result_line img_width"><p> <%= image_tag("tbl-img.jpg")%> <%= "#{activity_log.sale_record.complete_address}"%></p></td>
+  <td class="result_line img_width"><p> 
+  	<a href="http://www.google.com/maps?cbll=<%= activity_log.tenant_record.latitude%>,<%= activity_log.tenant_record.longitude%>&layer=c" target="_blank">
+      <div class="" style="float: right; height:40px; width: 40px; background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=50x50&location=<%= activity_log.tenant_record.address1%>+<%= activity_log.tenant_record.city%>+<%= activity_log.tenant_record.state%>+<%= activity_log.tenant_record.zipcode%>') no-repeat center;">
+      </div>
+    </a>
+  	<%#= image_tag("tbl-img.jpg")%> 
+  	</p></td>
   <!-- <td class="result_line"><p><%#= activity_log.sale_record.company %></p></td> -->
+  <td class="result_line"><p><%= "#{activity_log.sale_record.complete_address}"%></p></td>
   <td class="result_line"><p><%= activity_log.sale_record.price.to_s.sub('-0.0', 'Lock') %></p></td>
-  <td class="result_line"><p><%= activity_log.sale_record.land_size.to_s.sub('-0.0', 'Lock') %></p></td>
+  <td class="result_line"><p><%= activity_log.sale_record.sizerange %></p></td>
   <td class="result_line"><p><%= activity_log.sale_record.build_date.year %></p></td>
   
 
