@@ -192,7 +192,7 @@ class CompRequestsController < ApplicationController
       
       activity_log = ActivityLog.where(:id =>  params[:activity_id]).first
       
-      shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
+      shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.initiator_id, :comp_type => activity_log.comptype)
       
       if shared.count == 1
         shared = shared.first
@@ -209,36 +209,36 @@ class CompRequestsController < ApplicationController
   end
   
   
-  def partial_transparency_update
-    
-    activity_log = ActivityLog.where(:id =>  params[:id])
-      
-      shared = SharedComp.where(:comp_id => activity_log.comp_id, :receiver_id => activity_log.agent_id, :comp_type => activity_log.comptype)
-      
-      if shared.count == 1
-        
-        shared.status = CompRequest.PARTIAL
-        shared.save()
-        
-        comp_unlock_field = CompUnlockField.where(:shared_comp_id => SharedComp.id)
-        comp_unlock_field.destroy_all
-        
-        params[:unlock].each do |unlock|
-          unlock_field = CompUnlockField.new()
-          unlock_field.field_name = unlock[0]
-          unlock_field.shared_comp_id = shared.id
-          unlock_field.save
-        end
-        
-        activity_log.status = "Approved"
-        activity_log.save()
-         
-        ##SharedComp.destroy
-      end
-
-    render json: {:status => :success}
-    
-  end
+  # def partial_transparency_update
+#     
+    # activity_log = ActivityLog.where(:id =>  params[:id])
+#       
+      # shared = SharedComp.where(:comp_id => activity_log.comp_id, :initiator_id => activity_log.agent_id, :comp_type => activity_log.comptype)
+#       
+      # if shared.count == 1
+#         
+        # shared.status = CompRequest.PARTIAL
+        # shared.save()
+#         
+        # comp_unlock_field = CompUnlockField.where(:shared_comp_id => SharedComp.id)
+        # comp_unlock_field.destroy_all
+#         
+        # params[:unlock].each do |unlock|
+          # unlock_field = CompUnlockField.new()
+          # unlock_field.field_name = unlock[0]
+          # unlock_field.shared_comp_id = shared.id
+          # unlock_field.save
+        # end
+#         
+        # activity_log.status = "Approved"
+        # activity_log.save()
+#          
+        # ##SharedComp.destroy
+      # end
+# 
+    # render json: {:status => :success}
+#     
+  # end
   
   
   def full_transparency_update
@@ -248,7 +248,7 @@ class CompRequestsController < ApplicationController
       if activity_log.count == 1
          activity_log = activity_log.first
          
-         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
+         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.initiator_id, :comp_type => activity_log.comptype)
         
         if shared.count < 1
           shared = SharedComp.new()
@@ -258,7 +258,7 @@ class CompRequestsController < ApplicationController
         
         
         shared.comp_id = activity_log.comp_id
-        shared.agent_id = activity_log.receiver_id
+        shared.agent_id = activity_log.initiator_id
         shared.comp_type = activity_log.comptype
         
         shared.comp_status = CompRequest::FULL
@@ -337,7 +337,7 @@ class CompRequestsController < ApplicationController
     if activity_log.count == 1
          activity_log = activity_log.first
          
-         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.receiver_id, :comp_type => activity_log.comptype)
+         shared = SharedComp.where(:comp_id => activity_log.comp_id, :agent_id => activity_log.initiator_id, :comp_type => activity_log.comptype)
         
         if shared.count < 1
           shared = SharedComp.new()
@@ -347,7 +347,7 @@ class CompRequestsController < ApplicationController
         
         
         shared.comp_id = activity_log.comp_id
-        shared.agent_id = activity_log.receiver_id
+        shared.agent_id = activity_log.initiator_id
         shared.comp_type = activity_log.comptype
         
         shared.comp_status = CompRequest::PARTIAL

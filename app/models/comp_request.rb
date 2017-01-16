@@ -120,7 +120,7 @@ class CompRequest < ActiveRecord::Base
       unlock_field.save
     end
 
-    log_my_activity shared, comp_request.initiator_id
+    log_my_activity shared, comp_request.receiver_id
 
   end
 
