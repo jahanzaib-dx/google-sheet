@@ -12,7 +12,7 @@ Data Type: <%= @comp_request.comp_type %> Comp
 
 Address: <%= @comp_request.tenant_record.address1%>
 <br>
-SF: <%= number_with_precision(@comp_request.tenant_record.net_effective_per_sf,:precision => 2) %>
+SF: <%= sf_range(@comp_request.tenant_record.net_effective_per_sf) %>
 <br>
 Year: <%= @comp_request.tenant_record.lease_commencement_date.year%>
 
@@ -20,7 +20,7 @@ Year: <%= @comp_request.tenant_record.lease_commencement_date.year%>
 
 Address: <%= @comp_request.sale_record.address1%>
 <br>
-SF: <%= number_with_precision(@comp_request.sale_record.land_size,:precision => 2) %>
+SF: <%= sf_range(@comp_request.sale_record.land_size) %>
 <br>
 Year: <%= @comp_request.sale_record.build_date.year%>
 
