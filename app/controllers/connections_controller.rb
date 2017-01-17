@@ -10,7 +10,7 @@ class ConnectionsController < ApplicationController
     if is_connection_valid? request
       connection_params = {:user_id => request.user_id, :agent_id => request.agent_id}
       @connection = Connection.new(connection_params)
-
+      @connection.connection_established = true
       if @connection.save
         request.destroy
         respond_to do |format|

@@ -67,7 +67,7 @@ class ConnectionRequestsController < ApplicationController
     DxMailer.connection_request_approved_email(request).deliver
     if user_signed_in?
       if current_user.email != @connection_request.receiver.email
-        # User.find(@connection_request.receiver.id).destroy
+
         @connection_request.agent_id = current_user.id
         @connection_request.save
         @connection_request.receiver = current_user
