@@ -5,10 +5,11 @@
     <a href="#" data-href="<%= comp_requests_remind_path %>" data-request-id="<%= comp_request.id %>"><%= image_tag("hand-right.png")%></a>
   </td>
 
-  <td width="340" class="result_line result_img_icon">
-    <p><%= image_tag("tbl-img.jpg")%> <%= "#{comp_request.tenant_record.complete_address}" %></p>
+  <td width="50" class="result_line result_img_icon">
+    <p><%= comp_image(comp_request.tenant_record).html_safe %></p>
   </td>
 
+  <td width="340" class="result_line"><p><%= "#{comp_request.tenant_record.complete_address}" %></p></td>
   <td width="176" class="result_line"><p>Locked</p></td>
   <td width="193" class="result_line"><p>Locked</p></td>
   <td width="144" class="result_line"><p><%= sf_range(comp_request.tenant_record.size) %></p></td>
