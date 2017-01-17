@@ -10,21 +10,6 @@
     		<a href="#!" class="set_aid" data-aid="<%= activity_log.id%>" data-status="Unlock" data-toggle="modal"  data-target="#Modaloptions1" >Approved</a> (<%= ActivityLog::TIRES[activity_log.status]%>)
     	<% end %>
     	
-        <%##= "#{ activity_log.status=='Rejected'? 'Declined':'Approved' }" %>
-    <% else %>
-    	<%#=
-           case activity_log.status          
-           when 'full'
-             image_tag("lock-un.png" , :class => "unlock_img")
-           when 'full_owner'
-             image_tag("lock-un.png" , :class => "unlock_img")
-           when 'partial'
-             #image_tag("un-lock.png" , :class => "partial_img");
-             image_tag("lock-b.png" , :class => "partial_img")
-           when 'Rejected'
-             "Declined"
-           end
-        %>
     <% end %>
 
   </td>
@@ -32,13 +17,9 @@
   <td class="result_line border_full"><p><%= activity_log.tenant_record.user.name %></p></td>
   <td class="result_line img_width">
   	<p> 
-  	<a href="http://www.google.com/maps?cbll=<%= activity_log.tenant_record.latitude%>,<%= activity_log.tenant_record.longitude%>&layer=c" target="_blank">
-      <div class="" style="float:right; height:40px; width: 40px; background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=50x50&location=<%= activity_log.tenant_record.address1%>+<%= activity_log.tenant_record.city%>+<%= activity_log.tenant_record.state%>+<%= activity_log.tenant_record.zipcode%>') no-repeat center;">
-      </div>
-    </a>
-            <%##= image_tag("tbl-img.jpg")%> 
-            
-  </p></td>
+  		<%= comp_image(activity_log.tenant_record).html_safe %>
+  	</p>
+  </td>
   <td class="result_line"><p><%= "#{activity_log.tenant_record.complete_address}"%></p></td>
   <td class="result_line"><p><%= activity_log.tenant_record.company %></p></td>
   <td class="result_line"><p><%= activity_log.tenant_record.base_rent %></p></td>
