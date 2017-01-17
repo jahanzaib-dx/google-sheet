@@ -1,0 +1,13 @@
+<%= render 'partials/email_header' %>
+
+<div class="email-content">
+
+	Hello <%= @shared.user.first_name.capitalize %>!
+<br><br>
+<%= current_user.first_name.capitalize %> has approved your request.
+<br>
+Please <a href="<%= activity_logs_url %>/<%= @shared.comp_type %>">click here</a> to view details.
+	<br>
+</div>
+
+<%= render 'partials/email_footer' %>
