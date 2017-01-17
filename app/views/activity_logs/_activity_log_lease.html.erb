@@ -7,12 +7,12 @@
     	<% elsif activity_log.status=='full_owner' %>
     		Approved
     	<% else %>
-    		<a href="#!" class="set_aid" data-aid="<%= activity_log.id%>" data-status="Unlock" data-toggle="modal"  data-target="#Modaloptions1" >Approved</a>
+    		<a href="#!" class="set_aid" data-aid="<%= activity_log.id%>" data-status="Unlock" data-toggle="modal"  data-target="#Modaloptions1" >Approved</a> (<%= ActivityLog::TIRES[activity_log.status]%>)
     	<% end %>
     	
         <%##= "#{ activity_log.status=='Rejected'? 'Declined':'Approved' }" %>
     <% else %>
-    	<%=
+    	<%#=
            case activity_log.status          
            when 'full'
              image_tag("lock-un.png" , :class => "unlock_img")
