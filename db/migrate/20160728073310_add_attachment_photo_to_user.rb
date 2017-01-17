@@ -7,6 +7,7 @@ class AddAttachmentPhotoToUser < ActiveRecord::Migration
   end
 
   def self.down
+    remove_column :connection_requests, :accepted, :boolean
     remove_column :users, :photo_file_name
     remove_column :users, :photo_content_type
     remove_column :users, :photo_file_size
