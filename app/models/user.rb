@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_one :settings, class_name: 'UserSetting'
 
 
-  has_many :connections
+  has_many :connections, foreign_key: :user_id
   has_many :connected_to, through: :connections, foreign_key: :agent_id
   has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id'
   has_many :inverse_connected_to, through: :inverse_connections, source: :user

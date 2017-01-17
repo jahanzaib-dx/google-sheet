@@ -57,9 +57,18 @@
   
   </div>
   <div class="col-md-3">
-  <div class="col-md-12 col-sm-12 tx_acpect_eria">
-  <a class="btn_blue_full" href="<%= accept_connection_request_url(@request_id) %>">Accept Invitation </a>
-  </div>
+  <% if  @user.inverse_connections.empty? %>
+    <div class="col-md-12 col-sm-12 tx_acpect_eria">
+      <a class="btn_blue_full" href="<%= accept_connection_request_url(@request_id) %>">Accept Invitation </a>
+    </div>
+  <% end %>
+  <% if  !@user.inverse_connections.empty? %>
+    <% if @user.inverse_connections.last.connection_established == false %>
+      <div class="col-md-12 col-sm-12 tx_acpect_eria">
+      <a class="btn_blue_full" href="<%= accept_connection_request_url(@request_id) %>">Accept Invitation </a>
+      </div>
+    <% end %>
+  <% end %>
   <div class="col-md-12 col-sm-12 both-pad-none"> 
   <div class="tx_tracker_box tx_tracker_box_white_background boredr_rating_box">
                <div class="col-md-4">
