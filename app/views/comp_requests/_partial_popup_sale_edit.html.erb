@@ -9,7 +9,7 @@
         <br/>
         Tier 3 – your connection is NOT granted full access but may access only those details that you give permission to access. Your connection does not have the ability to grant access to the comp or any information in the comp to anyone
         
-        <%= form_tag partial_transparency_path do %>
+        <%= form_tag partial_transparency_update_path do %>
         <table width="100%" border="0">
           <tr>
             <td height="104"><h1 class="comp-table-hadding">Sale</h1></td>
@@ -35,8 +35,8 @@
 
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Date Sold</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[sold_date]"> <%=@comp_record.sold_date.strftime('%m/%d/%Y')%> </p></td>
+            <td><p class="comp-table-pre">Year Sold</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[sold_date]" checked="checked" disabled="disabled"> <%=@comp_record.sold_date.year%> </p></td>
 
             <td><p class="comp-table-pre">Class Type</p></td>
             <td><p class="comp-table-pre"><input type="checkbox" name="unlock[class_type]"> <%=@comp_record.class_type.to_s.capitalize!%> </p></td>
@@ -61,7 +61,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Address</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[address1]"> <%=@comp_record.address1%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[address1]" checked="checked" disabled="disabled"> <%=@comp_record.address1%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Suite</p></td>
