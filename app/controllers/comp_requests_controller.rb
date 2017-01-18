@@ -200,7 +200,7 @@ class CompRequestsController < ApplicationController
         comp_unlock_field.destroy_all
                  
         if shared.user.settings.email
-          DxMailer.comp_request_declined_update(shared).deliver
+          DxMailer.comp_request_declined_update(current_user,shared).deliver
         end
       
         shared.destroy
@@ -293,7 +293,7 @@ class CompRequestsController < ApplicationController
       shared.save()
       
       if shared.user.settings.email
-        DxMailer.comp_request_approved_update(shared).deliver
+        DxMailer.comp_request_approved_update(current_user,shared).deliver
       end
         
         # activity_log.status = "Approved"
@@ -364,7 +364,7 @@ class CompRequestsController < ApplicationController
         shared.save()
         
         if shared.user.settings.email
-          DxMailer.comp_request_approved_update(shared).deliver
+          DxMailer.comp_request_approved_update(current_user,shared).deliver
         end
         
         comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
