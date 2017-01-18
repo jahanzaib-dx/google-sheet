@@ -13,6 +13,6 @@ class ActivityLog < ActiveRecord::Base
   
   scope :my_all_activities, ->(user_id,comptype) { where("(receiver_id = #{user_id}) AND comptype = '#{comptype}' ", user_id,comptype ) }
   
-  TIRES = { "full" => "Tire 2", "partial" => "Tire 3", "full_owner" => "Tire 1" }
+  TIRES = { "full" => "Tier 2", "partial" => "Tier 3", "full_owner" => "Tier 1" }
 
 end

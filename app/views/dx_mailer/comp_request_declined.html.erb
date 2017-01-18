@@ -4,7 +4,7 @@
 
 	Hello <%= @comp_request.initiated_by.first_name.capitalize %>, 
 <br><br>
-<%= @user.first_name.capitalize %> has declined your request to unlock: 
+<%= @comp_request.received_by.name.capitalize %> has declined your request to unlock: 
 <br><br>
 Data Type: <%= @comp_request.comp_type %> Comp
 <br>
