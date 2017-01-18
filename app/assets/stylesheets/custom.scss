@@ -390,6 +390,58 @@ html, body {
 	text-transform: uppercase;
 	cursor:pointer;
 }
+.multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+  background-color: #FFFFFF;
+  color: #000;
+  width: 180px;
+  font-size: 13px;
+  color: #262626;
+
+
+}
+
+.selectBox select {
+  height: 40px;
+  width: 100%;
+  font-weight: normal;
+  padding-left: 12px;
+  background-color: #ffffff;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+
+}
+.customize-div {
+  width: 200px;
+}
+.custom-style {
+  height: 45px;
+  background-color: #FFFFFF;
+}
+.fixed-height {
+  height: 40px !important;
+}
+#checkboxes label {
+  display: block;
+}
+
+//#checkboxes label:hover {
+//  background-color: #1e90ff;
+//}
 .tx_footer-menu li a:hover {
 	opacity: 0.7;
 }
@@ -429,6 +481,10 @@ a {
 	float: left;
 	padding:0 21px;
 	width: 100%;
+}
+.new-custom-div {
+  color: #000000;
+  width: 181px;
 }
 .dropdown-menu.tx_drop_menu {
 	background: #4a4949 none repeat scroll 0 0;

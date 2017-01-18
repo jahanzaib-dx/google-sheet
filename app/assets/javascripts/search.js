@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    $('.show-hide-div').attr('style', 'display: none !important');
+    $('.show-hide-div2').attr('style', 'display: block !important');
+
+});
+
 $(function() {
 
     //alert($.fn.ajaxselect);
@@ -9,14 +15,15 @@ $(function() {
   $( ".comp_type" ).click(function() {
     var cid = this.id;
     if (cid == 'comp_sales') {
-
+      $('#checkboxes2').attr('style','display: none !important');
       $('.resetit').val('').selectpicker('refresh');
-
+      $('.show-hide-div2').attr('style','display: none !important');
+      $('.show-hide-div').attr('style','display: block !important');
       /////$(".lease_filter").css("display", "none");
       $('.lease_filter').attr('style','display: none !important');
       $(".lease_filter_input").prop("disabled", true);
       /////$(".sales_filter").css("display", "block");
-      $('.sales_filter').attr('style','display: block !important');
+      $('.sales_filter').attr('style','display: none !important');
       $(".sales_filter_input").prop("disabled", false);
       $(".filters_type").val("sale");
       $(".h_filters_type").val("sale");
@@ -28,15 +35,16 @@ $(function() {
     } else {
 
       $('.resetit').val('').selectpicker('refresh');
-
+      $('.show-hide-div2').attr('style','display: block !important');
+      $('.show-hide-div').attr('style','display: none !important');
       ////$(".sales_filter").css("display", "none");
       $('.sales_filter').attr('style','display: none !important');
-      
+
       $(".sales_filter_input").prop("disabled", true);
       ////$(".lease_filter").css("display", "block");
       $('.lease_filter').attr('style','display: block !important');
-      
-      
+
+
       $(".lease_filter_input").prop("disabled", false);
       $(".filters_type").val("lease");
       $(".h_filters_type").val("lease");
@@ -76,32 +84,32 @@ $(function() {
       // }
     // });
   // });
-  
+
   $( document ).on( "click", ".markspam", function() {
     spamurl = $(this).data("url");
-	
+
 	if (spamurl != "") {
 		$(this).addClass("disabled");
-		
+
 		$.ajax({
 		  type: "GET",
 		  url: spamurl
 		});
 	}
-	
+
 	$(this).removeClass("active");
 	$(this).data("url","");
-		
+
   });
-  
+
     $( document ).on( "click", ".requestunlock", function() {
-		
+
 	var unobj = $(this);
 	createRequesturl = unobj.data("url");
-	
+
 	if (createRequesturl != "") {
 		/*$(this).addClass("disabled");*/
-		
+
 		$.ajax({
 		  type: "POST",
 		  url: createRequesturl
@@ -111,18 +119,17 @@ $(function() {
 		  unobj.html("Request Sent");
 		});
 	}
-	
+
 	/*$(this).removeClass("active");*/
 	/*$(this).data("url","");*/
-		
+
   });
-  
+
    $( document ).on( "click", ".clear-btn", function() {
-		$('.resetit').val('').selectpicker('refresh');	
+		$('.resetit').val('').selectpicker('refresh');
   });
-  
-  
-  
- 
-  
-  
+
+
+
+
+
