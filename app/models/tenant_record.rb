@@ -1,7 +1,10 @@
 class TenantRecord < ActiveRecord::Base
 
   include ConditionalValidations
-
+  
+  ##cattr_reader :sizerange
+  mattr_accessor :sizerange
+    
   #acts_as_paranoid
   store_accessor :data
 
@@ -227,6 +230,7 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.company_logo_file_name, " +
       "tenant_records.main_image_updated_at, " +
       "tenant_records.company_logo_updated_at, " +
+      "tenant_records.user_id, " +
       ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
@@ -237,7 +241,9 @@ class TenantRecord < ActiveRecord::Base
       ####user_scope +
       ###", 0 as editable" +
 	  " 0 as editable" +
-      ", 'protect_view' as in_scope "
+      ", 'protect_view' as in_scope " +
+      ", 'cp_status' as cp_status " +
+      ", 'size_range' as size_range "
     )
     ####.joins({ :office => :firm })
     ####.group('tenant_records.id, tenant_records.address1, offices.firm_id, offices.name, offices.logo_image_file_name, firms.name')

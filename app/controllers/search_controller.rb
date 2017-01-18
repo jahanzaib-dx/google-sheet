@@ -2,6 +2,7 @@ class SearchController < ApplicationController
   include SearchControllerUtil
   include CushmanCalculationEngine
   include CalculatorUtil
+  include CompHelper
 
   before_filter :authenticate_user!, except: [:comp_lookup, :comp_address_lookup]
 
@@ -169,19 +170,23 @@ class SearchController < ApplicationController
     tenant_records ||= scope
 
 
-@summary = tenant_records.all.first
-
-
+####@summary = tenant_records.all.first
+    
+    require 'will_paginate/array'
+    
+    tenant_records = lockTenantRecord tenant_records
+    
     respond_to do |format|
       if (params[:tenant_record][:summary].blank?)
         session[:search_params] = original_params unless params.has_key? :previous # only if store if it's not a previous requery
         #format.json { render json: { type: 'advanced', res: @tenant_records.limit(100).offset(params['tenant_record'][:offset]).order($order), count: @tenant_records.length, params:params } }
 		
-		format.html  # index.html.erb
+		    format.html  # index.html.erb
 		
-        format.json { render json: { type: 'advanced', res: tenant_records.paginate(:page => params['tenant_record'][:page].to_i, :per_page => 100).order($order), count: tenant_records.length, params:params } }
+        ####format.json { render json: { type: 'advanced', res: tenant_records.paginate(:page => params['tenant_record'][:page].to_i, :per_page => 100).order($order), count: tenant_records.length, params:params } }
+        format.json { render json: { type: 'advanced', res: tenant_records.paginate(:page => params['tenant_record'][:page].to_i, :per_page => 100), count: tenant_records.length, params:params } }
       else
-        format.json { render json: { type: 'advanced', summary: tenant_records.all.first, count: tenant_records.all.first.total_count, params:params } }
+        ###format.json { render json: { type: 'advanced', summary: tenant_records.all.first, count: tenant_records.all.first.total_count, params:params } }
 		
 		
 		format.html { render html }
@@ -191,6 +196,63 @@ class SearchController < ApplicationController
     end
 
   end
+  
+  def lockTenantRecord tenant_records
+    
+       tenant_records = tenant_records.each do |t_record|
+          
+          if t_record.user_id != current_user.id
+            
+             ##compObj = OpenStruct.new() ## convert hash(asso array) to object
+             
+             ##compArr = Hash.new
+             unlockFields = []
+             
+              ##t_record.address1 = "Locked"
+              ##where("comp_id = ? AND agent_id = ? AND comp_type = ? ", activity.comp_id,activity.receiver_id,activity.comptype ).
+              activity = ActivityLog.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "lease").first
+              ##activity = OpenStruct.new({:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "lease"}) ## convert hash(asso array) to object
+              if activity.present?
+                
+                ##compArr['cp_status'] = activity.status
+                ##compObj.cp_status = activity.status
+                
+                t_record.cp_status = activity.status
+                
+                if activity.status == CompRequest::FULL
+                  next 
+                end             
+                
+                if activity.status == CompRequest::PARTIAL
+                  unlockFields = SharedComp.getUnlockData activity
+                end
+              
+              else
+                comp_request = CompRequest.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comp_type => "lease").first
+                
+                if comp_request.present?
+                  t_record.cp_status = "Waiting"
+                end
+                
+              end
+    
+              t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
+              t_record.base_rent = if unlockFields.include?"base_rent" then t_record.base_rent else 'Lock' end
+              t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
+              t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
+              
+                
+              ##t_record = t_record + compArr
+              ##t_record = t_record + compObj
+              p t_record.cp_status
+              ##t_record.merge(compObj)
+             
+                       
+          end
+       
+       end
+   
+   end
 
   def industry
 

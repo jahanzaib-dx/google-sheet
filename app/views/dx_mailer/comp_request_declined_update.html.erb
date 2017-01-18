@@ -1,0 +1,31 @@
+<%= render 'partials/email_header' %>
+
+<div class="email-content">
+
+	Hello <%= @shared.user.first_name.capitalize %>, 
+<br><br>
+<%= @user.first_name.capitalize %> has declined your request to unlock: 
+<br><br>
+Data Type: <%= @shared.comp_type %> Comp
+<br>
+<% if @comp_request.comp_type == 'lease' %>
+
+Address: <%= @shared.tenant_record.address1%>
+<br>
+SF: <%= sf_range(@shared.tenant_record.net_effective_per_sf) %>
+<br>
+Year: <%= @shared.tenant_record.lease_commencement_date.year%>
+
+<% elsif @shared.comp_type == 'sale' %>
+
+Address: <%= @shared.sale_record.address1%>
+<br>
+SF: <%= sf_range(@shared.sale_record.land_size) %>
+<br>
+Year: <%= @shared.sale_record.build_date.year%>
+
+<% end %>
+	<br>
+</div>
+
+<%= render 'partials/email_footer' %>
