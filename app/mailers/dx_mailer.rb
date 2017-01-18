@@ -60,13 +60,15 @@ class DxMailer < ActionMailer::Base
     mail( :to => comp_request.initiated_by.email, :subject => "Request Declined" )
   end
   
-  def comp_request_approved_update(shared)
+  def comp_request_approved_update(user,shared)
     @shared = shared
+    @user = user
     mail(to: shared.user.email, subject: "Request Approved")
   end
   
-  def comp_request_declined_update(shared)
+  def comp_request_declined_update(user,shared)
     @shared = shared
+    @user = user
     mail( :to => shared.user.email, :subject => "Request Declined" )
   end
 
