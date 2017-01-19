@@ -253,6 +253,155 @@ class SearchController < ApplicationController
        end
    
    end
+   
+   def lockSingleTenantRecord t_record
+     
+              t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
+              t_record.size_range = t_record.land_size
+              t_record.build_date_str = t_record.build_date.year
+              t_record.cap_rate_str = "#{t_record.cap_rate}%"
+
+
+          if t_record.user_id != current_user.id
+            
+             unlockFields = []
+             
+              activity = ActivityLog.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "lease").first
+
+              if activity.present?
+                
+                ##compArr['cp_status'] = activity.status
+                ##compObj.cp_status = activity.status
+                
+                t_record.cp_status = activity.status
+                
+                if activity.status == CompRequest::FULL
+                  ##next
+                  return t_record
+                end             
+                
+                if activity.status == CompRequest::PARTIAL
+                  unlockFields = SharedComp.getUnlockData activity
+                end
+              
+              else
+                comp_request = CompRequest.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comp_type => "lease").first
+                
+                if comp_request.present?
+                  t_record.cp_status = "Waiting"
+                end
+                
+              end
+              
+              t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
+              t_record.size_range = t_record.land_size
+              t_record.build_date_str = t_record.build_date.year
+              
+              t_record.price_str = if unlockFields.include?"price" then t_record.price else 'Lock' end
+              t_record.size_range = if unlockFields.include?"land_size" then t_record.land_size else 'Lock' end
+              t_record.build_date_str = if unlockFields.include?"build_date" then t_record.build_date.year else 'Lock' end
+              
+              t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
+              t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end
+              t_record.build_date_str = if unlockFields.include?"build_date" then t_record.build_date.year else 'Lock' end
+                   
+              ##t_record.suite = if unlockFields.include?"suite" then t_record.company else 'Lock' end
+              t_record.city = if unlockFields.include?"city" then t_record.city else 'Lock' end
+              t_record.state = if unlockFields.include?"state" then t_record.state else 'Lock' end
+              t_record.zipcode = if unlockFields.include?"zipcode" then t_record.zipcode else 'Lock' end
+                
+              t_record.submarket = if unlockFields.include?"submarket" then t_record.submarket else 'Lock' end
+              t_record.cap_rate_str = if unlockFields.include?"cap_rate" then "#{t_record.cap_rate}%" else 'Lock' end
+                
+                       
+          end
+          
+          t_record
+       
+   
+   end
+   
+   def lockSingleSaleRecord t_record
+     
+              t_record.base_rent_str = number_to_currency(t_record.base_rent.to_f,{:precision=>2})
+              t_record.size_range = t_record.size
+
+
+              t_record.escalation_str = t_record.escalation
+              t_record.lease_commencement_date_str = t_record.lease_commencement_date.strftime('%m/%d/%Y')
+              t_record.lease_term_months_str = t_record.lease_term_months
+
+              t_record.tenant_improvement_str = number_to_currency(t_record.tenant_improvement.to_f,{:precision=>2})
+              t_record.landlord_concessions_per_sf_str = number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2})
+              t_record.tenant_ti_cost_str = number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2})
+
+
+          if t_record.user_id != current_user.id
+            
+             unlockFields = []
+             
+              activity = ActivityLog.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "lease").first
+
+              if activity.present?
+                
+                ##compArr['cp_status'] = activity.status
+                ##compObj.cp_status = activity.status
+                
+                t_record.cp_status = activity.status
+                
+                if activity.status == CompRequest::FULL
+                  ##next
+                  return t_record
+                end             
+                
+                if activity.status == CompRequest::PARTIAL
+                  unlockFields = SharedComp.getUnlockData activity
+                end
+              
+              else
+                comp_request = CompRequest.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comp_type => "lease").first
+                
+                if comp_request.present?
+                  t_record.cp_status = "Waiting"
+                end
+                
+              end
+    
+              t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
+              t_record.base_rent_str = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent.to_f,{:precision=>2}) else 'Lock' end
+              t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
+              t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
+              
+              t_record.suite = if unlockFields.include?"suite" then t_record.company else 'Lock' end
+              t_record.city = if unlockFields.include?"city" then t_record.city else 'Lock' end
+              t_record.state = if unlockFields.include?"state" then t_record.state else 'Lock' end
+              t_record.zipcode = if unlockFields.include?"zipcode" then t_record.zipcode else 'Lock' end
+                
+              t_record.property_name = if unlockFields.include?"property_name" then t_record.property_name else 'Lock' end
+              t_record.industry_type = if unlockFields.include?"industry_type" then t_record.industry_type else 'Lock' end
+              t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
+              t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end
+                
+              t_record.escalation_str = if unlockFields.include?"escalation" then t_record.escalation else 'Lock' end
+              ##t_record.lease_commencement_date_str = if unlockFields.include?"lease_commencement_date" then t_record.lease_commencement_date.strftime('%m/%d/%Y') else 'Lock' end
+              t_record.lease_term_months_str = if unlockFields.include?"lease_term_months" then t_record.lease_term_months else 'Lock' end
+              t_record.free_rent = if unlockFields.include?"free_rent" then t_record.free_rent else 'Lock' end
+                
+              t_record.tenant_improvement_str = if unlockFields.include?"tenant_improvement" then number_to_currency(t_record.tenant_improvement.to_f,{:precision=>2}) else 'Lock' end
+              t_record.landlord_concessions_per_sf_str = if unlockFields.include?"landlord_concessions_per_sf" then number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2}) else 'Lock' end
+              t_record.tenant_ti_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2}) else 'Lock' end
+              t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
+                
+              t_record.lease_type = if unlockFields.include?"lease_type" then t_record.lease_type else 'Lock' end
+              ## not working t_record.data['leasestructure_name'] = if unlockFields.include?"leasestructure_name" then t_record.data['leasestructure_name'] else 'Lock' end
+              
+                       
+          end
+          
+          t_record
+       
+   
+   end
 
   def industry
 
@@ -633,15 +782,26 @@ class SearchController < ApplicationController
   def lease_comp
     if (!params[:id].blank?)
       comp_id = params[:id]
-      @comp_record = TenantRecord.find(comp_id)
+      
+      ##@comp_record = TenantRecord.select_extra().where(:id=>comp_id)
+      comp = TenantRecord.select("*").select_extra().find(comp_id)
+      #p comp
+      
+      @comp_record = lockSingleTenantRecord comp
+      #p @comp_record
+      
     end
     render "lease_comp"
   end
 
   def sale_comp
     if (!params[:id].blank?)
-      comp_id = params[:id]
-      @comp_record = SaleRecord.find(comp_id)
+      comp_id = params[:id]      
+      ##@comp_record = SaleRecord.find(comp_id)
+      
+      comp = SaleRecord.select("*").select_extra().find(comp_id)
+      
+      @comp_record = lockSingleTenantRecord comp
     end
     render "sale_comp"
   end
@@ -649,7 +809,9 @@ class SearchController < ApplicationController
   def lease_comp_pdf
     if (!params[:id].blank?)
       comp_id = params[:id]
-      @comp_record = TenantRecord.find(comp_id)
+      #@comp_record = TenantRecord.find(comp_id)
+      comp = TenantRecord.select("*").select_extra().find(comp_id)
+      @comp_record = lockSingleTenantRecord comp
     end
     render :pdf => "lease_comp_pdf" ##any name
   end
@@ -657,7 +819,11 @@ class SearchController < ApplicationController
   def sale_comp_pdf
     if (!params[:id].blank?)
       comp_id = params[:id]
-      @comp_record = SaleRecord.find(comp_id)
+      ##@comp_record = SaleRecord.find(comp_id)
+      
+      comp = SaleRecord.select("*").select_extra().find(comp_id)
+      
+      @comp_record = lockSingleTenantRecord comp
     end
     render :pdf => "sale_comp_pdf"
   end

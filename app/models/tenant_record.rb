@@ -328,6 +328,19 @@ class TenantRecord < ActiveRecord::Base
     having("(tenant_records.lease_commencement_date, DATE_TRUNC('MONTH', tenant_records.lease_commencement_date) + INTERVAL '1 MONTH - 1 DAY') OVERLAPS (DATE ?, DATE ?)", start, finish)
     .group('tenant_records.id')
   }
+  
+  scope :select_extra, -> { select("
+      'cp_status' as cp_status,
+      'size_range' as size_range,
+      'base_rent_str' as base_rent_str,
+      'lease_commencement_date_str' as lease_commencement_date_str,
+      'lease_term_months_str' as lease_term_months_str,
+      'tenant_improvement_str' as tenant_improvement_str,
+      'landlord_concessions_per_sf_str' as landlord_concessions_per_sf_str,
+      'tenant_ti_cost_str' as tenant_ti_cost_str,
+      'escalation_str' as escalation_str      
+      
+      ") }
 
   def data
     super.with_indifferent_access
