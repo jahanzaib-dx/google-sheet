@@ -48,25 +48,25 @@
             <td><p class="comp-table-pre">Tenant Name</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.company.to_s.capitalize%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
-            <td><p class="comp-table-pre">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.property_name%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Industry </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.industry_type%></p></td>
             <td><p class="comp-table-pre">Property Type</p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize! %> </p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.property_type %> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Size (SF)</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.size%> </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.size_range%> </p></td>
 
             <td><p class="comp-table-pre">Class Type</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize!%> </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.class_type%> </p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Base Rent ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.base_rent.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.base_rent_str%></p></td>
 
 
             <td></td>
@@ -74,7 +74,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Escalation (%) </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.escalation%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.escalation_str%></p></td>
             <td><p class="comp-table-pre"><h1 class="comp-table-hadding">Location</h1></p></td>
             <td><p class="comp-table-pre"> </p></td>
           </tr>
@@ -86,13 +86,13 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Commencement Date </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y')%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.lease_commencement_date.strftime('%m/%d/%Y') %></p></td>
             <td><p class="comp-table-pre">Address</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.address1%> </p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Term (Months) </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.lease_term_months%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.lease_term_months_str%></p></td>
             <td><p class="comp-table-pre">Suite</p></td>
             <td><p class="comp-table-pre"><%= @comp_record.suite %> </p></td>
           </tr>
@@ -105,21 +105,21 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Tenant Improvements ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.tenant_improvement_str%></p></td>
             <td><p class="comp-table-pre">State</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.state%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.landlord_concessions_per_sf_str%></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.zipcode%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.tenant_ti_cost.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.tenant_ti_cost_str%></p></td>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.submarket%> </p></td>
 
@@ -169,7 +169,7 @@
 
         </table>
 
-        <h1 class="detail-comp-hadding">Custom Data</h1>
+        <!-- <h1 class="detail-comp-hadding">Custom Data</h1>
 
         <table width="100%" border="0" >
           <tr>
@@ -208,7 +208,8 @@
             <td width="214"><p class="comp-table-pre">Header</p></td>
             <td width="214"><p class="comp-table-pre">Data</p></td>
           </tr>
-        </table>
+        </table> -->
+ 
       </div>
     </div>
     <div class="col-md-12 comp-bottom-btn">
