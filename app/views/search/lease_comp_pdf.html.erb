@@ -106,7 +106,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.landlord_concessions_per_sf_str%></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.zipcode%> </p></td>
 
