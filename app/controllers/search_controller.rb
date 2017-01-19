@@ -254,7 +254,7 @@ class SearchController < ApplicationController
    
    end
    
-   def lockSingleTenantRecord t_record
+   def lockSingleSaleRecord t_record
      
               t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
               t_record.size_range = t_record.land_size
@@ -321,7 +321,7 @@ class SearchController < ApplicationController
    
    end
    
-   def lockSingleSaleRecord t_record
+   def lockSingleTenantRecord t_record
      
               t_record.base_rent_str = number_to_currency(t_record.base_rent.to_f,{:precision=>2})
               t_record.size_range = t_record.size
@@ -801,7 +801,7 @@ class SearchController < ApplicationController
       
       comp = SaleRecord.select("*").select_extra().find(comp_id)
       
-      @comp_record = lockSingleTenantRecord comp
+      @comp_record = lockSingleSaleRecord comp
     end
     render "sale_comp"
   end
@@ -823,7 +823,7 @@ class SearchController < ApplicationController
       
       comp = SaleRecord.select("*").select_extra().find(comp_id)
       
-      @comp_record = lockSingleTenantRecord comp
+      @comp_record = lockSingleSaleRecord comp
     end
     render :pdf => "sale_comp_pdf"
   end
