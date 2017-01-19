@@ -698,7 +698,12 @@ class TenantRecord < ActiveRecord::Base
     arr = arr2 + arr1
     ##arr
   end
-  
+
+  def self.lease_sub_markets ()
+    TenantRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+
+  end
+
   def self.all_property_type ()
     arr2 = PropertyType.select('lower(name) as name').all
     arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all

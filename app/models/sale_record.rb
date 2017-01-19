@@ -79,6 +79,11 @@ class SaleRecord < ActiveRecord::Base
     ##arr
   end
 
+  def self.sale_sub_markets ()
+    SaleRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+
+  end
+
   def self.duplicate_list user_id
     query = 'SELECT y.*
             FROM sale_records y
