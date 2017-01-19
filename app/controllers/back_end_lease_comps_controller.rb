@@ -5,10 +5,12 @@ class BackEndLeaseCompsController < ApplicationController
   def index
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
+    stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
 
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
+
 
     check = BackEndLeaseComp.where('user_id = ?', @current_user)
     if  check.count == 0
@@ -17,7 +19,16 @@ class BackEndLeaseCompsController < ApplicationController
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
+      i=1
+      stepped_rent_col_head=21
+      while i <= stepped_rent_count  do
+        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
+        ws[1,stepped_rent_col_head+1] = "# of Months"
+        i +=1
+        stepped_rent_col_head+=2
+      end
       tenant_records.each do |tenant_record|
+        stepped_rent_col=21
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -38,6 +49,11 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 18] = tenant_record.deal_type
         ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
+        tenant_record.stepped_rents.each do |sr|
+          ws[counter, stepped_rent_col] = sr.cost_per_month
+          ws[counter, stepped_rent_col+1] = sr.months
+          stepped_rent_col+=2
+        end
         counter+=1
       end
       ws.save()
@@ -65,7 +81,16 @@ class BackEndLeaseCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
       max_rows = ws.num_rows
       counter=2
+      i=1
+      stepped_rent_col_head=21
+      while i <= stepped_rent_count  do
+        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
+        ws[1,stepped_rent_col_head+1] = "# of Months"
+        i +=1
+        stepped_rent_col_head+=2
+      end
       tenant_records.each do |tenant_record|
+        stepped_rent_col=21
         # while ws[counter,1] != tenant_record.id.to_s
         #   ws[counter, 2] = ''
         #   ws[counter, 3] = ''
@@ -108,6 +133,11 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 18] = tenant_record.deal_type
         ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
+        tenant_record.stepped_rents.each do |sr|
+          ws[counter, stepped_rent_col] = sr.cost_per_month
+          ws[counter, stepped_rent_col+1] = sr.months
+          stepped_rent_col+=2
+        end
         counter+=1
       end
       # if max_rows>=counter
@@ -177,6 +207,7 @@ class BackEndLeaseCompsController < ApplicationController
       # end
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
+
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :comp_view_type => ws[counter, 3],
@@ -196,7 +227,12 @@ class BackEndLeaseCompsController < ApplicationController
             :size => ws[counter, 17],
             :deal_type => ws[counter, 18],
             :lease_structure => ws[counter, 19],
-            :base_rent => ws[counter, 20]
+            :base_rent => ws[counter, 20],
+            :stepped_rents_attributes => [
+                {
+                    :months => ws[counter, 22]	, :cost_per_month => ws[counter, 21]
+                }
+            ]
         )
       end
       if ws[counter,1] != ''
