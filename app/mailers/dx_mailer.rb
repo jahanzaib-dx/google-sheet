@@ -25,12 +25,12 @@ class DxMailer < ActionMailer::Base
 
   def connection_invite(request)
     @connection_request = request
-    mail(:to => request.receiver.email, :subject => "New Connection Request via MarketRex")
+    mail(:to => request.receiver.email, :from => request.sender.email, :subject => "New Connection Request via MarketRex")
 	end
 
 	def connection_request_approved_email(request)
 		@connection_request = request
-		mail(:to => request.sender.email, :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
+		mail(:to => request.sender.email, :from => request.receiver.email , :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
 
 	end
 

@@ -20,6 +20,7 @@
 	  <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
 
       <div class="col-md-4 col-sm-4 both-pad-none">
+        <% if false %>
         <div class="checkbox checkbox-info">
 		  <%- apply_radius = "checked" if @search_params && @search_params[:apply_radius] %>
               <input id="apply_radius" tabindex="2" name="tenant_record[apply_radius]" value="true" type="checkbox" <%= apply_radius %> />
@@ -27,6 +28,7 @@
 
           <label for="checkbox4"> Within Radius </label>
         </div>
+        <% end %>
       </div>
 
 
@@ -75,14 +77,14 @@
       </div>
 
 
-
+      <% if false %>
       <div class="col-md-2 col-sm-2 both-pad-none miles_input">
         <!--<input type="text" placeholder="1">-->
 		<input type="text" id="tenant_record_radius" name="tenant_record[radius]" value="<%= (@search_params[:radius] if @search_params) || 2 %>">
         Miles
       </div>
       <div class="col-md-2 col-sm-2 both-pad-none"> <a href="#" class="advance_search_btn advanced_map_search">Map Search</a> </div>
-
+      <% end %>
     </form>
 
     </div>
