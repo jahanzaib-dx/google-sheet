@@ -1,0 +1,297 @@
+<%= render :partial => 'partials/simple_search_form' %>
+
+<!--body_section-inner-->
+<div class="body_section_inner">
+  <div class=" tx_accordion">
+    <div class="panel-group" id="accordion">
+
+      <%= render :partial =>  'partials/advance_search_panel', locals: { search_params: @search_params } %>
+
+
+
+	  <div id="results" class="container active">
+    <div class="empty_results">
+      <%##= image_tag('noPurchasedSearches.jpg') %>
+    </div>
+  </div>
+  
+  <script>
+  	current_user_id=<%= current_user.id%>
+  </script>
+  
+<%= render "template_results_empty" %>
+<%= render "template_results_table_header_lease" %>
+      <%= render "template_results_table_header_sale" %>
+<%= render "template_results_table_row_lease" %>
+      <%= render "template_results_table_row_sale" %>
+<%= render partial:"template_search_results_summary", locals: { search_params: @search_params } %>
+<%= render "template_search_results" %>
+<%= render "template_map_display" %>
+
+<%= render "pending_download" %>
+<%= render "pending_search" %>
+
+
+
+      <!--Dashboard-tab-start-->
+
+      <div class="panel panel-default">
+        <div class="panel-heading tx_panel-heading">
+          <div class="container">
+            <h4 class="panel-title"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel2">Dashboard</a> </h4>
+          </div>
+        </div>
+        <div id="panel2" class="panel-collapse in collapse">
+          <div class="container">
+            <div class="panel-body panel-body-tx">
+              <div class="col-md-1 col-sm-1"> </div>
+              <div class="col-md-5 col-sm-5">
+                <div class="tx_profile_section">
+                  <div class="col-md-12 col-sm-12">
+                    <h1 class="profile_hadding">Profile</h1>
+
+                    <%= link_to "Edit Profile", profile_update_path, :class => "tx_edit_btn" %>
+                  </div>
+                  <div class="tx_profile_detail_section">
+                    <div class="col-md-6 col-sm-6">
+                      <div class="tx_profile_image">
+                        <%####= image_tag("user-img.jpg") %>
+                        <% if current_user.linkedin_photo != "" %>
+                              <%= image_tag current_user.linkedin_photo.to_s %>
+                        <% else %>
+                            <%= image_tag current_user.avatar_url.to_s %>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                      <ul class="tx_profile_detail_content">
+                        <li><%= current_user.first_name %> <%= current_user.last_name %></li>
+                        <li><%= current_user.firm_name %></li>
+                        <li><%= current_user.title %></li>
+                        <li><%= current_user.mobile %></li>
+                        <li><%= current_user.email.scan(/.{1,25}/m).join("<br>").html_safe %></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-9 col-sm-9">
+                      <div class="tx_raiting_box">
+                        <div class="col-md-6">
+                          <div class="tx_raiting_color_box tx_raiting_color_picker"> </div>
+                        </div>
+                        <div class="col-md-6 user_raiting_content">
+                          <h6>User Rating:</h6>
+                          <h3>GOOD <a title="" data-toggle="tooltip" class="" href="#" data-original-title="Raiting....???">
+                            <%= image_tag("question-tol-tipp.jpg") %>
+                          </a></h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3"> </div>
+                  </div>
+                </div>
+                <div class="tx_profile_section">
+                  <div class="col-md-12 col-sm-12">
+                    <h1 class="profile_hadding">User Preferences</h1>
+
+                    <a href="#!" class="tx_edit_btn" data-toggle="modal" data-target="#myModal">Edit</a>
+
+                  </div>
+                  <div class="col-md-12 col-sm-12 tx_notification_content">
+                    <p>Text/SMS Notifications
+                      <a href="#">
+                        <% if @user.settings.sms %>
+                            <%= image_tag("tx_good.png") %>
+                        <% else %>
+                            <%= image_tag("tx_xras.png") %>
+                        <% end %>
+                      </a>
+                    </p>
+                    <p>Email Notification
+                      <a href="#">
+                        <% if @user.settings.email %>
+                            <%= image_tag("tx_good.png") %>
+                        <% else %>
+                            <%= image_tag("tx_xras.png") %>
+                        <% end %>
+                      </a>
+                    </p>
+
+                    <p>Send/Receive requests out of network
+                      <a href="#">
+                        <% if @user.settings.outofnetwork %>
+                            <%= image_tag("tx_good.png") %>
+                        <% else %>
+                            <%= image_tag("tx_xras.png") %>
+                        <% end %>
+                      </a>
+                    </p>
+
+                  </div>
+                </div>
+                <div class="tx_profile_section">
+                  <div class="col-md-12 col-sm-12">
+                    <h1 class="profile_hadding">Backend Status</h1>
+                    <a href="#!" class="tx_edit_btn">Edit</a> </div>
+                  <div class="col-md-5 col-sm-5 tx_notification_stetas">
+                    <%= image_tag("stetas-tx.png") %>
+                  </div>
+                  <div class="col-md-7 col-sm-7 tx_notification_stetas">
+                    <a data-original-title="Status" href="#" class="" data-toggle="tooltip" title=""><%= image_tag("question-tol-tipp.jpg") %></a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5 col-sm-5">
+                <div class="tx_activity_section">
+                  <h1 class="activity_hadding">Activity Tracker</h1>
+                  <div class="col-md-12 col-sm-12 both-pad-none">
+                    <div class="tx_tracker_box tx_tracker_box_color">
+                      <div class="col-md-4">
+                        <div class="tx_tracker_box_round_content">
+                          <a href="<%= activity_logs_path%>/lease"><p> L</p></a>
+                        </div>
+
+                      </div>
+                      <div class="col-md-8 tx_tracker_box_text_content">
+                        <h2><%= current_user.tenant_records.count%></h2>
+                        <h3>Lease Comps</h3>
+                        <a href="<%= comp_requests_path('incoming') %>/lease">Incoming Request <span>(<%= User.incoming_comp_requests_type(current_user,'lease').count %>)</span></a>
+                        <a href="<%= comp_requests_path('outgoing') %>/lease">Outgoing Request <span>(<%= User.outgoing_comp_requests_type(current_user,'lease').count %>)</span></a>
+                      </div>
+                    </div>
+                    <div class="tx_tracker_box tx_tracker_box_color_orange">
+                      <div class="col-md-4">
+                        <div class="tx_tracker_box_round_content">
+                          <a href="<%= activity_logs_path%>/sale"><p class="tx_orange_color"> S</p></a>
+                        </div>
+
+                      </div>
+                      <div class="col-md-8 tx_tracker_box_text_content">
+                        <h2><%= current_user.sale_records.count%></h2>
+                        <h3>Sales Comps</h3>
+                        <a href="<%= comp_requests_path('incoming') %>/sale">Incoming Request <span>(<%= User.incoming_comp_requests_type(current_user,'sale').count %>)</span></a>
+                        <a href="<%= comp_requests_path('outgoing') %>/sale">Outgoing Request <span>(<%= User.outgoing_comp_requests_type(current_user,'sale').count %>)</span></a>
+                      </div>
+                    </div>
+                    <div class="tx_tracker_box tx_tracker_box_yellow ">
+                      <div class="col-md-4">
+                        <div class="tx_tracker_box_round_content">
+                          <a href="<%= connections_path%>"><p class="tx_yellow_color">  C</p></a>
+                        </div>
+
+                      </div>
+                      <div class="col-md-8  tx_tracker_box_text_content">
+                        <h2>
+                          <%= @user.all_connections.count %>
+                          <%= '<i class="fa fa-star" aria-hidden="true"></i>'.html_safe  if @user.connection_requests_received.count > 0 %>
+                        </h2>
+                        <h3><%= "Connection".pluralize(@user.all_connections.count) %></h3>
+                        <%= link_to "Incoming <span>(#{@user.connection_requests_received.count})</span>".html_safe, connection_requests_path(:direction => "incoming") %>
+                        <%= link_to "Sent <span>(#{@user.connection_requests_sent.count})</span>".html_safe, connection_requests_path(:direction => "outgoing") %>
+
+                      </div>
+                    </div>
+                    <div class="tx_tracker_box tx_tracker_box_green ">
+                      <div class="col-md-4">
+                        <div class="tx_tracker_box_round_content">
+                          <a href="<%= messages_path%>"><p class="tx_green_color">  M</p></a>
+                        </div>
+
+                      </div>
+                      <div class="col-md-8 tx_tracker_box_text_content">
+                        <h2><%= @user.unread_received_messages.count %>
+                          <%= '<i class="fa fa-star" aria-hidden="true"></i>'.html_safe  if @user.unread_received_messages.count > 0 %>
+                        </h2>
+
+                        <!--<a href=""<%= messages_path('unread') %>">Unread Messages</a>
+                        <a href=""<%= messages_path %>">See All <span>(<%= @user.received_messages.count %>)</span></a>
+                        <a href=""<%= messages_path('connections') %>"><%= image_tag("box-edit.png") %></a>-->
+
+                        <a href="<%= messages_path%>?mtype=unread">Unread Messages <span>(<%= @user.unread_received_messages.count %>)</span></a>
+                        <a href="<%= messages_path%>">See All <span>(<%= @user.received_messages.count %>)</span></a>
+                        <a href="<%= messages_path%>?mtype=connections"><%= image_tag("box-edit.png") %></a>
+
+
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-1 col-sm-1"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Dashboard-tab-end-->
+
+      <!--<div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Panel 3</a>
+            </h4>
+        </div>
+        <div id="panel3" class="panel-collapse collapse">
+            <div class="panel-body">
+                Contents panel 3
+            </div>
+        </div>
+    </div>-->
+    </div>
+  </div>
+</div>
+<!--body_section-inner-end-->
+
+
+
+
+<%= form_for(:UserSettings, url: profile_preferences_path, html: { :id => '' }) do |f| %>
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog tx_modal_dailog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header tx_modal_header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title tx_modal_title">USER PREFERENCES</h4>
+      </div>
+      <div class="modal-body tx_modal_body">
+        <div class="col-md-12 modal_content">
+          <h5>Text/SMS Notifications</h5>
+          <label class="switch">
+            <span class="tx_onoff">Off/On</span>
+            <%= f.check_box :sms , checked: @user.settings.sms %>
+            <div class="slider round"></div>
+          </label>
+        </div>
+        <div class="col-md-12 modal_content">
+          <h5>Email Notification</h5>
+          <label class="switch">
+            <%= f.check_box :email , checked: @user.settings.email %>
+            <div class="slider round"></div>
+          </label>
+        </div>
+
+        <div class="col-md-12 modal_content">
+          <h5>Send/Receive requests <br>out of network</h5>
+          <label class="switch">
+            <%= f.check_box :outofnetwork , checked: @user.settings.outofnetwork %>
+            <div class="slider round"></div>
+          </label>
+        </div>
+
+      </div>
+      <div class="modal-footer tx_modal_footer">
+        <p><button type="submit" class="tx_modal_save">Save</button> </p>
+        <p><a href="#" class="tx_modal_cencel" data-dismiss="modal">Cancel</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<% end %>
+
+<%= render "template_comp_details" %>
