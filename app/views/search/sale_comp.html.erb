@@ -49,27 +49,29 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Size (SF) </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.land_size%></p></td>
-            <td><p class="comp-table-pre">Property Name </p></td>
-            <td><p class="comp-table-pre">The Bank Building</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.size_range%></p></td>
+            <td><p class="comp-table-pre">
+            	<!-- Property Name -->
+            	 </p></td>
+            <td><p class="comp-table-pre"></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Sale Price </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.price.to_f, {:precision=>2})%> </p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.price_str%> </p></td>
             <td><p class="comp-table-pre">Property Type </p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize! %></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize %></p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Date Sold </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.sold_date.strftime('%m/%d/%Y')%></p></td>
+            <td><p class="comp-table-pre">Year Sold </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.sold_date.year%></p></td>
             <td><p class="comp-table-pre">Class Type </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize!%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Cap Rate (%) </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.cap_rate%>%</p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.cap_rate_str%></p></td>
             <td><p class="comp-table-pre">Year Built </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.build_date.strftime('%Y')%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.build_date_str%></p></td>
           </tr>
         </table>
         <table width="48%" border="0" class="pull-left">
@@ -82,7 +84,9 @@
             <td><p class="comp-table-pre"><%=@comp_record.address1%></p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Suite</p></td>
+            <td><p class="comp-table-pre">
+            	<!-- Suite -->
+            	</p></td>
             <td><p class="comp-table-pre">
               <!--402-->
             </p></td>
@@ -102,6 +106,7 @@
           <tr>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre">
+            	<%=@comp_record.submarket%>
               <!--Downtown-->
             </p></td>
           </tr>

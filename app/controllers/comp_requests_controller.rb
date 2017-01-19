@@ -324,8 +324,6 @@ class CompRequestsController < ApplicationController
         
         @unlockFields = SharedComp.getUnlockData activity_log
         
-        p @unlockFields
-        
       if activity_log.comptype == 'lease'
         @comp_record = TenantRecord.where(:id => activity_log.comp_id).first
         render partial: "partial_popup_lease_edit"
@@ -370,11 +368,13 @@ class CompRequestsController < ApplicationController
         comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
         comp_unlock_field.destroy_all
         
-        params[:unlock].each do |unlock|
-          unlock_field = CompUnlockField.new()
-          unlock_field.field_name = unlock[0]
-          unlock_field.shared_comp_id = shared.id
-          unlock_field.save
+        if params[:unlock]
+          params[:unlock].each do |unlock|
+            unlock_field = CompUnlockField.new()
+            unlock_field.field_name = unlock[0]
+            unlock_field.shared_comp_id = shared.id
+            unlock_field.save
+          end
         end
         
         # activity_log.status = "Approved"

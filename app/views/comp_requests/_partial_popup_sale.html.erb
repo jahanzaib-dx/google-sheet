@@ -35,8 +35,8 @@
 
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Date Sold</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[sold_date]"> <%=@comp_record.sold_date.strftime('%m/%d/%Y')%> </p></td>
+            <td><p class="comp-table-pre">Year Sold</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[sold_date]" checked="checked" disabled="disabled"> <%=@comp_record.sold_date.year%> </p></td>
 
             <td><p class="comp-table-pre">Class Type</p></td>
             <td><p class="comp-table-pre"><input type="checkbox" name="unlock[class_type]"> <%=@comp_record.class_type.to_s.capitalize!%> </p></td>
@@ -61,7 +61,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Address</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[address1]"> <%=@comp_record.address1%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[address1]" checked="checked" disabled="disabled"> <%=@comp_record.address1%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Suite</p></td>

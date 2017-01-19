@@ -113,11 +113,13 @@ class CompRequest < ActiveRecord::Base
     end
 
     ## save each field name in Comp_unlock_field table
-    params[:unlock].each do |unlock|
-      unlock_field = CompUnlockField.new()
-      unlock_field.field_name = unlock[0]
-      unlock_field.shared_comp_id = shared.id
-      unlock_field.save
+    if params[:unlock]
+      params[:unlock].each do |unlock|
+        unlock_field = CompUnlockField.new()
+        unlock_field.field_name = unlock[0]
+        unlock_field.shared_comp_id = shared.id
+        unlock_field.save
+      end
     end
 
     log_my_activity shared, comp_request.receiver_id
