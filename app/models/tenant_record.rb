@@ -733,7 +733,6 @@ class TenantRecord < ActiveRecord::Base
     ##arr
   end
 
-
   private
   def default_values
     #puts "***********************@current user: #{User.current_user.name}"

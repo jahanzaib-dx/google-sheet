@@ -133,10 +133,10 @@
 				  
 				           
                              
-                </div>                   
-
+                </div>   
+                
               </div>
-             
+              
               
               
               <div class="boxes sales_filter">
@@ -156,6 +156,8 @@
                 </div>   
                 
               </div>
+              
+              
               
               
               
@@ -275,12 +277,16 @@
 
 			  
 			  <div class="tx_dropdown_toggl tx-drop-down-select">
+			  	
+                         
                          <%= select_tag 'tenant_record[industry_type]',
                              options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.capitalize, s.name] }), 
                              prompt: 'Choose', 
                              class: 'selectpicker lease_filter_input resetit', 
                              id: 'industry_type' 
-                         %>                        
+                         %>
+                         
+                         
                              
                 <!-- <input type="hidden" id="industry" name="tenant_record[industry_type]" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
                 <!-- <input id="industry_type" class="col-12 lease_filter_input" name="tenant_record[industry_type]" placeholder="Industry Type" type="text" tabindex="11" value="<%= search_params[:tenant_record][:industry_type] if search_params and search_params[:tenant_record].present? %>" /> -->
