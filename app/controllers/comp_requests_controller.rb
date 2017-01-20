@@ -199,6 +199,10 @@ class CompRequestsController < ApplicationController
         comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
         comp_unlock_field.destroy_all
                  
+        if shared.user.settings.email
+          DxMailer.comp_request_declined_update(current_user,shared).deliver
+        end
+      
         shared.destroy
       end
       
@@ -287,6 +291,10 @@ class CompRequestsController < ApplicationController
       end
       
       shared.save()
+      
+      if shared.user.settings.email
+        DxMailer.comp_request_approved_update(current_user,shared).deliver
+      end
         
         # activity_log.status = "Approved"
         # activity_log.save()
@@ -315,8 +323,6 @@ class CompRequestsController < ApplicationController
       activity_log = activity_log.first
         
         @unlockFields = SharedComp.getUnlockData activity_log
-        
-        p @unlockFields
         
       if activity_log.comptype == 'lease'
         @comp_record = TenantRecord.where(:id => activity_log.comp_id).first
@@ -355,14 +361,20 @@ class CompRequestsController < ApplicationController
         
         shared.save()
         
+        if shared.user.settings.email
+          DxMailer.comp_request_approved_update(current_user,shared).deliver
+        end
+        
         comp_unlock_field = CompUnlockField.where(:shared_comp_id => shared.id)
         comp_unlock_field.destroy_all
         
-        params[:unlock].each do |unlock|
-          unlock_field = CompUnlockField.new()
-          unlock_field.field_name = unlock[0]
-          unlock_field.shared_comp_id = shared.id
-          unlock_field.save
+        if params[:unlock]
+          params[:unlock].each do |unlock|
+            unlock_field = CompUnlockField.new()
+            unlock_field.field_name = unlock[0]
+            unlock_field.shared_comp_id = shared.id
+            unlock_field.save
+          end
         end
         
         # activity_log.status = "Approved"

@@ -1,13 +1,19 @@
-<div class="tx_activiti_fiulter">
+<div class="tx_activiti_fiulter left-pad-none">
   <div class="col-md-1">
-    <div class="tx_tracker_box_round_content tx_small_round tx_small_round_orange">
-      <p> <% if (params[:comp_type]=='lease')%>L<% else %>S<% end %></p>
-    </div>
+    <% if (params[:comp_type]=='lease')%>
+      <div class="tx_tracker_box_round_content tx_small_round tx_small_round_red">
+    <p> L</p>
+      </div>
+    <% else %>
+      <div class="tx_tracker_box_round_content tx_small_round tx_small_round_orange">
+        <p> S</p>
+      </div>
+    <% end %>
   </div>
   <div class="col-md-11 tx_activiti_fiulter_content">
     <h1><% if (params[:comp_type]=='lease')%>Lease<% else %>Sale<% end %> Comps Activity</h1>
     <div class="col-md-11 tx_activiti_fiulter_content">
-      <div class="btn-group tx_btn_group">
+      <div class="btn-group tx_btn_group margin-from-top">
         <div class=" tx_dropdown_toggl">
 
           <%= form_tag activity_logs_path do %>

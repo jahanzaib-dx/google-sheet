@@ -2,17 +2,9 @@ class TenantRecord < ActiveRecord::Base
 
   include ConditionalValidations
   
-  ##:sizerange = ''
-  ##cattr_reader :size_range123, :instance_reader => false
   ##cattr_reader :sizerange
   mattr_accessor :sizerange
-  ##self.sizerange="range"
-  ##cattr_reader :code, :description, :points, :instance_reader => false
-
- ##@@size_range123 = "EXM"
- 
-   ##self.test = 123
-  
+    
   #acts_as_paranoid
   store_accessor :data
 
@@ -336,6 +328,19 @@ class TenantRecord < ActiveRecord::Base
     having("(tenant_records.lease_commencement_date, DATE_TRUNC('MONTH', tenant_records.lease_commencement_date) + INTERVAL '1 MONTH - 1 DAY') OVERLAPS (DATE ?, DATE ?)", start, finish)
     .group('tenant_records.id')
   }
+  
+  scope :select_extra, -> { select("
+      'cp_status' as cp_status,
+      'size_range' as size_range,
+      'base_rent_str' as base_rent_str,
+      'lease_commencement_date_str' as lease_commencement_date_str,
+      'lease_term_months_str' as lease_term_months_str,
+      'tenant_improvement_str' as tenant_improvement_str,
+      'landlord_concessions_per_sf_str' as landlord_concessions_per_sf_str,
+      'tenant_ti_cost_str' as tenant_ti_cost_str,
+      'escalation_str' as escalation_str      
+      
+      ") }
 
   def data
     super.with_indifferent_access
@@ -706,7 +711,12 @@ class TenantRecord < ActiveRecord::Base
     arr = arr2 + arr1
     ##arr
   end
-  
+
+  def self.lease_sub_markets ()
+    TenantRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+
+  end
+
   def self.all_property_type ()
     arr2 = PropertyType.select('lower(name) as name').all
     arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all

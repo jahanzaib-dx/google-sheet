@@ -4,6 +4,16 @@ class SaleRecord < ActiveRecord::Base
 
   belongs_to :user
 
+  mattr_accessor :sizerange
+  
+  scope :select_extra, -> { select("
+      'cp_status' as cp_status,
+      'size_range' as size_range,
+      'build_date_str' as build_date_str,
+      'price_str' as price_str,
+      'cap_rate_str' as cap_rate_str
+      ") }
+
   scope :address_only, lambda { |office_id = nil|
     #office_scope = (!office_id.nil?) ? ", " + office_id.to_s + " as in_scope_office_id" : ""
     select("sale_records.id, zipcode, city, state, address1, 'address_only' as in_scope ")
@@ -75,6 +85,11 @@ class SaleRecord < ActiveRecord::Base
     arr1 = select('class_type as name').where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
+  end
+
+  def self.sale_sub_markets ()
+    SaleRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+
   end
 
   def self.duplicate_list user_id
