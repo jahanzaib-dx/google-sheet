@@ -840,7 +840,15 @@ class TenantRecord < ActiveRecord::Base
                y.user_id=#{user_id.to_s} and
               AGE(dt.lease_commencement_date, y.lease_commencement_date) <= INTERVAL '3 months' and
               AGE(y.lease_commencement_date, dt.lease_commencement_date) <= INTERVAL '3 months'
-            ) > 1
+            ) > 1 order by y.id
+            "
+    TenantRecord.find_by_sql(query)
+    # ActiveRecord::Base.connection.execute(query)
+  end
+
+  def self.max_stepped_rent_by_user user_id
+    query = "
+            select stepped_rents.tenant_record_id,count(*) as countof from stepped_rents INNER JOIN tenant_records on tenant_records.id=stepped_rents.tenant_record_id  where tenant_records.user_id=#{user_id} group by tenant_record_id order by countof DESC
             "
     TenantRecord.find_by_sql(query)
     # ActiveRecord::Base.connection.execute(query)
