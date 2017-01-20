@@ -7,6 +7,8 @@ class BackEndLeaseCompsController < ApplicationController
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
     if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
       stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+    else
+      stepped_rent_count=0
     end
 
     time = Time.now.getutc
@@ -257,6 +259,8 @@ class BackEndLeaseCompsController < ApplicationController
    tenant_records = TenantRecord.duplicate_list(current_user.id)
    if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
      stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+   else
+     stepped_rent_count=0
    end
 
    time = Time.now.getutc

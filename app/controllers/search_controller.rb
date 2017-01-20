@@ -905,6 +905,8 @@ class SearchController < ApplicationController
 
     if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
       stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+    else
+      stepped_rent_count=0
     end
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
