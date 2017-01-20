@@ -5,7 +5,9 @@ class BackEndLeaseCompsController < ApplicationController
   def index
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
-    stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+    if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+      stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+    end
 
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
@@ -253,7 +255,10 @@ class BackEndLeaseCompsController < ApplicationController
 
   def duplication
    tenant_records = TenantRecord.duplicate_list(current_user.id)
-   stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+   if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+     stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
+   end
+
    time = Time.now.getutc
    fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
