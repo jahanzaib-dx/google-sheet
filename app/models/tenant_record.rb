@@ -830,7 +830,7 @@ class TenantRecord < ActiveRecord::Base
                y.user_id=#{user_id.to_s} and
               AGE(dt.lease_commencement_date, y.lease_commencement_date) <= INTERVAL '3 months' and
               AGE(y.lease_commencement_date, dt.lease_commencement_date) <= INTERVAL '3 months'
-            ) > 1
+            ) > 1 order by y.id
             "
     TenantRecord.find_by_sql(query)
     # ActiveRecord::Base.connection.execute(query)

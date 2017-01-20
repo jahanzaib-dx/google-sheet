@@ -747,7 +747,16 @@ class SearchController < ApplicationController
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
+      i=1
+      stepped_rent_col_head=21
+      while i <= stepped_rent_count  do
+        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
+        ws[1,stepped_rent_col_head+1] = "# of Months"
+        i +=1
+        stepped_rent_col_head+=2
+      end
       tenant_records.each do |tenant_record|
+        stepped_rent_col=21
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_type
@@ -768,6 +777,11 @@ class SearchController < ApplicationController
         ws[counter, 18] = tenant_record.deal_type
         ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
+        tenant_record.stepped_rents.each do |sr|
+          ws[counter, stepped_rent_col] = sr.cost_per_month
+          ws[counter, stepped_rent_col+1] = sr.months
+          stepped_rent_col+=2
+        end
         counter+=1
       end
       ws.save()
