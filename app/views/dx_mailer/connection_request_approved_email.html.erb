@@ -11,9 +11,9 @@
         margin: 0 0 0 24px;
         ">
 
-      <p><%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> has approved your connection request. <%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> is now a direct connection.</p>
+      <p><%= @connection_request.receiver.first_name.capitalize %> <%= @connection_request.receiver.last_name.capitalize %> has approved your connection request.</br> <%= @connection_request.receiver.first_name.capitalize %> <%= @connection_request.receiver.last_name.capitalize %> is now a direct connection.</p>
 
-      <p>View <%= @connection_request.receiver.first_name %> <%= @connection_request.receiver.last_name %> profile
+      <p>View <%= @connection_request.receiver.first_name.capitalize %> <%= @connection_request.receiver.last_name.capitalize %> profile
       <a href="<%= public_profile_url(@connection_request.receiver.id,@connection_request.id) %>" style=" ">here</a></p>
     </div>
     <div style="clear:both"></div>
