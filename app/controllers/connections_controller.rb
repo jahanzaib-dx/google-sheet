@@ -8,6 +8,7 @@ class ConnectionsController < ApplicationController
     request = ConnectionRequest.find(params[:request_id])
 
     if is_connection_valid? request
+      DxMailer.connection_request_approved_email(request).deliver
       connection_params = {:user_id => request.user_id, :agent_id => request.agent_id}
       @connection = Connection.new(connection_params)
       @connection.connection_established = true

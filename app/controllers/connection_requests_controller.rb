@@ -63,14 +63,16 @@ class ConnectionRequestsController < ApplicationController
 
   def accept
     @connection_request = ConnectionRequest.find(params[:id])
-    request = ConnectionRequest.find(params[:id])
-    DxMailer.connection_request_approved_email(request).deliver
+    # request = ConnectionRequest.find(params[:id])
+    # DxMailer.connection_request_approved_email(request).deliver
     if user_signed_in?
       if current_user.email != @connection_request.receiver.email
-
-        @connection_request.agent_id = current_user.id
-        @connection_request.save
-        @connection_request.receiver = current_user
+        if User.find(@connection_request.receiver.id).first_name.blank?
+          User.find(@connection_request.receiver.id).destroy
+          @connection_request.agent_id = current_user.id
+          @connection_request.save
+          @connection_request.receiver = current_user
+        end
       end
 
       if @connection_request.receiver.can_send_requests?
