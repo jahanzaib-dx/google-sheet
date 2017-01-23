@@ -174,13 +174,26 @@ module SearchControllerUtil
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
         tenant_records = tenant_records.where("user_id = ?" , params['connection'])
-        else
+      else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
+      
+      tenant_records = tenant_records
+      .joins("left join (select * from activity_logs where receiver_id!=#{current_user.id} and receiver_id not in (2,3) ) as a on tenant_records.id=a.comp_id")
+      .joins("left join (select * from comp_requests where receiver_id!=#{current_user.id} and receiver_id not in (2,3)) as c on tenant_records.id=c.comp_id")
+      .order("
+        CASE 
+          WHEN c.comp_id > 0 THEN '1'
+          
+          WHEN a.status = 'full' THEN '2'
+          WHEN a.status = 'partial' THEN '3'
+        ELSE 
+          a.status 
+        END ASC")
 
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
