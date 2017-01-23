@@ -1,7 +1,7 @@
 class DxMailer < ActionMailer::Base
 
   default :from => "discreatelogix@gmail.com"
- 
+
 	def sms_code(user)
 		@user = user
 		mail(to: user.email, subject: "Mobile Verification - SMS Code")
@@ -24,13 +24,15 @@ class DxMailer < ActionMailer::Base
   end
 
   def connection_invite(request)
+		headers({'X-No-Spam' => 'True'})
     @connection_request = request
-    mail(:to => request.receiver.email, :subject => "New Connection Request via MarketRex")
+    mail(:to => request.receiver.email, :from => request.sender.email, :subject => "New Connection Request via MarketRex")
 	end
 
 	def connection_request_approved_email(request)
+		headers({'X-No-Spam' => 'True'})
 		@connection_request = request
-		mail(:to => request.sender.email, :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
+		mail(:to => request.sender.email, :from => request.receiver.email , :subject => "New Connection #{request.receiver.first_name} #{request.receiver.last_name} ")
 
 	end
 

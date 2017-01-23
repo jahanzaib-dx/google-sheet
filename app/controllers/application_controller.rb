@@ -15,6 +15,16 @@ class ApplicationController < ActionController::Base
   helper SiteHelper
 
 
+    def encryption (parameter)
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
+      encrypted_data = crypt.encrypt_and_sign(parameter)
+      decryption(encrypted_data)
+    end
+
+    def decryption (parameter)
+      decrypted_back = crypt.decrypt_and_verify(parameter)
+    end
+
    def current_user_account_type
      current_user.account.role
    end

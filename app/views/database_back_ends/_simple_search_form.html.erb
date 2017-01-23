@@ -6,6 +6,7 @@
       <form id="basic-search-form" action="<%= search_address_path() %>" method="post">
 
         <div class="col-md-4 col-sm-4 both-pad-none">
+
           <div class="checkbox checkbox-info">
             <%- apply_radius = "checked" if @search_params && @search_params[:apply_radius] %>
             <input id="apply_radius" tabindex="2" name="tenant_record[apply_radius]" value="true" type="checkbox" <%= apply_radius %> />
