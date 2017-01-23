@@ -50,10 +50,10 @@ class CompRequest < ActiveRecord::Base
     comp_request
   end
 
-  def self.log_my_activity comp_request, curent_user
+  def self.log_my_activity comp_request, curent_user, child_comp=0
     ##parameters = {:comp_id => comp_id, :receiver_id => receiver_id, :sender_id => initiator_id, :status => status}
     ##parameters = {:comp_id => comp_request.comp_id, :receiver_id => comp_request.agent_id, :initiator_id => curent_user, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
-    parameters = {:comp_id => comp_request.comp_id, :receiver_id => curent_user, :initiator_id => comp_request.agent_id, :status => comp_request.comp_status, :comptype => comp_request.comp_type}
+    parameters = {:comp_id => comp_request.comp_id, :receiver_id => curent_user, :initiator_id => comp_request.agent_id, :status => comp_request.comp_status, :comptype => comp_request.comp_type, :child_comp => child_comp}
     activity_log = ActivityLog.new(parameters)
     activity_log.save()
   end
@@ -71,7 +71,8 @@ class CompRequest < ActiveRecord::Base
     if comp_request.initiated_by.settings.email
       DxMailer.comp_request_approved(comp_request).deliver
     end
-
+    
+    child_comp = 0
     if shared.ownership
       ## select lease or sale
       if shared.comp_type == 'lease'
@@ -89,12 +90,13 @@ class CompRequest < ActiveRecord::Base
       comp_record_new.id = pkid
       comp_record_new.user_id = comp_request.initiator_id
       comp_record_new.save
-
+      
+      child_comp = comp_record_new.id 
       shared.comp_status = FULL_OWNER
 
     end
     comp_request.destroy
-    log_my_activity shared, comp_request.receiver_id
+    log_my_activity shared, comp_request.receiver_id, child_comp
 
   end
 

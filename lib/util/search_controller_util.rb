@@ -195,6 +195,8 @@ module SearchControllerUtil
         ELSE 
           a.status 
         END ASC")
+        
+        tenant_records = tenant_records.where("tenant_records.id not in (select child_comp from activity_logs where receiver_id in (#{current_user.id}) and child_comp > 0)")
 
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
