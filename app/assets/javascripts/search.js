@@ -19,8 +19,7 @@ $(function() {
     var cid = this.id;
     if (cid == 'comp_sales') {
 
-     $('#checkboxes4').attr('style','display: none !important');
-     $('#checkboxes2').attr('style','display: none !important');
+
      $('.resetit').val('').selectpicker('refresh');
      $('.show-hide-div2').attr('style','display: none !important');
      $('.show-hide-div').attr('style','display: block !important');
