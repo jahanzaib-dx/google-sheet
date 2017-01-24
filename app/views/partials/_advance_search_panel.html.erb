@@ -212,7 +212,7 @@
                               </div>
                               <% TenantRecord::lease_sub_markets.each do |pt|  %>
                                   <div class="checkbox checkbox-info all_clicked30">
-                                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt%>" class="lease_filter_input">
+                                    <input type="checkbox" id="checkbox8" name="tenant_record[submarket][]" value="<%= pt%>" class="lease_filter_input">
                                     <label for="checkbox8"> <%= pt %> </label>
                                   </div>
                               <% end %>
@@ -249,7 +249,7 @@
 
                                 <% SaleRecord::sale_sub_markets.each do |pt|  %>
                                     <div class="checkbox checkbox-info all_clicked40">
-                                      <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
+                                      <input type="checkbox" id="checkbox88" name="tenant_record[submarket][]" value="<%= pt %>" class="sales_filter_input">
                                       <label for="checkbox88"> <%= pt %> </label>
                                     </div>
                                 <% end %>
