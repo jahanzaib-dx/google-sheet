@@ -268,7 +268,7 @@ class CompRequestsController < ApplicationController
         shared.comp_status = CompRequest::FULL
         shared.ownership = params[:access]==CompRequest::FULL ? true : false
         
-        
+       child_comp = 0 
        if shared.ownership
           ## select lease or sale
           if shared.comp_type == 'lease'
@@ -286,7 +286,8 @@ class CompRequestsController < ApplicationController
           comp_record_new.id = pkid
           comp_record_new.user_id = activity_log.initiator_id
           comp_record_new.save
-    
+          
+          child_comp = comp_record_new.id
           shared.comp_status = CompRequest::FULL_OWNER
       end
       
@@ -300,6 +301,7 @@ class CompRequestsController < ApplicationController
         # activity_log.save()
         
         activity_log.status = shared.comp_status
+        activity_log.child_comp = child_comp
         activity_log.save()
          
         ##SharedComp.destroy

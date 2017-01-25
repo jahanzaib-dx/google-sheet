@@ -206,10 +206,13 @@
                             <div class="overSelect"></div>
                             <div id="checkboxes3">
 
-
+                              <div class="checkbox checkbox-info">
+                                <input type="checkbox" id="checkbox3" >
+                                <label for="checkbox3"> Select All </label>
+                              </div>
                               <% TenantRecord::lease_sub_markets.each do |pt|  %>
-                                  <div class="checkbox checkbox-info all_clicked">
-                                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt%>" class="lease_filter_input">
+                                  <div class="checkbox checkbox-info all_clicked30">
+                                    <input type="checkbox" id="checkbox8" name="tenant_record[submarket][]" value="<%= pt%>" class="lease_filter_input">
                                     <label for="checkbox8"> <%= pt %> </label>
                                   </div>
                               <% end %>
@@ -238,11 +241,15 @@
                               </select>
                               <div class="overSelect"></div>
                               <div id="checkboxes4">
+                                <div class="checkbox checkbox-info">
+                                  <input type="checkbox" id="checkbox4" >
+                                  <label for="checkbox4"> Select All </label>
+                                </div>
 
 
                                 <% SaleRecord::sale_sub_markets.each do |pt|  %>
-                                    <div class="checkbox checkbox-info all_clicked77">
-                                      <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
+                                    <div class="checkbox checkbox-info all_clicked40">
+                                      <input type="checkbox" id="checkbox88" name="tenant_record[submarket][]" value="<%= pt %>" class="sales_filter_input">
                                       <label for="checkbox88"> <%= pt %> </label>
                                     </div>
                                 <% end %>
@@ -452,18 +459,24 @@
   var expanded = false;
 
   function showCheckboxesToo() {
-    var checkboxes = document.getElementById("checkboxes2");
 
+    $('#checkboxes2').click(function(e) {
+      e.stopPropagation();
+    });
+    var checkboxes2 = document.getElementById("checkboxes2");
     if (!expanded) {
-      checkboxes.style.display = "block";
+      checkboxes2.style.display = "block";
       expanded = true;
     } else {
-      checkboxes.style.display = "none";
+      checkboxes2.style.display = "none";
       expanded = false;
     }
   }
 
   function showCheckboxes() {
+    $('#checkboxes').click(function(e) {
+      e.stopPropagation();
+    });
     var checkboxes = document.getElementById("checkboxes");
 
     if (!expanded) {
@@ -476,6 +489,9 @@
   }
 
   function showCheckboxes3() {
+    $('#checkboxes3').click(function(e) {
+      e.stopPropagation();
+    });
     var checkboxes3 = document.getElementById("checkboxes3");
 
     if (!expanded) {
@@ -488,8 +504,11 @@
   }
 
   function showCheckboxes4() {
-    var checkboxes4 = document.getElementById("checkboxes4");
+    $('#checkboxes4').click(function(e) {
+      e.stopPropagation();
+    });
 
+    var checkboxes4 = document.getElementById("checkboxes4");
     if (!expanded) {
       checkboxes4.style.display = "block";
       expanded = true;
@@ -498,6 +517,8 @@
       expanded = false;
     }
   }
+
+
 
 </script>
 

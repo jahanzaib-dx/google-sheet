@@ -443,9 +443,28 @@ html, body {
 .margin-top-div {
   margin-top: 26px;
 }
+#checkboxes2 {
+  display: none;
+  overflow-y: scroll;
+  height: 150px;
 
+}
+#checkboxes3 {
+  display: none;
+  overflow-y: scroll;
+  height: 150px;
+
+}
+#checkboxes4 {
+  display: none;
+  overflow-y: scroll;
+  height: 150px;
+
+}
 #checkboxes {
   display: none;
+  overflow-y: scroll;
+  height: 150px;
 
 }
 .customize-div {
