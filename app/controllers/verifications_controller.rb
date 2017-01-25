@@ -8,29 +8,34 @@ def create
   
   ###@user = current_user
   
-  to = current_user.mobile
+  # to = current_user.mobile
   
   ##if to[0] = "0"
   ##  to.sub!("0", '+44')
   ##end
 	
-	account_sid = ENV['twilio_account_sid']
-	auth_token = ENV['twilio_auth_token']
+	account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+	auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
 	###twilio_from = "+12345678901"
-	twilio_from = ENV['twilio_from']
-	
-  @twilio_client = Twilio::REST::Client.new account_sid, auth_token
-  @twilio_client.account.sms.messages.create(
-    :from => twilio_from,
-    :to => "+#{to}",
-	#:to => '+923086737235',
-    :body => "Your verification code is #{current_user.sms_code}."
-  )
+	twilio_from = "+14438600704"
+  twilio_to= current_user.mobile
+
+  @twilio_client= Twilio::REST::Client.new account_sid, auth_token
+    @twilio_client.account.sms.messages.create(
+        :from => twilio_from,
+        :to => twilio_to,
+        :body => "Your verification code is #{current_user.sms_code}."
+    )
+
 
 	#DxMailer.sms_code(current_user).deliver
   
   redirect_to verifications_verify_path, :flash => { :success => "A verification code has been sent to your mobile. Please fill it in below." }
   return
+end
+
+def mobile_number
+
 end
 
 def verify
@@ -45,7 +50,13 @@ def verify
 	
   ###if(params.has_key?(:sms_code))
   if !params[:sms_code]
-  	render "verify"
+  # if !params[:sms_code]
+  # 	render :action => :mobile_number
+    if params[:mobile]
+      current_user.mobile = params[:mobile]
+      current_user.save
+      render :action => :verify
+    end
 	###render 'verifications/verify'
 	###render :text => "Hello, World!"
   else	

@@ -52,6 +52,7 @@ class ConnectionsController < ApplicationController
     error = ''
     if current_user.mobile.nil?  or !current_user.mobile_active
       error = 'Please enter and verify your mobile number first'
+      redirect_to verifications_verify_path
     else
       other_id = request.user_id == current_user.id ? request.agent_id : request.user_id
       connection = Connection.where(:user_id => current_user.id, :agent_id => other_id).count
