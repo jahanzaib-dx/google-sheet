@@ -2,6 +2,8 @@ class BackEndLeaseCompsController < ApplicationController
   require "google_drive"
   require 'digest/sha1'
   require 'time'
+  include GoogleGeocoder
+
   def index
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
@@ -60,6 +62,12 @@ class BackEndLeaseCompsController < ApplicationController
         end
         counter+=1
       end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
+      end
       ws.save()
 
       # save file name to database
@@ -83,7 +91,6 @@ class BackEndLeaseCompsController < ApplicationController
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
-      max_rows = ws.num_rows
       counter=2
       i=1
       stepped_rent_col_head=21
@@ -93,30 +100,19 @@ class BackEndLeaseCompsController < ApplicationController
         i +=1
         stepped_rent_col_head+=2
       end
+
+      while ws[counter,1]!=""
+        if !tenant_records.find_by_id(ws[counter,1]).present?
+          ws.delete_rows(counter,1)
+        end
+        counter+=1
+      end
+      counter=2
+      if ws.max_rows<tenant_records.count
+        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
+      end
       tenant_records.each do |tenant_record|
         stepped_rent_col=21
-        # while ws[counter,1] != tenant_record.id.to_s
-        #   ws[counter, 2] = ''
-        #   ws[counter, 3] = ''
-        #   ws[counter, 4] = ''
-        #   ws[counter, 5] = ''
-        #   ws[counter, 6] = ''
-        #   ws[counter, 7] = ''
-        #   ws[counter, 8] = ''
-        #   ws[counter, 9] = ''
-        #   ws[counter, 10] = ''
-        #   ws[counter, 11] = ''
-        #   ws[counter, 12] = ''
-        #   ws[counter, 13] = ''
-        #   ws[counter, 14] = ''
-        #   ws[counter, 15] = ''
-        #   ws[counter, 16] = ''
-        #   ws[counter, 17] = ''
-        #   ws[counter, 18] = ''
-        #   ws[counter, 19] = ''
-        #   ws[counter, 20] = ''
-        #   counter+=1
-        # end
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -144,31 +140,12 @@ class BackEndLeaseCompsController < ApplicationController
         end
         counter+=1
       end
-      # if max_rows>=counter
-      #   while counter<=max_rows
-      #     ws[counter, 1] = ''
-      #     ws[counter, 2] = ''
-      #     ws[counter, 3] = ''
-      #     ws[counter, 4] = ''
-      #     ws[counter, 5] = ''
-      #     ws[counter, 6] = ''
-      #     ws[counter, 7] = ''
-      #     ws[counter, 8] = ''
-      #     ws[counter, 9] = ''
-      #     ws[counter, 10] = ''
-      #     ws[counter, 11] = ''
-      #     ws[counter, 12] = ''
-      #     ws[counter, 13] = ''
-      #     ws[counter, 14] = ''
-      #     ws[counter, 15] = ''
-      #     ws[counter, 16] = ''
-      #     ws[counter, 17] = ''
-      #     ws[counter, 18] = ''
-      #     ws[counter, 19] = ''
-      #     ws[counter, 20] = ''
-      #     counter+=1
-      #   end
-      # end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
+      end
       ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
 
@@ -396,6 +373,13 @@ class BackEndLeaseCompsController < ApplicationController
         error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
         error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
         error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+        @tenant_record.address1 = ws[counter, 6]
+        @tenant_record.city = ws[counter, 8]
+        @tenant_record.state = ws[counter, 9]
+        result = validate_address_google(@tenant_record,true)
+        if result.has_key? :errors
+          error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
+        end
         error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
         error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
         error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""

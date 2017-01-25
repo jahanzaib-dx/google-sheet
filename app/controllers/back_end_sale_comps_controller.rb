@@ -2,6 +2,8 @@ class BackEndSaleCompsController < ApplicationController
   require "google_drive"
   require 'digest/sha1'
   require 'time'
+  include GoogleGeocoder
+
   def index
     sale_records = SaleRecord.where('user_id = ?', @current_user).order(:id)
 
@@ -34,6 +36,12 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 15] = sale_record.cap_rate
         counter+=1
       end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
+      end
       ws.save()
 
       # path = "#{Rails.root}/public/back_end_sale_comp/"
@@ -61,26 +69,21 @@ class BackEndSaleCompsController < ApplicationController
       @file = BackEndSaleComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
-      max_rows = ws.num_rows
       counter=2
+
+      while ws[counter,1]!=""
+        if !sale_records.find_by_id(ws[counter,1]).present?
+          ws.delete_rows(counter,1)
+        end
+        counter+=1
+      end
+
+      counter=2
+      if ws.max_rows<sale_records.count
+        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
+      end
+
       sale_records.each do |sale_record|
-        # while ws[counter,1] != sale_record.id.to_s
-        #   ws[counter, 2] = ''
-        #   ws[counter, 3] = ''
-        #   ws[counter, 4] = ''
-        #   ws[counter, 5] = ''
-        #   ws[counter, 6] = ''
-        #   ws[counter, 7] = ''
-        #   ws[counter, 8] = ''
-        #   ws[counter, 9] = ''
-        #   ws[counter, 10] = ''
-        #   ws[counter, 11] = ''
-        #   ws[counter, 12] = ''
-        #   ws[counter, 13] = ''
-        #   ws[counter, 14] = ''
-        #   ws[counter, 15] = ''
-        #   counter+=1
-        # end
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = sale_record.view_type
@@ -98,25 +101,11 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 15] = sale_record.cap_rate
         counter+=1
       end
-      if max_rows>=counter
-        # while counter<=max_rows
-        #   ws[counter, 1] = ''
-        #   ws[counter, 2] = ''
-        #   ws[counter, 3] = ''
-        #   ws[counter, 4] = ''
-        #   ws[counter, 5] = ''
-        #   ws[counter, 6] = ''
-        #   ws[counter, 7] = ''
-        #   ws[counter, 8] = ''
-        #   ws[counter, 9] = ''
-        #   ws[counter, 10] = ''
-        #   ws[counter, 11] = ''
-        #   ws[counter, 12] = ''
-        #   ws[counter, 13] = ''
-        #   ws[counter, 14] = ''
-        #   ws[counter, 15] = ''
-        #   counter+=1
-        # end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
       end
       ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
@@ -288,8 +277,15 @@ class BackEndSaleCompsController < ApplicationController
     counter=2
     sale_records.each do |sale_record|
       if SaleRecord.where(:id => ws[counter, 1]).present?
-        @tenant_record = SaleRecord.find_by(:id => ws[counter, 1])
+        @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
+        @sale_record.address1 = ws[counter, 4]
+        @sale_record.city = ws[counter, 5]
+        @sale_record.state = ws[counter, 6]
+        result = validate_address_google(@sale_record,true)
+        if result.has_key? :errors
+          error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
+        end
         error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
         error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
         error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
