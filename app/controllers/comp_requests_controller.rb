@@ -268,10 +268,7 @@ class CompRequestsController < ApplicationController
         shared.comp_status = CompRequest::FULL
         shared.ownership = params[:access]==CompRequest::FULL ? true : false
         
-       child_comp = 0 
-       if shared.ownership
-          ## select lease or sale
-          if shared.comp_type == 'lease'
+        if shared.comp_type == 'lease'
             comp_record = TenantRecord.where(:id =>  shared.comp_id).first
             pkid = TenantRecord.maximum(:id).to_i.next
             comp_record_new = TenantRecord.new()
@@ -280,13 +277,24 @@ class CompRequestsController < ApplicationController
             pkid = SaleRecord.maximum(:id).to_i.next
             comp_record_new = SaleRecord.new()
           end
+          
+          
+       child_comp = 0
+       master_id = comp_record.master_id
+       
+       if shared.ownership
+          ## select lease or sale
+          
     
           ##duplicate comp in agent database
           comp_record_new = comp_record.dup
           comp_record_new.id = pkid
           comp_record_new.user_id = activity_log.initiator_id
+          comp_record_new.parent_id = comp_record.id
+          comp_record_new.master_id = (comp_record.parent_id.to_i > 0) ? comp_record.master_id : comp_record.id
           comp_record_new.save
           
+          master_id = comp_record_new.master_id
           child_comp = comp_record_new.id
           shared.comp_status = CompRequest::FULL_OWNER
       end
@@ -302,6 +310,7 @@ class CompRequestsController < ApplicationController
         
         activity_log.status = shared.comp_status
         activity_log.child_comp = child_comp
+        activity_log.master_id = master_id
         activity_log.save()
          
         ##SharedComp.destroy
