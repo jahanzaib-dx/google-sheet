@@ -8,10 +8,10 @@ class ActivityLogsController < ApplicationController
     if !params[:comp_type].blank?
       ##@activity_logs = ActivityLog.all_activities_with_type(current_user.id,params[:comp_type])
       ##activity_logs = ActivityLog.all_activities_with_type(current_user.id,params[:comp_type])
-      @activity_logs = ActivityLog.my_all_activities(current_user.id,params[:comp_type])
+      activity_logs = ActivityLog.my_all_activities(current_user.id,params[:comp_type])
     else
     ##@activity_logs = ActivityLog.all_activities_of_user(current_user.id)
-      @activity_logs = ActivityLog.all_activities_of_user(current_user.id)
+      activity_logs = ActivityLog.all_activities_of_user(current_user.id)
     end
 
     ##@activity_logs = []
