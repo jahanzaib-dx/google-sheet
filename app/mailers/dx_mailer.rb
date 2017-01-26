@@ -1,5 +1,7 @@
 class DxMailer < ActionMailer::Base
 
+helper :comp
+
   default :from => "discreatelogix@gmail.com"
 
 	def sms_code(user)
