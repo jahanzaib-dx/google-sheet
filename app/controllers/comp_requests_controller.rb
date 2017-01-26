@@ -1,7 +1,5 @@
 class CompRequestsController < ApplicationController
 
-  include CompHelper
-
   before_filter :authenticate_user!
 
 
