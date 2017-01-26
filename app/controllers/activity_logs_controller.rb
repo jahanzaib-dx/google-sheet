@@ -8,10 +8,10 @@ class ActivityLogsController < ApplicationController
     if !params[:comp_type].blank?
       ##@activity_logs = ActivityLog.all_activities_with_type(current_user.id,params[:comp_type])
       ##activity_logs = ActivityLog.all_activities_with_type(current_user.id,params[:comp_type])
-      activity_logs = ActivityLog.my_all_activities(current_user.id,params[:comp_type])
+      @activity_logs = ActivityLog.my_all_activities(current_user.id,params[:comp_type])
     else
     ##@activity_logs = ActivityLog.all_activities_of_user(current_user.id)
-      activity_logs = ActivityLog.all_activities_of_user(current_user.id)
+      @activity_logs = ActivityLog.all_activities_of_user(current_user.id)
     end
 
     ##@activity_logs = []
@@ -20,7 +20,7 @@ class ActivityLogsController < ApplicationController
       if activity.comptype == 'lease'
         activity_comp = activity.tenant_record
         ##activity_comp.base_rent = number_to_currency(activity_comp.base_rent.to_f, {:precision=>2})
-        activity_comp.base_rent = activity_comp.base_rent.to_i
+        activity_comp.base_rent = activity_comp.base_rent
         ##activity_comp.size = number_with_precision(activity_comp.size,:precision => 2)
         activity_comp.net_effective_per_sf = activity_comp.net_effective_per_sf
         activity_comp.sizerange = activity_comp.size
