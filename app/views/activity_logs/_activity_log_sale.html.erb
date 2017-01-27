@@ -6,7 +6,7 @@
     	<% if activity_log.status=='Rejected' %>
     		<a href="#!" class="set_aid" data-aid="<%= activity_log.id%>" data-status="Unlock" data-toggle="modal"  data-target="#Modaloptions2" >Declined</a>
     	<% elsif activity_log.status=='full_owner' %>
-    		Approved
+    		Approved (<%= ActivityLog::TIRES[activity_log.status]%>)
     	<% else %>
     		<a href="#!" class="set_aid" data-aid="<%= activity_log.id%>" data-status="Unlock" data-toggle="modal"  data-target="#Modaloptions1" >Approved</a> (<%= ActivityLog::TIRES[activity_log.status]%>)
     	<% end %>
@@ -14,6 +14,7 @@
     <% end %>
 
   </td>
+  <td class="result_line border_full"><p><%= search_sale_comp_path()%>/<%= activity_log.sale_record.id%>"><i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i></a></p></td>
   <td class="result_line border_full"><p><%= activity_log.created_at.strftime('%m/%d/%Y') %></p></td>
   <td class="result_line border_full"><p><%= activity_log.sale_record.user.name %></p></td>
   <td class="result_line img_width"><p> 

@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  
+
+
+
   has_many :activity_log
   has_one :account
   has_one :back_end_lease_comp
@@ -122,8 +124,12 @@ class User < ActiveRecord::Base
   end
 
   def can_send_requests?
-    return true
-    #!mobile.nil?  and mobile_active
+    # return true
+    if (!mobile_active) && (mobile.blank?)
+      return false
+    else
+      return true
+    end
   end
   
   def self.connect_to_linkedin(auth, signed_in_resource=nil)

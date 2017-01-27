@@ -188,24 +188,40 @@ module SearchControllerUtil
       end
       
       tenant_records = tenant_records
-      .joins("left join (select * from activity_logs where receiver_id!=#{current_user.id} and receiver_id not in (#{connections_ids}) ) as a on tenant_records.id=a.comp_id")
-      .joins("left join (select * from comp_requests where receiver_id!=#{current_user.id} and receiver_id not in (#{connections_ids})) as c on tenant_records.id=c.comp_id")
-      .order(" address1,
+      .joins("left join (select * from activity_logs where initiator_id in (#{current_user.id})) as a on tenant_records.id=a.comp_id")
+      .joins("left join (select * from comp_requests where initiator_id in (#{current_user.id})) as c on tenant_records.id=c.comp_id")
+      .order("address1,
         CASE 
           
-          WHEN (select id from activity_logs where initiator_id=#{current_user.id} and comp_id = tenant_records.id limit 1) < 1 THEN '1'
+          WHEN a.status is null AND c.comp_id is null THEN '1'
           
           WHEN c.comp_id > 0 THEN '2'
           
           WHEN a.status = 'full' THEN '3'
           WHEN a.status = 'partial' THEN '4'
+          WHEN a.status = 'Rejected' THEN '5'
         
-        END ")
+        ELSE a.status END ASC
+         
+      
+        
+        ")
+      ##.joins("left join (select * from activity_logs where receiver_id!=#{current_user.id} and receiver_id not in (#{connections_ids}) ) as a on tenant_records.id=a.comp_id")
+      ##.joins("left join (select * from comp_requests where receiver_id!=#{current_user.id} and receiver_id not in (#{connections_ids})) as c on tenant_records.id=c.comp_id")
+      
         
         #hide child
         tenant_records = tenant_records.where("tenant_records.id not in (select child_comp from activity_logs where ( receiver_id in (#{current_user.id})  ) and child_comp > 0)")
         #hide parent
         tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        
+        tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        
+        tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records where user_id !=#{current_user.id} and master_id in (select master_id from activity_logs where ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') ) ")
+        
+        ##select master_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner' and master_id>0)
+        
+        ##tenant_records = tenant_records.where("( tenant_records.id in (select child_comp from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner'))")
         
         ###tenant_records = tenant_records.where("tenant_records.id in (select comp_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner')")
 

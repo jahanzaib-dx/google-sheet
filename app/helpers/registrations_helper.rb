@@ -37,7 +37,35 @@ module RegistrationsHelper
       </form>
     HTML
     html.html_safe
+ end
+
+  def enter_mobile_number_form
+    #not empty or isset (?)
+    ####return '' if current_user.sms_code?
+    ###p current_user.sms_code.empty?
+    ###if current_user.sms_code.empty?
+    html = <<-HTML
+
+#{form_tag(verifications_verify_path, method: "post" , class:"tx_form_content")}
+
+
+
+	  <div class="form-group input-group">
+<br>
+	  <h4>Mobile number</h4>
+      #{text_field_tag('mobile' ,'', class: "form-control")}
+	  </div>
+
+	  <div class="form-group">
+      #{button_tag('save mobile number', type: "submit" , class: "btn btn-def btn-block tx_orange_btn")}
+	  </div>
+
+      </form>
+    HTML
+    html.html_safe
   end
+
+
   
   
 end
