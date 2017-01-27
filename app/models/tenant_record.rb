@@ -837,6 +837,7 @@ class TenantRecord < ActiveRecord::Base
                y.lease_term_months = dt.lease_term_months and
                y.size = dt.size and
                y.base_rent = dt.base_rent and
+               y.user_id=dt.user_id and
                y.user_id=#{user_id.to_s} and
               AGE(dt.lease_commencement_date, y.lease_commencement_date) <= INTERVAL '3 months' and
               AGE(y.lease_commencement_date, dt.lease_commencement_date) <= INTERVAL '3 months'

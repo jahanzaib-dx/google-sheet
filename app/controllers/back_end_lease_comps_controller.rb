@@ -2,6 +2,8 @@ class BackEndLeaseCompsController < ApplicationController
   require "google_drive"
   require 'digest/sha1'
   require 'time'
+  include GoogleGeocoder
+
   def index
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
@@ -24,7 +26,7 @@ class BackEndLeaseCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       i=1
-      stepped_rent_col_head=21
+      stepped_rent_col_head=24
       while i <= stepped_rent_count  do
         ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
         ws[1,stepped_rent_col_head+1] = "# of Months"
@@ -32,7 +34,7 @@ class BackEndLeaseCompsController < ApplicationController
         stepped_rent_col_head+=2
       end
       tenant_records.each do |tenant_record|
-        stepped_rent_col=21
+        stepped_rent_col=24
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -53,12 +55,21 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 18] = tenant_record.deal_type
         ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
+        ws[counter, 21] = tenant_record.escalation
+        ws[counter, 22] = tenant_record.fixed_escalation
+        ws[counter, 23] = tenant_record.is_stepped_rent
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
           stepped_rent_col+=2
         end
         counter+=1
+      end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
       end
       ws.save()
 
@@ -83,40 +94,28 @@ class BackEndLeaseCompsController < ApplicationController
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
-      max_rows = ws.num_rows
       counter=2
       i=1
-      stepped_rent_col_head=21
+      stepped_rent_col_head=24
       while i <= stepped_rent_count  do
         ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
         ws[1,stepped_rent_col_head+1] = "# of Months"
         i +=1
         stepped_rent_col_head+=2
       end
+
+      while ws[counter,1]!=""
+        if !tenant_records.find_by_id(ws[counter,1]).present?
+          ws.delete_rows(counter,1)
+        end
+        counter+=1
+      end
+      counter=2
+      if ws.max_rows<tenant_records.count
+        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
+      end
       tenant_records.each do |tenant_record|
-        stepped_rent_col=21
-        # while ws[counter,1] != tenant_record.id.to_s
-        #   ws[counter, 2] = ''
-        #   ws[counter, 3] = ''
-        #   ws[counter, 4] = ''
-        #   ws[counter, 5] = ''
-        #   ws[counter, 6] = ''
-        #   ws[counter, 7] = ''
-        #   ws[counter, 8] = ''
-        #   ws[counter, 9] = ''
-        #   ws[counter, 10] = ''
-        #   ws[counter, 11] = ''
-        #   ws[counter, 12] = ''
-        #   ws[counter, 13] = ''
-        #   ws[counter, 14] = ''
-        #   ws[counter, 15] = ''
-        #   ws[counter, 16] = ''
-        #   ws[counter, 17] = ''
-        #   ws[counter, 18] = ''
-        #   ws[counter, 19] = ''
-        #   ws[counter, 20] = ''
-        #   counter+=1
-        # end
+        stepped_rent_col=24
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -137,6 +136,9 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 18] = tenant_record.deal_type
         ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
         ws[counter, 20] = tenant_record.base_rent
+        ws[counter, 21] = tenant_record.escalation
+        ws[counter, 22] = tenant_record.fixed_escalation
+        ws[counter, 23] = tenant_record.is_stepped_rent
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
@@ -144,31 +146,12 @@ class BackEndLeaseCompsController < ApplicationController
         end
         counter+=1
       end
-      # if max_rows>=counter
-      #   while counter<=max_rows
-      #     ws[counter, 1] = ''
-      #     ws[counter, 2] = ''
-      #     ws[counter, 3] = ''
-      #     ws[counter, 4] = ''
-      #     ws[counter, 5] = ''
-      #     ws[counter, 6] = ''
-      #     ws[counter, 7] = ''
-      #     ws[counter, 8] = ''
-      #     ws[counter, 9] = ''
-      #     ws[counter, 10] = ''
-      #     ws[counter, 11] = ''
-      #     ws[counter, 12] = ''
-      #     ws[counter, 13] = ''
-      #     ws[counter, 14] = ''
-      #     ws[counter, 15] = ''
-      #     ws[counter, 16] = ''
-      #     ws[counter, 17] = ''
-      #     ws[counter, 18] = ''
-      #     ws[counter, 19] = ''
-      #     ws[counter, 20] = ''
-      #     counter+=1
-      #   end
-      # end
+      if counter>2
+        counter-=1
+      end
+      if ws.max_rows>counter
+        ws.delete_rows(counter+1,ws.max_rows-counter)
+      end
       ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
 
@@ -209,7 +192,7 @@ class BackEndLeaseCompsController < ApplicationController
       # while ws[counter,1] != tenant_record.id.to_s
       #   counter+=1
       # end
-      stepped_rent_col=21
+      stepped_rent_col=24
 
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
@@ -242,6 +225,9 @@ class BackEndLeaseCompsController < ApplicationController
             :deal_type => ws[counter, 18],
             :lease_structure => ws[counter, 19],
             :base_rent => ws[counter, 20],
+            :escalation => ws[counter, 21],
+            :fixed_escalation => ws[counter, 22],
+            :is_stepped_rent => ws[counter, 23],
             :stepped_rents_attributes => stepped_rent_values
         )
       end
@@ -273,7 +259,7 @@ class BackEndLeaseCompsController < ApplicationController
      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
      counter=2
      i=1
-     stepped_rent_col_head=22
+     stepped_rent_col_head=25
      while i <= stepped_rent_count  do
        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
        ws[1,stepped_rent_col_head+1] = "# of Months"
@@ -281,7 +267,7 @@ class BackEndLeaseCompsController < ApplicationController
        stepped_rent_col_head+=2
      end
      tenant_records.each do |tenant_record|
-       stepped_rent_col=22
+       stepped_rent_col=25
        ws[counter, 1] = tenant_record.id
        ws[counter, 2] = 'Keep'
        ws[counter, 3] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
@@ -303,6 +289,9 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 19] = tenant_record.deal_type
        ws[counter, 20] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
        ws[counter, 21] = tenant_record.base_rent
+       ws[counter, 22] = tenant_record.escalation
+       ws[counter, 23] = tenant_record.fixed_escalation
+       ws[counter, 24] = tenant_record.is_stepped_rent
        tenant_record.stepped_rents.each do |sr|
          ws[counter, stepped_rent_col] = sr.cost_per_month
          ws[counter, stepped_rent_col+1] = sr.months
@@ -336,7 +325,7 @@ class BackEndLeaseCompsController < ApplicationController
     ids= Array.new
     tenant_records.each do |tenant_record|
       if TenantRecord.where(:id => ws[counter, 1]).present?
-        stepped_rent_col=22
+        stepped_rent_col=25
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         stepped_rent_values={}
         @tenant_record.stepped_rents.each.map do |sr|
@@ -367,6 +356,9 @@ class BackEndLeaseCompsController < ApplicationController
             :deal_type => ws[counter, 19],
             :lease_structure => ws[counter, 20],
             :base_rent => ws[counter, 21],
+            :escalation => ws[counter, 22],
+            :fixed_escalation => ws[counter, 23],
+            :is_stepped_rent => ws[counter, 24],
             :stepped_rents_attributes => stepped_rent_values
         )
       end
@@ -396,6 +388,13 @@ class BackEndLeaseCompsController < ApplicationController
         error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
         error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
         error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+        @tenant_record.address1 = ws[counter, 6]
+        @tenant_record.city = ws[counter, 8]
+        @tenant_record.state = ws[counter, 9]
+        result = validate_address_google(@tenant_record,true)
+        if result.has_key? :errors
+          error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
+        end
         error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
         error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
         error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
@@ -409,7 +408,12 @@ class BackEndLeaseCompsController < ApplicationController
         error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
         error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
         error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
-      end
+        error_string += (
+              (ws[counter, 21] == ''  || ws[counter, 21] == "0") &&
+              (ws[counter, 22] == '' || ws[counter, 22] == "0") &&
+              (ws[counter, 23] == '' || ws[counter, 23] == 'FALSE')
+        )? "</br>Cell no. U#{counter}, V#{counter}  and W#{counter} are empty or false. One of them must be filled." : ""
+        end
       counter+=1
     end
     if error_string==''
