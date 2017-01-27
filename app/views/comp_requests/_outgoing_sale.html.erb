@@ -13,6 +13,6 @@
   <td width="340" class="result_line"><p><%= "#{comp_request.sale_record.complete_address}" %></p></td>
   <td width="176" class="result_line"><p>Locked</p></td>
   <td width="193" class="result_line"><p><%= sf_range(comp_request.sale_record.land_size) %></p></td>
-  <td width="144" class="result_line"><p><%= comp_request.sale_record.build_date.year %></p></td>
+  <td width="144" class="result_line"><p><%= (comp_request.sale_record.build_date.blank? == true)?"":comp_request.sale_record.build_date.year %></p></td>
   
 </tr>
