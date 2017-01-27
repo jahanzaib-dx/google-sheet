@@ -258,7 +258,7 @@ class SearchController < ApplicationController
      
               t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
               t_record.size_range = t_record.land_size
-              t_record.build_date_str = t_record.build_date.year
+              t_record.build_date_str = (t_record.build_date.blank? == true)?"":t_record.build_date.year
               t_record.cap_rate_str = "#{t_record.cap_rate}%"
 
 
@@ -295,7 +295,7 @@ class SearchController < ApplicationController
               
               t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
               t_record.size_range = t_record.land_size
-              t_record.build_date_str = t_record.build_date.year
+              t_record.build_date_str = (t_record.build_date.blank? == true)?"":t_record.build_date.year
               
               t_record.price_str = if unlockFields.include?"price" then t_record.price else 'Lock' end
               t_record.size_range = if unlockFields.include?"land_size" then t_record.land_size else 'Lock' end
@@ -303,7 +303,7 @@ class SearchController < ApplicationController
               
               t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
               t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end
-              t_record.build_date_str = if unlockFields.include?"build_date" then t_record.build_date.year else 'Lock' end
+              t_record.build_date_str = if unlockFields.include?"build_date" then (t_record.build_date.blank? == true)?"":t_record.build_date.year else 'Lock' end
                    
               ##t_record.suite = if unlockFields.include?"suite" then t_record.company else 'Lock' end
               t_record.city = if unlockFields.include?"city" then t_record.city else 'Lock' end
