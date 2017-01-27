@@ -424,6 +424,17 @@ html, body {
 
 }
 
+.inline-edit-text > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 222px;
+}
+.tx_profile_detail_content > li {
+  overflow-wrap: break-word;
+}
+
+
 .selectBox select {
   height: 40px;
   width: 100%;
