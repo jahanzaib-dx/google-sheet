@@ -137,6 +137,7 @@ Rails.application.routes.draw do
   get 'back_end_lease_comps/' => 'back_end_lease_comps#index'
   get 'back_end_lease_comps/create/:id/:temp' => 'back_end_lease_comps#create'
   get 'back_end_lease_comps/validate_spreadsheet/:id/:temp' => 'back_end_lease_comps#validate_spreadsheet'
+  get 'back_end_lease_comps/validate_spreadsheet/:temp' => 'back_end_lease_comps#validate_spreadsheet'
   get 'back_end_lease_comps/create/:id' => 'back_end_lease_comps#create'
   get 'back_end_lease_comps/duplication' => 'back_end_lease_comps#duplication'
   get 'back_end_lease_comps/delete_duplication/:id/' => 'back_end_lease_comps#delete_duplication'
@@ -144,6 +145,7 @@ Rails.application.routes.draw do
   # resources :back_end_sale_comps
   get 'back_end_sale_comps/' => 'back_end_sale_comps#index'
   get 'back_end_sale_comps/validate_spreadsheet/:id/:temp' => 'back_end_sale_comps#validate_spreadsheet'
+  get 'back_end_sale_comps/validate_spreadsheet/:temp' => 'back_end_sale_comps#validate_spreadsheet'
   get 'back_end_sale_comps/create/:id/:temp' => 'back_end_sale_comps#create'
   get 'back_end_sale_comps/create/:id/' => 'back_end_sale_comps#create'
   get 'back_end_sale_comps/duplication' => 'back_end_sale_comps#duplication'

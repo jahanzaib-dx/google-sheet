@@ -248,19 +248,20 @@
       if($('#data_type').val()=="lease")
       {
         url = '<%= back_end_lease_comps_duplication_path %>';
-        delete_url = '/back_end_lease_comps/delete_duplication';
+        validation_url = '/back_end_lease_comps/validate_spreadsheet';
       }
       else if($('#data_type').val()=="sale")
       {
         url= '<%= back_end_sale_comps_duplication_path %>';
-        delete_url= '/back_end_sale_comps/delete_duplication';
+        validation_url= '/back_end_sale_comps/validate_spreadsheet';
+
       }
       $.ajax({
         type: 'get',
         url: url,
         success: function (result) {
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('#tx_linkdin_profile').attr('href',delete_url+'/'+result.file_temp);
+          $('#tx_linkdin_profile').attr('href',validation_url+'/'+result.file_temp);
           $('#tx_linkdin_profile').show('fast');
           $('#manage_dups').show('fast');
         }
