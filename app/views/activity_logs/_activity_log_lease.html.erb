@@ -14,7 +14,7 @@
 
   </td>
   <td class="result_line border_full"><p><%= activity_log.created_at.strftime('%m/%d/%Y') %></p></td>
-  <td class="result_line border_full"><p><%= activity_log.tenant_record.user.name %></p></td>
+  <td class="result_line border_full"><p><%= activity_log.initiated_by.name %></p></td>
   <td class="result_line img_width">
   	<p> 
   		<%= comp_image(activity_log.tenant_record).html_safe %>
