@@ -10,7 +10,7 @@ class SharedComp < ActiveRecord::Base
   
   ## initiator_id(activity_log) == agent_id(comp_share)
   
-  has_many :comp_unlock_field
+  has_many :comp_unlock_field, dependent: :destroy
   
   def self.getUnlockData activity
     
