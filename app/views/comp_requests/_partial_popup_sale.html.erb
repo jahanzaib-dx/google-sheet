@@ -48,7 +48,7 @@
 
 
             <td><p class="comp-table-pre">Year Built</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[build_date]"> <%=@comp_record.build_date.strftime('%Y')%> </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[build_date]"> <%= (@comp_record.build_date.blank? == true)?"":@comp_record.build_date.strftime('%Y')%> </p></td>
           </tr>
           
           
