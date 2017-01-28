@@ -275,35 +275,68 @@ class BackEndSaleCompsController < ApplicationController
     sale_records = SaleRecord.where('user_id = ?', @current_user)
     error_string=""
     counter=2
-    sale_records.each do |sale_record|
-      if SaleRecord.where(:id => ws[counter, 1]).present?
-        @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
-        error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
-        @sale_record.address1 = ws[counter, 4]
-        @sale_record.city = ws[counter, 5]
-        @sale_record.state = ws[counter, 6]
-        result = validate_address_google(@sale_record,true)
-        if result.has_key? :errors
-          error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
+    if params[:id].present?
+      sale_records.each do |sale_record|
+        if SaleRecord.where(:id => ws[counter, 1]).present?
+          @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
+          error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
+          @sale_record.address1 = ws[counter, 4]
+          @sale_record.city = ws[counter, 5]
+          @sale_record.state = ws[counter, 6]
+          result = validate_address_google(@sale_record,true)
+          if result.has_key? :errors
+            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
+          end
+          error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
+          error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+          error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
+          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
+          error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
         end
-        error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
-        error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
-        error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
-        error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-        error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-        error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-        error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
-        error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
-        error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
-        error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
-        error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+        counter+=1
       end
-      counter+=1
+    else
+
+      sale_records.each do |sale_record|
+        if SaleRecord.where(:id => ws[counter, 1]).present?
+          @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
+          error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
+          @sale_record.address1 = ws[counter, 5]
+          @sale_record.city = ws[counter, 6]
+          @sale_record.state = ws[counter, 7]
+          result = validate_address_google(@sale_record,true)
+          if result.has_key? :errors
+            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
+          end
+          error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+          error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
+          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
+          error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+          error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
+        end
+        counter+=1
+      end
     end
+
+    delete_url = (params[:id].present?)? "/back_end_sale_comps/create/#{params[:id]}/#{params[:temp]}" : "/back_end_sale_comps/delete_duplication/#{params[:temp]}"
     if error_string==''
       render json:{
           flag: 'ok',
-          url: "/back_end_sale_comps/create/#{params[:id]}/#{params[:temp]}"
+          url: delete_url
       }
     else
       render json:{
