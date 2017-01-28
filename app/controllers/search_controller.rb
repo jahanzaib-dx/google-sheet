@@ -257,14 +257,15 @@ class SearchController < ApplicationController
    def lockSaleRecord tenant_records
     
        tenant_records = tenant_records.each do |t_record|
+         
+         t_record.price_str = t_record.price
+         t_record.cap_rate_str = t_record.cap_rate
+         t_record.land_size_str = t_record.land_size
           
           if t_record.user_id != current_user.id
             
              ##compObj = OpenStruct.new() ## convert hash(asso array) to object
-             
-              t_record.price_str = t_record.price
-              t_record.cap_rate_str = t_record.cap_rate
-              t_record.land_size_str = t_record.land_size
+              
               ##t_record.date_sold = 
              
              ##compArr = Hash.new
