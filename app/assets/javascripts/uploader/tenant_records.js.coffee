@@ -249,8 +249,8 @@ $(document).ready ->
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
-  #************************************************#
 
+  #************************************************#
 
   if $("input[type='radio'][name='custom_record[is_existing_data_set]']:checked").length > 0 and $("input[type='radio'][name='custom_record[is_existing_data_set]']:checked").val() == 'yes'
     $('.existing-data-set-container').css 'display', 'block'
@@ -282,9 +282,16 @@ $(document).ready ->
       dataType: 'json'
 
     xhr.done (response) ->
+      if $('#bulk_property_type_switch').length > 0
+        template1_id = '#bulk-default-fields-geo-code-selection'
+        template2_id = '#custom-data-existing-bulk-set-row-template'
+      else
+        template1_id = '#default-fields-geo-code-selection'
+        template2_id = '#custom-data-set-row-template'
+
       if response.is_geo_coded
         $('#custom_record_is_geo_coded').prop 'checked', true
-        html_default_fields = Mustache.render $('#default-fields-geo-code-selection').html()
+        html_default_fields = Mustache.render $(template1_id).html()
         $('.fields-table-custom-data table tbody').html html_default_fields
         #$('#custom_record_address1').val(response.address1) if response.address1
         #$('#custom_record_city').val(response.city) if response.city
@@ -293,7 +300,7 @@ $(document).ready ->
         container = $('.fields-table-custom-data table tbody')
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: ''})
+          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: ''})
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       else
         $('#custom_record_is_geo_coded').prop 'checked', false
@@ -301,7 +308,7 @@ $(document).ready ->
         container.empty()
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, field: obj.key, field_value: ''})
+          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: ''})
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       $('#custom_record_name').val(response.name)
 
