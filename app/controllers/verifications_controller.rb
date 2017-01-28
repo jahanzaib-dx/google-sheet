@@ -5,7 +5,11 @@ class VerificationsController < ApplicationController
 def create
   current_user.sms_code =  1_000_000 + rand(10_000_000 - 1_000_000)
   current_user.save(validate: false)
-  
+  account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+  auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
+  ###twilio_from = "+12345678901"
+  twilio_from = "+14438600704"
+  twilio_to= current_user.mobile
   ###@user = current_user
   
   # to = current_user.mobile
@@ -13,12 +17,14 @@ def create
   ##if to[0] = "0"
   ##  to.sub!("0", '+44')
   ##end
+
+  #################################################
 	
-	account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
-	auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
-	###twilio_from = "+12345678901"
-	twilio_from = "+14438600704"
-  twilio_to= current_user.mobile
+  # account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+  # auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
+  # ###twilio_from = "+12345678901"
+  # twilio_from = "+14438600704"
+  # twilio_to= current_user.mobile
 
   @twilio_client= Twilio::REST::Client.new account_sid, auth_token
     @twilio_client.account.sms.messages.create(
@@ -39,23 +45,41 @@ def mobile_number
 end
 
 def verify
-	
-	if !current_user
+
+
+
+  if !current_user
 		session[:previous_url] = verifications_verify_path		
         redirect_to new_user_session_path, :flash => { :error => "Please sign in to verify your mobile number!" }
 		return
     end
 	
-	### RegistrationsHelper
-	
-  ###if(params.has_key?(:sms_code))
+
   if !params[:sms_code]
-  # if !params[:sms_code]
-  # 	render :action => :mobile_number
     if params[:mobile]
       current_user.mobile = params[:mobile]
-      current_user.save
-      render :action => :verify
+      account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+      auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
+      twilio_from = "+14438600704"
+      phone_number= current_user.mobile
+      lookup_client = Twilio::REST::LookupsClient.new(account_sid, auth_token)
+      begin
+        response = lookup_client.phone_numbers.get(phone_number)
+        if response.phone_number
+          current_user.save
+          render :action => :verify
+          {success: true, message: "phone number is valid" }
+        else
+          redirect_to verifications_mobile_number_path
+        end
+      rescue => e
+        if e.code == 20404
+          redirect_to verifications_mobile_number_path, :flash => { :warning => "Enter valid phone number." }
+        else
+          raise e
+        end
+      end
+
     end
 	###render 'verifications/verify'
 	###render :text => "Hello, World!"
