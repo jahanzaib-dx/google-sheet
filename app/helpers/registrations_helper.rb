@@ -41,8 +41,8 @@ module RegistrationsHelper
 
   def enter_mobile_number_form
     #not empty or isset (?)
-    ####return '' if current_user.sms_code?
-    ###p current_user.sms_code.empty?
+    ####return '' if current_user.sms_code?p current_user.sms_code.empty?
+    ###
     ###if current_user.sms_code.empty?
     html = <<-HTML
 
@@ -53,7 +53,7 @@ module RegistrationsHelper
 	  <div class="form-group input-group">
 <br>
 	  <h4>Mobile number</h4>
-      #{text_field_tag('mobile' ,'', class: "form-control")}
+      #{text_field_tag('mobile' ,'', required: true, pattern: "^\+?[0-9]{1,3}-?[0-9]{6,12}$", title: 'format: +1202555012',class: "form-control")}
 	  </div>
 
 	  <div class="form-group">
