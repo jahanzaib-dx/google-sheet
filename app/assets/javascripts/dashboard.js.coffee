@@ -888,10 +888,22 @@ populateResults = (data, text_status, $xhr, doAppend) ->
     trid = item.id
     found.push(trid)
     size = 0
+    land_size_str = 0
+    cap_rate_str = 0
+    
     if item.view_type == 'confidential' && item.size
       size = get_tenantsize_range(item.size)
     else if item.view_type != 'confidential' && item.size
       size = number_format(item.size)
+      
+    if item.land_size_str
+      land_size_str = item.land_size_str
+    
+    if item.price_str
+      price_str = item.price_str
+    
+    if item.cap_rate_str
+      cap_rate_str = item.cap_rate_str
       
     if item.user_id == current_user_id
     	requestunlock_class = ""
@@ -948,6 +960,11 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       tef_class: if data.params.is_cushman_user then "cushman_net_effective_per_sf" else "net_effective_per_sf"
       tenant_effective_rent: if data.params.is_cushman_user then number_format(item.cushman_net_effective_per_sf, 2) else number_format(item.net_effective_per_sf, 2)
       isAppending: doAppend
+      land_size_str: land_size_str
+      price_str: price_str
+      cap_rate_str: cap_rate_str
+      sold_date: (if (item.sold_date) then moment(item.sold_date, 'YYYY-MM-DD').format('YYYY') else '')
+      
     r = Mustache.render(table_template, values)
     tb.append r
     

@@ -14,9 +14,9 @@
     <% end %>
 
   </td>
-  <td class="result_line border_full"><p><%= search_sale_comp_path()%>/<%= activity_log.sale_record.id%>"><i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i></a></p></td>
+  <td class="result_line border_full"><p><a href="<%= search_sale_comp_path()%>/<%= activity_log.sale_record.id%>"><i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i></a></p></td>
   <td class="result_line border_full"><p><%= activity_log.created_at.strftime('%m/%d/%Y') %></p></td>
-  <td class="result_line border_full"><p><%= activity_log.sale_record.user.name %></p></td>
+  <td class="result_line border_full"><p><%= activity_log.initiated_by.name %></p></td>
   <td class="result_line img_width"><p> 
   	
   	<%= comp_image(activity_log.sale_record).html_safe %>
@@ -26,7 +26,7 @@
   <td class="result_line"><p><%= "#{activity_log.sale_record.complete_address}"%></p></td>
   <td class="result_line"><p><%= activity_log.sale_record.price.to_s.sub('-0.0', 'Lock') %></p></td>
   <td class="result_line"><p><%= activity_log.sale_record.sizerange %></p></td>
-  <td class="result_line"><p><%= activity_log.sale_record.build_date.year %></p></td>
+  <td class="result_line"><p><%= (activity_log.sale_record.build_date.blank? == true)?"":activity_log.sale_record.build_date.year %></p></td>
   
 
 </tr>
