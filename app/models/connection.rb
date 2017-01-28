@@ -2,7 +2,7 @@ class Connection < ActiveRecord::Base
 
   #default_scope {order('created_at DESC')}
 
-  belongs_to :user
+  belongs_to :user, class_name: 'User', foreign_key: :user_id
   belongs_to :connected_to, class_name: 'User', foreign_key: :agent_id
 
   scope :all_connections_of_user, ->(user_id) { where("user_id = #{user_id} OR agent_id = #{user_id} ", user_id ).all }
