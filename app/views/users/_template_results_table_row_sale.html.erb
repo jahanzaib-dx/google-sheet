@@ -13,16 +13,16 @@
       <!--<a href="#!" class="get_comp" data-href="<%#= search_lease_comp_path()%>?id={{id}}">Details</a>-->
       <strong>{{address1}}</strong>
     </td>
-    <td class="result_line"><p>Locked</p></td>
-    <td class="result_line"><p>Locked</p></td>
-    <td class="result_line"><p>Locked</p></td>
-    <td class="result_line"><p>{{year}}</p></td>
+    <td class="result_line"><p>{{price_str}}</p></td>
+    <td class="result_line"><p>{{cap_rate_str}}</p></td>
+    <td class="result_line"><p>{{land_size_str}}</p></td>
+    <td class="result_line"><p>{{sold_date}}</p></td>
   <td class="table_result_amker">
-    <span class="requestunlock" data-url="<%= create_comp_requests_path()%>?cid={{id}}&type=sale">
-      <a href="#!">Request Unlock</a>
+    <span class="{{requestunlock_class}}" data-url="<%= create_comp_requests_path()%>?cid={{id}}&type=sale">
+      {{{Request_Unlock_text}}}
     </span>
   </td>
-  <td class="result_lock_icon"><a href="#"><%= image_tag("lock.png") %></a></td>
+  <td class="result_lock_icon">{{{cpstatus}}}</td>
 
     <td class="result_line"><p></p></td>
 

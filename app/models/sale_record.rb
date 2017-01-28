@@ -47,14 +47,22 @@ class SaleRecord < ActiveRecord::Base
 
             "sale_records.latitude, " +
             "sale_records.longitude, " +
+            
+            "sale_records.cap_rate, " +
+            "sale_records.sold_date, " +
+            "sale_records.price, " +
 
             "sale_records.view_type, " +
+            "sale_records.user_id, " +
             #"tenant_records.office_id, " +
             #"tenant_records.team_id, " +
             #"tenant_records.data, " +
 
             " 0 as editable" +
-            ", 'protect_view' as in_scope "
+            ", 'price_str' as price_str "+
+            ", 'cap_rate_str' as cap_rate_str "+
+            ", 'cp_status' as cp_status "+
+            ", 'land_size_str' as land_size_str "
     )
     ####.joins({ :office => :firm })
     ####.group('tenant_records.id, tenant_records.address1, offices.firm_id, offices.name, offices.logo_image_file_name, firms.name')
