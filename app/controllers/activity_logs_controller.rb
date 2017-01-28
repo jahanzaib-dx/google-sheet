@@ -83,7 +83,7 @@ class ActivityLogsController < ApplicationController
     else
       activity_comp = activity.sale_record
       activity_comp.price = if unlockFields.include?"price" then activity_comp.price else '-0.0' end
-      activity_comp.sizerange = if unlockFields.include?"land_size" then activity_comp.land_size else sf_range(activity_comp.land_size) end
+      activity_comp.sizerange = if unlockFields.include?"land_size" then activity_comp.land_size else sf_range(activity_comp.land_size,'sale') end
       activity_comp.land_size = if unlockFields.include?"land_size" then activity_comp.land_size else '-0.0' end
     ##activity_comp.net_effective_per_sf = if unlockFields.include?"net_effective_per_sf" then number_with_precision(activity_comp.net_effective_per_sf,:precision => 2) else "-0" end
 
