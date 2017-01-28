@@ -300,7 +300,7 @@ class SearchController < ApplicationController
               end
     
               t_record.price_str = if unlockFields.include?"price" then t_record.price else 'Lock' end
-              t_record.cap_rate_str = if unlockFields.include?"cap_rate" then t_record.base_rent else 'Lock' end
+              t_record.cap_rate_str = if unlockFields.include?"cap_rate" then t_record.cap_rate else 'Lock' end
               t_record.land_size_str = if unlockFields.include?"land_size" then t_record.land_size else sf_range(t_record.land_size,'sale') end
                 
               ##t_record = t_record + compArr
