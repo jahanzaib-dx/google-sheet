@@ -379,51 +379,93 @@ class BackEndLeaseCompsController < ApplicationController
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     error_string=""
     counter=2
-    tenant_records.each do |tenant_record|
-      # while ws[counter,1] != tenant_record.id.to_s
-      #   counter+=1
-      # end
-      if TenantRecord.where(:id => ws[counter, 1]).present?
-        @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
-        error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
-        error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
-        error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
-        @tenant_record.address1 = ws[counter, 6]
-        @tenant_record.city = ws[counter, 8]
-        @tenant_record.state = ws[counter, 9]
-        result = validate_address_google(@tenant_record,true)
-        if result.has_key? :errors
-          error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
-        end
-        error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
-        error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-        error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-        error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-        error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
-        error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
-        error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
-        error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
-        error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
-        error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
-        error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
-        error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
-        error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
-        error_string += (
-              (ws[counter, 21] == ''  || ws[counter, 21] == "0") &&
+    if params[:id].present?
+      tenant_records.each do |tenant_record|
+        # while ws[counter,1] != tenant_record.id.to_s
+        #   counter+=1
+        # end
+        if TenantRecord.where(:id => ws[counter, 1]).present?
+          @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
+          error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
+          error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
+          error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+          @tenant_record.address1 = ws[counter, 6]
+          @tenant_record.city = ws[counter, 8]
+          @tenant_record.state = ws[counter, 9]
+          result = validate_address_google(@tenant_record,true)
+          if result.has_key? :errors
+            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
+          end
+          error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
+          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+          error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+          error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
+          error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
+          error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
+          error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
+          error_string += (
+          (ws[counter, 21] == ''  || ws[counter, 21] == "0") &&
               (ws[counter, 22] == '' || ws[counter, 22] == "0") &&
               (ws[counter, 23] == '' || ws[counter, 23] == 'FALSE')
-        )? "</br>Cell no. U#{counter}, V#{counter}  and W#{counter} are empty or false. One of them must be filled." : ""
+          )? "</br>Cell no. U#{counter}, V#{counter}  and W#{counter} are empty or false. One of them must be filled." : ""
         end
-      counter+=1
+        counter+=1
+      end
+    else
+
+      tenant_records.each do |tenant_record|
+        # while ws[counter,1] != tenant_record.id.to_s
+        #   counter+=1
+        # end
+        if TenantRecord.where(:id => ws[counter, 1]).present?
+          @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
+          error_string += (ws[counter, 4] == '')? "</br>Cell no. C#{counter} is required" : ""
+          error_string += (ws[counter, 5] == '')? "</br>Cell no. D#{counter} is required" : ""
+          error_string += (ws[counter, 6] == '')? "</br>Cell no. E#{counter} is required" : ""
+          @tenant_record.address1 = ws[counter, 7]
+          @tenant_record.city = ws[counter, 9]
+          @tenant_record.state = ws[counter, 10]
+          result = validate_address_google(@tenant_record,true)
+          if result.has_key? :errors
+            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
+          end
+          error_string += (ws[counter, 7] == '')? "</br>Cell no. F#{counter} is required" : ""
+          error_string += (ws[counter, 8] == '')? "</br>Cell no. G#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '')? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '')? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '')? "</br>Cell no. L#{counter} is required" : ""
+          error_string += (ws[counter, 15] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 16] == '')? "</br>Cell no. O#{counter} is required" : ""
+          error_string += (ws[counter, 18] == '')? "</br>Cell no. Q#{counter} is required" : ""
+          error_string += (ws[counter, 19] == '')? "</br>Cell no. R#{counter} is required" : ""
+          error_string += (ws[counter, 20] == '')? "</br>Cell no. S#{counter} is required" : ""
+          error_string += (ws[counter, 21] == '')? "</br>Cell no. T#{counter} is required" : ""
+          error_string += (
+          (ws[counter, 21] == ''  || ws[counter, 21] == "0") &&
+              (ws[counter, 22] == '' || ws[counter, 22] == "0") &&
+              (ws[counter, 23] == '' || ws[counter, 23] == 'FALSE')
+          )? "</br>Cell no. U#{counter}, V#{counter}  and W#{counter} are empty or false. One of them must be filled." : ""
+        end
+        counter+=1
+      end
     end
+    delete_url = (params[:id].present?)? "/back_end_lease_comps/create/#{params[:id]}/#{params[:temp]}" : "/back_end_lease_comps/delete_duplication/#{params[:temp]}";
     if error_string==''
       render json:{
-          flag:'ok',
-          url:"/back_end_lease_comps/create/#{params[:id]}/#{params[:temp]}"
+          flag: 'ok',
+          url: delete_url
       }
     else
       render json:{
-          error_string:error_string
+          error_string: error_string
       }
     end
   end

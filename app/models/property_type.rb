@@ -4,11 +4,13 @@ class PropertyType < ActiveRecord::Base
 
   has_many :opex_markets
 
+
   def self.get_property_type(id)
     find(id)
   end
 
   def self.property_type_list
-    self.select('id, name')
+    self.pluck('name')
+
   end
 end

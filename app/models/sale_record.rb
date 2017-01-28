@@ -5,6 +5,10 @@ class SaleRecord < ActiveRecord::Base
   belongs_to :user
 
   mattr_accessor :sizerange
+
+  has_many :comp_requests
+
+  after_destroy :cleanup
   
   scope :select_extra, -> { select("
       'cp_status' as cp_status,
@@ -141,5 +145,14 @@ class SaleRecord < ActiveRecord::Base
 
     # this true keeps validation from failing...
     true
+  end
+
+  def cleanup
+    comp_request = CompRequest.where('comp_id = ? and comp_type = ?', self.id,"sale")
+    comp_request.destroy_all if !comp_request.nil?
+    activity_log = ActivityLog.where('comp_id = ? and comptype = ?', self.id,"sale")
+    activity_log.destroy_all if !activity_log.nil?
+    shared_comp=SharedComp.where('comp_id = ? and comp_type = ?', self.id,"sale")
+    shared_comp.destroy_all if !shared_comp.nil?
   end
 end

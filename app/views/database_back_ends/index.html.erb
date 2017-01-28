@@ -70,9 +70,10 @@
           <input type="hidden" value="" id="export_link">
         </div>
       </div>
-      <h5>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></h5>
-      <h5 id="manage_dups" >Manage Dupes.</h5>
-      <h5 id="error_string" ></h5>
+      <p id="message">Please add new comps through the import wizard.<br>Comps added directly to spreadsheet will not be saved.</p><br>
+      <p>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></p>
+      <p id="manage_dups" >Manage Dupes.</p>
+      <p id="error_string" ></p>
     </div>
   </div>
 
@@ -106,6 +107,7 @@
     $('#duplication').parent().hide('fast');
     $('#manage_dups').hide('fast');
     $('#error_string').hide('fast');
+    $('#message').hide('fast');
 
     $('#data_type').change(function(){
       $('#myiframe').find('iframe').attr('src','');
@@ -120,6 +122,7 @@
       $('#duplication').parent().hide('fast');
       $('#manage_dups').hide('fast');
       $('#error_string').hide('fast');
+      $('#message').hide('fast');
 
       if($('#data_type').val()=="lease")
       {
@@ -135,6 +138,7 @@
             $('#media-button').show('fast');
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
+            $('#message').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
             if(result.is_potential_dupes>0)
               $('#duplication').parent().show();
@@ -157,6 +161,7 @@
             $('#media-button').show('fast');
             $('#ImageBrowse').show('fast');
             $('#database_map_search').show('fast');
+            $('#message').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
             if(result.is_potential_dupes>0)
               $('#duplication').parent().show();
@@ -242,25 +247,28 @@
       $('#ImageBrowse').hide('fast');
       $('#custom_record').hide('fast');
       $('#database_map_search').hide('fast');
+      $('#message').hide('fast');
+      $('#error_string').hide('fast');
       $('#duplication').parent().hide('fast');
       var url;
       var delete_url;
       if($('#data_type').val()=="lease")
       {
         url = '<%= back_end_lease_comps_duplication_path %>';
-        delete_url = '/back_end_lease_comps/delete_duplication';
+        validation_url = '/back_end_lease_comps/validate_spreadsheet';
       }
       else if($('#data_type').val()=="sale")
       {
         url= '<%= back_end_sale_comps_duplication_path %>';
-        delete_url= '/back_end_sale_comps/delete_duplication';
+        validation_url= '/back_end_sale_comps/validate_spreadsheet';
+
       }
       $.ajax({
         type: 'get',
         url: url,
         success: function (result) {
           $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-          $('#tx_linkdin_profile').attr('href',delete_url+'/'+result.file_temp);
+          $('#tx_linkdin_profile').attr('href',validation_url+'/'+result.file_temp);
           $('#tx_linkdin_profile').show('fast');
           $('#manage_dups').show('fast');
         }
