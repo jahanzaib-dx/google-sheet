@@ -264,7 +264,7 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def sale_record_params
     params.require(:sale_record).permit(:is_sales_record, :land_size_identifier, :view_type,
-                                :address1, :city, :state, :land_size, :price, :cap_rate, :custom,
+                                :address1, :city, :state, :land_size, :price, :cap_rate,:submarket, :custom,
                                 :latitude, :longitude, :zipcode, :zipcode_plus, :office_id,
                                 :property_name, :build_date, :property_type, :class_type, :sold_date
     )

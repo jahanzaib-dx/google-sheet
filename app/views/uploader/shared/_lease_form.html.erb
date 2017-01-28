@@ -229,7 +229,7 @@
           <tr><td>Property Type*</td>
             <td>
               <%= select_tag 'temp_comp_property_type_dd',
-                             options_for_select(TenantRecord::NEW_PROPERTY_TYPE.map { |pt| [pt.name, pt.id] }), prompt: 'Please Choose', class: 'custom-value-dropdown  validate[required]' %>
+                             options_for_select(TenantRecord::NEW_PROPERTY_TYPE.map { |pt| [pt] }), prompt: 'Please Choose', class: 'custom-value-dropdown  validate[required]' %>
               <%= text_field_tag 'temp_comp_property_type_tf', "", class: 'custom-value-input', :disabled => true %>
               <%= hidden_field_tag 'tenant_record[property_type]', "", class: 'actual-value' %>
             </td>
