@@ -105,6 +105,8 @@ class Uploader::ImportController < ApplicationController
       if params[:custom_record][:custom_record_properties_attributes]
         custom_record_properties = {}
         params[:custom_record][:custom_record_properties_attributes].each_with_index do |hash, index|
+
+          Rails.logger.debug  "#{index} - #{hash[1][:key]} = #{hash[1][:value]}"
           custom_record_properties["#{index}"] = {
               key: hash[1][:key],
               value: hash[1][:value]
@@ -118,6 +120,7 @@ class Uploader::ImportController < ApplicationController
                               :class => 'CustomRecord'
                           })
       params[:custom_record].except(:is_existing_data_set, :is_geo_coded, :custom_record_properties_attributes).to_hash.each_with_index { |(key, value), index|
+        Rails.logger.debug  "#{index} - #{key} = #{value}"
         required_params["#{index}"] = { id: "", record_column: key, spreadsheet_column: value, default_value: "" }
       }
     elsif params[:bulk_property_type_switch]  == 'lease_comps'
@@ -170,9 +173,7 @@ class Uploader::ImportController < ApplicationController
                                        #:team_id => current_user.account.own_team.id,
                                        :import_template => mapping_structure )
 
-    puts "*********************************************************"
-    puts params
-    if params[:tenant_record_import_operating_expense_mapping] and params[:tenant_record_import_operating_expense_mapping][:column_name]
+    if params[:tenant_record_import_operating_expense_mapping] and !params[:tenant_record_import_operating_expense_mapping][:column_name][0].blank?
       params[:tenant_record_import_operating_expense_mapping][:column_name].each do |column|
         TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import_id, :column_name => column})
       end

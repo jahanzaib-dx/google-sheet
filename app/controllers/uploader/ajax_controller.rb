@@ -25,6 +25,7 @@ class Uploader::AjaxController < ApplicationController
 
     respond_to do |format|
       format.json { render json: @custom_record.to_json(include: 'custom_record_properties' ) }
+      format.html { render json: @custom_record.to_json(include: 'custom_record_properties' ) }
     end
   end
 end
