@@ -22,7 +22,7 @@ Address: <%= @shared.sale_record.address1%>
 <br>
 SF: <%= sf_range(@shared.sale_record.land_size) %>
 <br>
-Year: <%= (@shared.sale_record.build_date.blank? == ture)?"":@shared.sale_record.build_date.year %>
+Year: <%= (@shared.sale_record.build_date.blank? == true)?"":@shared.sale_record.build_date.year %>
 
 <% end %>
 	<br>
