@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 
 
-  has_many :activity_log
+  has_many :activity_log , :dependent => :destroy
   has_one :account
   has_one :back_end_lease_comp
   has_one :back_end_sale_comp
@@ -12,10 +12,10 @@ class User < ActiveRecord::Base
   has_one :settings, class_name: 'UserSetting'
 
 
-  has_many :connections, foreign_key: :user_id
-  has_many :connected_to, through: :connections, foreign_key: :agent_id
-  has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id'
-  has_many :inverse_connected_to, through: :inverse_connections, source: :user
+  has_many :connections, foreign_key: :user_id, :dependent => :destroy
+  has_many :connected_to, through: :connections, foreign_key: :agent_id, :dependent => :destroy
+  has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id', :dependent => :destroy
+  has_many :inverse_connected_to, through: :inverse_connections, source: :user, :dependent => :destroy
 
 
 
@@ -26,13 +26,13 @@ class User < ActiveRecord::Base
 
 
 
-  has_many :connection_requests_sent, class_name: 'ConnectionRequest', foreign_key: :user_id
-  has_many :connection_requests_received, class_name: 'ConnectionRequest', foreign_key: :agent_id
+  has_many :connection_requests_sent, class_name: 'ConnectionRequest', foreign_key: :user_id, :dependent => :destroy
+  has_many :connection_requests_received, class_name: 'ConnectionRequest', foreign_key: :agent_id, :dependent => :destroy
 
 
   #has_many :comp_requests
-  has_many :outgoing_comp_requests, class_name: 'CompRequest', foreign_key: :initiator_id
-  has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id
+  has_many :outgoing_comp_requests, class_name: 'CompRequest', foreign_key: :initiator_id, :dependent => :destroy
+  has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id, :dependent => :destroy
 
   scope :outgoing_comp_requests_type, ->(user,comp_type) { joins(:outgoing_comp_requests).where("initiator_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
   scope :incoming_comp_requests_type, ->(user,comp_type) { joins(:incoming_comp_requests).where("receiver_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
@@ -44,13 +44,13 @@ class User < ActiveRecord::Base
   scope :connection_request_to_current_user, ->(user_id) { joins(:connection_requests_sent).where("user_id = #{user_id} and agent_id = #{User.current_user.id}", user_id, User.current_user.id ) }
 
 
-  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id
-  has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id
-  has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
+  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, :dependent => :destroy
+  has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id, :dependent => :destroy
+  has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id, :dependent => :destroy
 
   # Association for sub-user
 
-  has_many :children, class_name: 'User', :foreign_key => 'parent_id'
+  has_many :children, class_name: 'User', :foreign_key => 'parent_id', :dependent => :destroy
   belongs_to :parent, class_name: 'User', :foreign_key => 'parent_id'
   has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
   accepts_nested_attributes_for :schedule_accesses
@@ -59,15 +59,15 @@ class User < ActiveRecord::Base
 
   # end sub-user
 
-  has_many :tenant_records
-  has_many :sale_records
+  has_many :tenant_records, :dependent => :destroy
+  has_many :sale_records, :dependent => :destroy
 
 
-  has_many :groups_owned, class_name: 'Group', foreign_key: :user_id
+  has_many :groups_owned, class_name: 'Group', foreign_key: :user_id, :dependent => :destroy
 
 
   has_many :memberships, foreign_key: :member_id, :dependent => :destroy
-  has_many :groups_joined, :through => :memberships, source: :group
+  has_many :groups_joined, :through => :memberships, source: :group, :dependent => :destroy
 
 
 
