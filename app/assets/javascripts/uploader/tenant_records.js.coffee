@@ -243,10 +243,11 @@ $(document).ready ->
           $('.fields-table-custom-data table tbody').html html_default_fields
         else
           $('.fields-table-custom-data table tbody').empty()
-        html_add_row = Mustache.render $('#add-button-geo-code-selection').html()
+        html_add_row = Mustache.render $('#add-new-row-button-bulk-upload').html()
         $('.fields-table-custom-data table tfoot').html html_add_row
 
     $('.is-active .tick span').css 'color', 'green'
+    populateHeaderSelect()
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
 
@@ -268,12 +269,19 @@ $(document).ready ->
         $('.existing-data-set-container').css 'display', 'none'
         $('.new-data-set-container').css 'display', 'block'
 
-  $(document).on 'click', '.add-row-custom-data-geocode-single-comp', (e)->
+  $(document).on 'click', '.add-row-custom-data-geocode-single-comp, .add-row-custom-data-geocode-bulk-upload', (e)->
     e.preventDefault()
     container = $('.fields-table-custom-data')
     row = container.find('.user-defined-custom-data').length
-    custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row})
+    if( $(this).hasClass("add-row-custom-data-geocode-single-comp") )
+      custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row})
+    else if( $(this).hasClass("add-row-custom-data-geocode-bulk-upload") )
+      custom_data_set_row = Mustache.render($('#custom-data-new-bulk-set-row-template').html(), {row: row})
+
     $('.fields-table-custom-data table tbody').append custom_data_set_row
+    populateHeaderSelect()
+
+
 
   $(document).on 'change', '.existing-data-set-dd', (e)->
     xhr = $.ajax

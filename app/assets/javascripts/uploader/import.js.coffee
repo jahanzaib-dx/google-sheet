@@ -71,6 +71,7 @@ $(document).ready ->
 
   $(document).on 'change','#fileToUpload', (e) ->
     submit_is = $('#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2')
+    loadingAnimationStarts()
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
 
   $(document).on 'click', '#bulk-comp-continue-4, #bulk-sales-comp-continue-4, #bulk-custom-comp-continue-3', (e) ->
@@ -268,3 +269,11 @@ $(document).on 'click', '#tenant_record_rent_escalation_type_fixed', (e) ->
 $(document).on 'ready', ->
   $('input[type=text][name="tenant_record[escalation]"]').parents('tr').hide();
   $('input[type=text][name="tenant_record[fixed_escalation]"]').parents('tr').hide();
+
+
+window.populateHeaderSelect = ->
+  $('.bulk-column-header-dd').each  (i, obj) ->
+    if($(obj).children('option').length < 1)
+      $(obj).html(options);
+
+

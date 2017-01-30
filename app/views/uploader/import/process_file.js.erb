@@ -5,10 +5,13 @@ for (var i = 0; i < header_arr.length; i++) {
   options += '<option value=' + header_arr[i].replace(/\s/g, '_') + '>' + header_arr[i] + '</option>';
 }
 
-$('.bulk-column-header-dd').each(function(i, obj) {
-  $(obj).html(options);
-});
+console.log('about to call populateHeaderSelect');
+populateHeaderSelect()
 
 $('#upload_file_tmp_url').val('<%= @updated_file_name %>');
 $('.uploaded_file_name').html('You have uploaded "<b><%= @filename %></b>"').show();
 $('.uploaded_file_name').show();
+
+loadingAnimationStops();
+
+
