@@ -54,6 +54,15 @@
   </tr>
 </script>
 
+<script type="text/html" id="add-new-row-button-bulk-upload">
+    <tr>
+      <td colspan="3" class="add-row-custom-data-geocode-bulk-upload-td">
+        <button class="add-row-custom-data-geocode-bulk-upload">+Add Row</button>
+      </td>
+    </tr>
+</script>
+
+
 <!-- add row dynamically -->
 <script type="text/template" id="custom-data-set-row-template">
   <tr class="user-defined-custom-data">
@@ -69,7 +78,7 @@
   </tr>
 </script>
 
-<!-- existing dataset row -->
+<!-- existing dataset for custom data row -->
 <script type="text/template" id="custom-data-existing-bulk-set-row-template">
     <tr class="user-defined-custom-data">
   <td> <%= label_tag nil,'{{field}}' %>
@@ -90,4 +99,26 @@
             </tr>
 </script>
 
-
+<!-- new dataset for custom data row -->
+<script type="text/template" id="custom-data-new-bulk-set-row-template">
+  <tr class="user-defined-custom-data">
+    <td>
+      <%= text_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][key]', '{{field}}', :placeholder => '(Header from user)' %>
+    </td>
+    <td>
+      <div class="header-name-container">
+        <div class="first">
+          <%= text_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][value]', '{{field_value}}', placeholder: '{Please select}', class: 'bulk-column-header-value' %>
+              </div>
+              <div class="second">
+                <select class="bulk-column-header-dd">
+                </select>
+              </div>
+              <div style="clear: both"></div>
+              </div>
+              </td>
+              <td class="actions">
+                <a href="#" type="button" class='btn btn-red delete-custom-field'><u><span>Delete</span></u></a>
+              </td>
+              </tr>
+              </script>

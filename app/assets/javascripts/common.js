@@ -24,6 +24,14 @@ jQuery(document).ready(function(){
 
 });
 
+function loadingAnimationStarts(){
+    $('.ajax-loading').show();
+}
+
+function loadingAnimationStops(){
+    $('.ajax-loading').hide();
+}
+
 
 function toTitleCase(str)
 {
