@@ -17,7 +17,7 @@ class CustomRecord < ActiveRecord::Base
 
 
   def self.get_custom_records
-    select('id, name')
+    select('id, name').where({user_id: User.current_user.id})
   end
 
   private
