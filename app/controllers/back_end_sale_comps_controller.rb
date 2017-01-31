@@ -291,10 +291,10 @@ class BackEndSaleCompsController < ApplicationController
           error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
-          error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
+          # error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '' and @sale_record.is_sales_record )? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '' and @sale_record.is_sales_record)? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '' and @sale_record.is_sales_record)? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
           error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
@@ -312,6 +312,7 @@ class BackEndSaleCompsController < ApplicationController
           @sale_record.city = ws[counter, 6]
           @sale_record.state = ws[counter, 7]
           result = validate_address_google(@sale_record,true)
+          p result.inspect
           if result.has_key? :errors
             error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
           end
@@ -319,10 +320,10 @@ class BackEndSaleCompsController < ApplicationController
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
           error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
-          error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
-          error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+          # error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '' and @sale_record.is_sales_record )? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '' and @sale_record.is_sales_record )? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '' and @sale_record.is_sales_record )? "</br>Cell no. L#{counter} is required" : ""
           error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
