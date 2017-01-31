@@ -19,7 +19,7 @@ class ConnectionRequestsController < ApplicationController
   def create
     if !current_user.can_send_requests?
       session[:after_mobile_verfication_redirect] = connections_url
-      render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => verifications_mobile_number_url}
+      render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => profile_update_path}
       return
     else
       agent = User.where(:email => params[:email]).first

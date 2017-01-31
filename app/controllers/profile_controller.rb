@@ -17,6 +17,7 @@ class ProfileController < ApplicationController
 		#if @user.update_attributes params[:user]
 		if @user.update_attributes (user_params)
 				flash[:success] = 'The User is successfully updated!'
+				redirect_to verifications_verify_path
 			return
 			else
 					flash[:error] = @user.errors.full_messages
@@ -26,6 +27,8 @@ class ProfileController < ApplicationController
   end
 	
 		###render :text => "out"
+		################## redirect to verification mobile page to generate and verify code
+		# redirect_to verifications_verify_path
 		render "update"
   end
   
