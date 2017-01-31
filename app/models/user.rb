@@ -91,7 +91,18 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :email
 
-
+  validates :mobile, presence: true, :on => :create
+  validates :mobile, presence: true, :on => :update
+  validates :city, presence: true, :on => :create
+  validates :city, presence: true, :on => :update
+  validates :address, presence: true, :on => :create
+  validates :address, presence: true, :on => :update
+  validates :state, presence: true, :on => :create
+  validates :state, presence: true, :on => :update
+  validates :zip, presence: true, :on => :create
+  validates :zip, presence: true, :on => :update
+  validates :firm_name, presence: true, :on => :create
+  validates :firm_name, presence: true, :on => :update
   validates :first_name, presence: true, :on => :create
   validates :last_name, presence: true, :on => :create
   
@@ -125,7 +136,8 @@ class User < ActiveRecord::Base
 
   def can_send_requests?
     # return true
-    if (!mobile_active) && (mobile.blank?)
+    # if true
+     if ((!mobile_active) && (mobile.blank?)) || (zip.blank?) || (city.blank?) || (address.blank?) || (state.blank?) || (firm_name.blank?) || (first_name.blank?) || (last_name.blank?) || (email.blank?)
       return false
     else
       return true
