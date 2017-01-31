@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 
 
-  has_many :activity_log , :dependent => :destroy
+  has_many :activity_log
   has_one :account
   has_one :back_end_lease_comp
   has_one :back_end_sale_comp
@@ -12,12 +12,12 @@ class User < ActiveRecord::Base
   has_one :settings, class_name: 'UserSetting'
 
 
-  has_many :connections, foreign_key: :user_id, :dependent => :destroy
-  has_many :connected_to, through: :connections, foreign_key: :agent_id, :dependent => :destroy
-  has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id', :dependent => :destroy
-  has_many :inverse_connected_to, through: :inverse_connections, source: :user, :dependent => :destroy
+  has_many :connections, foreign_key: :user_id
+  has_many :connected_to, through: :connections, foreign_key: :agent_id
+  has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id'
+  has_many :inverse_connected_to, through: :inverse_connections, source: :user
 
-
+  before_destroy :cleanup
 
   def all_connections
     connected_to + inverse_connected_to
@@ -26,13 +26,13 @@ class User < ActiveRecord::Base
 
 
 
-  has_many :connection_requests_sent, class_name: 'ConnectionRequest', foreign_key: :user_id, :dependent => :destroy
-  has_many :connection_requests_received, class_name: 'ConnectionRequest', foreign_key: :agent_id, :dependent => :destroy
+  has_many :connection_requests_sent, class_name: 'ConnectionRequest', foreign_key: :user_id
+  has_many :connection_requests_received, class_name: 'ConnectionRequest', foreign_key: :agent_id
 
 
   #has_many :comp_requests
-  has_many :outgoing_comp_requests, class_name: 'CompRequest', foreign_key: :initiator_id, :dependent => :destroy
-  has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id, :dependent => :destroy
+  has_many :outgoing_comp_requests, class_name: 'CompRequest', foreign_key: :initiator_id
+  has_many :incoming_comp_requests, class_name: 'CompRequest', foreign_key: :receiver_id
 
   scope :outgoing_comp_requests_type, ->(user,comp_type) { joins(:outgoing_comp_requests).where("initiator_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
   scope :incoming_comp_requests_type, ->(user,comp_type) { joins(:incoming_comp_requests).where("receiver_id = #{user.id} and comp_type = '#{comp_type}'", user.id, comp_type ) }
@@ -44,30 +44,30 @@ class User < ActiveRecord::Base
   scope :connection_request_to_current_user, ->(user_id) { joins(:connection_requests_sent).where("user_id = #{user_id} and agent_id = #{User.current_user.id}", user_id, User.current_user.id ) }
 
 
-  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, :dependent => :destroy
-  has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id, :dependent => :destroy
-  has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id, :dependent => :destroy
+  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id
+  has_many :received_messages, class_name: 'Message', foreign_key: :receiver_id
+  has_many :unread_received_messages, -> { where status: false }, class_name: 'Message', foreign_key: :receiver_id
 
   # Association for sub-user
 
-  has_many :children, class_name: 'User', :foreign_key => 'parent_id', :dependent => :destroy
+  has_many :children, class_name: 'User', :foreign_key => 'parent_id'
   belongs_to :parent, class_name: 'User', :foreign_key => 'parent_id'
-  has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
+  has_many :schedule_accesses, inverse_of: :user
   accepts_nested_attributes_for :schedule_accesses
 
-  has_many :flaged_comps, inverse_of: :user, :dependent => :destroy
+  has_many :flaged_comps, inverse_of: :user
 
   # end sub-user
 
-  has_many :tenant_records, :dependent => :destroy
-  has_many :sale_records, :dependent => :destroy
+  has_many :tenant_records
+  has_many :sale_records
 
 
-  has_many :groups_owned, class_name: 'Group', foreign_key: :user_id, :dependent => :destroy
+  has_many :groups_owned, class_name: 'Group', foreign_key: :user_id
 
 
-  has_many :memberships, foreign_key: :member_id, :dependent => :destroy
-  has_many :groups_joined, :through => :memberships, source: :group, :dependent => :destroy
+  has_many :memberships, foreign_key: :member_id
+  has_many :groups_joined, :through => :memberships, source: :group
 
 
 
@@ -89,19 +89,20 @@ class User < ActiveRecord::Base
   
   #:email #system is validating itself
 
-  validates_uniqueness_of :email
+  # validates_uniqueness_of :email #, :if => :confirmation_token_exists?
 
-  validates :mobile, presence: true, :on => :create
+
+
   validates :mobile, presence: true, :on => :update
-  validates :city, presence: true, :on => :create
+
   validates :city, presence: true, :on => :update
-  validates :address, presence: true, :on => :create
+
   validates :address, presence: true, :on => :update
-  validates :state, presence: true, :on => :create
+
   validates :state, presence: true, :on => :update
-  validates :zip, presence: true, :on => :create
+
   validates :zip, presence: true, :on => :update
-  validates :firm_name, presence: true, :on => :create
+
   validates :firm_name, presence: true, :on => :update
   validates :first_name, presence: true, :on => :create
   validates :last_name, presence: true, :on => :create
@@ -257,6 +258,22 @@ class User < ActiveRecord::Base
     account.access('trex_admin')
   end
 
+
+  def confirmation_token_exists?
+    !confirmation_token.nil?
+  end
+
+  def cleanup
+    user =User.find_by_id(205)
+    connection= Connection.where('user_id = ?', self.id)
+    connection.destroy_all if !connection.nil?
+    tenant_record= TenantRecord.where('user_id = ?', self.id)
+    tenant_record.destroy_all if !tenant_record.nil?
+    sale_record= SaleRecord.where('user_id = ?', self.id)
+    sale_record.destroy_all if !sale_record.nil?
+    activity_log = ActivityLog.all_activities_of_user(self.id)
+    activity_log.destroy_all if !activity_log.nil?
+  end
 
 #####end of class#############
 end
