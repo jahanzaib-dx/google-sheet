@@ -51,7 +51,7 @@ module SearchControllerUtil
     end
     
     if (!params['submarket'].blank?)
-      tenant_records = tenant_records.where("tenant_records.submarket IN (?)", params['submarket'])
+      tenant_records = tenant_records.where("Lower(tenant_records.submarket) IN (?)", params['submarket'])
     end
 
     if (!params['class_type'].blank?)
@@ -378,7 +378,7 @@ module SearchControllerUtil
     end
     
     if (!params['submarket'].blank?)
-      tenant_records = tenant_records.where("sale_records.submarket IN (?)", params['submarket'])
+      tenant_records = tenant_records.where("Lower(sale_records.submarket) IN (?)", params['submarket'])
     end
 
     if (!params['class_type'].blank?)
