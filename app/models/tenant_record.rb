@@ -559,21 +559,21 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def set_lease_structure(ls)
-    self.lease_structure = ls.name
-    self.lease_structure_description = ls.description
-    self.discount_rate = ls.discount_rate
-    self.interest_rate = ls.interest_rate
-
-
-    self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
-    ls.expenses.each do |e|
-      exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
-      self[:data]["#{exp_name}_cost"] = e.default_cost
-      self[:data]["#{exp_name}_calc_type"] = e.calculation_type
-      self[:data]["#{exp_name}_increase_percent"] = e.increase_percent
-      self[:data]["#{exp_name}_start_date"] = e.start_date
-      self[:data]["#{exp_name}_delay_start_date"] = e.delay_start_date
-    end
+    # self.lease_structure = ls.name
+    # self.lease_structure_description = ls.description
+    # self.discount_rate = ls.discount_rate
+    # self.interest_rate = ls.interest_rate
+    #
+    #
+    # self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
+    # ls.expenses.each do |e|
+    #   exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
+    #   self[:data]["#{exp_name}_cost"] = e.default_cost
+    #   self[:data]["#{exp_name}_calc_type"] = e.calculation_type
+    #   self[:data]["#{exp_name}_increase_percent"] = e.increase_percent
+    #   self[:data]["#{exp_name}_start_date"] = e.start_date
+    #   self[:data]["#{exp_name}_delay_start_date"] = e.delay_start_date
+    # end
 
   end
 
@@ -640,11 +640,11 @@ class TenantRecord < ActiveRecord::Base
     else
       custom = v
     end
-    self[:data]['custom'] = custom
+    self[:data][:custom] = custom
   end
 
   def custom
-    JSON.parse(self[:data]['custom']) if self[:data]['custom']
+    JSON.parse(self[:data][:custom]) if self[:data][:custom]
   end
 
 
@@ -754,7 +754,7 @@ class TenantRecord < ActiveRecord::Base
     self.lease_type = lease_type.to_s.strip.presence || '-'
 
     # Need to set default first_year_base_rent to base rent
-    self.data ||= (first_year_stepped_rent || Hash['first_year_base_rent', self.base_rent])
+    self.data ||= (first_year_stepped_rent || Hash[:first_year_base_rent, self.base_rent])
 
     self.property_type = property_type.to_s.downcase
     self.tenant_improvement ||= 0.00

@@ -47,6 +47,11 @@ class Uploader::ImportController < ApplicationController
     @import = TenantRecordImport.new
     @import.lease_structure = LeaseStructure.new
     @import.import_template = ImportTemplate.new
+    if(params[:id] && params[:id]!="")
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
+      @white_glove_user = crypt.decrypt_and_verify(params[:id])
+    end
+    #@white_glove_user=12
     TenantRecord::REQUIRED_FIELDS.each_with_index do |required_field, i|
       @import.import_template.import_mappings << ImportMapping.new(:import_template => @template, :record_column => required_field)
     end
@@ -92,6 +97,17 @@ class Uploader::ImportController < ApplicationController
 
     required_params = {}
     not_for_sheet = {}
+    #p temp=params[:tenant_record_lease_structure][:leasename]
+    #params.merge!({:lease_structure_name=> temp})
+    #params.require(:post).permit(:some_attribute).merge(user_id: current_user.id)
+    p params.inspect
+    @is_white_glove_service = false
+    # if(params[:white_glove_user])
+    #   current_user = params[:white_glove_user]
+    #   current_user_account= Account.where(:user_id=>current_user)
+    #   current_user_account_type=current_user_account.office_id
+    #   @is_white_glove_service=true
+    # end
     if params[:bulk_property_type_switch] == 'sales_comps'
       not_for_sheet.merge!({
                                :is_sales_record => (params[:sale_record][:is_sales_record] == 'yes' ? true : false ),
@@ -157,29 +173,45 @@ class Uploader::ImportController < ApplicationController
 
     Rails.logger.debug  "-----"
     Rails.logger.debug  "User's office Id: #{current_user.account.office_id}"
+    if(@is_white_glove_service)
+        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user)
+        pre_existing = ImportTemplate.where(:id => white_glove.import_template_id)
+    else
     pre_existing = ImportTemplate.new(import_template_attributes.merge({
                                                              :name => name,
                                                              :reusable => false,
                                                              :user => current_user
                                                            }))
 
+    end
     mapping_structure = pre_existing.dup
     mapping_structure.name = [mapping_structure.name, Time.now.to_i.to_s].join(' ')
     import_mappings =  required_params #params[:tenant_record_import][:import_template_attributes][:import_mappings_attributes]
 
     import_mappings_dup = Marshal.load(Marshal.dump(import_mappings))
     CustomImportTemplateUtil.update_import_mappings mapping_structure, import_mappings
-    import = TenantRecordImport.create(:user => current_user,
+    if(@is_white_glove_service)
+      import= TenantRecordImport.where(:status => 'Enqueued for White Glove Service', :user_id => current_user, :import_template_id => white_glove.import_template_id)
+      if (import)
+        import.update_attributes(:import_template_id=>mapping_structure)
+      end
+    else
+      import = TenantRecordImport.create(:user => current_user,
                                        #:team_id => current_user.account.own_team.id,
                                        :import_template => mapping_structure )
+    end
+
+
 
     if params[:tenant_record_import_operating_expense_mapping] and !params[:tenant_record_import_operating_expense_mapping][:column_name][0].blank?
       params[:tenant_record_import_operating_expense_mapping][:column_name].each do |column|
-        TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import_id, :column_name => column})
+        TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import.id, :column_name => column})
       end
     end
 
-    import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
+    CustomImportTemplateUtil.process_excel_file(import.id, file_path, original_file_name, import.import_template.id, current_user_account_type, import_mappings_dup, not_for_sheet)
+
+    #import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
 
 
    render json: { text: "ok" }
