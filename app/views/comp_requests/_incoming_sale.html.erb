@@ -6,8 +6,8 @@
   <td class="result_line border_full"><p><%= comp_request.initiated_by.name %></p></td>
   <td class="result_line img_width"><p> <%= comp_image(comp_request.sale_record).html_safe %> </p></td>
   <td class="result_line"><p> <%= "#{comp_request.sale_record.complete_address}"%></p></td>
-  <td class="result_line"><p><%= number_to_currency(comp_request.sale_record.price.to_f, {:precision=>2}) %></p></td>
-  <td class="result_line"><p><%= number_with_precision(comp_request.sale_record.land_size,:precision => 2) %></p></td>
+  <td class="result_line"><p><%= number_to_currency(comp_request.sale_record.price.to_f, {:precision=>0}) %></p></td>
+  <td class="result_line"><p><%= number_with_precision(comp_request.sale_record.land_size,:precision => 0) %></p></td>
   <td class="result_line"><p><%= (comp_request.sale_record.build_date.blank? == true)?"":comp_request.sale_record.build_date.year %></p></td>
   
 </tr>
