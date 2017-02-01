@@ -169,7 +169,7 @@ class BackEndSaleCompsController < ApplicationController
             :price => ws[counter, 13],
             :sold_date => ws[counter, 14],
             :cap_rate => ws[counter, 15],
-            :is_sales_record => ws[counter, 16],
+            :is_sales_record => (ws[counter, 16]=='Land Record') ? 'TRUE' : 'False'
         )
       end
       if ws[counter, 1] != ''
@@ -260,7 +260,7 @@ class BackEndSaleCompsController < ApplicationController
             :price => ws[counter, 14],
             :sold_date => ws[counter, 15],
             :cap_rate => ws[counter, 16],
-            :is_sales_record => ws[counter, 17]
+            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False'
         )
       end
       if ws[counter,2] == 'Delete'
