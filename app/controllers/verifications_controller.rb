@@ -11,7 +11,33 @@ def create
   twilio_from = "+14438600704"
   twilio_to= current_user.mobile
   ###@user = current_user
-  
+  ##############################################################################################
+  if params[:mobile]
+    current_user.mobile = params[:mobile]
+    account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+    auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
+    twilio_from = "+14438600704"
+    phone_number= current_user.mobile
+    lookup_client = Twilio::REST::LookupsClient.new(account_sid, auth_token)
+    begin
+      response = lookup_client.phone_numbers.get(phone_number)
+      if response.phone_number
+        current_user.save
+        render :action => :verify
+        {success: true, message: "phone number is valid" }
+      else
+        redirect_to profile_update_path
+      end
+    rescue => e
+      if e.code == 20404
+        redirect_to profile_update_path, :flash => { :warning => "Enter valid phone number." }
+      else
+        raise e
+      end
+    end
+
+  end
+  ##############################################################################################
   # to = current_user.mobile
   
   ##if to[0] = "0"
@@ -58,27 +84,27 @@ def verify
   if !params[:sms_code]
     if params[:mobile]
       current_user.mobile = params[:mobile]
-      account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
-      auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
-      twilio_from = "+14438600704"
-      phone_number= current_user.mobile
-      lookup_client = Twilio::REST::LookupsClient.new(account_sid, auth_token)
-      begin
-        response = lookup_client.phone_numbers.get(phone_number)
-        if response.phone_number
-          current_user.save
-          render :action => :verify
-          {success: true, message: "phone number is valid" }
-        else
-          redirect_to verifications_mobile_number_path
-        end
-      rescue => e
-        if e.code == 20404
-          redirect_to verifications_mobile_number_path, :flash => { :warning => "Enter valid phone number." }
-        else
-          raise e
-        end
-      end
+      # account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
+      # auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
+      # twilio_from = "+14438600704"
+      # phone_number= current_user.mobile
+      # lookup_client = Twilio::REST::LookupsClient.new(account_sid, auth_token)
+      # begin
+      #   response = lookup_client.phone_numbers.get(phone_number)
+      #   if response.phone_number
+      #     current_user.save
+      #     render :action => :verify
+      #     {success: true, message: "phone number is valid" }
+      #   else
+      #     redirect_to profile_update_path
+      #   end
+      # rescue => e
+      #   if e.code == 20404
+      #     redirect_to profile_update_path, :flash => { :warning => "Enter valid phone number." }
+      #   else
+      #     raise e
+      #   end
+      # end
 
     end
 	###render 'verifications/verify'
