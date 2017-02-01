@@ -16,6 +16,11 @@ class TenantRecord < ActiveRecord::Base
   before_save :default_values
   before_validation :default_values
   after_destroy :cleanup
+  
+  def self.my_ids
+    @connections = Connection.all_connection_ids(User.current_user)
+    where("user_id IN (?) OR user_id=?" , @connections.to_a,User.current_user.id)
+  end
 
   # after_save :populate_lookup_tables
 
@@ -709,33 +714,33 @@ class TenantRecord < ActiveRecord::Base
   
   def self.all_industry_type ()
     arr2 = Industry.select('lower(name) as name').get_industy_list
-    arr1 = select('industry_type as name').where("industry_type != '' AND lower(industry_type) NOT IN (?)",arr2).group('industry_type').all
+    arr1 = select('industry_type as name').my_ids.where("industry_type != '' AND lower(industry_type) NOT IN (?)",arr2).group('industry_type').all
     arr = arr2 + arr1
     ##arr
   end
 
   def self.lease_sub_markets ()
-    TenantRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+    TenantRecord.select('lower(submarket) as submarket').my_ids.where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
 
   end
 
   def self.all_property_type ()
     arr2 = PropertyType.select('lower(name) as name').all
-    arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all
+    arr1 = select('property_type as name').my_ids.where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all
     arr = arr2 + arr1
     ##arr
   end
   
   def self.all_deal_type ()
     arr2 = DEAL_TYPE
-    arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all.map{|v| v.name }
+    arr1 = select('deal_type as name').my_ids.where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end 
   
  def self.all_class_type ()
     arr2 = CLASS_TYPE
-    arr1 = select('class_type as name').where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
+    arr1 = select('class_type as name').my_ids.where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end
