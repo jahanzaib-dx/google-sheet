@@ -62,8 +62,8 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks", :registrations => "registrations" }
-  get 'verifications/create' => 'verifications#create' , :as => :verifications_create_new
-  post 'verifications/create' => 'verifications#create' , :as => :verifications_create
+  get 'verifications/create' => 'verifications#create' , :as => :verifications_create
+  post 'verifications/create' => 'verifications#create'
   get 'verifications/verify' => 'verifications#verify' , :as => :verifications_verify
   get 'verifications/mobile_number' => 'verifications#mobile_number' , :as => :verifications_mobile_number
   post 'verifications/mobile_number' => 'verifications#mobile_number'
