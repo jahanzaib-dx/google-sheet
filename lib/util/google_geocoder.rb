@@ -90,37 +90,49 @@ module GoogleGeocoder
     geocode_response = geocode_address(trec, address_only)
     parsed_result = parse_geocode_response(geocode_response["results"])
     parsed_result = get_unique_hash(parsed_result)
-
-    if (parsed_result.count > 1 && tr_geocode_status == 'false') ||
-        (parsed_result.count == 1 && parsed_result[0][:city].downcase.strip != trec[:city].downcase.strip)
-      { valid: false, errors: add_city_suggestions(parsed_result) }
-    else
-      result_hash = parsed_result.first
-      is_valid = is_valid_address?(trec, result_hash)
-      if result_hash.blank? || !is_valid
-        { valid: false,
-          errors: {
-              geocode_info: "There was an error with this address. Please check the address fields and submit again",
-              tenant_record: {
-                  :address1 => ['Address not found.'],
-                  :city => ['Address not found.'],
-                  :state => ['Address not found.']
-              }
-          }
-        }
+    if !parsed_result.empty? and !parsed_result[0][:city].downcase.strip.empty?
+      if (parsed_result.count > 1 && tr_geocode_status == 'false') ||
+          (parsed_result.count == 1 && parsed_result[0][:city].downcase.strip != trec[:city].downcase.strip)
+        { valid: false, errors: add_city_suggestions(parsed_result) }
       else
-        valid = { valid: true, errors: {} }
+        result_hash = parsed_result.first
+        is_valid = is_valid_address?(trec, result_hash)
+        if result_hash.blank? || !is_valid
+          { valid: false,
+            errors: {
+                geocode_info: "There was an error with this address. Please check the address fields and submit again",
+                tenant_record: {
+                    :address1 => ['Address not found.'],
+                    :city => ['Address not found.'],
+                    :state => ['Address not found.']
+                }
+            }
+          }
+        else
+          valid = { valid: true, errors: {} }
 
-        valid[:updates] = {
-            address1: result_hash[:address1],
-            city: result_hash[:city],
-            state: result_hash[:state],
-            zipcode: result_hash[:zipcode],
-            zipcode_plus: nil,
-            latitude: result_hash[:latitude],
-            longitude:result_hash[:longitude] } if geocode_response['results'].first.present?
-        valid
+          valid[:updates] = {
+              address1: result_hash[:address1],
+              city: result_hash[:city],
+              state: result_hash[:state],
+              zipcode: result_hash[:zipcode],
+              zipcode_plus: nil,
+              latitude: result_hash[:latitude],
+              longitude:result_hash[:longitude] } if geocode_response['results'].first.present?
+          valid
+        end
       end
+    else
+      { valid: false,
+        errors: {
+            geocode_info: "There was an error with this address. Please check the address fields and submit again",
+            tenant_record: {
+                :address1 => ['Address not found.'],
+                :city => ['Address not found.'],
+                :state => ['Address not found.']
+            }
+        }
+      }
     end
   end
 

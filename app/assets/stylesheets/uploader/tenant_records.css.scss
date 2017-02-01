@@ -1088,6 +1088,8 @@ body {
   }
   select {
     max-width: 200px;
+    margin:0px;
+    font-weight:normal;
   }
 }
 
@@ -1098,6 +1100,9 @@ body {
     margin-top: -60px;
     font-size: 14px;
   }
+}
+
+.data-set-container {
 
   table {
     font-weight: bold;
@@ -1105,6 +1110,10 @@ body {
     font-family: "Arial", "sans-serif";
     tr {
       border: solid 2px #D2D1D1;
+    }
+
+    th:last-child {
+      text-align: left;
     }
 
     td {
@@ -1131,6 +1140,7 @@ body {
     }
   }
 }
+
 
 .fields-table-custom-data {
   background-color: #ffffff;
@@ -1172,13 +1182,13 @@ body {
         border: #cccccc solid 1px;
       }
 
-      .add-row-custom-data-geocode-single-comp-td {
+      .add-row-custom-data-geocode-single-comp-td, .add-row-custom-data-geocode-bulk-upload-td {
         background-color: #d9dadc;
         padding: 0 !important;
         border: 1px solid #d9dadc !important;
       }
 
-      .add-row-custom-data-geocode-single-comp {
+      .add-row-custom-data-geocode-single-comp,.add-row-custom-data-geocode-bulk-upload {
         background-color: #ececef;
         color: #4883c0;
         font-family: arial,sans-serif;
