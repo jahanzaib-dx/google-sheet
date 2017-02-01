@@ -173,6 +173,16 @@ module SearchControllerUtil
                    :params => { :address1 => "#{params['term'].gsub(/[\.\s]/,'%')}%".downcase }
                  }
                end
+               
+               
+               # if clause.nil?
+                 # clause = {
+                   # :where => "1=:a",
+                   # :params => { :a => 1  }
+                 # }
+               # end
+                 
+                 
 
 
       if (!params['connection'].blank? )

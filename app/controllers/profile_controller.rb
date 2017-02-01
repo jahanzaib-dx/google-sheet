@@ -8,16 +8,16 @@ class ProfileController < ApplicationController
   if request.post?
   	
 	#if user mobile is changed then empty sms_code and set false active_mobile
-	
+
 		if params[:user][:mobile] != @user.mobile
 			@user.sms_code = ""
 			@user.mobile_active = false
+			redirect_to verifications_create_path
 		end
 	
 		#if @user.update_attributes params[:user]
 		if @user.update_attributes (user_params)
 				flash[:success] = 'The User is successfully updated!'
-				redirect_to verifications_verify_path
 			return
 			else
 					flash[:error] = @user.errors.full_messages
@@ -26,10 +26,7 @@ class ProfileController < ApplicationController
 			redirect_to :controller => 'profile', :action => 'update', :id => @user.id
   end
 	
-		###render :text => "out"
-		################## redirect to verification mobile page to generate and verify code
-		# redirect_to verifications_verify_path
-		render "update"
+
   end
   
   def picture
