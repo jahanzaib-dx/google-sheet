@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   get 'connection_request/accept/:id' => 'connection_requests#accept', :as => :accept_connection_request
 
 
-  get 'connections' => 'connections#index'
+  get 'connections' => 'connections#index', :as => :connection_index
   post 'connections' => 'connections#create'
   get 'connections/internal_create' => 'connections#create'
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]
