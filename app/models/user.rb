@@ -264,15 +264,24 @@ class User < ActiveRecord::Base
   end
 
   def cleanup
-    user =User.find_by_id(205)
     connection= Connection.where('user_id = ?', self.id)
     connection.destroy_all if !connection.nil?
     tenant_record= TenantRecord.where('user_id = ?', self.id)
     tenant_record.destroy_all if !tenant_record.nil?
     sale_record= SaleRecord.where('user_id = ?', self.id)
     sale_record.destroy_all if !sale_record.nil?
+    connection_request= ConnectionRequest.where('user_id = ? or agent_id = ?', self.id,self.id)
+    connection_request.destroy_all if !connection_request.nil?
+    comp_request= CompRequest.where('initiator_id = ? or receiver_id = ?', self.id,self.id)
+    comp_request.destroy_all if !comp_request.nil?
+    message= Message.where('sender_id = ? or receiver_id = ?', self.id,self.id)
+    message.destroy_all if !message.nil?
     activity_log = ActivityLog.all_activities_of_user(self.id)
     activity_log.destroy_all if !activity_log.nil?
+    group= Group.where('user_id = ?', self.id)
+    group.destroy_all if !group.nil?
+    membership= Membership.where('member_id = ?', self.id)
+    membership.destroy_all if !membership.nil?
   end
 
 #####end of class#############
