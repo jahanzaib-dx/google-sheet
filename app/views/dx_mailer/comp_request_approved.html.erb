@@ -6,7 +6,7 @@
 <br><br>
 <%= @comp_request.received_by.name.capitalize %> has approved your request.
 <br><br>
-Please <a href="<%= (@comp_request.comp_type=='lease')?search_lease_comp_path():search_sale_comp_path() %>/<%= @comp_request.comp_id %>">click here</a> to view details.
+Please <a href="<%= (@comp_request.comp_type=='lease')?search_lease_comp_url():search_sale_comp_url() %>/<%= @comp_request.comp_id %>">click here</a> to view details.
 	<br>
 </div>
 
