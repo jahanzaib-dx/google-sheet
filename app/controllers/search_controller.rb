@@ -258,9 +258,9 @@ class SearchController < ApplicationController
     
        tenant_records = tenant_records.each do |t_record|
          
-         t_record.price_str = t_record.price.floor
+         t_record.price_str = number_to_currency(t_record.price,{:precision=>0})
          t_record.cap_rate_str = t_record.cap_rate
-         t_record.land_size_str = t_record.land_size.floor
+         t_record.land_size_str = number_with_precision(t_record.land_size,:precision=>0)
           
           if t_record.user_id != current_user.id
             
@@ -299,9 +299,9 @@ class SearchController < ApplicationController
                 
               end
     
-              t_record.price_str = if unlockFields.include?"price" then t_record.price.floor else 'Lock' end
+              t_record.price_str = if unlockFields.include?"price" then number_to_currency(t_record.price, {:precision=>0}) else 'Lock' end
               t_record.cap_rate_str = if unlockFields.include?"cap_rate" then t_record.cap_rate else 'Lock' end
-              t_record.land_size_str = if unlockFields.include?"land_size" then t_record.land_size.floor else sf_range(t_record.land_size,'sale') end
+              t_record.land_size_str = if unlockFields.include?"land_size" then number_with_precision(t_record.land_size,:precision => 0) else sf_range(t_record.land_size,'sale') end
                 
               ##t_record = t_record + compArr
               ##t_record = t_record + compObj
@@ -318,8 +318,8 @@ class SearchController < ApplicationController
    def lockSingleSaleRecord t_record
      
               ##t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
-              t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2}).floor
-              t_record.size_range = t_record.land_size.floor
+              t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>0})
+              t_record.size_range = t_record.land_size
               t_record.build_date_str = (t_record.build_date.blank? == true)?"":t_record.build_date.year
               t_record.cap_rate_str = "#{t_record.cap_rate}%"
 
@@ -355,12 +355,12 @@ class SearchController < ApplicationController
                 
               end
               
-              ##t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2}).floor
+              ##t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
               ##t_record.size_range = t_record.land_size
               ##t_record.build_date_str = (t_record.build_date.blank? == true)?"":t_record.build_date.year
               
-              t_record.price_str = if unlockFields.include?"price" then number_to_currency(t_record.price.to_f, {:precision=>2}).floor else 'Lock' end
-              t_record.size_range = if unlockFields.include?"land_size" then t_record.land_size.floor else sf_range(t_record.land_size,'sale') end
+              t_record.price_str = if unlockFields.include?"price" then number_to_currency(t_record.price.to_f, {:precision=>0}) else 'Lock' end
+              t_record.size_range = if unlockFields.include?"land_size" then number_with_precision(t_record.land_size,:precision => 0) else sf_range(t_record.land_size,'sale') end
               
               t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
               t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end

@@ -5,8 +5,8 @@
 	Hello <%= @comp_request.initiated_by.first_name.capitalize %>!
 <br><br>
 <%= @comp_request.received_by.name.capitalize %> has approved your request.
-<br>
-Please <a href="<%= activity_logs_url %>/<%= @comp_request.comp_type %>">click here</a> to view details.
+<br><br>
+Please <a href="<%= (@comp_request.comp_type=='lease')?search_lease_comp_path():search_sale_comp_path() %>/<%= @comp_request.comp_id %>">click here</a> to view details.
 	<br>
 </div>
 
