@@ -70,7 +70,7 @@
           <input type="hidden" value="" id="export_link">
         </div>
       </div>
-      <p id="message">Please add new comps through the import wizard.<br>Comps added directly to spreadsheet will not be saved.</p><br>
+      <p id="message">Please add new comps through the import <%= link_to 'wizard.', new_uploader_tenant_record_path %><br>Comps added directly to spreadsheet will not be saved.</p><br>
       <p>There are potential dups in results. <%= link_to  'View Dupes', '#', :id=>'duplication' %></p>
       <p id="manage_dups" >Manage Dupes.</p>
       <p id="error_string" ></p>
