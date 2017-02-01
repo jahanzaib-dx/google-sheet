@@ -122,7 +122,7 @@ def verify
       if session[:after_mobile_verfication_redirect]
         redirect_to session[:after_mobile_verfication_redirect], :flash => { :success => "Thank you for verifying your mobile number." }
       else
-        redirect_to verifications_verify_path, :flash => { :success => "Thank you for verifying your mobile number." }
+        redirect_to connection_index_path, :flash => { :success => "Thank you for verifying your mobile number." }
       end
       return
     else
