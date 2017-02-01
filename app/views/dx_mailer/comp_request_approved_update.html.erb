@@ -5,8 +5,10 @@
 	Hello <%= @shared.user.first_name.capitalize %>!
 <br><br>
 <%= @user.first_name.capitalize %> has approved your request.
+
 <br><br>
 Please <a href="<%= (@shared.comp_type=='lease')?search_lease_comp_path():search_sale_comp_path() %>/<%= @shared.comp_id %>">click here</a> to view details.
+
 	<br>
 </div>
 
