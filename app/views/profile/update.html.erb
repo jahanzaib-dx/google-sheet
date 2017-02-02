@@ -106,7 +106,7 @@
   <ul class="tx_profile_information">
   <li class="tx_bold">&nbsp;</li>
   <li class="inline-edit-text">&nbsp;<span><%= @user.email%></span><%= f.hidden_field :email %></li>
-  <li class="inline-edit-text">&nbsp;<span><%= @user.mobile%></span><%= f.hidden_field :mobile %></li>
+  <li class="inline-edit-text">&nbsp;<span><%= @user.mobile%></span><%= f.hidden_field :mobile , required: true, pattern: '^\+?[0-9]{1,3}-?[0-9]{6,12}$', title: 'format: +1202555012'%></li>
   <li class="inline-edit-text">&nbsp;<span><%= @user.firm_name%></span><%= f.hidden_field :firm_name %></li>
   <li class="inline-edit-text">&nbsp;<span><%= @user.address%></span><%= f.hidden_field :address %></li>
   <li class="inline-edit-text">&nbsp;<span><%= @user.city%></span><%= f.hidden_field :city %></li>

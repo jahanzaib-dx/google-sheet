@@ -20,6 +20,7 @@ class ConnectionRequestsController < ApplicationController
     if !current_user.can_send_requests?
       session[:after_mobile_verfication_redirect] = connections_url
       render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => profile_update_path}
+      flash[:error] = 'You need to complete your profile before adding connections.'
       return
     else
       agent = User.where(:email => params[:email]).first
