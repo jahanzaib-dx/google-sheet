@@ -197,6 +197,26 @@ module SearchControllerUtil
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
       
+      
+      
+query = "
+select z.id,z.address1,z.user_id from (
+select y.id,y.address1,y.user_id from tenant_records y
+            where (select count(*) from tenant_records dt
+            where  y.address1 = dt.address1
+            and (dt.user_id in (#{connections_ids}) or dt.user_id = #{current_user.id})
+            ) > 1 
+and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by y.address1 
+) as z where z.user_id = #{current_user.id}
+"
+
+    dup_tenant_records = TenantRecord.find_by_sql(query)
+    
+    
+    
+      ##dup_tenant_records = TenantRecord.where("" , @connections.to_a,current_user.id)
+      
+      
       tenant_records = tenant_records
       .joins("left join (select * from activity_logs where comptype = 'lease' and initiator_id in (#{current_user.id})) as a on tenant_records.id=a.comp_id")
       .joins("left join (select * from comp_requests where comp_type = 'lease' and initiator_id in (#{current_user.id})) as c on tenant_records.id=c.comp_id")
@@ -221,19 +241,34 @@ module SearchControllerUtil
       
         
         #hide child
-        tenant_records = tenant_records.where("tenant_records.id not in (select child_comp from activity_logs where comptype = 'lease' and ( receiver_id in (#{current_user.id})  ) and child_comp > 0)")
+        #####tenant_records = tenant_records.where("tenant_records.id not in (select child_comp from activity_logs where comptype = 'lease' and ( receiver_id in (#{current_user.id})  ) and child_comp > 0)")
         #hide parent
-        tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        #####tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
         
-        tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        #####tenant_records = tenant_records.where("tenant_records.id not in (select comp_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
         
-        tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records where user_id !=#{current_user.id} and master_id in (select master_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') ) ")
+        #####tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records where user_id !=#{current_user.id} and master_id in (select master_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') ) ")
+        ##tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records where user_id !=#{current_user.id} and master_id in (select comp_id from activity_logs where comptype = 'lease' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') as al ) ")
         
         ##select master_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner' and master_id>0)
         
         ##tenant_records = tenant_records.where("( tenant_records.id in (select child_comp from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner'))")
         
         ###tenant_records = tenant_records.where("tenant_records.id in (select comp_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner')")
+
+
+
+
+
+
+
+    tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
+    
+    ##tenant_records = tenant_records.where("tenant_records.address1 (not in (?)) ",dup_tenant_records.join(","))
+    
+    
+
+
 
 	  tenant_records = tenant_records.where(clause[:where], clause[:params])
     end
