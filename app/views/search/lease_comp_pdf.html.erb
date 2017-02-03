@@ -20,10 +20,7 @@
           <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
 
           <div class="street_view adress-img">
-            <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
-              <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
-              </div>
-            </a>
+            <%= large_comp_image(@comp_record).html_safe%>
           </div>
 
         </div>
