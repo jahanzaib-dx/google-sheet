@@ -238,6 +238,7 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.main_image_updated_at, " +
       "tenant_records.company_logo_updated_at, " +
       "tenant_records.user_id, " +
+      "tenant_records.main_image_file_name, " +
       ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
@@ -829,9 +830,8 @@ class TenantRecord < ActiveRecord::Base
             select * from tenant_records y
             where (select count(*) from tenant_records dt
             where  y.comp_type = dt.comp_type and
-               y.company = dt.company and
+               y.company ~* dt.company and
                y.comp_type = dt.comp_type and
-               y.company = dt.company and
                y.industry_type = dt.industry_type and
                y.address1 = dt.address1 and
                y.suite = dt.suite and

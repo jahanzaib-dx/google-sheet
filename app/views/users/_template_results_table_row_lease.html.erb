@@ -3,10 +3,12 @@
 {{#id}}
 <tr>
     <td height="51" class="result_img_icon"><%#= image_tag("tbl-img.jpg") %>
-    		<a href="http://www.google.com/maps?cbll={{latitude}},{{longitude}}&layer=c" target="_blank">
-              <div class="" style="height:40px; width: 40px; background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=50x50&location={{address1}}+{{city}}+{{state}}+{{zipcode}}') no-repeat center;">
+    		<!--<a href="http://www.google.com/maps?cbll={{latitude}},{{longitude}}&layer=c" target="_blank">
+              <div class="" style="height:40px; width: 40px; background: #edeced url('{{comp_img}}') no-repeat center;">
               </div>
-            </a>
+            </a>-->
+            
+            <div class="" style="height:40px; width: 40px; background-size: 40px 40px; background-image: url('{{comp_img}}'); background-color: #efefef; "></div>
             
             
     </td>

@@ -8,6 +8,7 @@ class ImportTemplate < ActiveRecord::Base
   #attr_accessible :name, :reusable, :office, :import_mappings_attributes
 
   default_scope { where(:reusable => true) }
+  scope :user_import_template, -> { unscope(:where).where reusable: [true, false] }
 
   conditionally_validate :name, :presence => true, allow_nil: false
   before_validation :check_name_uniqueness
