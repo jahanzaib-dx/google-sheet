@@ -914,7 +914,21 @@ populateResults = (data, text_status, $xhr, doAppend) ->
     	Request_Unlock_text = "<a href='#!' >Request Unlock</a>"
     	cpstatus = "N/A"
         
-    console.log (item.cp_status)
+    comp_img = ''
+    if item.main_image_file_name == null
+    	comp_img = 'http://maps.googleapis.com/maps/api/streetview?size=50x50&location='+item.address1+'+'+item.city+'+'+item.state+'+'+item.zipcode
+    else
+    	db_comp_img = item.main_image_file_name
+    	
+    	#=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location=40.7516185,-73.9419234&heading=151.78&pitch=-0.76",2)
+    	
+    	db_comp_img1 = db_comp_img.replace('=image("','')
+    	db_comp_img2 = db_comp_img1.replace('",2)','')
+    	db_comp_img3 = db_comp_img2.replace('?size=350x200&', '?size=50x50&')
+    	
+    	comp_img = db_comp_img3
+    
+    console.log (item.main_image_file_name)
     
     if item.cp_status == 'full'
     	cpstatus = "<a href='#'><img src='assets/lock-un.png'> </a>"
@@ -963,6 +977,7 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       land_size_str: land_size_str
       price_str: price_str
       cap_rate_str: cap_rate_str
+      comp_img: comp_img
       sold_date: (if (item.sold_date) then moment(item.sold_date, 'YYYY-MM-DD').format('YYYY') else '')
       
     r = Mustache.render(table_template, values)

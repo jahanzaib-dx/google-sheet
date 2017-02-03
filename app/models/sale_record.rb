@@ -63,6 +63,7 @@ class SaleRecord < ActiveRecord::Base
 
             "sale_records.view_type, " +
             "sale_records.user_id, " +
+            "sale_records.main_image_file_name, " +
             #"tenant_records.office_id, " +
             #"tenant_records.team_id, " +
             #"tenant_records.data, " +

@@ -503,11 +503,12 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
         tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+        connections_ids = params['connection']
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
-
+        connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
       
@@ -576,15 +577,31 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
         tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+        connections_ids = params['connection']
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
-
+        connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
       
       
+      
+      query = "
+select z.id,z.address1,z.user_id from (
+select y.id,y.address1,y.user_id from sale_records y
+            where (select count(*) from sale_records dt
+            where  y.address1 = dt.address1
+            and (dt.user_id in (#{connections_ids}) or dt.user_id = #{current_user.id})
+            ) > 1 
+and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by y.address1 
+) as z where z.user_id = #{current_user.id}
+"
+
+    dup_tenant_records = SaleRecord.find_by_sql(query)
+    
+    
       
       
       tenant_records = tenant_records
@@ -611,13 +628,13 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
       
         
         #hide child
-        tenant_records = tenant_records.where("sale_records.id not in (select child_comp from activity_logs where comptype = 'sale' and ( receiver_id in (#{current_user.id})  ) and child_comp > 0)")
+        #####tenant_records = tenant_records.where("sale_records.id not in (select child_comp from activity_logs where comptype = 'sale' and ( receiver_id in (#{current_user.id})  ) and child_comp > 0)")
         #hide parent
-        tenant_records = tenant_records.where("sale_records.id not in (select comp_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        #####tenant_records = tenant_records.where("sale_records.id not in (select comp_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
         
-        tenant_records = tenant_records.where("sale_records.id not in (select comp_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
+        #####tenant_records = tenant_records.where("sale_records.id not in (select comp_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner')")
         
-        tenant_records = tenant_records.where("sale_records.id not in (select id from sale_records where user_id !=#{current_user.id} and master_id in (select master_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') ) ")
+        #####tenant_records = tenant_records.where("sale_records.id not in (select id from sale_records where user_id !=#{current_user.id} and master_id in (select master_id from activity_logs where comptype = 'sale' and ( initiator_id in (#{current_user.id})   )  and status = 'full_owner') ) ")
         
         ##select master_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner' and master_id>0)
         
@@ -626,6 +643,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
         ###tenant_records = tenant_records.where("tenant_records.id in (select comp_id from activity_logs where ( initiator_id in (#{current_user.id})  )  and status = 'full_owner')")
         
         
+        tenant_records = tenant_records.where("sale_records.id not in (select id from sale_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
         
         
         
