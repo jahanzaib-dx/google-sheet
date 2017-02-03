@@ -58,13 +58,37 @@ module CompHelper
     
     if !comp.main_image_file_name.blank?
       
-      img = "<img src='#{comp.main_image_file_name.remove('=image("').remove('",2)') }'>"
+      #img = "<img src='#{comp.main_image_file_name.remove('=image("').remove('",2)') }'>"
+      
+      img = "<div style=\"float:right; height:40px; width: 40px; background-size:40px 40px; background-image:  
+              url('#{comp.main_image_file_name.remove('=image("').remove('",2)')}');\">
+             </div>"
     else
       img = "<a href='http://www.google.com/maps?cbll=#{comp.latitude},#{comp.longitude}&layer=c' target='_blank'>
               <div style=\"float:right; height:40px; width: 40px; background: #edeced 
               url('http://maps.googleapis.com/maps/api/streetview?size=50x50&location=#{comp.address1}+#{comp.city}+#{comp.state}+#{comp.zipcode}') no-repeat center;\">
               </div>
             </a>"
+    end
+    
+    img
+   
+  end
+  
+  def large_comp_image comp
+    
+    if !comp.main_image_file_name.blank?
+            
+      img = "<div class=\"street_view_image\" style=\"background-size:336px 200px; background-image:
+              url('#{comp.main_image_file_name.remove('=image("').remove('",2)')}');\">
+             </div>"
+             
+    else
+      img = "
+              <div class=\"street_view_image\" style=\"background-size:336px 200px; background-image:
+               url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=#{comp.address1}+#{comp.city}+#{comp.state}+#{comp.zipcode}');\">
+              </div>
+            "
     end
     
     img
