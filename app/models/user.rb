@@ -270,6 +270,22 @@ class User < ActiveRecord::Base
     tenant_record.destroy_all if !tenant_record.nil?
     sale_record= SaleRecord.where('user_id = ?', self.id)
     sale_record.destroy_all if !sale_record.nil?
+    custom_record= CustomRecord.where('user_id = ?', self.id)
+    custom_record.destroy_all if !custom_record.nil?
+    account= Account.where('user_id = ?', self.id)
+    account.destroy_all if !account.nil?
+    schedule_accesses= ScheduleAccess.where('user_id = ?', self.id)
+    schedule_accesses.destroy_all if !schedule_accesses.nil?
+    flaged_comps= FlagedComp.where('user_id = ?', self.id)
+    flaged_comps.destroy_all if !flaged_comps.nil?
+    back_end_lease_comp= BackEndLeaseComp.where('user_id = ?', self.id)
+    back_end_lease_comp.destroy_all if !back_end_lease_comp.nil?
+    back_end_sale_comp= BackEndSaleComp.where('user_id = ?', self.id)
+    back_end_sale_comp.destroy_all if !back_end_sale_comp.nil?
+    white_glove_service_requests= WhiteGloveServiceRequest.where('user_id = ?', self.id)
+    white_glove_service_requests.destroy_all if !white_glove_service_requests.nil?
+    tenant_record_imports= TenantRecordImport.where('user_id = ?', self.id)
+    tenant_record_imports.destroy_all if !tenant_record_imports.nil?
     connection_request= ConnectionRequest.where('user_id = ? or agent_id = ?', self.id,self.id)
     connection_request.destroy_all if !connection_request.nil?
     comp_request= CompRequest.where('initiator_id = ? or receiver_id = ?', self.id,self.id)
@@ -278,10 +294,14 @@ class User < ActiveRecord::Base
     message.destroy_all if !message.nil?
     activity_log = ActivityLog.all_activities_of_user(self.id)
     activity_log.destroy_all if !activity_log.nil?
+    import_log = ImportLog.where('user_id = ?', self.id)
+    import_log.destroy_all if !import_log.nil?
     group= Group.where('user_id = ?', self.id)
     group.destroy_all if !group.nil?
     membership= Membership.where('member_id = ?', self.id)
     membership.destroy_all if !membership.nil?
+    import_templates= ImportTemplate.user_import_template.where('user_id = ?', self.id)
+    import_templates.destroy_all if !import_templates.nil?
   end
 
 #####end of class#############
