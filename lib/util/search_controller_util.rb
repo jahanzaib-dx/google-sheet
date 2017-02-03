@@ -175,12 +175,12 @@ module SearchControllerUtil
                end
                
                ## independent advanced search lease
-                if clause.nil?
-                  clause = {
-                    :where => "1=:a",
-                    :params => { :a => 1  }
-                  }
-                end
+                # if clause.nil?
+                  # clause = {
+                    # :where => "1=:a",
+                    # :params => { :a => 1  }
+                  # }
+                # end
                  
                  
 
@@ -584,12 +584,12 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
                
                
                ## independent advanced search sale
-                if clause.nil?
-                  clause = {
-                    :where => "1=:a",
-                    :params => { :a => 1  }
-                  }
-                end
+                # if clause.nil?
+                  # clause = {
+                    # :where => "1=:a",
+                    # :params => { :a => 1  }
+                  # }
+                # end
                 
 
       if (!params['connection'].blank? )
