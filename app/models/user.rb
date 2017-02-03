@@ -264,7 +264,7 @@ class User < ActiveRecord::Base
   end
 
   def cleanup
-    connection= Connection.where('user_id = ?', self.id)
+    connection= Connection.where('user_id = ? or agent_id	= ?', self.id,self.id)
     connection.destroy_all if !connection.nil?
     tenant_record= TenantRecord.where('user_id = ?', self.id)
     tenant_record.destroy_all if !tenant_record.nil?
