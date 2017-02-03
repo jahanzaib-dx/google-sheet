@@ -829,9 +829,8 @@ class TenantRecord < ActiveRecord::Base
             select * from tenant_records y
             where (select count(*) from tenant_records dt
             where  y.comp_type = dt.comp_type and
-               y.company = dt.company and
+               y.company ~* dt.company and
                y.comp_type = dt.comp_type and
-               y.company = dt.company and
                y.industry_type = dt.industry_type and
                y.address1 = dt.address1 and
                y.suite = dt.suite and
