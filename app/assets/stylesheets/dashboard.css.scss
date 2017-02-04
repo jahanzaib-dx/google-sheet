@@ -1640,3 +1640,39 @@ fieldset.dashboard_export_result legend{
   margin-left: 0px !important;
   padding-bottom: 0px !important;
 }
+
+.modal-dialog.modal-welcome {
+  border: 3px solid #f2981f;
+}
+
+.modal-content.welcome-mgs-modal {
+  border: 0 none;
+  padding: 34px 32px;
+  text-align: center;
+  > {
+    p {
+      text-align: left;
+      margin-top: 15px;
+    }
+    ol {
+      padding: 8px 0 0;
+      text-align: left;
+    }
+    img {
+      width: 32px;
+    }
+    h1 {
+      font-size: 25px;
+      font-weight: bold;
+      margin: 22px 0 29px;
+    }
+  }
+}
+
+.welcome-xras-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  top: 9px;
+  width: auto !important;
+}
