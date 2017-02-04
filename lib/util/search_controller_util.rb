@@ -204,7 +204,7 @@ module SearchControllerUtil
       
       
 query = "
-select z.id,z.address1,z.user_id from (
+select z.address1 from (
 select y.id,y.address1,y.user_id from tenant_records y
             where (select count(*) from tenant_records dt
             where  y.address1 = dt.address1
@@ -214,9 +214,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 ) as z where z.user_id = #{current_user.id}
 "
 
-    dup_tenant_records = TenantRecord.find_by_sql(query)
-    
-    
+    dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
       ##dup_tenant_records = TenantRecord.where("" , @connections.to_a,current_user.id)
       
@@ -266,6 +264,8 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 
 
 
+    ##tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
+    
     tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
     
     ##tenant_records = tenant_records.where("tenant_records.address1 (not in (?)) ",dup_tenant_records.join(","))
@@ -621,7 +621,9 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 ) as z where z.user_id = #{current_user.id}
 "
 
-    dup_tenant_records = SaleRecord.find_by_sql(query)
+    dup_tenant_records = SaleRecord.find_by_sql(query).map{|v| v.address1 }
+    
+    ##dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
     
       
