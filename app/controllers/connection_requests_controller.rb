@@ -110,16 +110,23 @@ class ConnectionRequestsController < ApplicationController
     end
 
     def add parameters
-      @connection_request = ConnectionRequest.new(parameters)
-      if @connection_request.save
+      agent = User.where(:email => params[:email]).first
+      if ConnectionRequest.where(:user_id => current_user.id, :agent_id => agent.id).count == 0
+        @connection_request = ConnectionRequest.new(parameters)
+        if @connection_request.save
 
-        request = ConnectionRequest.find( @connection_request.id )
-        DxMailer.connection_invite(request).deliver
+          request = ConnectionRequest.find( @connection_request.id )
+          DxMailer.connection_invite(request).deliver
 
-        render json: {:status => :success, :data => @connection_request}
+          render json: {:status => :success, :data => @connection_request}
 
+        else
+          render json: {:status => :error, :data => @connection_request.errors}
+        end
       else
-        render json: {:status => :error, :data => @connection_request.errors}
+        request = ConnectionRequest.where(:user_id => current_user.id, :agent_id => agent.id)
+        DxMailer.connection_invite(request.last).deliver
+        render json: {:status => :success, :data => @connection_request}
       end
     end
 
