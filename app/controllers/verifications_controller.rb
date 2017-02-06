@@ -13,19 +13,24 @@ def create
   if twilio_to.nil?
     redirect_to profile_update_path
   else
-    if params[:mobile]
-      current_user.mobile = params[:mobile]
+    if current_user.mobile.present?
       account_sid = "ACb16471f5cccc3219bf472f33a80bddae"
       auth_token = "3852d8bf4dbeb958187f14c9b82cef3e"
       twilio_from = "+14438600704"
       phone_number= current_user.mobile
       lookup_client = Twilio::REST::LookupsClient.new(account_sid, auth_token)
       begin
-        response = lookup_client.phone_numbers.get(phone_number)
+        response = lookup_client.phone_numbers.get(current_user.mobile)
         if response.phone_number
           current_user.save
-          render :action => :verify
-          {success: true, message: "phone number is valid" }
+          @twilio_client= Twilio::REST::Client.new account_sid, auth_token
+          @twilio_client.account.sms.messages.create(
+              :from => twilio_from,
+              :to => response.phone_number,
+              :body => "Your verification code is #{current_user.sms_code}."
+          )
+          redirect_to verifications_verify_path, :flash => { :success => "A verification code has been sent to your mobile. Please fill it in below." }
+          return
         else
           redirect_to profile_update_path
         end
@@ -53,18 +58,12 @@ def create
     # twilio_from = "+14438600704"
     # twilio_to= current_user.mobile
 
-    @twilio_client= Twilio::REST::Client.new account_sid, auth_token
-    @twilio_client.account.sms.messages.create(
-        :from => twilio_from,
-        :to => twilio_to,
-        :body => "Your verification code is #{current_user.sms_code}."
-    )
+
 
 
     #DxMailer.sms_code(current_user).deliver
 
-    redirect_to verifications_verify_path, :flash => { :success => "A verification code has been sent to your mobile. Please fill it in below." }
-    return
+
   end
   ###@user = current_user
   ##############################################################################################
