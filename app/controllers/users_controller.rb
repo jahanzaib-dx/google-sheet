@@ -27,7 +27,8 @@ class UsersController  < ApplicationController
     if @role == 'admin'
       @users = User.search(params[:email], params[:name], params[:firm])
       @user = User.new
-      @f_comps = FlagedComp.all
+      @f_comps_lease = FlagedComp.where('comp_type = "lease"')
+      @f_comps_sale = FlagedComp.where('comp_type = "sale"')
     else
       redirect_to '/sub_users'
     end
