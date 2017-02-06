@@ -319,9 +319,9 @@ class SearchController < ApplicationController
      
               ##t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>2})
               t_record.price_str =  number_to_currency(t_record.price.to_f, {:precision=>0})
-              t_record.size_range = t_record.land_size
+              t_record.size_range = number_with_precision(t_record.land_size,:precision => 0)
               t_record.build_date_str = (t_record.build_date.blank? == true)?"":t_record.build_date.year
-              t_record.cap_rate_str = "#{t_record.cap_rate}%"
+              t_record.cap_rate_str = "#{number_with_precision(t_record.cap_rate,:precision => 0)}%"
 
 
           if t_record.user_id != current_user.id
