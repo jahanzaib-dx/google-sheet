@@ -174,13 +174,13 @@ module SearchControllerUtil
                  }
                end
                
-               
-               # if clause.nil?
-                 # clause = {
-                   # :where => "1=:a",
-                   # :params => { :a => 1  }
-                 # }
-               # end
+               ## independent advanced search lease
+                # if clause.nil?
+                  # clause = {
+                    # :where => "1=:a",
+                    # :params => { :a => 1  }
+                  # }
+                # end
                  
                  
 
@@ -197,10 +197,14 @@ module SearchControllerUtil
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
       end
       
+      if connections_ids.blank?
+        connections_ids = current_user.id
+      end
+      
       
       
 query = "
-select z.id,z.address1,z.user_id from (
+select z.address1 from (
 select y.id,y.address1,y.user_id from tenant_records y
             where (select count(*) from tenant_records dt
             where  y.address1 = dt.address1
@@ -210,9 +214,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 ) as z where z.user_id = #{current_user.id}
 "
 
-    dup_tenant_records = TenantRecord.find_by_sql(query)
-    
-    
+    dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
       ##dup_tenant_records = TenantRecord.where("" , @connections.to_a,current_user.id)
       
@@ -262,6 +264,8 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 
 
 
+    ##tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
+    
     tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
     
     ##tenant_records = tenant_records.where("tenant_records.address1 (not in (?)) ",dup_tenant_records.join(","))
@@ -514,6 +518,10 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
       
       tenant_records = tenant_records.where("(sale_records.latitude > ? AND sale_records.latitude < ? AND sale_records.longitude > ? AND sale_records.longitude < ?)", $min_latitude.to_f, $max_latitude.to_f, $max_longitude.to_f, $min_longitude.to_f)
     end
+    
+    if connections_ids.blank?
+        connections_ids = current_user.id
+    end
 
     #begin
     # Using SOLR instead
@@ -573,6 +581,16 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
                      :params => { :address1 => "#{params['term'].gsub(/[\.\s]/,'%')}%".downcase }
                  }
                end
+               
+               
+               ## independent advanced search sale
+                # if clause.nil?
+                  # clause = {
+                    # :where => "1=:a",
+                    # :params => { :a => 1  }
+                  # }
+                # end
+                
 
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.ownership_lease.where("ownerships.account_id = ?" , params['connection'])
@@ -584,6 +602,10 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
         connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
+      end
+      
+      if connections_ids.blank?
+        connections_ids = current_user.id
       end
       
       
@@ -599,7 +621,9 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 ) as z where z.user_id = #{current_user.id}
 "
 
-    dup_tenant_records = SaleRecord.find_by_sql(query)
+    dup_tenant_records = SaleRecord.find_by_sql(query).map{|v| v.address1 }
+    
+    ##dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
     
       
