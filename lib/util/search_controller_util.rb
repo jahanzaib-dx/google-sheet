@@ -35,11 +35,15 @@ module SearchControllerUtil
     end
 
     if (!params['industry_type'].blank?)
-      tenant_records = tenant_records.where("tenant_records.industry_type like ?", params['industry_type'])
+      tenant_records = tenant_records.where("lower(tenant_records.industry_type) like ?", params['industry_type'].downcase)
     end
 
-    if (!params['lease_type'].blank?)
-      tenant_records = tenant_records.where("tenant_records.lease_type = ?", params['lease_type'].to_s.strip)
+#    if (!params['lease_type'].blank?)
+#      tenant_records = tenant_records.where("tenant_records.lease_type = ?", params['lease_type'].to_s.strip)
+#    end
+
+    if (!params['deal_type'].blank?)
+      tenant_records = tenant_records.where("lower(tenant_records.deal_type) = ?", params['lease_type'].to_s.strip.downcase)
     end
 
     if (!params['location_type'].blank?)
@@ -47,7 +51,7 @@ module SearchControllerUtil
     end
 
     if (!params['property_type'].blank?)
-      tenant_records = tenant_records.where("tenant_records.property_type IN (?)", params['property_type'])
+      tenant_records = tenant_records.where("lower(tenant_records.property_type) IN (?)", params['property_type'])
     end
     
     if (!params['submarket'].blank?)
@@ -55,7 +59,7 @@ module SearchControllerUtil
     end
 
     if (!params['class_type'].blank?)
-      tenant_records = tenant_records.where("tenant_records.class_type IN (?)", params['class_type'])
+      tenant_records = tenant_records.where("lower(tenant_records.class_type) IN (?)", params['class_type'])
     end
 
 
@@ -423,7 +427,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
     # end
 
     if (!params['property_type'].blank?)
-      tenant_records = tenant_records.where("sale_records.property_type IN (?)", params['property_type'])
+      tenant_records = tenant_records.where("lower(sale_records.property_type) IN (?)", params['property_type'])
     end
     
     if (!params['submarket'].blank?)
@@ -431,7 +435,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
     end
 
     if (!params['class_type'].blank?)
-      tenant_records = tenant_records.where("sale_records.class_type IN (?)", params['class_type'])
+      tenant_records = tenant_records.where("lower(sale_records.class_type) IN (?)", params['class_type'])
     end
 
     if (!params['price_min'].blank?)

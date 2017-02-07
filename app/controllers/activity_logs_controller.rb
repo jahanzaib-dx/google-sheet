@@ -23,7 +23,7 @@ class ActivityLogsController < ApplicationController
         activity_comp.base_rent = activity_comp.base_rent
         ##activity_comp.size = number_with_precision(activity_comp.size,:precision => 2)
         activity_comp.net_effective_per_sf = activity_comp.net_effective_per_sf
-        activity_comp.sizerange = activity_comp.size
+        activity_comp.sizerange = number_with_precision(activity_comp.size, :precision=>0,:delimiter => ',')
       else
         activity_comp = activity.sale_record
         ##activity_comp.price = number_to_currency(activity_comp.price.to_f, {:precision=>2})
@@ -74,7 +74,7 @@ class ActivityLogsController < ApplicationController
 
       activity_comp.company = if unlockFields.include?"company" then activity_comp.company else 'Lock' end
       activity_comp.base_rent = if unlockFields.include?"base_rent" then activity_comp.base_rent else 'Lock' end
-      activity_comp.sizerange = if unlockFields.include?"size" then activity_comp.size else sf_range(activity_comp.size) end
+      activity_comp.sizerange = if unlockFields.include?"size" then number_with_precision(activity_comp.size,:precision=>0,:delimiter => ',') else sf_range(activity_comp.size) end
       activity_comp.size = if unlockFields.include?"size" then activity_comp.size else "0" end
       
       
