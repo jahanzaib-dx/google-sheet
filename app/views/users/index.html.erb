@@ -122,7 +122,7 @@
                       <tr class="active-user-p">
                         <td><p><%= "#{f_comp.tenant_record.address1}" %></p></td>
                         <td><p><%= "#{f_comp.tenant_record.user.email}" %></p></td>
-                        <td><p><%= "#{f_comp.tenant_record.user.company}" %></p></td>
+                        <td><p><%= "#{f_comp.tenant_record.company}" %></p></td>
                         <td>
                           <a href="#" id="<%= f_comp.id %>" class="send_email" data-toggle="modal" data-target="#email_model" data-whatever="@mdo0"> <i class="fa fa-reply"></i>Email</a>
                           <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, :class => 'ignore-button' %>
@@ -162,7 +162,7 @@
                       <tr class="active-user-p">
                         <td><p><%= "#{f_comp.tenant_record.address1}" %></p></td>
                         <td><p><%= "#{f_comp.tenant_record.user.email}" %></p></td>
-                        <td><p><%= "" %></p></td>
+                        <td><p><%= "Company" %></p></td>
                         <td>
                           <a href="#" id="<%= f_comp.id %>" class="send_email" data-toggle="modal" data-target="#email_model" data-whatever="@mdo0"> <i class="fa fa-reply"></i>Email</a>
                           <%= link_to raw('<i class="fa fa-check-square-o"></i>Ignore'), {:controller => 'flaged_comps', :action => 'delete', :id => f_comp.id}, :class => 'ignore-button' %>
