@@ -95,7 +95,7 @@ Rails.application.routes.draw do
 
   resource :users
 
-  get 'dashboard' => 'users#dashboard'
+  get 'dashboard' => 'users#dashboard', :as => :dashboard
   ##get 'profile/:id' => 'users#show', :as => :public_profile
 
 
