@@ -117,14 +117,14 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.additional_ll_allowance.to_f, {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.zipcode%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.tenant_ti_cost.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.additional_tenant_cost.to_f, {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.submarket%> </p></td>
 
@@ -157,6 +157,24 @@
 
         </table>
 
+        <% if @comp_record.record_type == 'lease' %>
+          <% if @comp_record.custom_data %>
+              <h1 class="detail-comp-hadding">Custom Data</h1>
+
+              <table width="100%" border="0" >
+                <tbody>
+                <% @comp_record.custom_data.each_with_index do |(key, value), index| %>
+                    <tr>
+                      <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
+                      <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+          <% end %>
+        <% end %>
+
+        <% if @comp_record.record_type != 'lease' %>
         <% if @comp_record.custom %>
         <h1 class="detail-comp-hadding">Custom Data</h1>
 
@@ -165,11 +183,12 @@
           <% @comp_record.custom.each_with_index do |(key, value), index| %>
               <tr>
                 <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
-                <td><p class="comp-table-pre"> <%= value %></p> </td>
+                <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
               </tr>
           <% end %>
           </tbody>
         </table>
+        <% end %>
         <% end %>
       </div>
     </div>

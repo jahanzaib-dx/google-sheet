@@ -13,21 +13,21 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3" class="add-custom-data-single-comp-td">
-            <button class="add-custom-data-single-comp">+Add Custom Data Row</button>
+        <td colspan="3" class="add-custom-data-single-comp-td3">
+            <button class="add-custom-data-single-comp3">+Add Custom Data Row</button>
         </td>
       </tr>
     </tfoot>
   </table>
 </div>
 
-<script type="text/template" id="custom-field-row-tmpl">
+<script type="text/template" id="custom-field-row-tmpl-3">
   <tr>
     <td>
-      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][key]" %>
+      <%= text_field :custom, "{{row}}", name: "custom_record[custom][{{row}}][key]" %>
     </td>
     <td>
-      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][value]" %>
+      <%= text_field :custom, "{{row}}", name: "custom_record[custom][{{row}}][value]" %>
     </td>
     <td class="actions">
       <a href="#" type="button" class='btn btn-red delete-custom-field'><u><span>Delete</span></u></a>

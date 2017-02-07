@@ -127,7 +127,7 @@
               <% @comp_record.custom.each_with_index do |(key, value), index| %>
                   <tr>
                     <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
-                    <td><p class="comp-table-pre"> <%= value %></p> </td>
+                    <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
                   </tr>
               <% end %>
               </tbody>

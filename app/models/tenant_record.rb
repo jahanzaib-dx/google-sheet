@@ -646,11 +646,13 @@ class TenantRecord < ActiveRecord::Base
     else
       custom = v
     end
+    self[:custom_data] = custom
     self[:data]['custom'] = custom
   end
 
   def custom
     JSON.parse(self[:data]['custom']) if self[:data]['custom']
+    self[:custom_data] = custom
   end
 
 
