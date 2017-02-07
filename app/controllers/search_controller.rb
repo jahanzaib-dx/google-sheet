@@ -393,8 +393,10 @@ class SearchController < ApplicationController
               t_record.lease_term_months_str = t_record.lease_term_months
 
               t_record.tenant_improvement_str = number_to_currency(t_record.tenant_improvement.to_f,{:precision=>2})
-              t_record.landlord_concessions_per_sf_str = number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2})
-              t_record.tenant_ti_cost_str = number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2})
+              ##t_record.landlord_concessions_per_sf_str = number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2})
+              ##t_record.tenant_ti_cost_str = number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2})
+              t_record.additional_ll_allowance_str = number_to_currency(t_record.additional_ll_allowance.to_f,{:precision=>2})
+              t_record.additional_tenant_cost_str = number_to_currency(t_record.additional_tenant_cost.to_f,{:precision=>2})
 
 
           if t_record.user_id != current_user.id
@@ -449,8 +451,10 @@ class SearchController < ApplicationController
               t_record.free_rent = if unlockFields.include?"free_rent" then t_record.free_rent else 'Lock' end
                 
               t_record.tenant_improvement_str = if unlockFields.include?"tenant_improvement" then number_to_currency(t_record.tenant_improvement.to_f,{:precision=>2}) else 'Lock' end
-              t_record.landlord_concessions_per_sf_str = if unlockFields.include?"landlord_concessions_per_sf" then number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2}) else 'Lock' end
-              t_record.tenant_ti_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2}) else 'Lock' end
+              ##t_record.landlord_concessions_per_sf_str = if unlockFields.include?"landlord_concessions_per_sf" then number_to_currency(t_record.landlord_concessions_per_sf.to_f,{:precision=>2}) else 'Lock' end
+              ##t_record.tenant_ti_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2}) else 'Lock' end
+              t_record.additional_ll_allowance_str = if unlockFields.include?"landlord_concessions_per_sf" then number_to_currency(t_record.additional_ll_allowance.to_f,{:precision=>2}) else 'Lock' end
+              t_record.additional_tenant_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.additional_tenant_cost.to_f,{:precision=>2}) else 'Lock' end
               t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
                 
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end

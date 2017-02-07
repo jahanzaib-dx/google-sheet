@@ -346,6 +346,9 @@ class TenantRecord < ActiveRecord::Base
       'tenant_improvement_str' as tenant_improvement_str,
       'landlord_concessions_per_sf_str' as landlord_concessions_per_sf_str,
       'tenant_ti_cost_str' as tenant_ti_cost_str,
+      'escalation_str' as escalation_str,
+      
+      'escalation_str' as escalation_str,
       'escalation_str' as escalation_str      
       
       ") }
