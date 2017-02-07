@@ -62,8 +62,18 @@ call_ajax_and_setup_expense = (container) ->
 
     date_picker_setup()
     activate_auto_selection()
+    activate_auto_selection1()
+    activate_auto_selection2()
 
 activate_auto_selection = ->
+  $(document).on 'click', "input[type='text']", (e) ->
+    $(this).select()
+
+activate_auto_selection2 = ->
+  $(document).on 'click', "input[type='text']", (e) ->
+    $(this).select()
+
+activate_auto_selection1 = ->
   $(document).on 'click', "input[type='text']", (e) ->
     $(this).select()
 
@@ -110,6 +120,7 @@ $('.tenant-record-map-view').each ->
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
   submit_is = $(@).closest('form')
+  console.log('sale_comps_add')
   if submit_is.validationEngine('validate')
     submit_is.submit()
 
@@ -426,7 +437,13 @@ $(document).ready ->
   ###$('.accordian-item > a').on 'click', ->
     $(this).find(".tick span").css 'color', '#ececef'
 ###
-  $('.add-custom-data-single-comp').on 'click', (e) ->
+  $('.add-custom-data-single-comp3').on 'click', (e) ->
+    e.preventDefault()
+
+  $('.add-custom-data-single-comp2').on 'click', (e) ->
+    e.preventDefault()
+
+  $('.add-custom-data-single-comp1').on 'click', (e) ->
     e.preventDefault()
 
   $("input:radio[name = 'tenant_record[rent_escalation_type]']").on 'click', ->
@@ -435,12 +452,26 @@ $(document).ready ->
   select_increase_rent_type()
 
   #*****************  Add delete custom data row  ***************************#
-  $(document).on 'click', '.add-custom-data-single-comp', (e) ->
+  $(document).on 'click', '.add-custom-data-single-comp2', (e) ->
+    e.preventDefault()
+    container = $('#custom-fields-table2 tbody')
+    row = container.find('tr').length - 1 + 1
+    container.append(Mustache.render($('#custom-field-row-tmpl-2').html(), { row: '_new_' + row }))
+    activate_auto_selection2()
+
+  $(document).on 'click', '.add-custom-data-single-comp3', (e) ->
     e.preventDefault()
     container = $('#custom-fields-table tbody')
     row = container.find('tr').length - 1 + 1
-    container.append(Mustache.render($('#custom-field-row-tmpl').html(), { row: '_new_' + row }))
+    container.append(Mustache.render($('#custom-field-row-tmpl-3').html(), { row: '_new_' + row }))
     activate_auto_selection()
+
+  $(document).on 'click', '.add-custom-data-single-comp1', (e) ->
+    e.preventDefault()
+    container = $('#custom-fields-table3 tbody')
+    row = container.find('tr').length - 1 + 1
+    container.append(Mustache.render($('#custom-field-row-tmpl-2').html(), { row: '_new_' + row }))
+    activate_auto_selection1()
 
   $(document).on 'click', '.delete-custom-field', (e) ->
     e.preventDefault()
