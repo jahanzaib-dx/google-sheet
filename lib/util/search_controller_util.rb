@@ -43,7 +43,7 @@ module SearchControllerUtil
 #    end
 
     if (!params['deal_type'].blank?)
-      tenant_records = tenant_records.where("lower(tenant_records.deal_type) = ?", params['lease_type'].to_s.strip.downcase)
+      tenant_records = tenant_records.where("lower(tenant_records.deal_type) = ?", params['deal_type'].to_s.strip.downcase)
     end
 
     if (!params['location_type'].blank?)
@@ -191,7 +191,7 @@ module SearchControllerUtil
 
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
-        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , params['connection'],current_user.id)
+        tenant_records = tenant_records.where("user_id IN (?)" , params['connection'])
         connections_ids = params['connection']
       else
         @connections = Connection.all_connection_ids(current_user)
