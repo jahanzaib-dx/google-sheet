@@ -111,10 +111,6 @@
             <td><p class="comp-table-pre"><%=@comp_record.state%></p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Zip Code</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.zipcode%></p></td>
-          </tr>
-          <tr>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><%= @comp_record.submarket %></p></td>
           </tr>
@@ -127,7 +123,7 @@
               <% @comp_record.custom.each_with_index do |(key, value), index| %>
                   <tr>
                     <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
-                    <td><p class="comp-table-pre"> <%= value %></p> </td>
+                    <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
                   </tr>
               <% end %>
               </tbody>
