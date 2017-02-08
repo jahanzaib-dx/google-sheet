@@ -5,14 +5,14 @@
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
   <div class="modal-dialog  tx_invite_modal-dialog">
     <div class="modal-content">
-      <%= form_tag create_connection_requests_path do %>
+      <%= form_tag create_connection_requests_path , :remote => true, :html => {:'data-type' => 'text/html'} do %>
           <div class="modal-header  tx_invite_modal-header">
             <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
             <h4 class="modal-title" id="myModalLabel">Add New Connections</h4>
           </div>
           <div class="modal-body tx_invite_modal-body">
 
-            <input type="email" placeholder="Invite by email address" class="tx_invite_email" required name="email">
+            <input type="email" placeholder="Invite by email address" class="tx_invite_email" id="txt-area" required name="email">
 
             <div class="text-center">
               <%= link_to "Add a personal message" , "#!"  , :class => "c_hide_me" %>
