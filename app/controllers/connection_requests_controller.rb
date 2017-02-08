@@ -19,7 +19,8 @@ class ConnectionRequestsController < ApplicationController
   def create
     if !current_user.can_send_requests?
       session[:after_mobile_verfication_redirect] = connections_url
-      render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => verifications_mobile_number_url}
+      render json: {:status => :error, :issue => 'Mobile Validation',  :message => 'Please enter and verify your mobile number first', :url => profile_update_path}
+      flash[:error] = 'You need to complete your profile before adding connections.'
       return
     else
       agent = User.where(:email => params[:email]).first
@@ -114,16 +115,23 @@ class ConnectionRequestsController < ApplicationController
     end
 
     def add parameters
-      @connection_request = ConnectionRequest.new(parameters)
-      if @connection_request.save
+      agent = User.where(:email => params[:email]).first
+      if ConnectionRequest.where(:user_id => current_user.id, :agent_id => agent.id).count == 0
+        @connection_request = ConnectionRequest.new(parameters)
+        if @connection_request.save
 
-        request = ConnectionRequest.find( @connection_request.id )
-        DxMailer.connection_invite(request).deliver
+          request = ConnectionRequest.find( @connection_request.id )
+          DxMailer.connection_invite(request).deliver
 
-        render json: {:status => :success, :data => @connection_request}
+          render json: {:status => :success, :data => @connection_request}
 
+        else
+          render json: {:status => :error, :data => @connection_request.errors}
+        end
       else
-        render json: {:status => :error, :data => @connection_request.errors}
+        request = ConnectionRequest.where(:user_id => current_user.id, :agent_id => agent.id)
+        DxMailer.connection_invite(request.last).deliver
+        render json: {:status => :success, :data => @connection_request}
       end
     end
 

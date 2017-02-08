@@ -2,6 +2,11 @@
 
 <!--body_section-inner-->
 <div class="body_section_inner">
+
+
+
+
+
   <div class=" tx_accordion">
     <div class="panel-group" id="accordion">
 
@@ -294,4 +299,17 @@
 
 <% end %>
 
+
+
+<% if @user.sign_in_count == 1 %>
+  <%= render 'partials/wecome_user_modal' %>
+<% end %>
 <%= render "template_comp_details" %>
+<a href="#" data-toggle="modal" id="welcome-link" data-target=".bs-example-modal-sm">Welcome Message</a>
+<script>
+  $("#welcome-link").hide();
+  $(document).ready(function() {
+    $("#welcome-link").click();
+  });
+
+</script>

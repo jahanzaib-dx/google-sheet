@@ -85,22 +85,22 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[landlord_concessions_per_sf]"> <%= number_to_currency(@comp_record.landlord_concessions_per_sf.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[additional_ll_allowance]"> <%= number_to_currency(@comp_record.additional_ll_allowance.to_f, {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><input type="checkbox" name="unlock[zipcode]"> <%=@comp_record.zipcode%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[tenant_ti_cost]"> <%= number_to_currency(@comp_record.tenant_ti_cost.to_f, {:precision=>2})%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[additional_tenant_cost]"> <%= number_to_currency(@comp_record.additional_tenant_cost.to_f, {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><input type="checkbox" name="unlock[submarket]"> <%=@comp_record.submarket%> </p></td>
 
           </tr>
 
           <tr>
-            <td><p class="comp-table-pre">Lease Type</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[lease_type]"> <%=@comp_record.lease_type%></p></td>
+            <td><p class="comp-table-pre">Deal Type</p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[lease_type]"> <%=@comp_record.deal_type%></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"> </p></td>
 

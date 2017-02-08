@@ -1,54 +1,98 @@
 <ul class="nav tx_nav navbar-nav">
-
-  <li class="active"> <a href="<%= root_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a> </li>
-  <li class=""> <a href="#"><img src="<%= image_url 'TenantRex.svg' %>"></a> </li>
-  <li class=""> <a href="#"><img src="<%= image_url 'LeaseRex.svg' %>"></a> </li>
-  <li class=""> <a href="#"><img src="<%= image_url 'ResearchRex.svg' %>"></a> </li>
-
+    <li class="active">
+        <a href="<%= root_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a>
+    </li>
+    <li class="">
+        <a href="#"><img src="<%= image_url 'TenantRex.svg' %>"></a>
+    </li>
+    <li class="">
+        <a href="#"><img src="<%= image_url 'LeaseRex.svg' %>"></a>
+    </li>
+    <li class="">
+        <a href="#"><img src="<%= image_url 'ResearchRex.svg' %>"></a>
+    </li>
 </ul>
-	  
-
 <ul class="nav navbar-nav tx_nav_right navbar-right">
-        <li class="dropdown tx_dropdown " id="fat-menu">
-          <a  class="dropdown-toggle tx-drop-down connetection-link " role="button" id="drop6" href="<%= connections_path%>">
-            <%= image_tag("tex-book-icon.png" , :class => "drom-icon")%> <%= @current_user.all_connections.count %> <%= "Connection".pluralize(@current_user.all_connections.count) %>
-          </a>
-        </li>
-        <li class="dropdown tx_dropdown" id="fat-menu">
-          <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#">
-
-                Comps  <b class="caret"></b>
-
-          </a>
-
-          <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
-		        <li role="presentation tx_new_customer">
+    <li class="dropdown tx_dropdown " id="fat-menu">
+        <a class="dropdown-toggle tx-drop-down connetection-link " role="button" id="drop6" href="<%= connections_path%>"><%= image_tag("tex-book-icon.png" , :class => "drom-icon") %><%= @current_user.all_connections.count %> <%= "Connection".pluralize(@current_user.all_connections.count) %>
+        </a>
+    </li>
+    <li class="dropdown tx_dropdown" id="fat-menu">
+        <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#">Comps <b class="caret"></b></a>
+        <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+			 <li role="presentation tx_new_customer">
+                <a href="#">Searchable Lease Comps (<%= TenantRecord.con_ids.count%>)</a>
+            </li>
+			 <li role="presentation tx_new_customer">
+                <a href="#">Searchable Sale Comps (<%= SaleRecord.con_ids.count%>)</a> 
+            </li>
+        </ul>
+    </li>
+    <li class="dropdown tx_dropdown" id="fat-menu">
+        <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"><%= image_tag("user-icon.png" , :class => "drom-icon") %><%= current_user.first_name %><b class="caret"></b></a>
+        <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+            <li role="presentation tx_new_customer">
+                <%= link_to "Profile", dashboard_path %>
             </li>
             <li role="presentation tx_new_customer">
+                <a href="#">Upload Help</a>
             </li>
-          </ul>
-
-        </li>
-        <li class="dropdown tx_dropdown" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("user-icon.png" , :class => "drom-icon")%> <%= current_user.first_name %> <b class="caret"></b></a>
-          <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
             <li role="presentation tx_new_customer">
-				<%= link_to "Profile", dashboard_path %>
+                <%= link_to "Logout", destroy_user_session_url, :method => :delete %>
             </li>
-            <li role="presentation tx_new_customer"> <a href="#">Upload Help</a> </li>
-            <li role="presentation tx_new_customer"> <%= link_to "Logout", destroy_user_session_url, :method => :delete %> </li>
-          </ul>
-        </li>
-        <li class="dropdown tx_dropdown tx_abslute_position" id="fat-menu"> <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"> <%= image_tag("setting.png" , :class => "drom-icon")%> <b class="caret"></b></a>
-          <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+        </ul>
+    </li>
+    <li class="dropdown tx_dropdown tx_abslute_position" id="fat-menu">
+        <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"><%= image_tag("setting.png" , :class => "drom-icon") %><b class="caret"></b></a>
+        <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
             <li role="presentation tx_new_customer">
-               <a href="#">User Preferences</a> 
+                <a href="#" data-toggle="modal" data-target=".bs-example-modal-sm2">Welcome Message</a>
             </li>
-            <li role="presentation tx_new_customer"> <a href="<%= new_uploader_tenant_record_path%>">Add/Import Comps</a> </li>
-            <li role="presentation tx_new_customer"> <%= link_to "Access Database", database_back_ends_path %> </li>
-			<li role="presentation tx_new_customer"> <a href="#">Manage Profile</a> </li>
-			<li role="presentation tx_new_customer"> <%= link_to "Manage Users", users_path %> </li>
-			<li role="presentation tx_new_customer"> <a href="#">Purchase Upgrades</a> </li>
-          </ul>
-        </li>
-      </ul>
-
+            <li role="presentation tx_new_customer">
+                <a href="<%= new_uploader_tenant_record_path%>">Add/Import Comps</a>
+            </li>
+            <li role="presentation tx_new_customer">
+                <%= link_to "Access Database", database_back_ends_path %>
+            </li>
+            <li role="presentation tx_new_customer">
+                <a href="#">Manage Profile</a>
+            </li>
+            <li role="presentation tx_new_customer">
+                <%= link_to "Manage Users", users_path %>
+            </li>
+            <li role="presentation tx_new_customer">
+                <a href="#">Purchase Upgrades</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<div class="modal fade bs-example-modal-sm2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="welcome-modal-popup">
+    <div class="modal-dialog modal-welcome" role="document">
+        <div class="modal-content welcome-mgs-modal">
+            <img src="/assets/welcome-modal-xras-ixon.png" class="welcome-xras-icon" data-dismiss="modal"><img src="/assets/border-logo.png"><h1>Welcome to MarketRex! </h1>
+            <p>
+                Your arrival is a very big deal to us. To get the most out of your MarketRex  experience, we encourge you to follow these 4 simple steps in chronological order
+            </p>
+            <ol>
+                <li>
+                    1. Complete your <a href='profile/update' target="_new">profile</a>
+                </li>
+                <li>
+                    2. Next, add some <a href='uploader/tenant_records/new' target="_new">data</a>
+                </li>
+                <li>
+                    3. Next, you'll be ready to <a href='connections' target="_new">connect</a>
+                </li>
+                <li>
+                    4. Once connected, you can begin your <a href='dashboard' target="_new">search</a>
+                </li>
+            </ol>
+            <p>
+                P.S. Don't forget, by forming connections, your data and your connection's data become instantly searchable by each other.
+            </p>
+            <p>
+                P.S.S. But don't worry, until you approve an unlock request, your data is locked at all times (in search results) when viewed by any of your connections. 
+            </p>
+        </div>
+    </div>
+</div>

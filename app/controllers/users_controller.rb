@@ -1,5 +1,6 @@
 class UsersController  < ApplicationController
 
+  after_action :change, only: [:dashboard]
   def dashboard
     if @role == 'admin'
       redirect_to users_path
@@ -26,7 +27,8 @@ class UsersController  < ApplicationController
     if @role == 'admin'
       @users = User.search(params[:email], params[:name], params[:firm])
       @user = User.new
-      @f_comps = FlagedComp.all
+      @f_comps_lease = FlagedComp.where('comp_type = ?',"lease")
+      @f_comps_sale = FlagedComp.where('comp_type = ?',"sale")
     else
       redirect_to '/sub_users'
     end
@@ -60,6 +62,14 @@ class UsersController  < ApplicationController
     if @role != 'admin' && @subUser.parent_id!=current_user.id
       flash[:error] = 'Permission denied'
       redirect_to '/users'
+    end
+  end
+
+  def change
+    if @user.sign_in_count == 1
+      user =User.find_by_id(current_user.id)
+      user.sign_in_count = 2
+      user.save(validate: false)
     end
   end
 

@@ -4,6 +4,9 @@ class Uploader::TenantRecordsController < ApplicationController
   #include CushmanCalculationEngine
   include GoogleGeocoder
 
+
+  before_action :tenant_record_params,:sale_record_params, only: [:create]
+
   before_filter :authenticate_user!
 
   layout 'uploader'
@@ -13,6 +16,9 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def new
     @tenant_record = TenantRecord.new
+  end
+  def custom_record
+    @tenant_record.custom = params[:custom_record][:custom]
   end
 
   def create
@@ -32,8 +38,14 @@ class Uploader::TenantRecordsController < ApplicationController
       end
       @tenant_record.lease_commencement_date = Date.strptime(params[:tenant_record][:lease_commencement_date], "%m/%d/%Y")
 
+      hash = params[:custom_record][:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        @tenant_record.custom_data = b
+      end
 
-      puts "before calling save_tenant_record ------------"
+
       save_tenant_record @tenant_record
 
 
@@ -45,9 +57,13 @@ class Uploader::TenantRecordsController < ApplicationController
       end
       @sale_record.sold_date = Date.strptime(params[:sale_record][:sold_date], "%m/%d/%Y")
 
-      puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-      puts @sale_record.custom
 
+      hash =params[:sale_record][:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h # saving custom data as a hash
+        @sale_record.custom = b
+      end
       ## find lat/lon if it hasn't been done already
       begin
         geocode_setup(@sale_record)
@@ -141,6 +157,12 @@ class Uploader::TenantRecordsController < ApplicationController
       end
       trec.additional_tenant_cost = tenant_cost_sum
     end
+      hash = params[:custom_record][:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        trec.custom_data = b
+      end
 
     if params[:tenant_record][:has_additional_ll_allowance] && params[:additional_ll_cost_tmp].to_i > 0
       ll_cost_sum = 0.0
@@ -192,6 +214,9 @@ class Uploader::TenantRecordsController < ApplicationController
 
 
   def tenant_record_params
+    params.require(:custom_record).tap do |whitelisted|
+      whitelisted[:custom_record] = params[:custom_record][:custom]
+    end
     params[:tenant_record].permit(
         :data,                        # hstore of custom fields
         :interest_rate,
@@ -271,7 +296,11 @@ class Uploader::TenantRecordsController < ApplicationController
 
   end
 
+
   def sale_record_params
+    params.require(:sale_record).tap do |whitelisted|
+      whitelisted[:sale_record] = params[:sale_record][:custom]
+    end
     params.require(:sale_record).permit(:is_sales_record, :land_size_identifier, :view_type,
                                 :address1, :city, :state, :land_size, :price, :cap_rate,:submarket, :custom,
                                 :latitude, :longitude, :zipcode, :zipcode_plus, :office_id,

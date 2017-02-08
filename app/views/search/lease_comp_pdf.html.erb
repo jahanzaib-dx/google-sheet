@@ -20,10 +20,7 @@
           <!--<img src="<%##= image_url 'adress-img.jpg' %>" class="adress-img">-->
 
           <div class="street_view adress-img">
-            <a href="http://www.google.com/maps?cbll=<%=@comp_record.latitude%>,<%=@comp_record.longitude%>&layer=c" target="_blank">
-              <div class="street_view_image" style="background: #edeced url('http://maps.googleapis.com/maps/api/streetview?size=336x200&location=<%=@comp_record.address1%>+<%=@comp_record.city%>+<%=@comp_record.state%>+<%=@comp_record.zipcode%>') no-repeat center;">
-              </div>
-            </a>
+            <%= large_comp_image(@comp_record).html_safe%>
           </div>
 
         </div>
@@ -106,14 +103,14 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.landlord_concessions_per_sf_str%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.additional_ll_allowance_str%></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.zipcode%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.tenant_ti_cost_str%></p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.additional_tenant_cost_str%></p></td>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.submarket%> </p></td>
 
@@ -121,7 +118,7 @@
 
           <tr>
             <td><p class="comp-table-pre">Deal Type</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.lease_type%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.deal_type%></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"> </p></td>
 

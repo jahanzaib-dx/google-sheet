@@ -10,6 +10,16 @@ class SaleRecord < ActiveRecord::Base
 
   after_destroy :cleanup
   
+  def self.my_ids
+    @connections = Connection.all_connection_ids(User.current_user)
+    where("user_id IN (?) OR user_id=?" , @connections.to_a,User.current_user.id)
+  end
+  
+  def self.con_ids
+    @connections = Connection.all_connection_ids(User.current_user)
+    where("user_id IN (?)" , @connections.to_a)
+  end
+  
   scope :select_extra, -> { select("
       'cp_status' as cp_status,
       'size_range' as size_range,
@@ -58,6 +68,7 @@ class SaleRecord < ActiveRecord::Base
 
             "sale_records.view_type, " +
             "sale_records.user_id, " +
+            "sale_records.main_image_file_name, " +
             #"tenant_records.office_id, " +
             #"tenant_records.team_id, " +
             #"tenant_records.data, " +
@@ -88,19 +99,19 @@ class SaleRecord < ActiveRecord::Base
   
   def self.all_property_type
     arr2 = TenantRecord::SALES_PROPERTY_TYPE-['other'] 
-    arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all.map{|v| v.name }
+    arr1 = select('property_type as name').my_ids.where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all.map{|v| v.name }
     arr = arr2 + arr1
   end
 
   def self.all_class_type ()
     arr2 = TenantRecord::CLASS_TYPE
-    arr1 = select('class_type as name').where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
+    arr1 = select('class_type as name').my_ids.where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end
 
   def self.sale_sub_markets ()
-    SaleRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+    SaleRecord.select('lower(submarket) as submarket').my_ids.where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
 
   end
 

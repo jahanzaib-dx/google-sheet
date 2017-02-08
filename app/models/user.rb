@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :inverse_connections, class_name: 'Connection', foreign_key: 'agent_id'
   has_many :inverse_connected_to, through: :inverse_connections, source: :user
 
-
+  before_destroy :cleanup
 
   def all_connections
     connected_to + inverse_connected_to
@@ -52,10 +52,10 @@ class User < ActiveRecord::Base
 
   has_many :children, class_name: 'User', :foreign_key => 'parent_id'
   belongs_to :parent, class_name: 'User', :foreign_key => 'parent_id'
-  has_many :schedule_accesses, inverse_of: :user , :dependent => :destroy
+  has_many :schedule_accesses, inverse_of: :user
   accepts_nested_attributes_for :schedule_accesses
 
-  has_many :flaged_comps, inverse_of: :user, :dependent => :destroy
+  has_many :flaged_comps, inverse_of: :user
 
   # end sub-user
 
@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   has_many :groups_owned, class_name: 'Group', foreign_key: :user_id
 
 
-  has_many :memberships, foreign_key: :member_id, :dependent => :destroy
+  has_many :memberships, foreign_key: :member_id
   has_many :groups_joined, :through => :memberships, source: :group
 
 
@@ -89,9 +89,21 @@ class User < ActiveRecord::Base
   
   #:email #system is validating itself
 
-  validates_uniqueness_of :email
+  # validates_uniqueness_of :email #, :if => :confirmation_token_exists?
 
 
+
+  validates :mobile, presence: true, :on => :update
+
+  validates :city, presence: true, :on => :update
+
+  validates :address, presence: true, :on => :update
+
+  validates :state, presence: true, :on => :update
+
+  validates :zip, presence: true, :on => :update
+
+  validates :firm_name, presence: true, :on => :update
   validates :first_name, presence: true, :on => :create
   validates :last_name, presence: true, :on => :create
   
@@ -125,7 +137,8 @@ class User < ActiveRecord::Base
 
   def can_send_requests?
     # return true
-    if (!mobile_active) && (mobile.blank?)
+    # if true
+     if ((!mobile_active) && (mobile.blank?)) || (zip.blank?) || (city.blank?) || (address.blank?) || (state.blank?) || (firm_name.blank?) || (first_name.blank?) || (last_name.blank?) || (email.blank?)
       return false
     else
       return true
@@ -245,6 +258,51 @@ class User < ActiveRecord::Base
     account.access('trex_admin')
   end
 
+
+  def confirmation_token_exists?
+    !confirmation_token.nil?
+  end
+
+  def cleanup
+    connection= Connection.where('user_id = ? or agent_id	= ?', self.id,self.id)
+    connection.destroy_all if !connection.nil?
+    tenant_record= TenantRecord.where('user_id = ?', self.id)
+    tenant_record.destroy_all if !tenant_record.nil?
+    sale_record= SaleRecord.where('user_id = ?', self.id)
+    sale_record.destroy_all if !sale_record.nil?
+    custom_record= CustomRecord.where('user_id = ?', self.id)
+    custom_record.destroy_all if !custom_record.nil?
+    account= Account.where('user_id = ?', self.id)
+    account.destroy_all if !account.nil?
+    schedule_accesses= ScheduleAccess.where('user_id = ?', self.id)
+    schedule_accesses.destroy_all if !schedule_accesses.nil?
+    flaged_comps= FlagedComp.where('user_id = ?', self.id)
+    flaged_comps.destroy_all if !flaged_comps.nil?
+    back_end_lease_comp= BackEndLeaseComp.where('user_id = ?', self.id)
+    back_end_lease_comp.destroy_all if !back_end_lease_comp.nil?
+    back_end_sale_comp= BackEndSaleComp.where('user_id = ?', self.id)
+    back_end_sale_comp.destroy_all if !back_end_sale_comp.nil?
+    white_glove_service_requests= WhiteGloveServiceRequest.where('user_id = ?', self.id)
+    white_glove_service_requests.destroy_all if !white_glove_service_requests.nil?
+    tenant_record_imports= TenantRecordImport.where('user_id = ?', self.id)
+    tenant_record_imports.destroy_all if !tenant_record_imports.nil?
+    connection_request= ConnectionRequest.where('user_id = ? or agent_id = ?', self.id,self.id)
+    connection_request.destroy_all if !connection_request.nil?
+    comp_request= CompRequest.where('initiator_id = ? or receiver_id = ?', self.id,self.id)
+    comp_request.destroy_all if !comp_request.nil?
+    message= Message.where('sender_id = ? or receiver_id = ?', self.id,self.id)
+    message.destroy_all if !message.nil?
+    activity_log = ActivityLog.all_activities_of_user(self.id)
+    activity_log.destroy_all if !activity_log.nil?
+    import_log = ImportLog.where('user_id = ?', self.id)
+    import_log.destroy_all if !import_log.nil?
+    group= Group.where('user_id = ?', self.id)
+    group.destroy_all if !group.nil?
+    membership= Membership.where('member_id = ?', self.id)
+    membership.destroy_all if !membership.nil?
+    import_templates= ImportTemplate.user_import_template.where('user_id = ?', self.id)
+    import_templates.destroy_all if !import_templates.nil?
+  end
 
 #####end of class#############
 end

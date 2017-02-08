@@ -16,6 +16,16 @@ class TenantRecord < ActiveRecord::Base
   before_save :default_values
   before_validation :default_values
   after_destroy :cleanup
+  
+  def self.my_ids
+    @connections = Connection.all_connection_ids(User.current_user)
+    where("user_id IN (?) OR user_id=?" , @connections.to_a,User.current_user.id)
+  end
+  
+  def self.con_ids
+    @connections = Connection.all_connection_ids(User.current_user)
+    where("user_id IN (?)" , @connections.to_a)
+  end
 
   # after_save :populate_lookup_tables
 
@@ -233,6 +243,7 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.main_image_updated_at, " +
       "tenant_records.company_logo_updated_at, " +
       "tenant_records.user_id, " +
+      "tenant_records.main_image_file_name, " +
       ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
@@ -340,7 +351,9 @@ class TenantRecord < ActiveRecord::Base
       'tenant_improvement_str' as tenant_improvement_str,
       'landlord_concessions_per_sf_str' as landlord_concessions_per_sf_str,
       'tenant_ti_cost_str' as tenant_ti_cost_str,
-      'escalation_str' as escalation_str      
+      'escalation_str' as escalation_str,
+      'additional_ll_allowance_str' as additional_ll_allowance_str,
+      'additional_tenant_cost_str' as additional_tenant_cost_str            
       
       ") }
 
@@ -647,13 +660,16 @@ class TenantRecord < ActiveRecord::Base
     else
       custom = v
     end
-    self[:data][:custom] = custom
+
+    self[:custom_data] = custom
+    self[:data]['custom'] = custom
   end
 
   def custom
-    JSON.parse(self[:data][:custom]) if self[:data][:custom]
-  end
+    JSON.parse(self[:data]['custom']) if self[:data]['custom']
+    self[:custom_data] = custom
 
+  end
 
   def method_missing(method_name, *args)
     str_method = method_name.to_s
@@ -716,33 +732,33 @@ class TenantRecord < ActiveRecord::Base
   
   def self.all_industry_type ()
     arr2 = Industry.select('lower(name) as name').get_industy_list
-    arr1 = select('industry_type as name').where("industry_type != '' AND lower(industry_type) NOT IN (?)",arr2).group('industry_type').all
+    arr1 = select('industry_type as name').my_ids.where("industry_type != '' AND lower(industry_type) NOT IN (?)",arr2).group('industry_type').all
     arr = arr2 + arr1
     ##arr
   end
 
   def self.lease_sub_markets ()
-    TenantRecord.select('lower(submarket) as submarket').where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
+    TenantRecord.select('lower(submarket) as submarket').my_ids.where("submarket is NOT NULL and submarket != ''").group('submarket').all.map{|v| v.submarket }
 
   end
 
   def self.all_property_type ()
     arr2 = PropertyType.select('lower(name) as name').all
-    arr1 = select('property_type as name').where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all
+    arr1 = select('property_type as name').my_ids.where("property_type != '' AND lower(property_type) NOT IN (?)",arr2).group('property_type').all
     arr = arr2 + arr1
     ##arr
   end
   
   def self.all_deal_type ()
     arr2 = DEAL_TYPE
-    arr1 = select('deal_type as name').where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all.map{|v| v.name }
+    arr1 = select('deal_type as name').my_ids.where("deal_type != '' AND lower(deal_type) NOT IN (?)",arr2).group('deal_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end 
   
  def self.all_class_type ()
     arr2 = CLASS_TYPE
-    arr1 = select('class_type as name').where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
+    arr1 = select('class_type as name').my_ids.where("class_type != '' AND lower(class_type) NOT IN (?)",arr2).group('class_type').all.map{|v| v.name }
     arr = arr2 + arr1
     ##arr
   end
@@ -831,10 +847,8 @@ class TenantRecord < ActiveRecord::Base
             select * from tenant_records y
             where (select count(*) from tenant_records dt
             where  y.comp_type = dt.comp_type and
-               y.company = dt.company and
+               y.company ~* dt.company and
                y.comp_type = dt.comp_type and
-               y.company = dt.company and
-               y.industry_type = dt.industry_type and
                y.address1 = dt.address1 and
                y.suite = dt.suite and
                y.city = dt.city and

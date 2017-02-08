@@ -8,10 +8,11 @@ class ProfileController < ApplicationController
   if request.post?
   	
 	#if user mobile is changed then empty sms_code and set false active_mobile
-	
+
 		if params[:user][:mobile] != @user.mobile
 			@user.sms_code = ""
 			@user.mobile_active = false
+			redirect_to verifications_create_path
 		end
 	
 		#if @user.update_attributes params[:user]
@@ -25,8 +26,7 @@ class ProfileController < ApplicationController
 			redirect_to :controller => 'profile', :action => 'update', :id => @user.id
   end
 	
-		###render :text => "out"
-		render "update"
+
   end
   
   def picture

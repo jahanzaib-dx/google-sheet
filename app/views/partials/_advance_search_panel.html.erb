@@ -332,15 +332,17 @@
                   <div class="tx_dropdown_toggl tx-drop-down-select">
 
                     <%= select_tag 'tenant_record[class_type]',
-                                   options_for_select(TenantRecord::all_class_type.map { |s| [s.capitalize, s] }),
+                                   options_for_select(TenantRecord::all_class_type.map { |s| [s.capitalize, s.downcase] }),
                                    prompt: 'Choose',
                                    class: 'selectpicker lease_filter lease_filter_input resetit'
                     %>
 
                     <%= select_tag 'tenant_record[class_type]',
-                                   options_for_select(SaleRecord::all_class_type.map { |s| [s.capitalize, s] }),
+                                   options_for_select(SaleRecord::all_class_type.map { |s| [s.capitalize, s.downcase] }),
                                    prompt: 'Choose',
-                                   class: 'selectpicker sales_filter sales_filter_input resetit'
+                                   class: 'selectpicker sales_filter sales_filter_input resetit',
+								   disabled: true
+
                     %>
 
                   </div>
@@ -371,8 +373,8 @@
 
 
                   <div class="tx_dropdown_toggl tx-drop-down-select">
-                    <%= select_tag 'tenant_record[lease_type]',
-                                   options_for_select(TenantRecord::all_deal_type.map { |s| [s, s] }),
+                    <%= select_tag 'tenant_record[deal_type]',
+                                   options_for_select(TenantRecord::all_deal_type.map { |s| [s.capitalize, s.downcase] }),
                                    prompt: 'Choose',
                                    class: 'selectpicker lease_filter_input resetit',
                                    id: "tenant_record_lease_type"
@@ -391,7 +393,7 @@
 
 
                     <%= select_tag 'tenant_record[industry_type]',
-                                   options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.capitalize, s.name] }),
+                                   options_for_select(TenantRecord::all_industry_type.map { |s| [s.name.capitalize, s.name.downcase] }),
                                    prompt: 'Choose',
                                    class: 'selectpicker lease_filter_input resetit',
                                    id: 'industry_type'

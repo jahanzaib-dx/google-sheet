@@ -8,7 +8,7 @@ module RegistrationsHelper
     html = <<-HTML
       <!--<h3>Verify Mobile Number</h3>-->
       #{form_tag(verifications_create_path, method: "post")}
-      #{button_tag('Send verification code', type: "submit" , class: "btn btn-def btn-block tx_orange_btn")}
+      #{button_tag('Resend verification code', type: "submit" , class: "btn btn-def btn-block tx_orange_btn")}
       </form>
     HTML
     html.html_safe

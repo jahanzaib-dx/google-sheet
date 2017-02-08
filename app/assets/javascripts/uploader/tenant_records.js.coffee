@@ -62,8 +62,18 @@ call_ajax_and_setup_expense = (container) ->
 
     date_picker_setup()
     activate_auto_selection()
+    activate_auto_selection1()
+    activate_auto_selection2()
 
 activate_auto_selection = ->
+  $(document).on 'click', "input[type='text']", (e) ->
+    $(this).select()
+
+activate_auto_selection2 = ->
+  $(document).on 'click', "input[type='text']", (e) ->
+    $(this).select()
+
+activate_auto_selection1 = ->
   $(document).on 'click', "input[type='text']", (e) ->
     $(this).select()
 
@@ -110,7 +120,7 @@ $('.tenant-record-map-view').each ->
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
   submit_is = $(@).closest('form')
-  alert(submit_is)
+
   if submit_is.validationEngine('validate')
     submit_is.submit()
 
@@ -244,10 +254,11 @@ $(document).ready ->
           $('.fields-table-custom-data table tbody').html html_default_fields
         else
           $('.fields-table-custom-data table tbody').empty()
-        html_add_row = Mustache.render $('#add-button-geo-code-selection').html()
+        html_add_row = Mustache.render $('#add-new-row-button-bulk-upload').html()
         $('.fields-table-custom-data table tfoot').html html_add_row
 
     $('.is-active .tick span').css 'color', 'green'
+    populateHeaderSelect()
     open_next_accordian_item 'accordian-item3', 'accordian-item2'
     $('.is-active .tick span').css 'color', '#ececef'
 
@@ -269,12 +280,19 @@ $(document).ready ->
         $('.existing-data-set-container').css 'display', 'none'
         $('.new-data-set-container').css 'display', 'block'
 
-  $(document).on 'click', '.add-row-custom-data-geocode-single-comp', (e)->
+  $(document).on 'click', '.add-row-custom-data-geocode-single-comp, .add-row-custom-data-geocode-bulk-upload', (e)->
     e.preventDefault()
     container = $('.fields-table-custom-data')
     row = container.find('.user-defined-custom-data').length
-    custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row})
+    if( $(this).hasClass("add-row-custom-data-geocode-single-comp") )
+      custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row})
+    else if( $(this).hasClass("add-row-custom-data-geocode-bulk-upload") )
+      custom_data_set_row = Mustache.render($('#custom-data-new-bulk-set-row-template').html(), {row: row})
+
     $('.fields-table-custom-data table tbody').append custom_data_set_row
+    populateHeaderSelect()
+
+
 
   $(document).on 'change', '.existing-data-set-dd', (e)->
     xhr = $.ajax
@@ -419,7 +437,13 @@ $(document).ready ->
   ###$('.accordian-item > a').on 'click', ->
     $(this).find(".tick span").css 'color', '#ececef'
 ###
-  $('.add-custom-data-single-comp').on 'click', (e) ->
+  $('.add-custom-data-single-comp3').on 'click', (e) ->
+    e.preventDefault()
+
+  $('.add-custom-data-single-comp2').on 'click', (e) ->
+    e.preventDefault()
+
+  $('.add-custom-data-single-comp1').on 'click', (e) ->
     e.preventDefault()
 
   $("input:radio[name = 'tenant_record[rent_escalation_type]']").on 'click', ->
@@ -428,12 +452,28 @@ $(document).ready ->
   select_increase_rent_type()
 
   #*****************  Add delete custom data row  ***************************#
-  $(document).on 'click', '.add-custom-data-single-comp', (e) ->
+  $(document).on 'click', '.add-custom-data-single-comp2', (e) ->
+    e.preventDefault()
+    container = $('#custom-fields-table2 tbody')
+    row = container.find('tr').length - 1 + 1
+    container.append(Mustache.render($('#custom-field-row-tmpl-2').html(), { row: '_new_' + row }))
+    activate_auto_selection2()
+
+  $(document).on 'click', '.add-custom-data-single-comp3', (e) ->
     e.preventDefault()
     container = $('#custom-fields-table tbody')
     row = container.find('tr').length - 1 + 1
-    container.append(Mustache.render($('#custom-field-row-tmpl').html(), { row: row }))
+
+    container.append(Mustache.render($('#custom-field-row-tmpl-3').html(), { row: '_new_' + row }))
+
     activate_auto_selection()
+
+  $(document).on 'click', '.add-custom-data-single-comp1', (e) ->
+    e.preventDefault()
+    container = $('#custom-fields-table3 tbody')
+    row = container.find('tr').length - 1 + 1
+    container.append(Mustache.render($('#custom-field-row-tmpl-2').html(), { row: '_new_' + row }))
+    activate_auto_selection1()
 
   $(document).on 'click', '.delete-custom-field', (e) ->
     e.preventDefault()

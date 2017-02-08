@@ -411,6 +411,7 @@ html, body {
   font-weight: normal;
   padding-left: 12px;
   background-color: #ffffff;
+  line-height: 36px;
 }
 .selectBox2 {
   position: relative;
@@ -433,6 +434,17 @@ html, body {
 .tx_profile_detail_content > li {
   overflow-wrap: break-word;
 }
+.title-hadding  h3   {
+  float: right;
+  padding: 0 106px 0 14px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  width: auto;
+}
+.col-md-12.title-hadding {
+  padding: 0 6px 0 0;
+}
 
 
 .selectBox select {
@@ -441,6 +453,7 @@ html, body {
   font-weight: normal;
   padding-left: 12px;
   background-color: #ffffff;
+  line-height: 36px;
 }
 
 .overSelect {
@@ -1666,7 +1679,6 @@ button{
   background: #fff none repeat scroll 0 0;
   color: #231f20;
   float: left;
-  font-size: 21px;
   margin: 44px 0 0;
   padding: 15px 19px;
   width: 81%;

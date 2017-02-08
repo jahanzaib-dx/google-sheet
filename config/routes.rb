@@ -62,8 +62,8 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks", :registrations => "registrations" }
-
-  post 'verifications/create' => 'verifications#create' , :as => :verifications_create
+  get 'verifications/create' => 'verifications#create' , :as => :verifications_create
+  post 'verifications/create' => 'verifications#create'
   get 'verifications/verify' => 'verifications#verify' , :as => :verifications_verify
   get 'verifications/mobile_number' => 'verifications#mobile_number' , :as => :verifications_mobile_number
   post 'verifications/mobile_number' => 'verifications#mobile_number'
@@ -95,7 +95,7 @@ Rails.application.routes.draw do
 
   resource :users
 
-  get 'dashboard' => 'users#dashboard'
+  get 'dashboard' => 'users#dashboard', :as => :dashboard
   ##get 'profile/:id' => 'users#show', :as => :public_profile
 
 
@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   get 'connection_request/accept/:id' => 'connection_requests#accept', :as => :accept_connection_request
 
 
-  get 'connections' => 'connections#index'
+  get 'connections' => 'connections#index', :as => :connection_index
   post 'connections' => 'connections#create'
   get 'connections/internal_create' => 'connections#create'
   match 'delete_connections/:id', :to => 'connections#destroy', :as => :delete_connections, :via => [:delete]

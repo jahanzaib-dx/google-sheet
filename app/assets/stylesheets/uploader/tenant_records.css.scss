@@ -1182,13 +1182,13 @@ body {
         border: #cccccc solid 1px;
       }
 
-      .add-row-custom-data-geocode-single-comp-td {
+      .add-row-custom-data-geocode-single-comp-td, .add-row-custom-data-geocode-bulk-upload-td {
         background-color: #d9dadc;
         padding: 0 !important;
         border: 1px solid #d9dadc !important;
       }
 
-      .add-row-custom-data-geocode-single-comp {
+      .add-row-custom-data-geocode-single-comp,.add-row-custom-data-geocode-bulk-upload {
         background-color: #ececef;
         color: #4883c0;
         font-family: arial,sans-serif;

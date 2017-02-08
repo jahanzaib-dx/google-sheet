@@ -54,6 +54,13 @@ jQuery(document).ready(function (){
         return false;
     });
 
+    $('#txt-area').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $('#btn-connection-invite').click();
+        }
+    });
 
     jQuery("#btn-connection-invite").on("click", function (){
         displayOverlay = true;

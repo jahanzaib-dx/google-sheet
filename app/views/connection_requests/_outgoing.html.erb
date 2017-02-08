@@ -9,9 +9,9 @@
   <td width="4%" class="result_img_icon">
     <% #user_image(request.receiver) %>
   </td>
-  <td width="18%" class="result_line"><p class="result_line_bold"><%= request.receiver.name %></p></td>
-  <td width="17%" class="result_line"><p class="result_line_bold"><%= request.receiver.firm_name %></p></td>
-  <td width="31%" class="result_line"><p class="result_line_bold"><%= request.receiver.location %></p></td>
+  <td width="18%" class="result_line"><p class="result_line_bold"><%= (request.receiver.name.blank? == true)?"":request.receiver.name %></p></td>
+  <td width="17%" class="result_line"><p class="result_line_bold"><%= (request.receiver.firm_name.blank? == true)?"":request.receiver.firm_name %></p></td>
+  <td width="31%" class="result_line"><p class="result_line_bold"><%= (request.receiver.location.blank? == true)?"":request.receiver.location %></p></td>
   <td width="13%" class="result_line">
   </td>
   <td width="12%" class="result_line">
