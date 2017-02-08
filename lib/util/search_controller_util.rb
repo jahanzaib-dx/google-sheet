@@ -191,7 +191,7 @@ module SearchControllerUtil
 
       if (!params['connection'].blank? )
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
-        tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , params['connection'],current_user.id)
+        tenant_records = tenant_records.where("user_id IN (?)" , params['connection'])
         connections_ids = params['connection']
       else
         @connections = Connection.all_connection_ids(current_user)
