@@ -47,6 +47,14 @@ class Uploader::ImportController < ApplicationController
     @import = TenantRecordImport.new
     @import.lease_structure = LeaseStructure.new
     @import.import_template = ImportTemplate.new
+    if(params[:user_id] && params[:user_id]!="")
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
+      @white_glove_user = crypt.decrypt_and_verify(params[:user_id])
+
+    else
+      @white_glove_user = "Nil"
+    end
+    #@white_glove_user=12
     TenantRecord::REQUIRED_FIELDS.each_with_index do |required_field, i|
       @import.import_template.import_mappings << ImportMapping.new(:import_template => @template, :record_column => required_field)
     end
@@ -92,6 +100,16 @@ class Uploader::ImportController < ApplicationController
 
     required_params = {}
     not_for_sheet = {}
+    params.permit(:white_glove_user)
+
+    p params.inspect
+    @is_white_glove_service = false
+    # if(params[:white_glove_user].to_s != "0")
+    #   current_user = params[:white_glove_user].to_s.to_i
+    #   current_user_account= Account.where(:user_id=>current_user)
+    #   current_user_account_type=current_user_account.office_id
+    #   @is_white_glove_service=true
+    # end
     if params[:bulk_property_type_switch] == 'sales_comps'
       not_for_sheet.merge!({
                                :is_sales_record => (params[:sale_record][:is_sales_record] == 'yes' ? true : false ),
@@ -139,6 +157,7 @@ class Uploader::ImportController < ApplicationController
                                :additional_ll_allowance        => params[:tenant_record][:additional_ll_allowance],
                                :additional_cost                => params[:tenant_record][:additional_cost],
                                :stepped_rents                  => params[:tenant_record][:stepped_rents_attributes],
+                               :has_lease_structure            => (params[:lease_structure]== 'yes'? true : false),
                                :class                          => 'TenantRecord'
                            })
       params[:tenant_record].except(:comp_data_type, :base_rent_type, :rent_escalation_type_percent, :rent_escalation_type_fixed, :rent_escalation_type_stepped, :free_rent_type_consecutive, :free_rent_type_non_consecutive, :gross_free_rent, :additional_tenant_cost, :additional_ll_allowance, :is_tenant_improvement, :has_additional_tenant_cost, :has_additional_ll_allowance, :additional_cost, :stepped_rents_attributes).to_hash.each_with_index { |(key, value), index|
@@ -157,29 +176,45 @@ class Uploader::ImportController < ApplicationController
 
     Rails.logger.debug  "-----"
     Rails.logger.debug  "User's office Id: #{current_user.account.office_id}"
+    if(@is_white_glove_service)
+        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user)
+        pre_existing = ImportTemplate.where(:id => white_glove.import_template_id)
+    else
     pre_existing = ImportTemplate.new(import_template_attributes.merge({
                                                              :name => name,
                                                              :reusable => false,
                                                              :user => current_user
                                                            }))
 
+    end
     mapping_structure = pre_existing.dup
     mapping_structure.name = [mapping_structure.name, Time.now.to_i.to_s].join(' ')
     import_mappings =  required_params #params[:tenant_record_import][:import_template_attributes][:import_mappings_attributes]
 
     import_mappings_dup = Marshal.load(Marshal.dump(import_mappings))
     CustomImportTemplateUtil.update_import_mappings mapping_structure, import_mappings
-    import = TenantRecordImport.create(:user => current_user,
+    if(@is_white_glove_service)
+      import= TenantRecordImport.where(:status => 'Enqueued for White Glove Service', :user_id => current_user, :import_template_id => white_glove.import_template_id)
+      if (import)
+        import.update_attributes(:import_template_id=>mapping_structure)
+      end
+    else
+      import = TenantRecordImport.create(:user => current_user,
                                        #:team_id => current_user.account.own_team.id,
                                        :import_template => mapping_structure )
+    end
+
+
 
     if params[:tenant_record_import_operating_expense_mapping] and !params[:tenant_record_import_operating_expense_mapping][:column_name][0].blank?
       params[:tenant_record_import_operating_expense_mapping][:column_name].each do |column|
-        TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import_id, :column_name => column})
+        TenantRecordImportOperatingExpenseMapping.create({:tenant_record_import_id => import.id, :column_name => column})
       end
     end
 
-    import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
+    CustomImportTemplateUtil.process_excel_file(import.id, file_path, original_file_name, import.import_template.id, current_user_account_type, import_mappings_dup, not_for_sheet)
+
+    #import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
 
 
    render json: { text: "ok" }

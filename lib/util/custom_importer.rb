@@ -7,9 +7,12 @@ module CustomImporter
 
     import = TenantRecordImport.find import_id
     record = self.template_converted_data(import, original_record)
-    params = record.merge( :user_id => import.user_id )
 
-    klass = Object.const_get not_for_sheet['class']
+    params = record.merge( "user_id" => import.user_id )
+
+    klass = Object.const_get not_for_sheet[:class]
+
+    p params.inspect
 
     tenant_record = klass.new do |t|
       params.each_pair { |k,v|
@@ -17,13 +20,15 @@ module CustomImporter
       }
     end
 
-    if not_for_sheet['class'] == 'TenantRecord'
-      tenant_record.set_lease_structure LeaseStructure.where(:name =>original_record[:custom][:lease_structure]['value']).first
-      if not_for_sheet.key?('base_rent_type') && not_for_sheet['base_rent_type'] == 'monthly'
+    if not_for_sheet[:class] == 'TenantRecord'
+      p original_record.inspect
+      ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"]).first
+      #tenant_record.set_lease_structure ls
+      if not_for_sheet.key?('base_rent_type') && not_for_sheet[:base_rent_type] == 'monthly'
         tenant_record.base_rent = tenant_record.base_rent.to_f * 12
       end
 
-      if not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_fixed'] && not_for_sheet['rent_escalation_type_stepped']
+      if not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_fixed] && not_for_sheet[:rent_escalation_type_stepped]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
@@ -31,9 +36,9 @@ module CustomImporter
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           end
         else
-          tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet
+          tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
         end
-      elsif not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_fixed']
+      elsif not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_fixed]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
@@ -41,86 +46,86 @@ module CustomImporter
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           end
         end
-      elsif not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_stepped']
+      elsif not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_stepped]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
           else
-            tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet
+            tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
           end
         end
-      elsif not_for_sheet['rent_escalation_type_fixed'] && not_for_sheet['rent_escalation_type_stepped']
+      elsif not_for_sheet[:rent_escalation_type_fixed] && not_for_sheet[:rent_escalation_type_stepped]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.fixed_escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           else
-            tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet
+            tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
           end
         end
-      elsif not_for_sheet['rent_escalation_type_percent']
+      elsif not_for_sheet[:rent_escalation_type_percent]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
           end
         end
-      elsif not_for_sheet['rent_escalation_type_fixed']
+      elsif not_for_sheet[:rent_escalation_type_fixed]
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.fixed_escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           end
         end
-      elsif not_for_sheet['rent_escalation_type_stepped']
-        tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet
+      elsif not_for_sheet[:rent_escalation_type_stepped]
+        tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet, original_record
       end
-      not_for_sheet = not_for_sheet.except('rent_escalation_type_percent')
-      not_for_sheet = not_for_sheet.except('rent_escalation_type_fixed')
-      not_for_sheet = not_for_sheet.except('rent_escalation_type_stepped')
-      not_for_sheet = not_for_sheet.except('additional_cost')
-      not_for_sheet = not_for_sheet.except('stepped_rents')
-      not_for_sheet = not_for_sheet.except('lease_stepped_rents')
+      not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
+      not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
+      not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
+      not_for_sheet = not_for_sheet.except(:additional_cost)
+      not_for_sheet = not_for_sheet.except(:stepped_rents)
+      not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
 
-      if not_for_sheet['free_rent_type_consecutive'] && not_for_sheet['free_rent_type_non_consecutive']
+      if not_for_sheet[:free_rent_type_consecutive] && not_for_sheet[:free_rent_type_non_consecutive]
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           tenant_record.free_rent_type = 'non consecutive'
         else
           tenant_record.free_rent_type = 'consecutive'
         end
-      elsif not_for_sheet['free_rent_type_consecutive']
+      elsif not_for_sheet[:free_rent_type_consecutive]
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           puts "error"
         else
           tenant_record.free_rent_type = 'consecutive'
         end
-      elsif not_for_sheet['free_rent_type_non_consecutive']
+      elsif not_for_sheet[:free_rent_type_non_consecutive]
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           tenant_record.free_rent_type = 'consecutive'
         else
           puts "error"
         end
       end
-      not_for_sheet = not_for_sheet.except('free_rent_type_consecutive')
-      not_for_sheet = not_for_sheet.except('free_rent_type_non_consecutive')
-      if not_for_sheet.key?('is_tenant_improvement') && !(not_for_sheet['is_tenant_improvement'])
+      not_for_sheet = not_for_sheet.except(:free_rent_type_consecutive)
+      not_for_sheet = not_for_sheet.except(:free_rent_type_non_consecutive)
+      if not_for_sheet.key?('is_tenant_improvement') && !(not_for_sheet[:is_tenant_improvement])
         tenant_record.tenant_improvement = 0.0
       end
-      if not_for_sheet.key?('has_additional_tenant_cost') && !(not_for_sheet['has_additional_tenant_cost'])
-        not_for_sheet['additional_tenant_cost'] = 0.0
+      if not_for_sheet.key?('has_additional_tenant_cost') && !(not_for_sheet[:has_additional_tenant_cost])
+        not_for_sheet[:additional_tenant_cost] = 0.0
       end
-      if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet['has_additional_ll_allowance'])
-        not_for_sheet['additional_ll_allowance'] = 0.0
+      if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet[:has_additional_ll_allowance])
+        not_for_sheet[:additional_ll_allowance] = 0.0
       end
     end
 
-    not_for_sheet = not_for_sheet.except('class')
-
+    not_for_sheet = not_for_sheet.except(:class)
+p not_for_sheet
     # just save custom
-    #tenant_record.custom = original_record[:custom] if original_record[:custom]
+    tenant_record.custom = original_record[:custom] if original_record[:custom]
     # just set the team
     #tenant_record.team = import.team
     tenant_record.user = import.user
 
     # checking stepped rent and if it has errors
-    has_stepped_errors = self.validate_stepped_rents(record)
+    has_stepped_errors =self.validate_stepped_rents(record)
 
     #tenant_record.validate_all = true
 
@@ -141,9 +146,9 @@ module CustomImporter
         tmp_record = ImportRecord.find record_id
       end
 
-      tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
-        e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
-      end
+      #tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
+      #  e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
+      #end
       tmp_record.record_valid = false
       tmp_record.record_errors = tenant_record.errors.to_hash
 
@@ -189,11 +194,14 @@ module CustomImporter
     record.merge!(:custom => custom_fields)
   end
 
-  def self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet
+  def self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
     tenant_record.rent_escalation_type = 'stepped_rent'
     tenant_record.is_stepped_rent = true
-    not_for_sheet['lease_stepped_rents'].each { |step|
-      tenant_record.stepped_rents.new('cost_per_month' => step['cost_per_month'], 'months' => step['months'])
+    not_for_sheet[:stepped_rents].each { |index, step|
+      p step
+      key=step[:cost_per_month].split(" ").join("_")
+      val=step[:months].split(" ").join("_")
+      tenant_record.stepped_rents.new(:cost_per_month => original_record[key], :months => original_record[val])
     }
     tenant_record
   end
@@ -202,7 +210,7 @@ module CustomImporter
   #
   def self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
     if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
-      #tenant_record.stepped_rents = self.save_stepped_rent(record, tenant_record.id)
+      tenant_record.stepped_rents = self.save_stepped_rent(record, tenant_record.id)
     end
     #import to tenant records and remove the temp_record
 
@@ -211,11 +219,13 @@ module CustomImporter
       tenant_record.cushman_net_effective_per_sf = cushman_results[:net_effective_rent]
     end
     tenant_record.is_stepped_rent = true if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
-    tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
+
+
+    #tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
 
     if tenant_record.save
-      if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet['custom_record_properties'].count) > 0 rescue false)
-        not_for_sheet['custom_record_properties'].each do |index, hash|
+      if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet[:custom_record_properties].count) > 0 rescue false)
+        not_for_sheet[:custom_record_properties].each do |index, hash|
           tenant_record.custom_record_properties.create(hash)
         end
       end
@@ -321,7 +331,7 @@ module CustomImporter
       converted_data.merge!( edge_case_format result  )
     end
     converted_data
-  end
+   end
 
   def self.edge_case_format h
     key, val = h.to_a.first
@@ -378,8 +388,8 @@ module CustomImporter
 
   def self.validate_stepped_rents(record)
     return false if record.keys.any? {|k, v| k.to_s.include? "base_rent"}
-    required_total, actual_total = *self.validate_stepped_rents_matches_lease_term_months(record)
-    required_total != actual_total
+    required_total, actual_total = *self.validate_stepped_rents_months_exist(record)
+    required_total <= actual_total
   end
 
   def self.validate_stepped_rents_matches_lease_term_months(record)
@@ -394,6 +404,19 @@ module CustomImporter
       end
     end
     [required_months, total_months]
+  end
+  def self.validate_stepped_rents_months_exist(record)
+    required_rents = 1
+    total_rents = 0
+    record.keys.each do |f|
+      if self.match_rent_months(f.to_s)
+        total_months +=1
+      end
+      if self.match_rent(f.to_s)
+        total_rents+=1 if !record[f].blank?
+      end
+    end
+    [required_rents, total_rents]
   end
 
   def self.is_stepped_rent_params(str)

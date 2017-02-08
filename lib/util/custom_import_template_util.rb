@@ -78,8 +78,9 @@ module CustomImportTemplateUtil
     missing_column_header = []
     import_mappings.each do |mapping|
       mapping = mapping.last
-      missing_column_header << mapping['record_column'] if mapping['spreadsheet_column'].empty?
+      missing_column_header << mapping[:record_column] if mapping[:spreadsheet_column].empty?
     end
+    # missing Columns headers check
 
     import = TenantRecordImport.find(import_id)
     begin
@@ -101,7 +102,7 @@ module CustomImportTemplateUtil
         raise Exception.new("##{col} column has no header name defined") if column.nil?
         column_names << column.to_s.strip
       end
-
+      p column_names
       errors = ""
       missing_not_required_columns = []
       removed_not_required_columns = []
@@ -157,30 +158,32 @@ module CustomImportTemplateUtil
       import.update_attributes(:status => "Validating records...", :total_record_count => total)
       @sheet.parse(:header_search => column_names[0..1], :clean => true).each_with_index do |row, i|
         if i > 0
+          p row
+
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
-          if not_for_sheet['class'] == "TenantRecord"
-            not_for_sheet['additional_tenant_cost'] = 0.0
-            not_for_sheet['additional_ll_allowance'] = 0.0
+          if not_for_sheet[:class] == "TenantRecord"
+            not_for_sheet[:additional_tenant_cost] = 0.0
+            not_for_sheet[:additional_ll_allowance] = 0.0
             lease_stepped_rents = []
-            if !(not_for_sheet['additional_cost'].nil?)
-              if !(not_for_sheet['additional_cost']['tenant'].nil?)
-                not_for_sheet['additional_cost']['tenant'].each { |cost_column|
-                  not_for_sheet['additional_tenant_cost'] += row[cost_column.last].to_f
+            if !(not_for_sheet[:additional_cost].nil?)
+              if !(not_for_sheet[:additional_cost][:tenant].nil?)
+                not_for_sheet[:additional_cost][:tenant].each { |cost_column|
+                  not_for_sheet[:additional_tenant_cost] += row[cost_column.last].to_f
                 }
               end
-              if !(not_for_sheet['additional_cost']['ll'].nil?)
-                not_for_sheet['additional_cost']['ll'].each { |cost_column|
-                  not_for_sheet['additional_ll_allowance'] += row[cost_column.last].to_f
+              if !(not_for_sheet[:additional_cost][:ll].nil?)
+                not_for_sheet[:additional_cost][:ll].each { |cost_column|
+                  not_for_sheet[:additional_ll_allowance] += row[cost_column.last].to_f
                 }
               end
             end
             Sidekiq::Logging.logger.debug "*****************************************************"
-            Sidekiq::Logging.logger.debug not_for_sheet['rent_escalation_type_stepped']
-            if !(not_for_sheet['stepped_rents'].nil?)
-              if (not_for_sheet['rent_escalation_type_stepped'] and not_for_sheet['stepped_rents'].count > 0 )
+            Sidekiq::Logging.logger.debug not_for_sheet[:rent_escalation_type_stepped]
+            if !(not_for_sheet[:stepped_rents].nil?)
+              if (not_for_sheet[:rent_escalation_type_stepped] and not_for_sheet[:stepped_rents].count > 0 )
                 counter = 0
-                not_for_sheet['stepped_rents'].each { |step|
-                  lease_stepped_rents[counter] = {'cost_per_month' => row[step.last['cost_per_month']].to_f , 'months' => row[step.last['months']].to_i}
+                not_for_sheet[:stepped_rents].each { |step|
+                  lease_stepped_rents[counter] = {'cost_per_month' => row[step.last[:cost_per_month]].to_f , 'months' => row[step.last[:months]].to_i}
                   counter += 1
                 }
                 not_for_sheet.merge!({
