@@ -82,8 +82,13 @@ class ConnectionRequestsController < ApplicationController
         redirect_to verifications_verify_url
       end
     else
-      session[:after_login_redirect] = accept_connection_request_url(@connection_request.id)
+      if !User.find(@connection_request.receiver.id).first_name.blank?
+        session[:after_login_redirect] = accept_connection_request_url(@connection_request.id)
+        redirect_to new_user_session_url
+      else
+      #session[:after_login_redirect] = accept_connection_request_url(@connection_request.id)
       redirect_to new_user_session_url
+      end
     end
 
 

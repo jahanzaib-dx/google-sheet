@@ -517,7 +517,12 @@ class TenantRecord < ActiveRecord::Base
 
   ## legacy
   def lease_structure
-    (self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
+    p self[:data]
+    p self.attributes
+
+    a=""
+
+    #(self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
   end
 
   def lease_structure_id
@@ -559,21 +564,21 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def set_lease_structure(ls)
-    # self.lease_structure = ls.name
-    # self.lease_structure_description = ls.description
-    # self.discount_rate = ls.discount_rate
-    # self.interest_rate = ls.interest_rate
-    #
-    #
-    # self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
-    # ls.expenses.each do |e|
-    #   exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
-    #   self[:data]["#{exp_name}_cost"] = e.default_cost
-    #   self[:data]["#{exp_name}_calc_type"] = e.calculation_type
-    #   self[:data]["#{exp_name}_increase_percent"] = e.increase_percent
-    #   self[:data]["#{exp_name}_start_date"] = e.start_date
-    #   self[:data]["#{exp_name}_delay_start_date"] = e.delay_start_date
-    # end
+    self.lease_structure = ls.name
+    self.lease_structure_description = ls.description
+    self.discount_rate = ls.discount_rate
+    self.interest_rate = ls.interest_rate
+
+
+    self.destroy_keys :data, self[:data].keys.grep(/^leasestructure_expenses_/)
+    ls.expenses.each do |e|
+      exp_name = "leasestructure_expenses_#{e.name.parameterize('_')}"
+      self[:data]["#{exp_name}_cost"] = e.default_cost
+      self[:data]["#{exp_name}_calc_type"] = e.calculation_type
+      self[:data]["#{exp_name}_increase_percent"] = e.increase_percent
+      self[:data]["#{exp_name}_start_date"] = e.start_date
+      self[:data]["#{exp_name}_delay_start_date"] = e.delay_start_date
+    end
 
   end
 
@@ -631,6 +636,8 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def custom=(v)
+    v.inspect
+
     custom = {}
     if v.is_a? Array or v.is_a? HashWithIndifferentAccess or v.is_a? Hash
       v.values.collect { |x| custom[x["key"].gsub(/\ /, "_").gsub("\n","_").downcase.to_sym] = x["value"] }
@@ -750,7 +757,7 @@ class TenantRecord < ActiveRecord::Base
     self.comp_type = comp_type.to_s.downcase
     self.comp_type ||= 'internal'
     self.escalation ||= 0.00
-    self.lease_structure ||= TenantRecord::LEASE_STRUTURE[0]
+    self.lease_structure ||= "Full service"
     self.lease_type = lease_type.to_s.strip.presence || '-'
 
     # Need to set default first_year_base_rent to base rent

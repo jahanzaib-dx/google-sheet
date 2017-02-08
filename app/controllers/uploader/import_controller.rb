@@ -47,9 +47,12 @@ class Uploader::ImportController < ApplicationController
     @import = TenantRecordImport.new
     @import.lease_structure = LeaseStructure.new
     @import.import_template = ImportTemplate.new
-    if(params[:id] && params[:id]!="")
+    if(params[:user_id] && params[:user_id]!="")
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
-      @white_glove_user = crypt.decrypt_and_verify(params[:id])
+      @white_glove_user = crypt.decrypt_and_verify(params[:user_id])
+
+    else
+      @white_glove_user = "Nil"
     end
     #@white_glove_user=12
     TenantRecord::REQUIRED_FIELDS.each_with_index do |required_field, i|
@@ -97,13 +100,12 @@ class Uploader::ImportController < ApplicationController
 
     required_params = {}
     not_for_sheet = {}
-    #p temp=params[:tenant_record_lease_structure][:leasename]
-    #params.merge!({:lease_structure_name=> temp})
-    #params.require(:post).permit(:some_attribute).merge(user_id: current_user.id)
+    params.permit(:white_glove_user)
+
     p params.inspect
     @is_white_glove_service = false
-    # if(params[:white_glove_user])
-    #   current_user = params[:white_glove_user]
+    # if(params[:white_glove_user].to_s != "0")
+    #   current_user = params[:white_glove_user].to_s.to_i
     #   current_user_account= Account.where(:user_id=>current_user)
     #   current_user_account_type=current_user_account.office_id
     #   @is_white_glove_service=true
@@ -155,6 +157,7 @@ class Uploader::ImportController < ApplicationController
                                :additional_ll_allowance        => params[:tenant_record][:additional_ll_allowance],
                                :additional_cost                => params[:tenant_record][:additional_cost],
                                :stepped_rents                  => params[:tenant_record][:stepped_rents_attributes],
+                               :has_lease_structure            => (params[:lease_structure]== 'yes'? true : false),
                                :class                          => 'TenantRecord'
                            })
       params[:tenant_record].except(:comp_data_type, :base_rent_type, :rent_escalation_type_percent, :rent_escalation_type_fixed, :rent_escalation_type_stepped, :free_rent_type_consecutive, :free_rent_type_non_consecutive, :gross_free_rent, :additional_tenant_cost, :additional_ll_allowance, :is_tenant_improvement, :has_additional_tenant_cost, :has_additional_ll_allowance, :additional_cost, :stepped_rents_attributes).to_hash.each_with_index { |(key, value), index|

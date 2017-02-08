@@ -102,7 +102,7 @@ module CustomImportTemplateUtil
         raise Exception.new("##{col} column has no header name defined") if column.nil?
         column_names << column.to_s.strip
       end
-
+      p column_names
       errors = ""
       missing_not_required_columns = []
       removed_not_required_columns = []
@@ -158,6 +158,8 @@ module CustomImportTemplateUtil
       import.update_attributes(:status => "Validating records...", :total_record_count => total)
       @sheet.parse(:header_search => column_names[0..1], :clean => true).each_with_index do |row, i|
         if i > 0
+          p row
+
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
           if not_for_sheet[:class] == "TenantRecord"
             not_for_sheet[:additional_tenant_cost] = 0.0

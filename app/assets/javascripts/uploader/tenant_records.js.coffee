@@ -110,6 +110,7 @@ $('.tenant-record-map-view').each ->
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
   submit_is = $(@).closest('form')
+  alert(submit_is)
   if submit_is.validationEngine('validate')
     submit_is.submit()
 
@@ -431,7 +432,7 @@ $(document).ready ->
     e.preventDefault()
     container = $('#custom-fields-table tbody')
     row = container.find('tr').length - 1 + 1
-    container.append(Mustache.render($('#custom-field-row-tmpl').html(), { row: '_new_' + row }))
+    container.append(Mustache.render($('#custom-field-row-tmpl').html(), { row: row }))
     activate_auto_selection()
 
   $(document).on 'click', '.delete-custom-field', (e) ->
