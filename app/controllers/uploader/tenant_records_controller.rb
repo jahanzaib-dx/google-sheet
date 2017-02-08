@@ -39,9 +39,11 @@ class Uploader::TenantRecordsController < ApplicationController
       @tenant_record.lease_commencement_date = Date.strptime(params[:tenant_record][:lease_commencement_date], "%m/%d/%Y")
 
       hash = params[:custom_record][:custom]
-      a= hash.values
-      b = a.map { |h| [h["key"] , h["value"]] }.to_h
-      @tenant_record.custom_data = b
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        @tenant_record.custom_data = b
+      end
 
 
       save_tenant_record @tenant_record
@@ -57,9 +59,11 @@ class Uploader::TenantRecordsController < ApplicationController
 
 
       hash =params[:sale_record][:custom]
-      a= hash.values
-      b = a.map { |h| [h["key"] , h["value"]] }.to_h # saving custom data as a hash
-      @sale_record.custom = b
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h # saving custom data as a hash
+        @sale_record.custom = b
+      end
       ## find lat/lon if it hasn't been done already
       begin
         geocode_setup(@sale_record)
@@ -147,9 +151,11 @@ class Uploader::TenantRecordsController < ApplicationController
       trec.additional_tenant_cost = tenant_cost_sum
     end
       hash = params[:custom_record][:custom]
-      a= hash.values
-      b = a.map { |h| [h["key"] , h["value"]] }.to_h
-      trec.custom_data = b
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        trec.custom_data = b
+      end
 
     if params[:tenant_record][:has_additional_ll_allowance] && params[:additional_ll_cost_tmp].to_i > 0
       ll_cost_sum = 0.0
