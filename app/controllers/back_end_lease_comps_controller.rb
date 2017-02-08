@@ -451,8 +451,8 @@ class BackEndLeaseCompsController < ApplicationController
             error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. G#{counter} "+result[:errors][:geocode_info].to_s : ""
           end
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          # error_string += (ws[counter, 9] == '')? "</br>Cell no. H#{counter} is required" : ""
+          # error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
           error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
           error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
