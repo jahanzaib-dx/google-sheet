@@ -463,9 +463,7 @@ $(document).ready ->
     e.preventDefault()
     container = $('#custom-fields-table tbody')
     row = container.find('tr').length - 1 + 1
-
     container.append(Mustache.render($('#custom-field-row-tmpl-3').html(), { row: '_new_' + row }))
-
     activate_auto_selection()
 
   $(document).on 'click', '.add-custom-data-single-comp1', (e) ->
