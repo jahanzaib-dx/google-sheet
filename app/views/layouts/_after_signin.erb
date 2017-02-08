@@ -21,10 +21,10 @@
         <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#">Comps <b class="caret"></b></a>
         <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
 			 <li role="presentation tx_new_customer">
-                <a href="#">Searchable Lease Comps (<%= TenantRecord.my_ids.count%>)</a>
+                <a href="#">Searchable Lease Comps (<%= TenantRecord.con_ids.count%>)</a>
             </li>
 			 <li role="presentation tx_new_customer">
-                <a href="#">Searchable Sale Comps (<%= SaleRecord.my_ids.count%>)</a> 
+                <a href="#">Searchable Sale Comps (<%= SaleRecord.con_ids.count%>)</a> 
             </li>
         </ul>
     </li>
