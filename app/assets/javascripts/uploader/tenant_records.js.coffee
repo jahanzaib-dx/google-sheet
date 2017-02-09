@@ -120,7 +120,7 @@ $('.tenant-record-map-view').each ->
 $(document).on 'click', '#single-comp-continue-4, #sales-comp-continue-3, #custom-comp-continue-3', (e) ->
   e.preventDefault()
   submit_is = $(@).closest('form')
-  console.log('sale_comps_add')
+
   if submit_is.validationEngine('validate')
     submit_is.submit()
 
