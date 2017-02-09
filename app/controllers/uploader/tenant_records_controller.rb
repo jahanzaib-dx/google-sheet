@@ -282,7 +282,8 @@ class Uploader::TenantRecordsController < ApplicationController
         :has_additional_tenant_cost,
         :has_additional_ll_allowance,
         :lease_structure_expenses_attributes,
-        :stepped_rents_attributes => [:months	, :cost_per_month]
+        :stepped_rents_attributes => [:months	, :cost_per_month],
+        custom: [],
     )
   end
 
