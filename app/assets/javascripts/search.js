@@ -21,6 +21,7 @@ $(function() {
 
 
      $('.resetit').val('').selectpicker('refresh');
+     $('.checkbox-info input[type="checkbox"]').prop('checked', false);
      $('.show-hide-div2').attr('style','display: none !important');
      $('.show-hide-div').attr('style','display: block !important');
      $('.show-hide-div3').attr('style','display: none !important');
@@ -42,6 +43,7 @@ $(function() {
     } else {
 
       $('.resetit').val('').selectpicker('refresh');
+      $('.checkbox-info input[type="checkbox"]').prop('checked', false);
       $('.show-hide-div2').attr('style','display: block !important');
       $('.show-hide-div').attr('style','display: none !important');
       $('.show-hide-div4').attr('style','display: none !important');
@@ -137,7 +139,7 @@ $(function() {
 
    $( document ).on( "click", ".clear-btn", function() {
 		$('.resetit').val('').selectpicker('refresh');
-		$('.checkbox-info').selectpicker('refresh');
+		$('.checkbox-info input[type="checkbox"]').prop('checked', false);
   });
   
     $("#lease_property_check").change(function () {
