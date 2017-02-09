@@ -22,7 +22,7 @@ module GoogleGeocoder
     combined_fields = address_only ? ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}") :
         ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{(tenant_hash[:zipcode].present? ? tenant_hash[:zipcode] : '')}")
     #("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:zipcode]}")
-    uri = URI.encode("https://maps.googleapis.com/maps/api/geocode/json?address=#{combined_fields}&key=#{ENV['google_geocode_key']}")
+    uri = URI.encode("https://maps.googleapis.com/maps/api/geocode/json?address=#{combined_fields}&key=AIzaSyAiX-5uM4E2QtEVLOhyfti8YaomGndX240")
 
     Rails.logger.debug "****************************************************************************"
     Rails.logger.debug "GEOCODE URL: #{uri}"
