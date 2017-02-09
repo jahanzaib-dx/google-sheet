@@ -138,6 +138,19 @@ $(function() {
    $( document ).on( "click", ".clear-btn", function() {
 		$('.resetit').val('').selectpicker('refresh');
   });
+  
+    $("#lease_property_check").change(function () {
+        $(".all_lease_p input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#sale_property_check").change(function () {
+        $(".all_sale_p input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#lease_submarket_check").change(function () {
+        $(".all_lease_smkt input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#sale_submarket_check").change(function () {
+        $(".all_sale_smkt input:checkbox").prop('checked', $(this).prop("checked"));
+    });
 
 
 
