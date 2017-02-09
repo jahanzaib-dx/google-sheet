@@ -135,7 +135,7 @@
 					  <% TenantRecord::all_property_type.each do |pt|  %>
 					  	<li>
 					  		<div class="checkbox checkbox-info all_lease_p">
-	                          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input resetit">
+	                          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input">
 	                          <label for="checkbox8"> <%= pt.name.capitalize %> </label>
 	                        </div>
 	                    </li>
@@ -162,7 +162,7 @@
 					  <% SaleRecord::all_property_type.each do |pt|  %>
 					  	<li>
 					  		<div class="checkbox checkbox-info all_sale_p">
-					          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.downcase%>" class="sale_filter_input resetit">
+					          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.downcase%>" class="sale_filter_input">
 					          <label for="checkbox8"> <%= pt.capitalize %> </label>
 					        </div>
 					    </li>
@@ -195,7 +195,7 @@
 					  <% TenantRecord::lease_sub_markets.each do |pt|  %>
 					  	<li>
 					  		<div class="checkbox checkbox-info all_lease_smkt">
-	                          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="lease_filter_input resetit">
+	                          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="lease_filter_input">
 	                          <label for="checkbox8"> <%= pt.capitalize %> </label>
 	                        </div>
 	                    </li>
@@ -222,7 +222,7 @@
 					  <% SaleRecord::sale_sub_markets.each do |pt|  %>
 					  	<li>
 					  		<div class="checkbox checkbox-info all_sale_smkt">
-					          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="sale_filter_input resetit">
+					          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="sale_filter_input" >
 					          <label for="checkbox8"> <%= pt.capitalize %> </label>
 					        </div>
 					    </li>
