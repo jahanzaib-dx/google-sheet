@@ -137,6 +137,7 @@ $(function() {
 
    $( document ).on( "click", ".clear-btn", function() {
 		$('.resetit').val('').selectpicker('refresh');
+		$('.checkbox-info').selectpicker('refresh');
   });
   
     $("#lease_property_check").change(function () {
