@@ -7,7 +7,7 @@
 <%= @user.first_name.capitalize %> has approved your request.
 
 <br><br>
-Please <a href="<%= (@shared.comp_type=='lease')?search_lease_comp_url():search_sale_comp_url() %>/<%= @shared.comp_id %>">click here</a> to view details.
+Please <a href="<%= (@shared.comp_type=='lease')?search_lease_comp_url():search_sale_comp_url() %>/<%= @email_comp_id %>">click here</a> to view details.
 
 	<br>
 </div>

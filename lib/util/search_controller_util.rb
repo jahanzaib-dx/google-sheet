@@ -271,7 +271,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
     ##tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
     
     tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
-    ##tenant_records = tenant_records.where("address1 not in (select address1 from tenant_records where user_id=?)" , User.current_user.id)
+    ##tenant_records = tenant_records.where("(address1 not in (select address1 from tenant_records where user_id=?) and user_id!=#{current_user.id})" , User.current_user.id)
     
     ##tenant_records = tenant_records.where("tenant_records.address1 (not in (?)) ",dup_tenant_records.join(","))
     
