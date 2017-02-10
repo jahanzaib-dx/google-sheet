@@ -30,7 +30,7 @@
               <label>Total Users</label>
             </div>
             <div class="col-md-10">
-              <label><%=@user_count%></label>
+              <label><%= link_to @user_count, users_users_list_url, :style => "text-decoration: underline;"%></label>
             </div>
           </div>
           <div class="row">
