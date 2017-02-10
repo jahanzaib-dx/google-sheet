@@ -635,18 +635,18 @@ module SearchControllerUtil
       
       
       
-      query = "
-select z.id,z.address1,z.user_id from (
-select y.id,y.address1,y.user_id from sale_records y
-            where (select count(*) from sale_records dt
-            where  y.address1 = dt.address1
-            and (dt.user_id in (#{connections_ids}) or dt.user_id = #{current_user.id})
-            ) > 1 
-and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by y.address1 
-) as z where z.user_id = #{current_user.id}
-"
-
-    dup_tenant_records = SaleRecord.find_by_sql(query).map{|v| v.address1 }
+      # query = "
+# select z.id,z.address1,z.user_id from (
+# select y.id,y.address1,y.user_id from sale_records y
+            # where (select count(*) from sale_records dt
+            # where  y.address1 = dt.address1
+            # and (dt.user_id in (#{connections_ids}) or dt.user_id = #{current_user.id})
+            # ) > 1 
+# and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by y.address1 
+# ) as z where z.user_id = #{current_user.id}
+# "
+# 
+    # dup_tenant_records = SaleRecord.find_by_sql(query).map{|v| v.address1 }
     
     ##dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
