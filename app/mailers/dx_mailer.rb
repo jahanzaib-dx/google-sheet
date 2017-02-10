@@ -16,8 +16,8 @@ helper :comp
 	end
 	
 	def outgoing_reminder(comp_request)
-    @comp_request = comp_request
-	  mail(to: comp_request.received_by.email, subject: "Comp Sharing Request - Reminder")
+	  @comp_request = comp_request
+    mail(to: comp_request.received_by.email, subject: "New Unlock Request - Reminder")
 	end
 	
 	def welcome_email(user)
