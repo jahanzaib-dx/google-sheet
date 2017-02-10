@@ -230,7 +230,7 @@ and (y.user_id in (#{connections_ids}) or y.user_id=#{current_user.id}) order by
 "
 
 dup_tenant_records = TenantRecord.select("address1")
-                     .where("address1 not in (select address1 from tenant_records where user_id=?)" , User.current_user.id)
+                     .where("user_id=?" , current_user.id)
                      .map{|v| v.address1 }
 
     #######dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
