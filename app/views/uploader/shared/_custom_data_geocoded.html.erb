@@ -39,13 +39,14 @@
 <script type="text/template" id="custom-field-row-tmpl-1">
   <tr>
     <td>
-      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][key]" %>
+      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][key]" ,  :class =>'validate[required]'%>
     </td>
     <td>
-      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][value]" %>
+      <%= text_field :custom, "{{row}}", name: "tenant_record[custom][{{row}}][value]"%>
     </td>
     <td class="actions">
       <a href="#" type="button" class='btn btn-red delete-custom-field'><u><span>Delete</span></u></a>
     </td>
   </tr>
 </script>
+

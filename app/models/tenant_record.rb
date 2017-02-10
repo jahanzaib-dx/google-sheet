@@ -75,7 +75,7 @@ class TenantRecord < ActiveRecord::Base
   LOCATION_TYPE        = %w[branch headquarters]
   PROPERTY_TYPE        = ["office", "industrial", "retail", "flex"]
   SALES_PROPERTY_TYPE = %w[healthcare hospitality industrial multifamily office portfolio retail single-family speciality other]
-  REQUIRED_FIELDS = %w[company address1 suite city state zipcode
+  REQUIRED_FIELDS = %w[company address1 suite city state zipcode custom_data custom
   base_rent class_type comp_type contact contact_email contact_phone lease_type
   escalation free_rent industry_sic_code_id lease_commencement_date lease_term_months
   property_type size tenant_improvement tenant_ti_cost discount_percentage
