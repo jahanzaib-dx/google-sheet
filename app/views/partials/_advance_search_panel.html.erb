@@ -119,74 +119,59 @@
 
 
               <div class="col-md-6 col-sm-6 formgroup_input"> <span>Property Type </span>
-                <div class="btn-group tx_btn_group">
-                  <div class="show-hide-div2">
-                    <div class="tx_dropdown_toggl tx-drop-down-select">
-                      <div class="btn-group bootstrap-select filters_type">
-                        <div class="fixed-height">
-                          <div class="selectBox2" onclick="showCheckboxes()">
-                            <select>
-                              <option>Choose</option>
-                            </select>
-                            <div class="overSelect"></div>
-                            <div id="checkboxes">
-                              <div class="checkbox checkbox-info">
-                                <input type="checkbox" id="checkbox7" >
-                                <label for="checkbox7"> Select All </label>
-                              </div>
-
-                              <% TenantRecord::all_property_type.each do |pt|  %>
-                                  <div class="checkbox checkbox-info all_clicked">
-                                    <input type="checkbox" id="checkbox8" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input">
-                                    <label for="checkbox8"> <%= pt.name.capitalize %> </label>
-                                  </div>
-                              <% end %>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-                  </div>
-
+              	
+                <div class="btn-group tx_btn_group multiple-select-checkbox lease_filter">
+                	
+                	<div class="button-group">
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret caret-pos"></span></button>
+					<ul class="dropdown-menu grop-check-list scrollable-menu">
+					  <li>					  
+						  <div class="checkbox checkbox-info">
+						      <input type="checkbox" id="lease_property_check" class="lease_filter_input resetit" >
+						      <label for="lease_property_check"> Select All </label>
+						  </div>
+					  </li>
+					  
+					  <% TenantRecord::all_property_type.each do |pt|  %>
+					  	<li>
+					  		<div class="checkbox checkbox-info all_lease_p">
+	                          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.name%>" class="lease_filter_input">
+	                          <label for="checkbox8"> <%= pt.name.capitalize %> </label>
+	                        </div>
+	                    </li>
+                      <% end %>
+					 
+					</ul>
+					</div>  
+					  
                 </div>
-
-                <div class="lease-selected">
-                  <div class="btn-group tx_btn_group">
-                    <div class="show-hide-div">
-                      <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <div class="btn-group bootstrap-select filters_type">
-                          <div class="fixed-height">
-
-                            <div class="selectBox2" onclick="showCheckboxesToo()">
-                              <select>
-                                <option>Choose</option>
-                              </select>
-                              <div class="overSelect"></div>
-                              <div id="checkboxes2">
-                                <div class="checkbox checkbox-info">
-                                  <input type="checkbox" id="checkbox77" >
-                                  <label for="checkbox7"> Select All </label>
-                                </div>
-
-                                <% SaleRecord::all_property_type.each do |pt|  %>
-                                    <div class="checkbox checkbox-info all_clicked77">
-                                      <input type="checkbox" id="checkbox88" name="tenant_record[property_type][]" value="<%= pt %>" class="sales_filter_input">
-                                      <label for="checkbox88"> <%= pt.capitalize %> </label>
-                                    </div>
-                                <% end %>
-                              </div>
-                            </div>
-                          </div>
-
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
+                
+                <div class="btn-group tx_btn_group multiple-select-checkbox sales_filter">
+                	
+					<div class="button-group">
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret caret-pos"></span></button>
+					<ul class="dropdown-menu grop-check-list scrollable-menu">
+					  <li>					  
+						  <div class="checkbox checkbox-info">
+						      <input type="checkbox" id="sale_property_check" class="sale_filter_input resetit" >
+						      <label for="sale_property_check"> Select All </label>
+						  </div>
+					  </li>
+					  
+					  <% SaleRecord::all_property_type.each do |pt|  %>
+					  	<li>
+					  		<div class="checkbox checkbox-info all_sale_p">
+					          <input type="checkbox" name="tenant_record[property_type][]" value="<%= pt.downcase%>" class="sale_filter_input">
+					          <label for="checkbox8"> <%= pt.capitalize %> </label>
+					        </div>
+					    </li>
+					  <% end %>
+					 
+					</ul>
+					</div>
+					
+				</div>
 
 
 
@@ -194,79 +179,62 @@
 
               </div>
               <div class="col-md-6 col-sm-6 formgroup_input margin-top-div"> <span>Submarket </span>
-                <div class="btn-group tx_btn_group">
-                  <div class="show-hide-div3">
-                    <div class="tx_dropdown_toggl tx-drop-down-select">
-                      <div class="btn-group bootstrap-select filters_type">
-                        <div class="fixed-height">
-                          <div class="selectBox" onclick="showCheckboxes3()">
-                            <select>
-                              <option>Choose</option>
-                            </select>
-                            <div class="overSelect"></div>
-                            <div id="checkboxes3">
-
-                              <div class="checkbox checkbox-info">
-                                <input type="checkbox" id="checkbox3" >
-                                <label for="checkbox3"> Select All </label>
-                              </div>
-                              <% TenantRecord::lease_sub_markets.each do |pt|  %>
-                                  <div class="checkbox checkbox-info all_clicked30">
-                                    <input type="checkbox" id="checkbox8" name="tenant_record[submarket][]" value="<%= pt%>" class="lease_filter_input">
-                                    <label for="checkbox8"> <%= pt %> </label>
-                                  </div>
-                              <% end %>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-                  </div>
-
+                
+				<div class="btn-group tx_btn_group multiple-select-checkbox lease_filter">
+                	
+                	<div class="button-group">
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret caret-pos"></span></button>
+					<ul class="dropdown-menu grop-check-list scrollable-menu">
+					  <li>					  
+						  <div class="checkbox checkbox-info">
+						      <input type="checkbox" id="lease_submarket_check" class="lease_filter_input resetit" >
+						      <label for="lease_submarket_check"> Select All </label>
+						  </div>
+					  </li>
+					  
+					  <% TenantRecord::lease_sub_markets.each do |pt|  %>
+					  	<li>
+					  		<div class="checkbox checkbox-info all_lease_smkt">
+	                          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="lease_filter_input">
+	                          <label for="checkbox8"> <%= pt.capitalize %> </label>
+	                        </div>
+	                    </li>
+                      <% end %>
+					 
+					</ul>
+					</div>  
+					  
                 </div>
-
-                <div class="lease-selected">
-                  <div class="btn-group tx_btn_group">
-                    <div class="show-hide-div4">
-                      <div class="tx_dropdown_toggl tx-drop-down-select">
-                        <div class="btn-group bootstrap-select filters_type">
-                          <div class="fixed-height">
-
-                            <div class="selectBox" onclick="showCheckboxes4()">
-                              <select>
-                                <option>Choose</option>
-                              </select>
-                              <div class="overSelect"></div>
-                              <div id="checkboxes4">
-                                <div class="checkbox checkbox-info">
-                                  <input type="checkbox" id="checkbox4" >
-                                  <label for="checkbox4"> Select All </label>
-                                </div>
-
-
-                                <% SaleRecord::sale_sub_markets.each do |pt|  %>
-                                    <div class="checkbox checkbox-info all_clicked40">
-                                      <input type="checkbox" id="checkbox88" name="tenant_record[submarket][]" value="<%= pt %>" class="sales_filter_input">
-                                      <label for="checkbox88"> <%= pt %> </label>
-                                    </div>
-                                <% end %>
-                              </div>
-                            </div>
-                          </div>
-
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-
+                
+                
+                <div class="btn-group tx_btn_group multiple-select-checkbox sales_filter">
+                	
+					<div class="button-group">
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret caret-pos"></span></button>
+					<ul class="dropdown-menu grop-check-list scrollable-menu">
+					  <li>					  
+						  <div class="checkbox checkbox-info">
+						      <input type="checkbox" id="sale_submarket_check" class="sale_filter_input resetit" >
+						      <label for="sale_submarket_check"> Select All </label>
+						  </div>
+					  </li>
+					  
+					  <% SaleRecord::sale_sub_markets.each do |pt|  %>
+					  	<li>
+					  		<div class="checkbox checkbox-info all_sale_smkt">
+					          <input type="checkbox" name="tenant_record[submarket][]" value="<%= pt.downcase%>" class="sale_filter_input" >
+					          <label for="checkbox8"> <%= pt.capitalize %> </label>
+					        </div>
+					    </li>
+					  <% end %>
+					 
+					</ul>
+					</div>
+					
+				</div>
+				
+				
+				
 
               </div>
             </div>

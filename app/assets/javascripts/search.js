@@ -21,6 +21,7 @@ $(function() {
 
 
      $('.resetit').val('').selectpicker('refresh');
+     $('.checkbox-info input[type="checkbox"]').prop('checked', false);
      $('.show-hide-div2').attr('style','display: none !important');
      $('.show-hide-div').attr('style','display: block !important');
      $('.show-hide-div3').attr('style','display: none !important');
@@ -42,6 +43,7 @@ $(function() {
     } else {
 
       $('.resetit').val('').selectpicker('refresh');
+      $('.checkbox-info input[type="checkbox"]').prop('checked', false);
       $('.show-hide-div2').attr('style','display: block !important');
       $('.show-hide-div').attr('style','display: none !important');
       $('.show-hide-div4').attr('style','display: none !important');
@@ -137,7 +139,21 @@ $(function() {
 
    $( document ).on( "click", ".clear-btn", function() {
 		$('.resetit').val('').selectpicker('refresh');
+		$('.checkbox-info input[type="checkbox"]').prop('checked', false);
   });
+  
+    $("#lease_property_check").change(function () {
+        $(".all_lease_p input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#sale_property_check").change(function () {
+        $(".all_sale_p input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#lease_submarket_check").change(function () {
+        $(".all_lease_smkt input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $("#sale_submarket_check").change(function () {
+        $(".all_sale_smkt input:checkbox").prop('checked', $(this).prop("checked"));
+    });
 
 
 
