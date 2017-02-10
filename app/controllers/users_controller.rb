@@ -32,10 +32,13 @@ class UsersController  < ApplicationController
       @lease_count = TenantRecord.all.count
       @sale_count =  SaleRecord.all.count
       @user_count = User.all.count
-      p @user_count
     else
       redirect_to '/sub_users'
     end
+  end
+
+  def users_list
+    @users = User.all
   end
 
   def sub_users

@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   post 'verifications/verify' => 'verifications#verify'
 
   get 'users' => 'users#index'
+  get 'users/users_list' => 'users#users_list'
   get 'sub_users' => 'users#sub_users'
   get 'sub_users/:id' => 'users#sub_users'
   post 'sub_users' => 'users#sub_users_create'

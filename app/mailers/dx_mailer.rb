@@ -40,7 +40,8 @@ helper :comp
 
 	def flag_comp_email(user,message)
 		@user = user
-		mail( :to => @user.email, :subject => message )
+		@message = message
+		mail( :to => @user.email, :subject => 'Flagged Comp' )
 	end
 
 	def white_glove_service_email(email,file,encrypted_data)
