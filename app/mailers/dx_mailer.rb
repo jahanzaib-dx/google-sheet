@@ -54,8 +54,9 @@ helper :comp
     mail(to: comp_request.received_by.email, subject: "New Unlock Request")
   end
   
-  def comp_request_approved(comp_request)
+  def comp_request_approved(comp_request,email_comp_id=0)
     @comp_request = comp_request
+    @email_comp_id = email_comp_id
     mail(to: comp_request.initiated_by.email, subject: "Request Approved")
   end
   
@@ -64,9 +65,10 @@ helper :comp
     mail( :to => comp_request.initiated_by.email, :subject => "Request Declined" )
   end
   
-  def comp_request_approved_update(user,shared)
+  def comp_request_approved_update(user,shared,email_comp_id=0)
     @shared = shared
     @user = user
+    @email_comp_id = email_comp_id
     mail(to: shared.user.email, subject: "Request Approved")
   end
   
