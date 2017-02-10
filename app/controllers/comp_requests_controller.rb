@@ -302,7 +302,7 @@ class CompRequestsController < ApplicationController
       shared.save()
       
       if shared.user.settings.email
-        email_comp_id = (child_comp==0)?shared.comp_id:child_comp
+        email_comp_id = if child_comp == 0 then shared.comp_id else child_comp end
         DxMailer.comp_request_approved_update(current_user,shared).deliver
       end
         

@@ -104,7 +104,7 @@ class CompRequest < ActiveRecord::Base
     shared.save
     
     if comp_request.initiated_by.settings.email
-      email_comp_id = (child_comp==0)?comp_request.comp_id:child_comp
+      email_comp_id = if child_comp == 0 then comp_request.comp_id else child_comp end
       DxMailer.comp_request_approved(comp_request,email_comp_id).deliver
     end
     
