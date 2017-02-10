@@ -239,6 +239,7 @@ class BackEndLeaseCompsController < ApplicationController
             :is_stepped_rent => ws[counter, 26],
             :stepped_rents_attributes => stepped_rent_values
         )
+        geocode_setup(@tenant_record)
       end
       if ws[counter,1] != ''
         ids.push(ws[counter, 1])
@@ -447,7 +448,19 @@ class BackEndLeaseCompsController < ApplicationController
           @tenant_record.city = ws[counter, 9]
           @tenant_record.state = ws[counter, 10]
           result = validate_address_google(@tenant_record,true)
-          if result.has_key? :errors
+
+          if result.has_key? :coords
+            trec.latitude = result[:coords][:latitude]
+            trec.longitude = result[:coords][:longitude]
+          end
+
+          if result.has_key? :updates
+            trec.latitude = result[:updates][:latitude]
+            trec.longitude = result[:updates][:longitude]
+            trec.zipcode = result[:updates][:zipcode]
+          end
+
+          if result.has_key? :errors and !result.has_key? :coords and result.has_key? :updates
             error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. G#{counter} "+result[:errors][:geocode_info].to_s : ""
           end
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
@@ -484,4 +497,18 @@ class BackEndLeaseCompsController < ApplicationController
       }
     end
   end
+
+  def geocode_setup(trec)
+    result = validate_address_google(trec, true)
+    if result.has_key? :updates
+      @tenant_record.latitude = result[:updates][:latitude]
+      @tenant_record.longitude = result[:updates][:longitude]
+      @tenant_record.zipcode = result[:updates][:zipcode]
+      @tenant_record.address1 = result[:updates][:address1]
+      @tenant_record.city = result[:updates][:city]
+      @tenant_record.state = result[:updates][:state]
+      @tenant_record.save
+    end
+  end
+
 end
