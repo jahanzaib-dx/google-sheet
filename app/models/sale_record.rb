@@ -17,7 +17,8 @@ class SaleRecord < ActiveRecord::Base
   
   def self.con_ids
     @connections = Connection.all_connection_ids(User.current_user)
-    where("user_id IN (?)" , @connections.to_a)
+    where("user_id IN (?)" , @connections.to_a).
+    where("address1 not in (select address1 from sale_records where user_id=?)" , User.current_user.id)
   end
   
   scope :select_extra, -> { select("

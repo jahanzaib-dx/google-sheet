@@ -24,7 +24,9 @@ class TenantRecord < ActiveRecord::Base
   
   def self.con_ids
     @connections = Connection.all_connection_ids(User.current_user)
-    where("user_id IN (?)" , @connections.to_a)
+    
+    where("user_id IN (?)" , @connections.to_a).
+    where("address1 not in (select address1 from tenant_records where user_id=?)" , User.current_user.id)
   end
 
   # after_save :populate_lookup_tables
