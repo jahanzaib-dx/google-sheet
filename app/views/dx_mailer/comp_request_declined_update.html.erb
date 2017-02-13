@@ -6,13 +6,13 @@
 <br><br>
 <%= @user.first_name.capitalize %> has declined your request to unlock: 
 <br><br>
-Data Type: <%= @shared.comp_type %> Comp
+Data Type: <%= @shared.comp_type.capitalize %> Comp
 <br>
 <% if @shared.comp_type == 'lease' %>
 
 Address: <%= @shared.tenant_record.address1%>
 <br>
-SF: <%= sf_range(@shared.tenant_record.net_effective_per_sf) %>
+SF: <%= sf_range(@shared.tenant_record.size) %>
 <br>
 Year: <%= @shared.tenant_record.lease_commencement_date.year%>
 
@@ -20,7 +20,7 @@ Year: <%= @shared.tenant_record.lease_commencement_date.year%>
 
 Address: <%= @shared.sale_record.address1%>
 <br>
-SF: <%= sf_range(@shared.sale_record.land_size) %>
+SF: <%= sf_range(@shared.sale_record.land_size,'sale') %>
 <br>
 Year: <%= (@shared.sale_record.build_date.blank? == true)?"":@shared.sale_record.build_date.year %>
 
