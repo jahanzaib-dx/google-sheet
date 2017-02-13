@@ -25,16 +25,17 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
         ws[counter, 6] = sale_record.state
-        ws[counter, 7] = sale_record.submarket
-        ws[counter, 8] = sale_record.property_name
-        ws[counter, 9] = sale_record.build_date
-        ws[counter, 10] = sale_record.property_type
-        ws[counter, 11] = sale_record.class_type
-        ws[counter, 12] = sale_record.land_size
-        ws[counter, 13] = sale_record.price
-        ws[counter, 14] = sale_record.sold_date
-        ws[counter, 15] = sale_record.cap_rate
-        ws[counter, 16] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 7] = sale_record.country
+        ws[counter, 8] = sale_record.submarket
+        ws[counter, 9] = sale_record.property_name
+        ws[counter, 10] = sale_record.build_date
+        ws[counter, 11] = sale_record.property_type
+        ws[counter, 12] = sale_record.class_type
+        ws[counter, 13] = sale_record.land_size
+        ws[counter, 14] = sale_record.price
+        ws[counter, 15] = sale_record.sold_date
+        ws[counter, 16] = sale_record.cap_rate
+        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
         counter+=1
       end
       if counter>2
@@ -91,16 +92,17 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 4] = sale_record.address1
         ws[counter, 5] = sale_record.city
         ws[counter, 6] = sale_record.state
-        ws[counter, 7] = sale_record.submarket
-        ws[counter, 8] = sale_record.property_name
-        ws[counter, 9] = sale_record.build_date
-        ws[counter, 10] = sale_record.property_type
-        ws[counter, 11] = sale_record.class_type
-        ws[counter, 12] = sale_record.land_size
-        ws[counter, 13] = sale_record.price
-        ws[counter, 14] = sale_record.sold_date
-        ws[counter, 15] = sale_record.cap_rate
-        ws[counter, 16] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 7] = sale_record.country
+        ws[counter, 8] = sale_record.submarket
+        ws[counter, 9] = sale_record.property_name
+        ws[counter, 10] = sale_record.build_date
+        ws[counter, 11] = sale_record.property_type
+        ws[counter, 12] = sale_record.class_type
+        ws[counter, 13] = sale_record.land_size
+        ws[counter, 14] = sale_record.price
+        ws[counter, 15] = sale_record.sold_date
+        ws[counter, 16] = sale_record.cap_rate
+        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
         counter+=1
       end
       if counter>2
@@ -160,16 +162,17 @@ class BackEndSaleCompsController < ApplicationController
             :address1 => ws[counter, 4],
             :city =>  ws[counter, 5],
             :state => ws[counter, 6],
-            :submarket => ws[counter, 7],
-            :property_name => ws[counter, 8],
-            :build_date => ws[counter, 9],
-            :property_type => ws[counter, 10],
-            :class_type => ws[counter, 11],
-            :land_size => ws[counter, 12],
-            :price => ws[counter, 13],
-            :sold_date => ws[counter, 14],
-            :cap_rate => ws[counter, 15],
-            :is_sales_record => (ws[counter, 16]=='Land Record') ? 'TRUE' : 'False'
+            :country => ws[counter, 7],
+            :submarket => ws[counter, 8],
+            :property_name => ws[counter, 9],
+            :build_date => ws[counter, 10],
+            :property_type => ws[counter, 11],
+            :class_type => ws[counter, 12],
+            :land_size => ws[counter, 13],
+            :price => ws[counter, 14],
+            :sold_date => ws[counter, 15],
+            :cap_rate => ws[counter, 16],
+            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False'
         )
       end
       if ws[counter, 1] != ''
@@ -202,16 +205,17 @@ class BackEndSaleCompsController < ApplicationController
       ws[counter, 5] = sale_record.address1
       ws[counter, 6] = sale_record.city
       ws[counter, 7] = sale_record.state
-      ws[counter, 8] = sale_record.submarket
-      ws[counter, 9] = sale_record.property_name
-      ws[counter, 10] = sale_record.build_date
-      ws[counter, 11] = sale_record.property_type
-      ws[counter, 12] = sale_record.class_type
-      ws[counter, 13] = sale_record.land_size
-      ws[counter, 14] = sale_record.price
-      ws[counter, 15] = sale_record.sold_date
-      ws[counter, 16] = sale_record.cap_rate
-      ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      ws[counter, 8] = sale_record.country
+      ws[counter, 9] = sale_record.submarket
+      ws[counter, 10] = sale_record.property_name
+      ws[counter, 11] = sale_record.build_date
+      ws[counter, 12] = sale_record.property_type
+      ws[counter, 13] = sale_record.class_type
+      ws[counter, 14] = sale_record.land_size
+      ws[counter, 15] = sale_record.price
+      ws[counter, 16] = sale_record.sold_date
+      ws[counter, 17] = sale_record.cap_rate
+      ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
       counter+=1
     end
     ws.save()
@@ -251,16 +255,17 @@ class BackEndSaleCompsController < ApplicationController
             :address1 => ws[counter, 5],
             :city =>  ws[counter, 6],
             :state => ws[counter, 7],
-            :submarket => ws[counter, 8],
-            :property_name => ws[counter, 9],
-            :build_date => ws[counter, 10],
-            :property_type => ws[counter, 11],
-            :class_type => ws[counter, 12],
-            :land_size => ws[counter, 13],
-            :price => ws[counter, 14],
-            :sold_date => ws[counter, 15],
-            :cap_rate => ws[counter, 16],
-            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False'
+            :country => ws[counter, 8],
+            :submarket => ws[counter, 9],
+            :property_name => ws[counter, 10],
+            :build_date => ws[counter, 11],
+            :property_type => ws[counter, 12],
+            :class_type => ws[counter, 13],
+            :land_size => ws[counter, 14],
+            :price => ws[counter, 15],
+            :sold_date => ws[counter, 16],
+            :cap_rate => ws[counter, 17],
+            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False'
         )
       end
       if ws[counter,2] == 'Delete'
@@ -296,14 +301,15 @@ class BackEndSaleCompsController < ApplicationController
           error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-          # error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          error_string += (ws[counter, 9] == '' and !@sale_record.is_sales_record )? "</br>Cell no. I#{counter} is required" : ""
-          error_string += (ws[counter, 10] == '' and !@sale_record.is_sales_record)? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '' and !@sale_record.is_sales_record )? "</br>Cell no. J#{counter} is required" : ""
           error_string += (ws[counter, 11] == '' and !@sale_record.is_sales_record)? "</br>Cell no. K#{counter} is required" : ""
-          error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
+          error_string += (ws[counter, 12] == '' and !@sale_record.is_sales_record)? "</br>Cell no. L#{counter} is required" : ""
           error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+          error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
+          error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
         end
         counter+=1
       end
@@ -325,14 +331,15 @@ class BackEndSaleCompsController < ApplicationController
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
           error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          # error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-          error_string += (ws[counter, 10] == '' and !@sale_record.is_sales_record )? "</br>Cell no. J#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
           error_string += (ws[counter, 11] == '' and !@sale_record.is_sales_record )? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '' and !@sale_record.is_sales_record )? "</br>Cell no. L#{counter} is required" : ""
-          error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '' and !@sale_record.is_sales_record )? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
           error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
+          error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
+          error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
         end
         counter+=1
       end
