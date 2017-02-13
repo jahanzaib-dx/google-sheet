@@ -753,6 +753,7 @@ autocomplete3 = undefined
 componentForm =
   locality: 'long_name'
   administrative_area_level_1: 'short_name'
+  country: 'long_name'
 
 initAutocomplete = ->
 # Create the autocomplete object, restricting the search to geographical

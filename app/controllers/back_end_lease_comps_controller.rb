@@ -26,7 +26,7 @@ class BackEndLeaseCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
       i=1
-      stepped_rent_col_head=27
+      stepped_rent_col_head=28
       while i <= stepped_rent_count  do
         ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
         ws[1,stepped_rent_col_head+1] = "# of Months"
@@ -34,7 +34,7 @@ class BackEndLeaseCompsController < ApplicationController
         stepped_rent_col_head+=2
       end
       tenant_records.each do |tenant_record|
-        stepped_rent_col=27
+        stepped_rent_col=28
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -44,23 +44,24 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 7] = tenant_record.suite
         ws[counter, 8] = tenant_record.city
         ws[counter, 9] = tenant_record.state
-        ws[counter, 10] = tenant_record.submarket
-        ws[counter, 11] = tenant_record.class_type
-        ws[counter, 12] = tenant_record.property_type
-        ws[counter, 13] = tenant_record.property_name
-        ws[counter, 14] = tenant_record.lease_commencement_date
-        ws[counter, 15] = tenant_record.lease_term_months
-        ws[counter, 16] = tenant_record.free_rent
-        ws[counter, 17] = tenant_record.size
-        ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
-        ws[counter, 20] = tenant_record.base_rent
-        ws[counter, 21] = tenant_record.tenant_improvement
-        ws[counter, 22] = tenant_record.additional_tenant_cost
-        ws[counter, 23] = tenant_record.additional_ll_allowance
-        ws[counter, 24] = tenant_record.escalation
-        ws[counter, 25] = tenant_record.fixed_escalation
-        ws[counter, 26] = tenant_record.is_stepped_rent
+        ws[counter, 10] = tenant_record.country
+        ws[counter, 11] = tenant_record.submarket
+        ws[counter, 12] = tenant_record.class_type
+        ws[counter, 13] = tenant_record.property_type
+        ws[counter, 14] = tenant_record.property_name
+        ws[counter, 15] = tenant_record.lease_commencement_date
+        ws[counter, 16] = tenant_record.lease_term_months
+        ws[counter, 17] = tenant_record.free_rent
+        ws[counter, 18] = tenant_record.size
+        ws[counter, 19] = tenant_record.deal_type
+        ws[counter, 20] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
+        ws[counter, 21] = tenant_record.base_rent
+        ws[counter, 22] = tenant_record.tenant_improvement
+        ws[counter, 23] = tenant_record.additional_tenant_cost
+        ws[counter, 24] = tenant_record.additional_ll_allowance
+        ws[counter, 25] = tenant_record.escalation
+        ws[counter, 26] = tenant_record.fixed_escalation
+        ws[counter, 27] = tenant_record.is_stepped_rent
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
@@ -99,7 +100,7 @@ class BackEndLeaseCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.file).worksheets[0]
       counter=2
       i=1
-      stepped_rent_col_head=27
+      stepped_rent_col_head=28
       while i <= stepped_rent_count  do
         ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
         ws[1,stepped_rent_col_head+1] = "# of Months"
@@ -118,7 +119,7 @@ class BackEndLeaseCompsController < ApplicationController
         ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
       end
       tenant_records.each do |tenant_record|
-        stepped_rent_col=27
+        stepped_rent_col=28
         ws[counter, 1] = tenant_record.id
         ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
         ws[counter, 3] = tenant_record.comp_view_type
@@ -128,23 +129,24 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 7] = tenant_record.suite
         ws[counter, 8] = tenant_record.city
         ws[counter, 9] = tenant_record.state
-        ws[counter, 10] = tenant_record.submarket
-        ws[counter, 11] = tenant_record.class_type
-        ws[counter, 12] = tenant_record.property_type
-        ws[counter, 13] = tenant_record.property_name
-        ws[counter, 14] = tenant_record.lease_commencement_date
-        ws[counter, 15] = tenant_record.lease_term_months
-        ws[counter, 16] = tenant_record.free_rent
-        ws[counter, 17] = tenant_record.size
-        ws[counter, 18] = tenant_record.deal_type
-        ws[counter, 19] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
-        ws[counter, 20] = tenant_record.base_rent
-        ws[counter, 21] = tenant_record.tenant_improvement
-        ws[counter, 22] = tenant_record.additional_tenant_cost
-        ws[counter, 23] = tenant_record.additional_ll_allowance
-        ws[counter, 24] = tenant_record.escalation
-        ws[counter, 25] = tenant_record.fixed_escalation
-        ws[counter, 26] = tenant_record.is_stepped_rent
+        ws[counter, 10] = tenant_record.country
+        ws[counter, 11] = tenant_record.submarket
+        ws[counter, 12] = tenant_record.class_type
+        ws[counter, 13] = tenant_record.property_type
+        ws[counter, 14] = tenant_record.property_name
+        ws[counter, 15] = tenant_record.lease_commencement_date
+        ws[counter, 16] = tenant_record.lease_term_months
+        ws[counter, 17] = tenant_record.free_rent
+        ws[counter, 18] = tenant_record.size
+        ws[counter, 19] = tenant_record.deal_type
+        ws[counter, 20] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
+        ws[counter, 21] = tenant_record.base_rent
+        ws[counter, 22] = tenant_record.tenant_improvement
+        ws[counter, 23] = tenant_record.additional_tenant_cost
+        ws[counter, 24] = tenant_record.additional_ll_allowance
+        ws[counter, 25] = tenant_record.escalation
+        ws[counter, 26] = tenant_record.fixed_escalation
+        ws[counter, 27] = tenant_record.is_stepped_rent
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
@@ -198,7 +200,7 @@ class BackEndLeaseCompsController < ApplicationController
       # while ws[counter,1] != tenant_record.id.to_s
       #   counter+=1
       # end
-      stepped_rent_col=27
+      stepped_rent_col=28
 
       if TenantRecord.where(:id => ws[counter, 1]).present?
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
@@ -220,26 +222,27 @@ class BackEndLeaseCompsController < ApplicationController
             :suite => ws[counter, 7],
             :city => ws[counter, 8],
             :state => ws[counter, 9],
-            :submarket => ws[counter, 10],
-            :class_type => ws[counter, 11],
-            :property_type => ws[counter, 12],
-            :property_name => ws[counter, 13],
-            :lease_commencement_date => ws[counter, 14],
-            :lease_term_months => ws[counter, 15],
-            :free_rent => ws[counter, 16],
-            :size => ws[counter, 17],
-            :deal_type => ws[counter, 18],
-            :lease_structure => ws[counter, 19],
-            :base_rent => ws[counter, 20],
-            :tenant_improvement => ws[counter, 21],
-            :additional_tenant_cost => ws[counter, 22],
-            :additional_ll_allowance => ws[counter, 23],
-            :escalation => ws[counter, 24],
-            :fixed_escalation => ws[counter, 25],
-            :is_stepped_rent => ws[counter, 26],
+            :country => ws[counter, 10],
+            :submarket => ws[counter, 11],
+            :class_type => ws[counter, 12],
+            :property_type => ws[counter, 13],
+            :property_name => ws[counter, 14],
+            :lease_commencement_date => ws[counter, 15],
+            :lease_term_months => ws[counter, 16],
+            :free_rent => ws[counter, 17],
+            :size => ws[counter, 18],
+            :deal_type => ws[counter, 19],
+            :lease_structure => ws[counter, 20],
+            :base_rent => ws[counter, 21],
+            :tenant_improvement => ws[counter, 22],
+            :additional_tenant_cost => ws[counter, 23],
+            :additional_ll_allowance => ws[counter, 24],
+            :escalation => ws[counter, 25],
+            :fixed_escalation => ws[counter, 26],
+            :is_stepped_rent => ws[counter, 27],
             :stepped_rents_attributes => stepped_rent_values
         )
-        geocode_setup(@tenant_record)
+        # geocode_setup(@tenant_record)
       end
       if ws[counter,1] != ''
         ids.push(ws[counter, 1])
@@ -269,7 +272,7 @@ class BackEndLeaseCompsController < ApplicationController
      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
      counter=2
      i=1
-     stepped_rent_col_head=28
+     stepped_rent_col_head=29
      while i <= stepped_rent_count  do
        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
        ws[1,stepped_rent_col_head+1] = "# of Months"
@@ -277,7 +280,7 @@ class BackEndLeaseCompsController < ApplicationController
        stepped_rent_col_head+=2
      end
      tenant_records.each do |tenant_record|
-       stepped_rent_col=28
+       stepped_rent_col=29
        ws[counter, 1] = tenant_record.id
        ws[counter, 2] = 'Keep'
        ws[counter, 3] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
@@ -288,23 +291,25 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 8] = tenant_record.suite
        ws[counter, 9] = tenant_record.city
        ws[counter, 10] = tenant_record.state
-       ws[counter, 11] = tenant_record.submarket
-       ws[counter, 12] = tenant_record.class_type
-       ws[counter, 13] = tenant_record.property_type
-       ws[counter, 14] = tenant_record.property_name
-       ws[counter, 15] = tenant_record.lease_commencement_date
-       ws[counter, 16] = tenant_record.lease_term_months
-       ws[counter, 17] = tenant_record.free_rent
-       ws[counter, 18] = tenant_record.size
-       ws[counter, 19] = tenant_record.deal_type
-       ws[counter, 20] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
-       ws[counter, 21] = tenant_record.base_rent
-       ws[counter, 22] = tenant_record.tenant_improvement
-       ws[counter, 23] = tenant_record.additional_tenant_cost
-       ws[counter, 24] = tenant_record.additional_ll_allowance
-       ws[counter, 25] = tenant_record.escalation
-       ws[counter, 26] = tenant_record.fixed_escalation
-       ws[counter, 27] = tenant_record.is_stepped_rent
+       ws[counter, 10] = tenant_record.state
+       ws[counter, 11] = tenant_record.country
+       ws[counter, 12] = tenant_record.submarket
+       ws[counter, 13] = tenant_record.class_type
+       ws[counter, 14] = tenant_record.property_type
+       ws[counter, 15] = tenant_record.property_name
+       ws[counter, 16] = tenant_record.lease_commencement_date
+       ws[counter, 17] = tenant_record.lease_term_months
+       ws[counter, 18] = tenant_record.free_rent
+       ws[counter, 19] = tenant_record.size
+       ws[counter, 20] = tenant_record.deal_type
+       ws[counter, 21] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
+       ws[counter, 22] = tenant_record.base_rent
+       ws[counter, 23] = tenant_record.tenant_improvement
+       ws[counter, 24] = tenant_record.additional_tenant_cost
+       ws[counter, 25] = tenant_record.additional_ll_allowance
+       ws[counter, 26] = tenant_record.escalation
+       ws[counter, 27] = tenant_record.fixed_escalation
+       ws[counter, 28] = tenant_record.is_stepped_rent
        tenant_record.stepped_rents.each do |sr|
          ws[counter, stepped_rent_col] = sr.cost_per_month
          ws[counter, stepped_rent_col+1] = sr.months
@@ -338,7 +343,7 @@ class BackEndLeaseCompsController < ApplicationController
     ids= Array.new
     tenant_records.each do |tenant_record|
       if TenantRecord.where(:id => ws[counter, 1]).present?
-        stepped_rent_col=28
+        stepped_rent_col=29
         @tenant_record = TenantRecord.find_by(:id => ws[counter, 1])
         stepped_rent_values={}
         @tenant_record.stepped_rents.each.map do |sr|
@@ -350,7 +355,7 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         @tenant_record.update_attributes(
-            # :image => ws[counter, 3],
+            :main_image_file_name => ws.input_value(counter, 3),
             :comp_view_type => ws[counter, 4],
             :company => ws[counter, 5],
             :industry_type => ws[counter, 6],
@@ -358,23 +363,24 @@ class BackEndLeaseCompsController < ApplicationController
             :suite => ws[counter, 8],
             :city => ws[counter, 9],
             :state => ws[counter, 10],
-            :submarket => ws[counter, 11],
-            :class_type => ws[counter, 12],
-            :property_type => ws[counter, 13],
-            :property_name => ws[counter, 14],
-            :lease_commencement_date => ws[counter, 15],
-            :lease_term_months => ws[counter, 16],
-            :free_rent => ws[counter, 17],
-            :size => ws[counter, 18],
-            :deal_type => ws[counter, 19],
-            :lease_structure => ws[counter, 20],
-            :base_rent => ws[counter, 21],
-            :tenant_improvement => ws[counter, 22],
-            :additional_tenant_cost => ws[counter, 23],
-            :additional_ll_allowance => ws[counter, 24],
-            :escalation => ws[counter, 25],
-            :fixed_escalation => ws[counter, 26],
-            :is_stepped_rent => ws[counter, 27],
+            :country => ws[counter, 11],
+            :submarket => ws[counter, 12],
+            :class_type => ws[counter, 13],
+            :property_type => ws[counter, 14],
+            :property_name => ws[counter, 15],
+            :lease_commencement_date => ws[counter, 16],
+            :lease_term_months => ws[counter, 17],
+            :free_rent => ws[counter, 18],
+            :size => ws[counter, 19],
+            :deal_type => ws[counter, 20],
+            :lease_structure => ws[counter, 21],
+            :base_rent => ws[counter, 22],
+            :tenant_improvement => ws[counter, 23],
+            :additional_tenant_cost => ws[counter, 24],
+            :additional_ll_allowance => ws[counter, 25],
+            :escalation => ws[counter, 26],
+            :fixed_escalation => ws[counter, 27],
+            :is_stepped_rent => ws[counter, 28],
             :stepped_rents_attributes => stepped_rent_values
         )
       end
@@ -419,17 +425,18 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
           error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
-          error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
-          error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
+          error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
           error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
           error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
           error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
+          error_string += (ws[counter, 21] == '')? "</br>Cell no. U#{counter} is required" : ""
           error_string += (
-              (ws[counter, 24] == ''  || ws[counter, 24] == "0") &&
-              (ws[counter, 25] == '' || ws[counter, 25] == "0") &&
-              (ws[counter, 26] == '' || ws[counter, 26] == 'FALSE')
-          )? "</br>Cell no. X#{counter}, Y#{counter}  and Z#{counter} are empty or false. One of them must be filled." : ""
+              (ws[counter, 25] == ''  || ws[counter, 25] == "0") &&
+              (ws[counter, 26] == '' || ws[counter, 26] == "0") &&
+              (ws[counter, 27] == '' || ws[counter, 27] == 'FALSE')
+          )? "</br>Cell no. Y#{counter}, Z#{counter}  and AA#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
       end
@@ -449,18 +456,18 @@ class BackEndLeaseCompsController < ApplicationController
           @tenant_record.state = ws[counter, 10]
           result = validate_address_google(@tenant_record,true)
 
-          if result.has_key? :coords
-            trec.latitude = result[:coords][:latitude]
-            trec.longitude = result[:coords][:longitude]
-          end
+          # if result.has_key? :coords
+          #   trec.latitude = result[:coords][:latitude]
+          #   trec.longitude = result[:coords][:longitude]
+          # end
+          #
+          # if result.has_key? :updates
+          #   trec.latitude = result[:updates][:latitude]
+          #   trec.longitude = result[:updates][:longitude]
+          #   trec.zipcode = result[:updates][:zipcode]
+          # end
 
-          if result.has_key? :updates
-            trec.latitude = result[:updates][:latitude]
-            trec.longitude = result[:updates][:longitude]
-            trec.zipcode = result[:updates][:zipcode]
-          end
-
-          if result.has_key? :errors and !result.has_key? :coords and result.has_key? :updates
+          if result.has_key? :errors # and !result.has_key? :coords and result.has_key? :updates
             error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. G#{counter} "+result[:errors][:geocode_info].to_s : ""
           end
           error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
@@ -470,17 +477,18 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 11] == '')? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '')? "</br>Cell no. L#{counter} is required" : ""
           error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
-          error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
+          error_string += (ws[counter, 14] == '')? "</br>Cell no. n#{counter} is required" : ""
           error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
-          error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
+          error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
           error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
           error_string += (ws[counter, 20] == '')? "</br>Cell no. T#{counter} is required" : ""
           error_string += (ws[counter, 21] == '')? "</br>Cell no. U#{counter} is required" : ""
+          error_string += (ws[counter, 22] == '')? "</br>Cell no. V#{counter} is required" : ""
           error_string += (
-              (ws[counter, 25] == ''  || ws[counter, 25] == "0") &&
-              (ws[counter, 26] == '' || ws[counter, 26] == "0") &&
-              (ws[counter, 27] == '' || ws[counter, 27] == 'FALSE')
-          )? "</br>Cell no. Y#{counter}, Z#{counter}  and AA#{counter} are empty or false. One of them must be filled." : ""
+              (ws[counter, 26] == ''  || ws[counter, 26] == "0") &&
+              (ws[counter, 27] == '' || ws[counter, 27] == "0") &&
+              (ws[counter, 28] == '' || ws[counter, 28] == 'FALSE')
+          )? "</br>Cell no. Z#{counter}, AA#{counter}  and AB#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
       end
