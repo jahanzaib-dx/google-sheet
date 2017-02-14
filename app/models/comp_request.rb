@@ -68,9 +68,9 @@ class CompRequest < ActiveRecord::Base
     shared.ownership = params[:access]==FULL ? true : false
     ##shared.save
 
-    if comp_request.initiated_by.settings.email
-      DxMailer.comp_request_approved(comp_request).deliver
-    end
+    # if comp_request.initiated_by.settings.email
+      # DxMailer.comp_request_approved(comp_request).deliver
+    # end
     
     ## select lease or sale
     if shared.comp_type == 'lease'
@@ -102,6 +102,12 @@ class CompRequest < ActiveRecord::Base
 
     end
     shared.save
+    
+    if comp_request.initiated_by.settings.email
+      email_comp_id = if child_comp == 0 then comp_request.comp_id else child_comp end
+      DxMailer.comp_request_approved(comp_request,email_comp_id).deliver
+    end
+    
     comp_request.destroy
     log_my_activity shared, comp_request.receiver_id, child_comp, master_id
 

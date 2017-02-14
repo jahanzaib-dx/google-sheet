@@ -1,7 +1,8 @@
 <script type="text/html" id="default-fields-geo-code-selection">
-  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]', nil, class: ' validate[required]', id: "autocomplete4", onFocus: "geolocate()"  %></td></tr>
+  <tr><td><%= label_tag nil, 'Address Line 1*' %></td><td><%= text_field_tag 'custom_record[address1]', nil, class: ' validate[required]', id: "autocomplete4", onFocus: "geolocate()"  %> <input type="hidden" id="street_number4"><input type="hidden" id="route4"></td></tr>
   <tr><td><%= label_tag nil, 'City*' %></td><td><%= text_field_tag 'custom_record[city]', nil, class: ' validate[required]', id: "locality4" %></td></tr>
   <tr><td><%= label_tag nil, 'State*' %></td><td><%= text_field_tag "custom_record[state]", nil, class: 'validate[required]', style: "margin: 0px;", id: "administrative_area_level_14" %></td></tr>
+  <tr><td><%= label_tag nil, 'Country*' %></td><td><%= text_field_tag "custom_record[country]", nil, class: 'validate[required]', style: "margin: 0px;", id: "country4" %></td></tr>
 </script>
 <!-- for bulk upload-->
 <script type="text/html" id="bulk-default-fields-geo-code-selection">

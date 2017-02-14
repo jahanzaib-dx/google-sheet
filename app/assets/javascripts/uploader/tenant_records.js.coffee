@@ -463,9 +463,7 @@ $(document).ready ->
     e.preventDefault()
     container = $('#custom-fields-table tbody')
     row = container.find('tr').length - 1 + 1
-
     container.append(Mustache.render($('#custom-field-row-tmpl-3').html(), { row: '_new_' + row }))
-
     activate_auto_selection()
 
   $(document).on 'click', '.add-custom-data-single-comp1', (e) ->
@@ -753,8 +751,11 @@ autocomplete = undefined
 autocomplete2 = undefined
 autocomplete3 = undefined
 componentForm =
+  street_number: 'short_name',
+  route: 'long_name',
   locality: 'long_name'
   administrative_area_level_1: 'short_name'
+  country: 'long_name'
 
 initAutocomplete = ->
 # Create the autocomplete object, restricting the search to geographical
@@ -792,6 +793,7 @@ fillInAddress = (autocomplete, unique) ->
       val = place.address_components[i][componentForm[addressType]]
       document.getElementById(addressType + unique).value = val
     i++
+  document.getElementById('autocomplete' + unique).value = document.getElementById('street_number' + unique).value + ' ' + document.getElementById('route' + unique).value
   return
 
 geolocate = ->

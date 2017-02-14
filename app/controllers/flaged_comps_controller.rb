@@ -21,15 +21,16 @@ class FlagedCompsController < ApplicationController
   def email
     @f_comp = FlagedComp.find(params[:id])
     @comps = (@f_comp.comp_type = "lease") ? TenantRecord.where('id = ?', @f_comp.comp_id).first : SaleRecord.where('id = ?', @f_comp.comp_id).first
-    @user = User.where('id = ?', @comps.user_id)
+    @user = User.find_by_id(@comps.user_id)
     DxMailer.flag_comp_email(@user,params[:message]).deliver_now
+    redirect_to users_path
   end
 
   def delete_comp
-    @f_comp = FlagedComp.where('comp_id = ?',params[:id])
-    @f_comp.destroy_all
-    @comp = (@f_comp.comp_type = "lease") ? TenantRecord.where('id = ?', @f_comp.comp_id).first : SaleRecord.where('id = ?', @f_comp.comp_id).first
+    @f_comp = FlagedComp.where('comp_id = ?',params[:id]).all
+    @comp = (@f_comp.first.comp_type = "lease") ? TenantRecord.where('id = ?', @f_comp.first.comp_id).first : SaleRecord.where('id = ?', @f_comp.first.comp_id).first
     @comp.destroy
+    @f_comp.destroy_all
     redirect_to users_path
   end
 end

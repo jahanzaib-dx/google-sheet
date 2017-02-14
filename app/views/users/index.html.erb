@@ -25,6 +25,31 @@
     </div>
     <div class="col-md-12">
       <div class="edit_content_eria">
+          <div class="row">
+            <div class="col-md-2">
+              <label>Total Users</label>
+            </div>
+            <div class="col-md-10">
+              <label><%= link_to @user_count, users_users_list_url, :style => "text-decoration: underline;"%></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <label>Lease Records</label>
+            </div>
+            <div class="col-md-10">
+              <label><%=@lease_count%></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <label>Sales Records</label>
+            </div>
+            <div class="col-md-10">
+              <label><%=@sale_count%></label>
+            </div>
+          </div>
+        <br>
         <div class="gust-email">
           <h3>Manage Users  </h3>
           <%= form_tag({:controller => 'users', :action => 'index'}, :method => 'get') do %>

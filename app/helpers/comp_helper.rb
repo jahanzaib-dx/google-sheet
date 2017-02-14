@@ -95,5 +95,33 @@ module CompHelper
    
   end
 
+  def onepager_custom_data data
+    custom_data = ""
+    if data
+      custom_data << '<h1 class="detail-comp-hadding">Custom Data</h1>
+
+                <table width="100%" border="0" >
+                  <tbody>
+                  <tr>
+                    <td><p class="comp-table-pre"> &nbsp; </td>
+    <td><p class="comp-table-pre"> &nbsp; </p> </td>
+    </tr>
+                  <tr>
+                    <td><p class="comp-table-pre"> <b>Header</b> </td>
+                    <td><p class="comp-table-pre"> <b>Value</b> </p> </td>
+    </tr>'
+    data.each_with_index do |(key, value), index|
+      custom_data << '<tr>
+                        <td><p class="comp-table-pre">'+ key.split('_').map(&:capitalize).join(' ') +'</p> </td>
+                        <td><p class="comp-table-pre">'+ value.split('_').map(&:capitalize).join(' ') +'</p> </td>
+                      </tr>'
+    end
+      custom_data << '</tbody>
+                </table>'
+    end
+
+    custom_data
+  end
+
 end
 

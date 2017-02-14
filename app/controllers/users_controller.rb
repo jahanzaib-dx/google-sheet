@@ -29,9 +29,16 @@ class UsersController  < ApplicationController
       @user = User.new
       @f_comps_lease = FlagedComp.where('comp_type = ?',"lease")
       @f_comps_sale = FlagedComp.where('comp_type = ?',"sale")
+      @lease_count = TenantRecord.all.count
+      @sale_count =  SaleRecord.all.count
+      @user_count = User.all.count
     else
       redirect_to '/sub_users'
     end
+  end
+
+  def users_list
+    @users = User.all
   end
 
   def sub_users

@@ -3135,6 +3135,42 @@ div.popup #map_controls .btn {
 .lock-p > img{width: 15px; margin-left: 1px;}
 
 
+
+
+.multiple-select-checkbox .checkbox.checkbox-info > label {
+    color: #333;
+}
+
+.multiple-select-checkbox .btn-group {
+    width: 100%;
+}
+
+
+.multiple-select-checkbox .scrollable-menu {
+   height: auto;
+   max-height: 200px;
+   overflow-x: hidden;
+}
+
+.multiple-select-checkbox .btn.btn-default.btn-sm.dropdown-toggle{
+width: 100%;
+padding: 11px 20px;
+text-align: left;
+}
+
+.multiple-select-checkbox .dropdown-menu.grop-check-list{
+  width: 100%;
+  padding: 11px 20px;
+}
+
+.caret-pos{position:absolute; right:12px; top:19px;}
+
+.simpledropdown{padding: 9px 29px;float: left;
+  text-align: left;
+  width: 100%;color: #fff;
+  font-size: 17px;
+  font-weight: bold;display: block;    white-space: nowrap;}
+
 /* ##################################################################################################### */
 
 

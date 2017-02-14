@@ -115,20 +115,13 @@ class Uploader::TenantRecordsController < ApplicationController
   private
 
   def save_tenant_record(trec)
-    p params.inspect
 
     if params[:lease_structure]
       trec.set_lease_structure LeaseStructure.new lease_structure_params
     # elsif params[:predefined_lease_struct].present?
     #   trec.set_lease_structure LeaseStructure.find params[:predefined_lease_struct]
     end
-   params[:custom][0][:key] ='test'
-   params[:custom][1][:value] ='test'
-    #params[:custom][:_new_2][:key] ='test'
-    #params[:custom][:_new_0][:value] ='test'
-    #params[:custom][:_new_1][:value] ='test'
-    #params[:custom][:_new_2][:value] ='test'
-    p params.inspect
+
     ## find lat/lon if it hasn't been done already
     if trec.longitude.blank? or trec.latitude.blank?
       result = validate_address_google(trec)
@@ -260,6 +253,7 @@ class Uploader::TenantRecordsController < ApplicationController
         :real_estate_tax_cost,        # required
         :size,                        # required
         :state,                       # required
+        :country,                       # required
         :submarket,
         :suite,
         :tenant_improvement,          # required
@@ -291,9 +285,7 @@ class Uploader::TenantRecordsController < ApplicationController
         :lease_structure_expenses_attributes,
         :stepped_rents_attributes => [:months	, :cost_per_month],
         custom: [],
-
     )
-
   end
 
 
@@ -302,7 +294,7 @@ class Uploader::TenantRecordsController < ApplicationController
       whitelisted[:sale_record] = params[:sale_record][:custom]
     end
     params.require(:sale_record).permit(:is_sales_record, :land_size_identifier, :view_type,
-                                :address1, :city, :state, :land_size, :price, :cap_rate,:submarket, :custom,
+                                :address1, :city, :state, :country, :land_size, :price, :cap_rate,:submarket, :custom,
                                 :latitude, :longitude, :zipcode, :zipcode_plus, :office_id,
                                 :property_name, :build_date, :property_type, :class_type, :sold_date
     )
@@ -310,7 +302,7 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def custom_record_params
     params.require(:custom_record).permit(:is_existing_data_set, :is_geo_coded, :name,
-                                  :address1, :city, :state, :latitude, :longitude, :zipcode, :zipcode_plus,
+                                  :address1, :city, :state, :country, :latitude, :longitude, :zipcode, :zipcode_plus,
                                   custom_record_properties_attributes: [:key, :value])
   end
 
