@@ -121,23 +121,10 @@
               </td>
             </tr>
             <tr>
-            <td>City*</td>
-            <td>
-              <div class="header-name-container">
-                <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
-                <div class="second">
-                  <select class="bulk-column-header-dd">
-                  </select>
-                </div>
-                <div style="clear: both"></div>
-              </div>
-            </td>
-          </tr>
-            <tr>
-              <td>Country*</td>
+              <td>City*</td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[country]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -151,6 +138,19 @@
               <td>
                 <div class="header-name-container">
                   <div class="first"><%= text_field_tag 'sale_record[state]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd">
+                    </select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>City*</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>
@@ -173,7 +173,7 @@
                         </tr>
 
             <tr class="land-row">
-              <td> Land Size*</div>
+              <td> Land Size*
               </td>
               <td>
                 <div class="header-name-container">
