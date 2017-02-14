@@ -322,17 +322,11 @@ class Uploader::ImportController < ApplicationController
   end
 
   def imports_for_user
-    if current_user.has_trex_admin?
+    if @role == 'admin'
       @imports = TenantRecordImport
       @recent_imports_count = ImportLog.where(:created_at => 1.week.ago..Time.now).count
       @total_imports_count = ImportLog.count
 
-    elsif current_user.has_firm_admin?
-      offices = Firm.find(current_user.account.firm).offices.map{|o| o.id}
-      @imports = TenantRecordImport.where(:office_id => offices)
-      @recent_imports_count = ImportLog.where(:office_id => offices,
-                                              :created_at => 1.week.ago..Time.now).count
-      @firm_imports_count = ImportLog.where(:office_id => offices).count
     else
       user_id = current_user.id
       @imports = TenantRecordImport.where(:user_id => user_id)
@@ -341,6 +335,7 @@ class Uploader::ImportController < ApplicationController
       @office_imports_count = ImportLog.where(:user_id => user_id).count
 
     end
+    p user_id
     if @imports.respond_to?(:each)
       @imports.each do |tri|
         tri.update_flags if tri.status != 'Import has completed'
