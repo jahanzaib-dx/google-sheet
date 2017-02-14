@@ -2,7 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def new
     unless session[:visited_plan]
-      redirect_to subscription_plans_url
+      redirect_to new_user_registration_url
     else
       super
     end
