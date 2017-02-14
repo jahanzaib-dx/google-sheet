@@ -253,6 +253,7 @@ class Uploader::TenantRecordsController < ApplicationController
         :real_estate_tax_cost,        # required
         :size,                        # required
         :state,                       # required
+        :country,                       # required
         :submarket,
         :suite,
         :tenant_improvement,          # required
@@ -293,7 +294,7 @@ class Uploader::TenantRecordsController < ApplicationController
       whitelisted[:sale_record] = params[:sale_record][:custom]
     end
     params.require(:sale_record).permit(:is_sales_record, :land_size_identifier, :view_type,
-                                :address1, :city, :state, :land_size, :price, :cap_rate,:submarket, :custom,
+                                :address1, :city, :state, :country, :land_size, :price, :cap_rate,:submarket, :custom,
                                 :latitude, :longitude, :zipcode, :zipcode_plus, :office_id,
                                 :property_name, :build_date, :property_type, :class_type, :sold_date
     )
@@ -301,7 +302,7 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def custom_record_params
     params.require(:custom_record).permit(:is_existing_data_set, :is_geo_coded, :name,
-                                  :address1, :city, :state, :latitude, :longitude, :zipcode, :zipcode_plus,
+                                  :address1, :city, :state, :country, :latitude, :longitude, :zipcode, :zipcode_plus,
                                   custom_record_properties_attributes: [:key, :value])
   end
 
