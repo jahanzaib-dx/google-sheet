@@ -104,12 +104,12 @@ class Uploader::ImportController < ApplicationController
 
     p params.inspect
     @is_white_glove_service = false
-    # if(params[:white_glove_user].to_s != "0")
-    #   current_user = params[:white_glove_user].to_s.to_i
-    #   current_user_account= Account.where(:user_id=>current_user)
-    #   current_user_account_type=current_user_account.office_id
-    #   @is_white_glove_service=true
-    # end
+     if(params[:white_glove_user] && params[:white_glove_user].to_i >0 )
+       current_user = params[:white_glove_user].to_i
+       current_user_account= Account.where(:user_id=>current_user)
+       current_user_account_type=current_user_account.office_id
+       @is_white_glove_service=true
+     end
     if params[:bulk_property_type_switch] == 'sales_comps'
       not_for_sheet.merge!({
                                :is_sales_record => (params[:sale_record][:is_sales_record] == 'yes' ? true : false ),
@@ -175,7 +175,7 @@ class Uploader::ImportController < ApplicationController
     import_template_attributes = { name: name, import_mappings_attributes: required_params }
 
     Rails.logger.debug  "-----"
-    Rails.logger.debug  "User's office Id: #{current_user.account.office_id}"
+   # Rails.logger.debug  "User's office Id: #{current_user.account.office_id}"
     if(@is_white_glove_service)
         white_glove= WhiteGloveServiceRequest.where(:user_id => current_user)
         pre_existing = ImportTemplate.where(:id => white_glove.import_template_id)
@@ -322,17 +322,11 @@ class Uploader::ImportController < ApplicationController
   end
 
   def imports_for_user
-    if current_user.has_trex_admin?
+    if @role == 'admin'
       @imports = TenantRecordImport
       @recent_imports_count = ImportLog.where(:created_at => 1.week.ago..Time.now).count
       @total_imports_count = ImportLog.count
 
-    elsif current_user.has_firm_admin?
-      offices = Firm.find(current_user.account.firm).offices.map{|o| o.id}
-      @imports = TenantRecordImport.where(:office_id => offices)
-      @recent_imports_count = ImportLog.where(:office_id => offices,
-                                              :created_at => 1.week.ago..Time.now).count
-      @firm_imports_count = ImportLog.where(:office_id => offices).count
     else
       user_id = current_user.id
       @imports = TenantRecordImport.where(:user_id => user_id)
@@ -341,6 +335,7 @@ class Uploader::ImportController < ApplicationController
       @office_imports_count = ImportLog.where(:user_id => user_id).count
 
     end
+    p user_id
     if @imports.respond_to?(:each)
       @imports.each do |tri|
         tri.update_flags if tri.status != 'Import has completed'

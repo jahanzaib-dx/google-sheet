@@ -66,7 +66,8 @@ gem "figaro"
 gem 'roadie'
 
 gem 'finance'
-#gem 'activerecord-postgres-hstore'
+#gem 'activ
+# erecord-postgres-hstore'
 gem 'rgeo'
 gem 'rgeo-activerecord'
 gem 'activerecord-postgis-adapter'
@@ -95,3 +96,4 @@ gem 'google-analytics-rails'
 
 gem "mediaelement_rails"
 
+gem 'naturalsorter', '3.0.16'

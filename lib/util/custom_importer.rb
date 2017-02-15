@@ -22,7 +22,7 @@ module CustomImporter
 
     if not_for_sheet[:class] == 'TenantRecord'
       p original_record.inspect
-      ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"]).first
+      ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"])
       #tenant_record.set_lease_structure ls
       if not_for_sheet.key?('base_rent_type') && not_for_sheet[:base_rent_type] == 'monthly'
         tenant_record.base_rent = tenant_record.base_rent.to_f * 12
