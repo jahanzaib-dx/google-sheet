@@ -19,12 +19,6 @@
               <thead>
               <th><span></span></th>
               <th><span>Date</span></th>
-              <% if can? :manage, Firm %>
-                  <th><span>Firm</span></th>
-              <%end%>
-              <% if can? :manage, Office %>
-                  <th><span>Address</span></th>
-              <%end%>
               <th><span>Status</span></th>
               <th><span>&nbsp;</span></th>
               <th><span>&nbsp;</span></th>
@@ -39,12 +33,6 @@
                     <% end %>
                   </td>
                   <td class="import-row custom-vertical-align"><%=i.created_at.strftime('%b %-d, %Y %l:%M %P')%></td>
-                  <% if can? :manage, Firm %>
-                      <td class="vertical-align"><%= simple_format i.user.account.office.firm.name if i.user and i.user.account and i.user.account.office and i.user.account.office.firm %></td>
-                  <% end %>
-                  <% if can? :manage, Office %>
-                      <td class="vertical-align"><%= simple_format "#{i.user.account.office.name} <br /> #{i.user.account.office.address1}" if i.user and i.user.account and i.user.account.office %></td>
-                  <% end %>
                   <td class="status vertical-align"><%= simple_format i.status %></td>
                   <td class="count import-row custom-vertical-align">
                     <% if i.total_record_count > 0 %>

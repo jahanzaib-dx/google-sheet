@@ -140,7 +140,9 @@ CREATE TABLE activity_logs (
     initiator_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    type character varying(255)
+    comptype character varying(255),
+    child_comp integer,
+    master_id integer
 );
 
 
@@ -435,7 +437,8 @@ CREATE TABLE connections (
     user_id bigint,
     created_at timestamp without time zone,
     group_id integer,
-    agent_id integer
+    agent_id integer,
+    connection_established boolean
 );
 
 
@@ -1443,7 +1446,10 @@ CREATE TABLE sale_records (
     user_id integer,
     custom hstore,
     property_name character varying,
-    submarket character varying
+    submarket character varying,
+    main_image_file_name character varying,
+    parent_id integer,
+    master_id integer
 );
 
 
@@ -1828,7 +1834,9 @@ CREATE TABLE tenant_records (
     build_date date,
     sold_date date,
     record_type character varying DEFAULT 'lease'::character varying,
-    custom hstore
+    custom_data hstore,
+    parent_id integer,
+    master_id integer
 );
 
 
@@ -3333,4 +3341,26 @@ INSERT INTO schema_migrations (version) VALUES ('20161129214838');
 INSERT INTO schema_migrations (version) VALUES ('20161130051234');
 
 INSERT INTO schema_migrations (version) VALUES ('20161206201225');
+
+INSERT INTO schema_migrations (version) VALUES ('20161213055642');
+
+INSERT INTO schema_migrations (version) VALUES ('20170106110541');
+
+INSERT INTO schema_migrations (version) VALUES ('20170116072603');
+
+INSERT INTO schema_migrations (version) VALUES ('20170116073700');
+
+INSERT INTO schema_migrations (version) VALUES ('20170123094330');
+
+INSERT INTO schema_migrations (version) VALUES ('20170125053157');
+
+INSERT INTO schema_migrations (version) VALUES ('20170125053226');
+
+INSERT INTO schema_migrations (version) VALUES ('20170125055641');
+
+INSERT INTO schema_migrations (version) VALUES ('20170125055701');
+
+INSERT INTO schema_migrations (version) VALUES ('20170125070916');
+
+INSERT INTO schema_migrations (version) VALUES ('20170207072720');
 
