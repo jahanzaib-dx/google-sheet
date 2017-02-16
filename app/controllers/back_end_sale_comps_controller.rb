@@ -6,7 +6,7 @@ class BackEndSaleCompsController < ApplicationController
 
   def index
     sale_records = SaleRecord.where('user_id = ?', @current_user).order(:id)
-
+    custom_headers = SaleRecord.custom_field_headers(@current_user.id)
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
@@ -18,6 +18,11 @@ class BackEndSaleCompsController < ApplicationController
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
+      custom_headers_col_head = 18
+      custom_headers.each do |keys|
+        ws[1,custom_headers_col_head]= keys.header
+        custom_headers_col_head+=1
+      end
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
@@ -36,6 +41,20 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 15] = sale_record.sold_date
         ws[counter, 16] = sale_record.cap_rate
         ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        custom_field_col = 18
+        custom_data = SaleRecord.custom_field_values(tenant_record.id)
+        custom_headers.each do
+          custom_data.each do |vals|
+            if ws[1, custom_field_col]==vals.header
+              ws[counter, custom_field_col] = vals.value
+              break
+            else
+              ws[counter, custom_field_col] = ''
+              next
+            end
+          end
+          custom_field_col+=1
+        end
         counter+=1
       end
       if counter>2
@@ -84,7 +103,11 @@ class BackEndSaleCompsController < ApplicationController
       if ws.max_rows<sale_records.count
         ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
       end
-
+      custom_headers_col_head = 18
+      custom_headers.each do |keys|
+        ws[1,custom_headers_col_head]= keys.header
+        custom_headers_col_head+=1
+      end
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
@@ -103,6 +126,20 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 15] = sale_record.sold_date
         ws[counter, 16] = sale_record.cap_rate
         ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        custom_field_col = 18
+        custom_data = SaleRecord.custom_field_values(sale_record.id)
+        custom_headers.each do
+          custom_data.each do |vals|
+            if ws[1, custom_field_col]==vals.header
+              ws[counter, custom_field_col] = vals.value
+              break
+            else
+              ws[counter, custom_field_col] = ''
+              next
+            end
+          end
+          custom_field_col+=1
+        end
         counter+=1
       end
       if counter>2
@@ -156,6 +193,21 @@ class BackEndSaleCompsController < ApplicationController
       # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
+        custom_field_col = 18
+        custom_headers = SaleRecord.custom_field_headers(@current_user.id)
+        custom_data_hash={}
+        custom_data={}
+        custom_headers.each.map do |keys|
+          custom_data_hash[keys.header]={
+              "key" => keys.header,
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
         @sale_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :view_type => ws[counter, 3],
@@ -172,7 +224,8 @@ class BackEndSaleCompsController < ApplicationController
             :price => ws[counter, 14],
             :sold_date => ws[counter, 15],
             :cap_rate => ws[counter, 16],
-            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False'
+            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False',
+            :custom => custom_data
         )
       end
       if ws[counter, 1] != ''
@@ -187,7 +240,7 @@ class BackEndSaleCompsController < ApplicationController
 
   def duplication
     sale_records = SaleRecord.duplicate_list(current_user.id)
-
+    custom_headers = SaleRecord.custom_field_headers(@current_user.id)
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
@@ -197,6 +250,11 @@ class BackEndSaleCompsController < ApplicationController
     # put data to sheet
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     counter=2
+    custom_headers_col_head = 19
+    custom_headers.each do |keys|
+      ws[1,custom_headers_col_head]= keys.header
+      custom_headers_col_head+=1
+    end
     sale_records.each do |sale_record|
       ws[counter, 1] = sale_record.id
       ws[counter, 2] = 'Keep'
@@ -216,6 +274,20 @@ class BackEndSaleCompsController < ApplicationController
       ws[counter, 16] = sale_record.sold_date
       ws[counter, 17] = sale_record.cap_rate
       ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      custom_field_col = 19
+      custom_data = SaleRecord.custom_field_values(sale_record.id)
+      custom_headers.each do
+        custom_data.each do |vals|
+          if ws[1, custom_field_col]==vals.header
+            ws[counter, custom_field_col] = vals.value
+            break
+          else
+            ws[counter, custom_field_col] = ''
+            next
+          end
+        end
+        custom_field_col+=1
+      end
       counter+=1
     end
     ws.save()
@@ -249,6 +321,21 @@ class BackEndSaleCompsController < ApplicationController
       # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
+        custom_field_col = 19
+        custom_headers = SaleRecord.custom_field_headers(@current_user.id)
+        custom_data_hash={}
+        custom_data={}
+        custom_headers.each.map do |keys|
+          custom_data_hash[keys.header]={
+              "key" => keys.header,
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
         @sale_record.update_attributes(
             # :image => ws[counter, 3],
             :view_type => ws[counter, 4],
@@ -265,7 +352,8 @@ class BackEndSaleCompsController < ApplicationController
             :price => ws[counter, 15],
             :sold_date => ws[counter, 16],
             :cap_rate => ws[counter, 17],
-            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False'
+            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
+            :custom => custom_data
         )
       end
       if ws[counter,2] == 'Delete'

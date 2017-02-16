@@ -7,6 +7,7 @@ class BackEndLeaseCompsController < ApplicationController
   def index
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
+    custom_headers = TenantRecord.custom_field_headers(@current_user.id)
     if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
       stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
     else
@@ -32,6 +33,11 @@ class BackEndLeaseCompsController < ApplicationController
         ws[1,stepped_rent_col_head+1] = "# of Months"
         i +=1
         stepped_rent_col_head+=2
+      end
+      custom_headers_col_head = stepped_rent_col_head
+      custom_headers.each do |keys|
+        ws[1,custom_headers_col_head]= keys.header
+        custom_headers_col_head+=1
       end
       tenant_records.each do |tenant_record|
         stepped_rent_col=28
@@ -66,6 +72,20 @@ class BackEndLeaseCompsController < ApplicationController
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
           stepped_rent_col+=2
+        end
+        custom_field_col = stepped_rent_col
+        custom_data = TenantRecord.custom_field_values(tenant_record.id)
+        custom_headers.each do
+          custom_data.each do |vals|
+            if ws[1, custom_field_col]==vals.header
+              ws[counter, custom_field_col] = vals.value
+              break
+            else
+              ws[counter, custom_field_col] = ''
+              next
+            end
+          end
+          custom_field_col+=1
         end
         counter+=1
       end
@@ -107,7 +127,11 @@ class BackEndLeaseCompsController < ApplicationController
         i +=1
         stepped_rent_col_head+=2
       end
-
+      custom_headers_col_head = stepped_rent_col_head
+      custom_headers.each do |keys|
+        ws[1,custom_headers_col_head]= keys.header
+        custom_headers_col_head+=1
+      end
       while ws[counter,1]!=""
         if !tenant_records.find_by_id(ws[counter,1]).present?
           ws.delete_rows(counter,1)
@@ -151,6 +175,20 @@ class BackEndLeaseCompsController < ApplicationController
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
           stepped_rent_col+=2
+        end
+        custom_field_col = stepped_rent_col
+        custom_data = TenantRecord.custom_field_values(tenant_record.id)
+        custom_headers.each do
+          custom_data.each do |vals|
+            if ws[1, custom_field_col]==vals.header
+              ws[counter, custom_field_col] = vals.value
+              break
+            else
+              ws[counter, custom_field_col] = ''
+              next
+            end
+          end
+          custom_field_col+=1
         end
         counter+=1
       end
@@ -213,6 +251,21 @@ class BackEndLeaseCompsController < ApplicationController
               }
           stepped_rent_col+=2
         end
+        custom_field_col = stepped_rent_col
+        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        custom_data_hash={}
+        custom_data={}
+        custom_headers.each.map do |keys|
+          custom_data_hash[keys.header]={
+              "key" => keys.header,
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :comp_view_type => ws[counter, 3],
@@ -240,7 +293,8 @@ class BackEndLeaseCompsController < ApplicationController
             :escalation => ws[counter, 25],
             :fixed_escalation => ws[counter, 26],
             :is_stepped_rent => ws[counter, 27],
-            :stepped_rents_attributes => stepped_rent_values
+            :stepped_rents_attributes => stepped_rent_values,
+            :custom_data => custom_data
         )
         # geocode_setup(@tenant_record)
       end
@@ -256,6 +310,7 @@ class BackEndLeaseCompsController < ApplicationController
 
   def duplication
    tenant_records = TenantRecord.duplicate_list(current_user.id)
+   custom_headers = TenantRecord.custom_field_headers(@current_user.id)
    if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
      stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
    else
@@ -278,6 +333,11 @@ class BackEndLeaseCompsController < ApplicationController
        ws[1,stepped_rent_col_head+1] = "# of Months"
        i +=1
        stepped_rent_col_head+=2
+     end
+     custom_headers_col_head = stepped_rent_col_head
+     custom_headers.each do |keys|
+       ws[1,custom_headers_col_head]= keys.header
+       custom_headers_col_head+=1
      end
      tenant_records.each do |tenant_record|
        stepped_rent_col=29
@@ -314,6 +374,20 @@ class BackEndLeaseCompsController < ApplicationController
          ws[counter, stepped_rent_col] = sr.cost_per_month
          ws[counter, stepped_rent_col+1] = sr.months
          stepped_rent_col+=2
+       end
+       custom_field_col = stepped_rent_col
+       custom_data = TenantRecord.custom_field_values(tenant_record.id)
+       custom_headers.each do
+         custom_data.each do |vals|
+           if ws[1, custom_field_col]==vals.header
+             ws[counter, custom_field_col] = vals.value
+             break
+           else
+             ws[counter, custom_field_col] = ''
+             next
+           end
+         end
+         custom_field_col+=1
        end
        counter+=1
      end
@@ -354,6 +428,21 @@ class BackEndLeaseCompsController < ApplicationController
           }
           stepped_rent_col+=2
         end
+        custom_field_col = stepped_rent_col
+        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        custom_data_hash={}
+        custom_data={}
+        custom_headers.each.map do |keys|
+          custom_data_hash[keys.header]={
+              "key" => keys.header,
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 3),
             :comp_view_type => ws[counter, 4],
@@ -381,7 +470,8 @@ class BackEndLeaseCompsController < ApplicationController
             :escalation => ws[counter, 26],
             :fixed_escalation => ws[counter, 27],
             :is_stepped_rent => ws[counter, 28],
-            :stepped_rents_attributes => stepped_rent_values
+            :stepped_rents_attributes => stepped_rent_values,
+            :custom_data => custom_data
         )
       end
       if ws[counter,2] == 'Delete'
