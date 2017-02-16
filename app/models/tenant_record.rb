@@ -880,6 +880,29 @@ class TenantRecord < ActiveRecord::Base
     # ActiveRecord::Base.connection.execute(query)
   end
 
+  def self.custom_field_headers user_id
+    query ="
+      select  distinct header
+      from (
+          select skeys(custom_data) as header
+          from tenant_records
+          where user_id=#{user_id}
+      ) as dt"
+
+    TenantRecord.find_by_sql(query)
+  end
+
+  def self.custom_field_values comp_id
+    query ="
+      select  header, value
+      from (
+          select skeys(custom_data) as header, svals(custom_data) as value
+          from tenant_records
+          where id=#{comp_id}
+      ) as dt"
+    TenantRecord.find_by_sql(query)
+  end
+
   def cleanup
     comp_request = CompRequest.where('comp_id = ? and comp_type = ?', self.id,"lease")
     comp_request.destroy_all if !comp_request.nil?

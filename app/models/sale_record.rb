@@ -159,6 +159,30 @@ class SaleRecord < ActiveRecord::Base
     true
   end
 
+  def self.custom_field_headers user_id
+    query ="
+      select  distinct header
+      from (
+          select skeys(custom) as header
+          from sale_records
+          where user_id=#{user_id}
+      ) as dt"
+
+    SaleRecord.find_by_sql(query)
+  end
+
+  def self.custom_field_values comp_id
+    query ="
+      select  header, value
+      from (
+          select skeys(custom) as header, svals(custom) as value
+          from sale_records
+          where id=#{comp_id}
+      ) as dt"
+    SaleRecord.find_by_sql(query)
+  end
+
+
   def cleanup
     comp_request = CompRequest.where('comp_id = ? and comp_type = ?', self.id,"sale")
     comp_request.destroy_all if !comp_request.nil?
