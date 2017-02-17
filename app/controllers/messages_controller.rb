@@ -57,9 +57,11 @@ class MessagesController < ApplicationController
       @mtype = 'all'
     end
 
+    @user_all_connections = Connection.all_connections_of_user(current_user.id)
+
     #--------delete message-----------------
 
-    if params[:deletemessage] && params[:f_receiver_id]
+    if params[:deletemessage] && params[:f_receiver_id].to_i > 0
       Message.deleteMessages(current_user,params[:f_receiver_id])
       redirect_to messages_path(mtype: @mtype)
       return
@@ -67,26 +69,28 @@ class MessagesController < ApplicationController
 
     ##--------get user messages-----------
 
-    if params[:f_receiver_id]
+    if params[:f_receiver_id].to_i > 0
       selected_user_id = params[:f_receiver_id]
       @selected_user = User.find(selected_user_id)
+      Message.markAsRead(current_user,selected_user_id)
     elsif
-    selected_user_id = @user_connections.first
+      selected_user_id = @user_connections.first
       @selected_user = User.find(selected_user_id)
     end
 
     if @selected_user
-      Message.markAsRead(current_user,selected_user_id)
+      ##Message.markAsRead(current_user,selected_user_id) ##moved in selected user if
     end
 
     @user_messages = Message.getUserMessages(current_user,selected_user_id)
 
     ##--------Mark as unread-----------
 
-    if params[:mark_as_unread] && params[:f_receiver_id]
+    if params[:mark_as_unread] && params[:f_receiver_id].to_i > 0
+
       Message.markAsUnread(current_user,params[:f_receiver_id])
-      ##redirect_to messages_path(mtype: @mtype)
-      ##return
+      redirect_to messages_path(mtype: @mtype)
+      return
     end
 
 
