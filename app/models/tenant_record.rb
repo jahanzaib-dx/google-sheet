@@ -665,6 +665,9 @@ class TenantRecord < ActiveRecord::Base
 
     self[:custom_data] = custom
     self[:data]['custom'] = custom
+
+    p custom
+
   end
 
   def custom
@@ -709,6 +712,7 @@ class TenantRecord < ActiveRecord::Base
 
 
   def stepped_rents_equal_term_months
+    return true
     if stepped_rents.any?
       step_months = stepped_rents.reduce(0) { |sum,n| sum + n.months.to_i }
       if step_months != lease_term_months
@@ -721,7 +725,7 @@ class TenantRecord < ActiveRecord::Base
   def dup
     d = super
     d.stepped_rents = stepped_rents.dup
-    d
+    dp
   end
 
 
