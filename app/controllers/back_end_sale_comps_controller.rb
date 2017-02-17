@@ -18,7 +18,7 @@ class BackEndSaleCompsController < ApplicationController
       # put data to sheet
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
       counter=2
-      custom_headers_col_head = 18
+      custom_headers_col_head = 19
       custom_headers.each do |keys|
         ws[1,custom_headers_col_head]= keys.header
         custom_headers_col_head+=1
@@ -26,23 +26,24 @@ class BackEndSaleCompsController < ApplicationController
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
-        ws[counter, 3] = sale_record.view_type
-        ws[counter, 4] = sale_record.address1
-        ws[counter, 5] = sale_record.city
-        ws[counter, 6] = sale_record.state
-        ws[counter, 7] = sale_record.country
-        ws[counter, 8] = sale_record.submarket
-        ws[counter, 9] = sale_record.property_name
-        ws[counter, 10] = sale_record.build_date
-        ws[counter, 11] = sale_record.property_type
-        ws[counter, 12] = sale_record.class_type
-        ws[counter, 13] = sale_record.land_size
-        ws[counter, 14] = sale_record.price
-        ws[counter, 15] = sale_record.sold_date
-        ws[counter, 16] = sale_record.cap_rate
-        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
-        custom_field_col = 18
-        custom_data = SaleRecord.custom_field_values(tenant_record.id)
+        ws[counter, 3] = sale_record.is_geo_coded
+        ws[counter, 4] = sale_record.view_type
+        ws[counter, 5] = sale_record.address1
+        ws[counter, 6] = sale_record.city
+        ws[counter, 7] = sale_record.state
+        ws[counter, 8] = sale_record.country
+        ws[counter, 9] = sale_record.submarket
+        ws[counter, 10] = sale_record.property_name
+        ws[counter, 11] = sale_record.build_date
+        ws[counter, 12] = sale_record.property_type
+        ws[counter, 13] = sale_record.class_type
+        ws[counter, 14] = sale_record.land_size
+        ws[counter, 15] = sale_record.price
+        ws[counter, 16] = sale_record.sold_date
+        ws[counter, 17] = sale_record.cap_rate
+        ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        custom_field_col = 19
+        custom_data = SaleRecord.custom_field_values(sale_record.id)
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -103,7 +104,7 @@ class BackEndSaleCompsController < ApplicationController
       if ws.max_rows<sale_records.count
         ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
       end
-      custom_headers_col_head = 18
+      custom_headers_col_head = 19
       custom_headers.each do |keys|
         ws[1,custom_headers_col_head]= keys.header
         custom_headers_col_head+=1
@@ -111,22 +112,23 @@ class BackEndSaleCompsController < ApplicationController
       sale_records.each do |sale_record|
         ws[counter, 1] = sale_record.id
         ws[counter, 2] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
-        ws[counter, 3] = sale_record.view_type
-        ws[counter, 4] = sale_record.address1
-        ws[counter, 5] = sale_record.city
-        ws[counter, 6] = sale_record.state
-        ws[counter, 7] = sale_record.country
-        ws[counter, 8] = sale_record.submarket
-        ws[counter, 9] = sale_record.property_name
-        ws[counter, 10] = sale_record.build_date
-        ws[counter, 11] = sale_record.property_type
-        ws[counter, 12] = sale_record.class_type
-        ws[counter, 13] = sale_record.land_size
-        ws[counter, 14] = sale_record.price
-        ws[counter, 15] = sale_record.sold_date
-        ws[counter, 16] = sale_record.cap_rate
-        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
-        custom_field_col = 18
+        ws[counter, 3] = sale_record.is_geo_coded
+        ws[counter, 4] = sale_record.view_type
+        ws[counter, 5] = sale_record.address1
+        ws[counter, 6] = sale_record.city
+        ws[counter, 7] = sale_record.state
+        ws[counter, 8] = sale_record.country
+        ws[counter, 9] = sale_record.submarket
+        ws[counter, 10] = sale_record.property_name
+        ws[counter, 11] = sale_record.build_date
+        ws[counter, 12] = sale_record.property_type
+        ws[counter, 13] = sale_record.class_type
+        ws[counter, 14] = sale_record.land_size
+        ws[counter, 15] = sale_record.price
+        ws[counter, 16] = sale_record.sold_date
+        ws[counter, 17] = sale_record.cap_rate
+        ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        custom_field_col = 19
         custom_data = SaleRecord.custom_field_values(sale_record.id)
         custom_headers.each do
           custom_data.each do |vals|
@@ -184,16 +186,9 @@ class BackEndSaleCompsController < ApplicationController
     counter=2
     ids= Array.new
     sale_records.each do |sale_record|
-      # if sale_record.id!=counter-1
-      #   ws[counter, 1] =  counter
-      #   next
-      # end
-      # while ws[counter,1] != sale_record.id.to_s
-      #   counter+=1
-      # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
-        custom_field_col = 18
+        custom_field_col = 19
         custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
@@ -210,21 +205,22 @@ class BackEndSaleCompsController < ApplicationController
         end
         @sale_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
-            :view_type => ws[counter, 3],
-            :address1 => ws[counter, 4],
-            :city =>  ws[counter, 5],
-            :state => ws[counter, 6],
-            :country => ws[counter, 7],
-            :submarket => ws[counter, 8],
-            :property_name => ws[counter, 9],
-            :build_date => ws[counter, 10],
-            :property_type => ws[counter, 11],
-            :class_type => ws[counter, 12],
-            :land_size => ws[counter, 13],
-            :price => ws[counter, 14],
-            :sold_date => ws[counter, 15],
-            :cap_rate => ws[counter, 16],
-            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False',
+            :is_geo_coded => ws[counter, 3],
+            :view_type => ws[counter, 4],
+            :address1 => ws[counter, 5],
+            :city =>  ws[counter, 6],
+            :state => ws[counter, 7],
+            :country => ws[counter, 8],
+            :submarket => ws[counter, 9],
+            :property_name => ws[counter, 10],
+            :build_date => ws[counter, 11],
+            :property_type => ws[counter, 12],
+            :class_type => ws[counter, 13],
+            :land_size => ws[counter, 14],
+            :price => ws[counter, 15],
+            :sold_date => ws[counter, 16],
+            :cap_rate => ws[counter, 17],
+            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
             :custom => custom_data
         )
       end
@@ -250,7 +246,7 @@ class BackEndSaleCompsController < ApplicationController
     # put data to sheet
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     counter=2
-    custom_headers_col_head = 19
+    custom_headers_col_head = 20
     custom_headers.each do |keys|
       ws[1,custom_headers_col_head]= keys.header
       custom_headers_col_head+=1
@@ -259,22 +255,23 @@ class BackEndSaleCompsController < ApplicationController
       ws[counter, 1] = sale_record.id
       ws[counter, 2] = 'Keep'
       ws[counter, 3] = (sale_record.main_image_file_name.present?) ? sale_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{sale_record.latitude},#{sale_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
-      ws[counter, 4] = sale_record.view_type
-      ws[counter, 5] = sale_record.address1
-      ws[counter, 6] = sale_record.city
-      ws[counter, 7] = sale_record.state
-      ws[counter, 8] = sale_record.country
-      ws[counter, 9] = sale_record.submarket
-      ws[counter, 10] = sale_record.property_name
-      ws[counter, 11] = sale_record.build_date
-      ws[counter, 12] = sale_record.property_type
-      ws[counter, 13] = sale_record.class_type
-      ws[counter, 14] = sale_record.land_size
-      ws[counter, 15] = sale_record.price
-      ws[counter, 16] = sale_record.sold_date
-      ws[counter, 17] = sale_record.cap_rate
-      ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
-      custom_field_col = 19
+      ws[counter, 4] = sale_record.is_geo_coded
+      ws[counter, 5] = sale_record.view_type
+      ws[counter, 6] = sale_record.address1
+      ws[counter, 7] = sale_record.city
+      ws[counter, 8] = sale_record.state
+      ws[counter, 9] = sale_record.country
+      ws[counter, 10] = sale_record.submarket
+      ws[counter, 11] = sale_record.property_name
+      ws[counter, 12] = sale_record.build_date
+      ws[counter, 13] = sale_record.property_type
+      ws[counter, 14] = sale_record.class_type
+      ws[counter, 15] = sale_record.land_size
+      ws[counter, 16] = sale_record.price
+      ws[counter, 17] = sale_record.sold_date
+      ws[counter, 18] = sale_record.cap_rate
+      ws[counter, 19] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      custom_field_col = 20
       custom_data = SaleRecord.custom_field_values(sale_record.id)
       custom_headers.each do
         custom_data.each do |vals|
@@ -321,7 +318,7 @@ class BackEndSaleCompsController < ApplicationController
       # end
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
-        custom_field_col = 19
+        custom_field_col = 20
         custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
@@ -338,21 +335,22 @@ class BackEndSaleCompsController < ApplicationController
         end
         @sale_record.update_attributes(
             # :image => ws[counter, 3],
-            :view_type => ws[counter, 4],
-            :address1 => ws[counter, 5],
-            :city =>  ws[counter, 6],
-            :state => ws[counter, 7],
-            :country => ws[counter, 8],
-            :submarket => ws[counter, 9],
-            :property_name => ws[counter, 10],
-            :build_date => ws[counter, 11],
-            :property_type => ws[counter, 12],
-            :class_type => ws[counter, 13],
-            :land_size => ws[counter, 14],
-            :price => ws[counter, 15],
-            :sold_date => ws[counter, 16],
-            :cap_rate => ws[counter, 17],
-            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
+            :is_geo_coded => ws[counter, 4],
+            :view_type => ws[counter, 5],
+            :address1 => ws[counter, 6],
+            :city =>  ws[counter, 7],
+            :state => ws[counter, 8],
+            :country => ws[counter, 9],
+            :submarket => ws[counter, 10],
+            :property_name => ws[counter, 11],
+            :build_date => ws[counter, 12],
+            :property_type => ws[counter, 13],
+            :class_type => ws[counter, 14],
+            :land_size => ws[counter, 15],
+            :price => ws[counter, 16],
+            :sold_date => ws[counter, 17],
+            :cap_rate => ws[counter, 18],
+            :is_sales_record => (ws[counter, 19]=='Land Record') ? 'TRUE' : 'False',
             :custom => custom_data
         )
       end
@@ -378,26 +376,29 @@ class BackEndSaleCompsController < ApplicationController
         if SaleRecord.where(:id => ws[counter, 1]).present?
           @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
           error_string += (ws[counter, 3] == '')? "</br>Cell no. C#{counter} is required" : ""
-          @sale_record.address1 = ws[counter, 4]
-          @sale_record.city = ws[counter, 5]
-          @sale_record.state = ws[counter, 6]
-          result = validate_address_google(@sale_record,true)
-          if result.has_key? :errors
-            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
-          end
           error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
+          @sale_record.address1 = ws[counter, 5]
+          @sale_record.city = ws[counter, 6]
+          @sale_record.state = ws[counter, 7]
+          if(ws[counter,3]=='TRUE')
+            result = validate_address_google(@sale_record,true)
+            if result.has_key? :errors
+              error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. E#{counter} "+result[:errors][:geocode_info].to_s : ""
+            end
+            error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
+            error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+            error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+          end
           error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
-          error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
-          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          error_string += (ws[counter, 10] == '' and !@sale_record.is_sales_record )? "</br>Cell no. J#{counter} is required" : ""
-          error_string += (ws[counter, 11] == '' and !@sale_record.is_sales_record)? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          error_string += (ws[counter, 11] == '' and !@sale_record.is_sales_record )? "</br>Cell no. K#{counter} is required" : ""
           error_string += (ws[counter, 12] == '' and !@sale_record.is_sales_record)? "</br>Cell no. L#{counter} is required" : ""
-          error_string += (ws[counter, 13] == '')? "</br>Cell no. M#{counter} is required" : ""
+          error_string += (ws[counter, 13] == '' and !@sale_record.is_sales_record)? "</br>Cell no. M#{counter} is required" : ""
           error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
           error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
           error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
+          error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
         end
         counter+=1
       end
@@ -407,27 +408,29 @@ class BackEndSaleCompsController < ApplicationController
         if SaleRecord.where(:id => ws[counter, 1]).present?
           @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
           error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
-          @sale_record.address1 = ws[counter, 5]
-          @sale_record.city = ws[counter, 6]
-          @sale_record.state = ws[counter, 7]
-          result = validate_address_google(@sale_record,true)
-          p result.inspect
-          if result.has_key? :errors
-            error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. D#{counter} "+result[:errors][:geocode_info].to_s : ""
-          end
           error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
+          @sale_record.address1 = ws[counter, 6]
+          @sale_record.city = ws[counter, 7]
+          @sale_record.state = ws[counter, 8]
+          if(ws[counter,3]=='TRUE')
+            result = validate_address_google(@sale_record,true)
+            if result.has_key? :errors
+              error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. F#{counter} "+result[:errors][:geocode_info].to_s : ""
+            end
+            error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+            error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
+            error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
+          end
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
-          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
-          error_string += (ws[counter, 8] == '')? "</br>Cell no. H#{counter} is required" : ""
-          error_string += (ws[counter, 9] == '')? "</br>Cell no. I#{counter} is required" : ""
-          error_string += (ws[counter, 11] == '' and !@sale_record.is_sales_record )? "</br>Cell no. K#{counter} is required" : ""
+          error_string += (ws[counter, 10] == '')? "</br>Cell no. J#{counter} is required" : ""
           error_string += (ws[counter, 12] == '' and !@sale_record.is_sales_record )? "</br>Cell no. L#{counter} is required" : ""
           error_string += (ws[counter, 13] == '' and !@sale_record.is_sales_record )? "</br>Cell no. M#{counter} is required" : ""
-          error_string += (ws[counter, 14] == '')? "</br>Cell no. N#{counter} is required" : ""
+          error_string += (ws[counter, 14] == '' and !@sale_record.is_sales_record )? "</br>Cell no. N#{counter} is required" : ""
           error_string += (ws[counter, 15] == '')? "</br>Cell no. O#{counter} is required" : ""
           error_string += (ws[counter, 16] == '')? "</br>Cell no. P#{counter} is required" : ""
           error_string += (ws[counter, 17] == '')? "</br>Cell no. Q#{counter} is required" : ""
           error_string += (ws[counter, 18] == '')? "</br>Cell no. R#{counter} is required" : ""
+          error_string += (ws[counter, 19] == '')? "</br>Cell no. S#{counter} is required" : ""
         end
         counter+=1
       end
