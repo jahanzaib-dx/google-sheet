@@ -4,32 +4,42 @@
 		 <% if @selected_user %>
 		 
           <div class="media tx_media_detail">
-            <div class="media-left tx_media"> 
-			<%= image_tag("mgs-user-img.jpg", class:"media-object") %> </div>
-            <div class="media-body tx_media_body_detail">
-			
-              <h4 class="">
-			  
-			  <%=@selected_user.username%>
-			  
-			  </h4>
-             <!-- <a href="#!" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>-->
-			  
-			  <div class="dropdown tx_dropdown_mgs">
-                 <a data-toggle="dropdown" href="#" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>
-                 <ul class="dropdown-menu tx_dropdown_menu" role="menu" aria-labelledby="dLabel">
-                   	 <li><a href="#!" data-toggle="modal"  data-target="#basicModal">Forward Message</a></li>
-				   
-                     <li><a href="#!" class="mark_unread" data-receiver="<%= @selected_user.id%>">Mark as Unread</a></li>
-					 
-                     <li><a href="#!" class="msg_receiver" data-receiver="<%= @selected_user.id%>"><span class="delete_mgs">Delete Conversation</span></a></li>
-                 </ul>
-               </div>
-			   
-              <p><%=@selected_user.first_name%> <%=@selected_user.last_name%></p>
-              
-			 
+
+            <div class="media-left tx_media customer-name">
+
+              <% if !@selected_user.linkedin_photo.blank? %>
+                  <%= image_tag @selected_user.linkedin_photo.to_s, :class=>"media-object" %>
+              <% elsif !@selected_user.avatar_url.blank? %>
+                  <%= image_tag @selected_user.avatar_url.to_s, :class=>"media-object" %>
+              <% end %>
+
+			<%#= image_tag("mgs-user-img.jpg", class:"media-object") %>
+
             </div>
+
+            <div class="media-left customer-name">
+
+              <p class="align_name_p"><%=@selected_user.first_name%> <%=@selected_user.last_name%></p>
+
+            </div>
+
+            <div class="tx_media tx_media_body_detail set-dropdwon-img">
+
+              <div class="dropdown tx_dropdown_mgs">
+                <a data-toggle="dropdown" href="#" class="tx_drop_mgs"><%= image_tag("drop-icon.png") %></a>
+                <ul class="dropdown-menu tx_dropdown_menu" role="menu" aria-labelledby="dLabel">
+                  <li><a href="#!" data-toggle="modal"  data-target="#basicModal">Forward Message</a></li>
+
+                  <li><a href="#!" class="mark_unread" data-receiver="<%= @selected_user.id%>">Mark as Unread</a></li>
+
+                  <li><a href="#!" class="msg_receiver" data-receiver="<%= @selected_user.id%>"><span class="delete_mgs">Delete Conversation</span></a></li>
+                </ul>
+              </div>
+
+
+            </div>
+
+
           </div>
 		  
 		   <% end %>
@@ -101,11 +111,13 @@
                <!-- <input type="email" placeholder="Connection Email" class="tx_invite_email" required name="email">-->
 				
 				<div class="form-group">
-				<select name="receiver_id" class="form-control">
-					<% @user_connections.each do |user| %>						
-						<option value="<%= user.id%>"><%= user.email%></option>
-					<% end%>
-				</select>
+
+          <select name="receiver_id" class="form-control">
+            <% @user_all_connections.each do |con| %>
+                <option value="<%= con.connection_id(current_user,con)%>"><%= con.connection_fullname(current_user,con)%></option>
+            <% end%>
+          </select>
+
 				</div>
 				
 				
@@ -127,6 +139,28 @@
 <style>
 .tx_mgs_detail_live_left > p {float:left;}
 #c_show_textarea {height:150px;}
+.media-left.tx_media.col-md-5 p {
+  margin: 16px 0 0 10px;
+}
+.tx_media .media-object{float: left;}
+.set-dropdwon-img {
+  float: right;
+  overflow: initial;
+}
+    .customer-name{
+      float: left;
+    }
+ul.dropdown-menu.tx_dropdown_menu {
+  top: 36px;
+  left: auto;
+  right: 0px;
+}
+.set-dropdwon-img .dropdown, .dropup {
+  position: absolute;
+  right: 44px;
+  float: right;
+}
+
 </style>
 		   
 <script>

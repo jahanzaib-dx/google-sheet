@@ -23,6 +23,25 @@ class Connection < ActiveRecord::Base
 
   end
 
+  def connection_fullname(current_user,c)
+    if current_user.id == c.user_id
+      unless connected_to.first_name.blank?
+        "#{connected_to.first_name} #{connected_to.last_name}"
+      else
+        "<#{connected_to.email}>"
+      end
+      ##return connected_to.first_name
+    else
+      unless user.first_name.blank?
+        "#{user.first_name} #{user.last_name}"
+      else
+        "<#{user.email}>"
+      end
+      ##return user.first_name
+    end
+
+  end
+
   def connection_id(current_user,c)
     if current_user.id == c.user_id
       ##return connected_to.account.id

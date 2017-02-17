@@ -21,7 +21,7 @@
 
 <select id="message_select" name="mtype" onchange="this.form.submit()" class="selectpicker">
   <option value="all"  <% if params[:mtype]=='all'%>selected<% end%>>All Messages</option>
-  <option value="connections" <% if params[:mtype]=='connections'%>selected<% end%>>My Connections</option>
+  <!--<option value="connections" <% if params[:mtype]=='connections'%>selected<% end%>>My Connections</option>-->
   <option value="unread" <% if params[:mtype]=='unread'%>selected<% end%>>Unread</option>  
 </select>
 
@@ -161,8 +161,8 @@
 
             <div class="form-group">
               <select name="receiver_id" class="form-control">
-                <% @user_connections.each do |user| %>
-                    <option value="<%= user.id%>"><%= user.name%></option>
+                <% @user_all_connections.each do |con| %>
+                    <option value="<%= con.connection_id(current_user,con)%>"><%= con.connection_fullname(current_user,con)%></option>
                 <% end%>
               </select>
             </div>
@@ -201,6 +201,7 @@
     margin-right: 10px;
 	float:right;
 }
+    .align_name_p{margin-top: 15px;}
 </style>
 
 
