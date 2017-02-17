@@ -20,7 +20,8 @@ class MessagesController < ApplicationController
 
       elsif
 
-      @message = Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message])
+      ##@message = Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :created_at => Date.today.to_time , :message => params[:m_message])
+      @message = Message.create(:sender_id => current_user.id , :receiver_id => params[:receiver_id] , :message => params[:m_message])
 
       end
 

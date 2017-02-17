@@ -67,3 +67,4 @@ public/back_end_sale_comp
 *.mp4
 *.flv
 /Gemfile.lock
+/db/structure.sql
