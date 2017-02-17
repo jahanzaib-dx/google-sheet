@@ -534,10 +534,7 @@ class TenantRecord < ActiveRecord::Base
   def lease_structure
     p self[:data]
     p self.attributes
-
-    a=""
-
-    #(self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
+    (self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
   end
 
   def lease_structure_id
