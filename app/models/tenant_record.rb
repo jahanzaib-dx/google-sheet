@@ -534,9 +534,11 @@ class TenantRecord < ActiveRecord::Base
   def lease_structure
     p self[:data]
     p self.attributes
+    if(self.attributes["lease_structure"] || self[:data]["leasestructure_name"])
     (self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
-  end
 
+    end
+  end
   def lease_structure_id
     LeaseStructure.where( ["lower(name) = ?", lease_structure.downcase]).first.id rescue nil
   end
