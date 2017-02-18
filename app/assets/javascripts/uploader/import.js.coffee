@@ -32,6 +32,17 @@ $(document).ready ->
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item4', 'accordian-item3'
     $('.is-active .tick span').css 'color', '#ececef'
+    if( $('#tenant_record_free_rent_type_consecutive').prop('checked') or  $('#tenant_record_free_rent_type_consecutive').prop('checked') or  $('#tenant_record_free_rent_type_consecutive').prop('checked'))
+      $('tr.tenant-free-rent-row').show()
+    else
+      $('tr.tenant-free-rent-row').hide()
+    if $('#geo_code_records').prop('checked')
+      $('tr.tenant-address-row').show()
+    else
+      $('tr.tenant-address-row').hide()
+
+
+
 
   ###$('#bulk-comp-continue-4').on 'click', ->
     $('.is-active .tick span').css 'color', 'green'
@@ -109,6 +120,10 @@ $(document).ready ->
     $('.is-active .tick span').css 'color', 'green'
     open_next_accordian_item 'accordian-item4', 'accordian-item3'
     $('.is-active .tick span').css 'color', '#ececef'
+    if $('#geo_code_records_sales').prop('checked')
+      $('tr.sales-address-row').show()
+    else
+      $('tr.sales-address-row').hide()
     if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'yes'
       $('.building-row').hide()
       $('.land-row').show()

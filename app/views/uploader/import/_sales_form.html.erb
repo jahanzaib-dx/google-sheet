@@ -37,6 +37,21 @@
         <p><%= image_tag("uploader//down_continue.png") %></p>
       </div>
     </div>
+    <div class="geo-data-set-container">
+      <div class="col-md-8">
+        <div class="col-md-4">
+          <label><%= check_box_tag 'geo_code_records[is_geo_coded]', nil, nil, id:'geo_code_records_sales',class: 'geo-code-my-records' %> Geo-code my records.</label>
+        </div>
+        <div class="col-md-8">
+          <div class="hover-info">
+            <div class="tooltip-custom">
+              <div class="triangle"></div>
+              <strong>Note:</strong> If checked, Address1, City, State and Country are required column headers in your spreadsheet.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </li>
@@ -120,7 +135,8 @@
                 </div>
               </td>
             </tr>
-            <tr>
+
+            <tr class="sales-address-row">
               <td>City*</td>
               <td>
                 <div class="header-name-container">
@@ -133,7 +149,7 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sales-address-row">
               <td>State*</td>
               <td>
                 <div class="header-name-container">
@@ -146,11 +162,11 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td>City*</td>
+            <tr class="sales-address-row">
+              <td>Country*</td>
               <td>
                 <div class="header-name-container">
-                  <div class="first"><%= text_field_tag 'sale_record[city]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
+                  <div class="first"><%= text_field_tag 'sale_record[country]', nil,  placeholder: '{ Please select }', class: 'bulk-column-header-value validate[required]' %></div>
                   <div class="second">
                     <select class="bulk-column-header-dd">
                     </select>

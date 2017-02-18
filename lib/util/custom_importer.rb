@@ -120,6 +120,12 @@ module CustomImporter
 p not_for_sheet
     # just save custom
     tenant_record.custom = original_record[:custom] if original_record[:custom]
+    hash = original_record[:custom]
+    if !hash.nil?
+      a= hash.values
+      b = a.map { |h| [h["key"] , h["value"]] }.to_h
+      tenant_record.custom_data = b
+    end
     # just set the team
     #tenant_record.team = import.team
     tenant_record.user = import.user
@@ -201,8 +207,10 @@ p not_for_sheet
       p step
       key=step[:cost_per_month].split(" ").join("_")
       val=step[:months].split(" ").join("_")
-      tenant_record.stepped_rents.new(:cost_per_month => original_record[key], :months => original_record[val])
+      tenant_record.stepped_rents.new(:cost_per_month => original_record[key].to_f, :months => original_record[val].to_i)
     }
+    p tenant_record.stepped_rents
+
     tenant_record
   end
 
@@ -245,6 +253,7 @@ p not_for_sheet
   end
 
   def self.geocode_record import_id, record_id, record, tenant_record, tmp_record, has_stepped_errors, current_user_info, not_for_sheet
+   # if(not_for_sheet[:is-geo])
     begin
       ################# geocode with Google #########################
       google_results = geocode_address(tenant_record)
