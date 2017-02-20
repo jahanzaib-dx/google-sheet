@@ -103,6 +103,7 @@ class Uploader::ImportController < ApplicationController
     params.permit(:white_glove_user)
     current_user= @current_user
     #params.require(:geo_code_record).permit!
+    #params.require(:lease_structure).permit!
     p params.inspect
     @is_white_glove_service = false
      if(params[:white_glove_user] && params[:white_glove_user].to_i >0 )

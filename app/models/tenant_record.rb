@@ -84,7 +84,7 @@ class TenantRecord < ActiveRecord::Base
   view_type comments property_name submarket industry_type]
 
   validates_associated :stepped_rents
-  validate :stepped_rents_equal_term_months
+  #validate :stepped_rents_equal_term_months
   conditionally_validate :address1,
             :presence => true
   conditionally_validate :city,
