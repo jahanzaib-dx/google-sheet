@@ -64,11 +64,11 @@
       
       <div class="col-md-3">
       
-	  <%= form_tag(messages_path, remote: true , id:"search_connections_form") do %>
+	  <%= form_tag(messages_path, remote: false , id:"search_connections_form") do %>
 	  
       <div class="tx_search_filter">	  
 	  
-          <input type="text" placeholder="Search" name="search">
+          <input type="text" placeholder="Search" name="search" value="<%= (!params[:search].blank?)?params[:search]:""%>">
           <a href="#!" onclick="document.getElementById('search_connections_form').submit();"><%= image_tag("search-filter-icon.png") %></a> 
 		  
 		  <input type="hidden" id="f_mtype" name="mtype" value="<%= @mtype%>">
