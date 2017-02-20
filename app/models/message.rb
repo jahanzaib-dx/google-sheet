@@ -145,10 +145,11 @@ class Message < ActiveRecord::Base
   #-------------------------------------------------------
 
   def self.markAsUnread(user,selected_user_id)
+
     last_mess = Message.getLastMessage(user,selected_user_id)
 
     if last_mess.sender_id != user.id
-      last_mess.update_attribute(:status , false)
+      last_mess.update_attribute("status",false)
     end
 
   end

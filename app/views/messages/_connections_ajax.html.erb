@@ -13,15 +13,19 @@
 	end
 
  %>
-          <div class="tx_mgs_click <% if user.id == @selected_user.id%>tx_mgs_click_active <%end%>"> 
+      <div class="tx_mgs_click <% if user.id == @selected_user.id%>tx_mgs_click_active <%end%>">
 		    <a href="#!" class="msg_receiver" data-receiver="<%= user.id%>">
 				<div class="media tx_media">
-				  <div class="media-left tx_media"> 
-				  
-				  <%= image_tag("mgs-user-img.jpg", class:"media-object") %> </div>
+				  <div class="media-left tx_media">
+            <% if !user.linkedin_photo.blank? %>
+                <%= image_tag user.linkedin_photo.to_s, :class=>"media-object" %>
+            <% elsif !user.avatar_url.blank? %>
+                <%= image_tag user.avatar_url.to_s, :class=>"media-object" %>
+            <% end %>
+          </div>
 				  <div class="media-body tx_media_body">
 					<h4 class=""><%= user.username%></h4>
-					<p><%= user.first_name%> <%= user.last_name%></p>
+					<p><%= user.name%> </p>
 					<span><%= last_message_time_str%><%##= link_to image_tag("mgs-dlt.png", class:"delete_mgs"), messages_path(param1: 'value1', param2: 'value2'), method: :post %>
 					<%= image_tag("mgs-dlt.png", class:"delete_mgs") %>
 					</span> </div>

@@ -21,7 +21,7 @@
 
 <select id="message_select" name="mtype" onchange="this.form.submit()" class="selectpicker">
   <option value="all"  <% if params[:mtype]=='all'%>selected<% end%>>All Messages</option>
-  <option value="connections" <% if params[:mtype]=='connections'%>selected<% end%>>My Connections</option>
+  <!--<option value="connections" <% if params[:mtype]=='connections'%>selected<% end%>>My Connections</option>-->
   <option value="unread" <% if params[:mtype]=='unread'%>selected<% end%>>Unread</option>  
 </select>
 
@@ -32,7 +32,7 @@
        
         
         
-          <div class="tx_click"><a href="#"><%= image_tag("clik-edit.png") %></a></div>
+          <div class="tx_click"><a href="#" data-toggle="modal" data-target="#newMessageModal"><%= image_tag("clik-edit.png") %></a></div>
           
 
 <!--<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -47,7 +47,7 @@
                <textarea placeholder="I'd like to share my comp database with you."></textarea>
             </div>
             <div class="modal-footer text-center">
-               
+
                 <button type="button" class="btn btn-primary invite_save" data-dismiss="modal">Save changes</button>
         </div>
     </div>
@@ -143,6 +143,46 @@
 </div>
 
 
+
+<!----------------------new message form in popup--------------------------------------->
+
+<%= form_tag messages_path do %>
+
+    <div class="modal fade" id="newMessageModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog  tx_invite_modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header  tx_invite_modal-header">
+            <button type="button" class="close tx_close" data-dismiss="modal" aria-hidden="true"><%= image_tag("xras-icon.png") %></button>
+            <h4 class="modal-title" id="myModalLabel">New Message</h4>
+          </div>
+          <div class="modal-body tx_invite_modal-body">
+
+            <!-- <input type="email" placeholder="Connection Email" class="tx_invite_email" required name="email">-->
+
+            <div class="form-group">
+              <select name="receiver_id" class="form-control">
+                <% @user_all_connections.each do |con| %>
+                    <option value="<%= con.connection_id(current_user,con)%>"><%= con.connection_fullname(current_user,con)%></option>
+                <% end%>
+              </select>
+            </div>
+
+
+            <textarea id="c_show_textarea" name="m_message" rows="20"></textarea>
+          </div>
+
+          <div class="modal-footer text-center">
+
+            <button type="submit" class="btn btn-primary invite_save" name="sendmessage" >Send</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+<% end %>
+
+
 <script type="text/javascript">
   $(function() {
      $("input:file").change(function (){
@@ -161,6 +201,7 @@
     margin-right: 10px;
 	float:right;
 }
+    .align_name_p{margin-top: 15px;}
 </style>
 
 

@@ -78,7 +78,7 @@ class TenantRecord < ActiveRecord::Base
   PROPERTY_TYPE        = ["office", "industrial", "retail", "flex"]
   SALES_PROPERTY_TYPE = %w[healthcare hospitality industrial multifamily office portfolio retail single-family speciality other]
   REQUIRED_FIELDS = %w[company address1 suite city state zipcode custom_data custom
-  base_rent class_type comp_type contact contact_email contact_phone lease_type
+  base_rent class_type comp_type contact contact_email contact_phone deal_type
   escalation free_rent industry_sic_code_id lease_commencement_date lease_term_months
   property_type size tenant_improvement tenant_ti_cost discount_percentage
   view_type comments property_name submarket industry_type]
@@ -220,7 +220,7 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.data->'leasestructure_name' as lease_structure, " +
       "tenant_records.lease_term_months / 12 as lease_term_years, " +
       "tenant_records.lease_term_months, " +
-      "tenant_records.lease_type, " +
+      "tenant_records.deal_type, " +
       "tenant_records.location_type, " +
       "tenant_records.net_effective_per_sf, " +
       "tenant_records.cushman_net_effective_per_sf, " +
@@ -459,7 +459,7 @@ class TenantRecord < ActiveRecord::Base
           self.lease_commencement_date                   = 'private'
           self.lease_structure                           = 'private'
           self.lease_term_months                         = 'private'
-          self.lease_type                                = 'private'
+          self.deal_type                                = 'private'
           self.location_type                             = 'private'
           self.net_effective_per_sf                      = 'private'
           self.tenant_improvement                        = 'private'
@@ -477,7 +477,7 @@ class TenantRecord < ActiveRecord::Base
           self.lease_commencement_date                   = DateTime.new(self.lease_commencement_date.year,12,31) # Only need year, the month/day doesn't matter
           self.lease_structure                           = 'confidential'
           self.lease_term_months                         = 'confidential'
-          self.lease_type                                = 'confidential'
+          self.deal_type                                = 'confidential'
           self.location_type                             = 'confidential'
           self.net_effective_per_sf                      = 'confidential'
           self.tenant_improvement                        = 'confidential'
@@ -496,7 +496,7 @@ class TenantRecord < ActiveRecord::Base
           self.lease_commencement_date                   = view_type
           self.lease_structure                           = view_type
           self.lease_term_months                         = view_type
-          self.lease_type                                = view_type
+          self.deal_type                                = view_type
           self.location_type                             = view_type
           self.net_effective_per_sf                      = view_type
           self.tenant_improvement                        = view_type
@@ -517,7 +517,7 @@ class TenantRecord < ActiveRecord::Base
           self.lease_commencement_date                   = DateTime.new(self.lease_commencement_date.year,12,31) # Only need year, the month/day doesn't matter
           self.lease_structure                           = 'network'
           self.lease_term_months                         = 'network'
-          self.lease_type                                = 'network'
+          self.deal_type                                = 'network'
           self.location_type                             = 'network'
           self.net_effective_per_sf                      = 'network'
           self.tenant_improvement                        = 'network'
@@ -534,12 +534,11 @@ class TenantRecord < ActiveRecord::Base
   def lease_structure
     p self[:data]
     p self.attributes
+    if(self.attributes["lease_structure"] || self[:data]["leasestructure_name"])
+    (self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
 
-    a=""
-
-    #(self.attributes["lease_structure"] || self[:data]["leasestructure_name"]).split('_').map(&:capitalize).join(' ')
+    end
   end
-
   def lease_structure_id
     LeaseStructure.where( ["lower(name) = ?", lease_structure.downcase]).first.id rescue nil
   end
@@ -665,6 +664,9 @@ class TenantRecord < ActiveRecord::Base
 
     self[:custom_data] = custom
     self[:data]['custom'] = custom
+
+    p custom
+
   end
 
   def custom
@@ -695,7 +697,7 @@ class TenantRecord < ActiveRecord::Base
     #when "record_details" then [:company, :address1, :suite, :city, :state, :zipcode, :zipcode_plus, :location_type, :industry_sic_code_id]
     when "record_details" then [:company, :address1, :suite, :city, :state, :zipcode, :zipcode_plus, :location_type, :industry_type]
     when "property_information" then [:comments, :class_type, :property_type] #:main_image
-    when "lease_details" then [:size, :free_rent, :lease_commencement_date, :lease_term_months, :tenant_improvement, :tenant_ti_cost, :lease_type]
+    when "lease_details" then [:size, :free_rent, :lease_commencement_date, :lease_term_months, :tenant_improvement, :tenant_ti_cost, :deal_type]
     when "rents" then
       if self.stepped_rents.any?
         [:stepped_rents, :stepped_rents_equal_term_months]
@@ -709,6 +711,7 @@ class TenantRecord < ActiveRecord::Base
 
 
   def stepped_rents_equal_term_months
+    return true
     if stepped_rents.any?
       step_months = stepped_rents.reduce(0) { |sum,n| sum + n.months.to_i }
       if step_months != lease_term_months
@@ -721,7 +724,7 @@ class TenantRecord < ActiveRecord::Base
   def dup
     d = super
     d.stepped_rents = stepped_rents.dup
-    d
+    dp
   end
 
 
@@ -776,7 +779,7 @@ class TenantRecord < ActiveRecord::Base
     self.comp_type ||= 'internal'
     self.escalation ||= 0.00
     self.lease_structure ||= "Full service"
-    self.lease_type = lease_type.to_s.strip.presence || '-'
+    self.deal_type = deal_type.to_s.strip.presence || '-'
 
     # Need to set default first_year_base_rent to base rent
     self.data ||= (first_year_stepped_rent || Hash[:first_year_base_rent, self.base_rent])
@@ -878,6 +881,29 @@ class TenantRecord < ActiveRecord::Base
             "
     TenantRecord.find_by_sql(query)
     # ActiveRecord::Base.connection.execute(query)
+  end
+
+  def self.custom_field_headers user_id
+    query ="
+      select  distinct header
+      from (
+          select skeys(custom_data) as header
+          from tenant_records
+          where user_id=#{user_id}
+      ) as dt"
+
+    TenantRecord.find_by_sql(query)
+  end
+
+  def self.custom_field_values comp_id
+    query ="
+      select  header, value
+      from (
+          select skeys(custom_data) as header, svals(custom_data) as value
+          from tenant_records
+          where id=#{comp_id}
+      ) as dt"
+    TenantRecord.find_by_sql(query)
   end
 
   def cleanup
