@@ -33,7 +33,9 @@ class Message < ActiveRecord::Base
 
       ####user_connections = Message.where("messages.sender_id = ? OR messages.receiver_id = ?" , user.id,user.id).joins("LEFT JOIN users sender ON sender.id = messages.sender_id").joins("LEFT JOIN users receiver ON receiver.id = messages.receiver_id").select("messages.*, sender.* ,receiver.*").where("sender.username LIKE ? OR receiver.username LIKE ?" , "%#{search}%" , "%#{search}%")
 
-      user_connections = User.where("id in (SELECT sender_id as user_ids from messages where sender_id = ? or receiver_id = ? UNION SELECT receiver_id from messages where sender_id = ? or receiver_id = ?) AND id != ?",user.id,user.id,user.id,user.id,user.id).where("users.username LIKE ?" , "%#{search}%").order('id DESC')
+      user_connections = User.where("id in (SELECT sender_id as user_ids from messages where sender_id = ? or receiver_id = ? UNION SELECT receiver_id from messages where sender_id = ? or receiver_id = ?) AND id != ?",user.id,user.id,user.id,user.id,user.id)
+                             .where("lower(users.first_name) LIKE ? OR lower(users.last_name) LIKE ?" , "%#{search.downcase}%" , "%#{search.downcase}%")
+                             .order('id DESC')
 
     else
 
@@ -57,11 +59,15 @@ class Message < ActiveRecord::Base
 
     if search
 
-      user_connections = Connection.joins("INNER JOIN users ON users.id = connections.agent_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).where("users.username LIKE ? " , "%#{search}%" ).order('connections.id DESC')
+      user_connections = Connection.joins("INNER JOIN users ON users.id = connections.agent_id")
+                             .select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id)
+                             .where("lower(users.first_name) LIKE ? OR lower(users.last_name) LIKE ?" , "%#{search.downcase}%" , "%#{search.downcase}%" )
+                             .order('connections.id DESC')
 
     else
 
-      user_connections = Connection.joins("INNER JOIN users ON users.id = connections.agent_id").select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).order('connections.id DESC')
+      user_connections = Connection.joins("INNER JOIN users ON users.id = connections.agent_id")
+                             .select("connections.*, users.* , connections.id as cid").where(:user_id=>user.id).order('connections.id DESC')
 
     end
 
@@ -79,7 +85,9 @@ class Message < ActiveRecord::Base
 
       ###user_connections = User.where("id in (SELECT sender_id as user_ids from messages where (sender_id = ? or receiver_id = ?) AND status = false UNION SELECT receiver_id from messages where (sender_id = ? or receiver_id = ?) AND status = false) AND id != ?",user.id,user.id,user.id,user.id,user.id).where("users.username LIKE ?" , "%#{search}%").order('id DESC')
 
-      user_connections = User.where("id in (SELECT sender_id as user_ids from messages where (receiver_id = ?) AND status = false UNION SELECT receiver_id from messages where (receiver_id = ?) AND status = false) AND id != ?",user.id,user.id,user.id).where("users.username LIKE ?" , "%#{search}%").order('id DESC')
+      user_connections = User.where("id in (SELECT sender_id as user_ids from messages where (receiver_id = ?) AND status = false UNION SELECT receiver_id from messages where (receiver_id = ?) AND status = false) AND id != ?",user.id,user.id,user.id)
+                             .where("lower(users.first_name) LIKE ? OR lower(users.last_name) LIKE ?" , "%#{search.downcase}%" ,"%#{search.downcase}%")
+                             .order('id DESC')
 
     else
 
