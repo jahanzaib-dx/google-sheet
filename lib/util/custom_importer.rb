@@ -77,6 +77,8 @@ module CustomImporter
       elsif not_for_sheet[:rent_escalation_type_stepped]
         tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet, original_record
       end
+
+      p tenant_record
       not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
       not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
       not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
@@ -117,15 +119,18 @@ module CustomImporter
     end
 
     not_for_sheet = not_for_sheet.except(:class)
-p not_for_sheet
+    p not_for_sheet
     # just save custom
     tenant_record.custom = original_record[:custom] if original_record[:custom]
+
     hash = original_record[:custom]
     if !hash.nil?
       a= hash.values
       b = a.map { |h| [h["key"] , h["value"]] }.to_h
       tenant_record.custom_data = b
     end
+
+    tenant_record.is_geo_coded= not_for_sheet[:is_geo_coded]
     # just set the team
     #tenant_record.team = import.team
     tenant_record.user = import.user
@@ -203,15 +208,20 @@ p not_for_sheet
   def self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
     tenant_record.rent_escalation_type = 'stepped_rent'
     tenant_record.is_stepped_rent = true
-    not_for_sheet[:stepped_rents].each { |index, step|
-      p step
-      key=step[:cost_per_month].split(" ").join("_")
-      val=step[:months].split(" ").join("_")
-      tenant_record.stepped_rents.new(:cost_per_month => original_record[key].to_f, :months => original_record[val].to_i)
+    not_for_sheet['lease_stepped_rents'].each { |step|
+     p step['cost_per_month']
+     p step['months']
+      tenant_record.stepped_rents.new(:cost_per_month => step['cost_per_month'], :months => step['months'])
     }
-    p tenant_record.stepped_rents
+    # not_for_sheet[:stepped_rents].each { |index, step|
+    #   p step
+    #   key=step[:cost_per_month].split(" ").join("_")
+    #   val=step[:months].split(" ").join("_")
+    #   tenant_record.stepped_rents.new(:cost_per_month => original_record[:custom][key][:value].to_f, :months => original_record[:custom][val][:value].to_i)
+    # }
 
-    tenant_record
+
+tenant_record
   end
 
   # helper stuff
