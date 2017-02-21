@@ -13,6 +13,7 @@ module GoogleGeocoder
                                :address1 => tenant_record.address1,
                                :city => tenant_record.city,
                                :state => tenant_record.state,
+                               :country=> tenant_record.country,
                                :zipcode => tenant_record.zipcode
                            },
                            address_only)
