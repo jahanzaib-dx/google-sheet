@@ -157,7 +157,7 @@ module CustomImportTemplateUtil
 
       import.update_attributes(:status => "Validating records...", :total_record_count => total)
       @sheet.parse(:header_search => column_names[0..1], :clean => true).each_with_index do |row, i|
-        if i > 0
+        if i >= 0
           p row
 
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
