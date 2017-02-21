@@ -85,13 +85,13 @@ module CustomImporter
         tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet, original_record
       end
 
-      p tenant_record
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
-      not_for_sheet = not_for_sheet.except(:additional_cost)
-      not_for_sheet = not_for_sheet.except(:stepped_rents)
-      not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
+      #p tenant_record
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
+      #not_for_sheet = not_for_sheet.except(:additional_cost)
+      #not_for_sheet = not_for_sheet.except(:stepped_rents)
+      #not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
 
       if not_for_sheet[:free_rent_type_consecutive] && not_for_sheet[:free_rent_type_non_consecutive]
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
@@ -177,9 +177,9 @@ module CustomImporter
         tmp_record = ImportRecord.find record_id
       end
 
-      #tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
-      #  e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
-      #end
+      tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
+        e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
+      end
       tmp_record.record_valid = false
       tmp_record.record_errors = tenant_record.errors.to_hash
 
@@ -229,16 +229,8 @@ module CustomImporter
     tenant_record.rent_escalation_type = 'stepped_rent'
     tenant_record.is_stepped_rent = true
     not_for_sheet['lease_stepped_rents'].each { |step|
-     p step['cost_per_month']
-     p step['months']
-      tenant_record.stepped_rents.new(:cost_per_month => step['cost_per_month'], :months => step['months'])
+          tenant_record.stepped_rents.new(:cost_per_month => step['cost_per_month'], :months => step['months'])
     }
-    # not_for_sheet[:stepped_rents].each { |index, step|
-    #   p step
-    #   key=step[:cost_per_month].split(" ").join("_")
-    #   val=step[:months].split(" ").join("_")
-    #   tenant_record.stepped_rents.new(:cost_per_month => original_record[:custom][key][:value].to_f, :months => original_record[:custom][val][:value].to_i)
-    # }
 
 
 tenant_record
@@ -260,10 +252,6 @@ tenant_record
     #tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
 
     if tenant_record.save
-      #if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
-        #tenant_record.stepped_rents = self.save_stepped_rent(tenant_record, tenant_record.id)
-        #p tenant_record
-      #end
       if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet[:custom_record_properties].count) > 0 rescue false)
         not_for_sheet[:custom_record_properties].each do |index, hash|
           tenant_record.custom_record_properties.create(hash)
@@ -285,7 +273,8 @@ tenant_record
   end
 
   def self.geocode_record import_id, record_id, record, tenant_record, tmp_record, has_stepped_errors, current_user_info, not_for_sheet
-   # if(not_for_sheet[:is-geo])
+   if not_for_sheet[:is_geo_coded]
+
     begin
       ################# geocode with Google #########################
       google_results = geocode_address(tenant_record)
@@ -306,6 +295,7 @@ tenant_record
       # update lat & lon
       tenant_record.latitude = geo[:latitude]
       tenant_record.longitude = geo[:longitude]
+
 
       self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
 
@@ -333,6 +323,10 @@ tenant_record
       tmp_record.record_errors = tmp_record.record_errors.except("stepped_errors") if !has_stepped_errors
       tmp_record.save
     end
+   else
+     self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
+   end
+
   end
 
   def self.hash_format import_id, h
