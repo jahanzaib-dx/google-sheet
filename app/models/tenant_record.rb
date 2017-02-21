@@ -139,6 +139,7 @@ class TenantRecord < ActiveRecord::Base
   validate :validate_stepped_rents
 
   def validate_stepped_rents
+    return true
     if stepped_rents.any?
       stepped_months = stepped_rents.inject(0){|count, r| count + r.months.to_i }
       if stepped_months != lease_term_months

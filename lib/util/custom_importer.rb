@@ -7,23 +7,30 @@ module CustomImporter
 
     import = TenantRecordImport.find import_id
     record = self.template_converted_data(import, original_record)
-
     params = record.merge( "user_id" => import.user_id )
-
     klass = Object.const_get not_for_sheet[:class]
-
-    p params.inspect
-
     tenant_record = klass.new do |t|
-      params.each_pair { |k,v|
+    params.each_pair { |k,v|
         t.send "#{k.to_s}=", v if !self.is_stepped_rent_params(k.to_s)
       }
     end
 
     if not_for_sheet[:class] == 'TenantRecord'
       p original_record.inspect
-      ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"])
-      #tenant_record.set_lease_structure ls
+      not_for_sheet
+      original_record_old=original_record
+
+
+      if not_for_sheet[:has_lease_structure]== true
+
+        ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"])
+        if ls
+          tenant_record.set_lease_structure ls
+        else
+          ls= LeaseStructure.where(:name =>'Full Service')
+          tenant_record.set_lease_structure ls
+        end
+      end
       if not_for_sheet.key?('base_rent_type') && not_for_sheet[:base_rent_type] == 'monthly'
         tenant_record.base_rent = tenant_record.base_rent.to_f * 12
       end
@@ -116,19 +123,32 @@ module CustomImporter
       if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet[:has_additional_ll_allowance])
         not_for_sheet[:additional_ll_allowance] = 0.0
       end
+      hash = original_record[:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        tenant_record.custom_data = b
+      end
+    elsif not_for_sheet[:class] == 'SaleRecord'
+      hash = original_record[:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        tenant_record.custom = b
+      end
     end
+
+
 
     not_for_sheet = not_for_sheet.except(:class)
     p not_for_sheet
     # just save custom
-    tenant_record.custom = original_record[:custom] if original_record[:custom]
-
-    hash = original_record[:custom]
-    if !hash.nil?
-      a= hash.values
-      b = a.map { |h| [h["key"] , h["value"]] }.to_h
-      tenant_record.custom_data = b
-    end
+    # hash = original_record[:custom]
+    # if !hash.nil?
+    #   a= hash.values
+    #   b = a.map { |h| [h["key"] , h["value"]] }.to_h
+    #   tenant_record.custom = b
+    # end
 
     tenant_record.is_geo_coded= not_for_sheet[:is_geo_coded]
     # just set the team
@@ -163,7 +183,7 @@ module CustomImporter
       tmp_record.record_valid = false
       tmp_record.record_errors = tenant_record.errors.to_hash
 
-      required, stepped_total = *self.validate_stepped_rents_matches_lease_term_months(record)
+     required, stepped_total = *self.validate_stepped_rents_matches_lease_term_months(record)
       if has_stepped_errors
          tmp_record.record_errors = tmp_record.record_errors.
            merge(Hash[:stepped_errors, "Stepped rent months need to add up to the lease term.<br><br>The lease term is #{required} months and the stepped rent adds up to #{stepped_total} months."])
@@ -227,9 +247,7 @@ tenant_record
   # helper stuff
   #
   def self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
-    if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
-      tenant_record.stepped_rents = self.save_stepped_rent(record, tenant_record.id)
-    end
+
     #import to tenant records and remove the temp_record
 
     if current_user_info == "cushman" && defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
@@ -242,6 +260,10 @@ tenant_record
     #tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
 
     if tenant_record.save
+      #if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
+        #tenant_record.stepped_rents = self.save_stepped_rent(tenant_record, tenant_record.id)
+        #p tenant_record
+      #end
       if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet[:custom_record_properties].count) > 0 rescue false)
         not_for_sheet[:custom_record_properties].each do |index, hash|
           tenant_record.custom_record_properties.create(hash)
