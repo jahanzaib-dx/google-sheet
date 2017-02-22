@@ -1977,6 +1977,7 @@ a:focus{
   margin: 0 0 36px !important;
   padding: 0 30px;
   width: 100%;
+  overflow-x: hidden;
 }
 .tx_mgs_sender .col-md-9 {
   padding-right: 0;
@@ -2561,6 +2562,12 @@ input:checked + .slider:before {
 
 .tx_search_result_table_container.padding-hidden.mrg_top_hideen.perfectScrollbar-wheel.ps-container {
   margin-top: 0 !important;
+}
+
+.custom_scroll {
+  height: 320px;
+  overflow-x: hidden;
+  position: relative;
 }
 /* --------------------------------------------------------2-08-16-----------------------------------------------------*/
 
