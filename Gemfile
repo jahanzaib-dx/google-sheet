@@ -54,7 +54,7 @@ gem 'closure-compiler'
 gem 'twilio-ruby', '~> 4.0.0'
 
 gem 'phonelib'
-
+gem 'whenever', :require => false
 
 gem 'carrierwave'
 gem 'mini_magick'
@@ -66,8 +66,7 @@ gem "figaro"
 gem 'roadie'
 
 gem 'finance'
-#gem 'activ
-# erecord-postgres-hstore'
+#gem 'activerecord-postgres-hstore'
 gem 'rgeo'
 gem 'rgeo-activerecord'
 gem 'activerecord-postgis-adapter'
