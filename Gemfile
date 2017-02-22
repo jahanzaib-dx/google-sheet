@@ -54,7 +54,7 @@ gem 'closure-compiler'
 gem 'twilio-ruby', '~> 4.0.0'
 
 gem 'phonelib'
-gem 'whenever', :require => false
+
 
 gem 'carrierwave'
 gem 'mini_magick'
