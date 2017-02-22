@@ -7,23 +7,30 @@ module CustomImporter
 
     import = TenantRecordImport.find import_id
     record = self.template_converted_data(import, original_record)
-
     params = record.merge( "user_id" => import.user_id )
-
     klass = Object.const_get not_for_sheet[:class]
-
-    p params.inspect
-
     tenant_record = klass.new do |t|
-      params.each_pair { |k,v|
+    params.each_pair { |k,v|
         t.send "#{k.to_s}=", v if !self.is_stepped_rent_params(k.to_s)
       }
     end
 
     if not_for_sheet[:class] == 'TenantRecord'
       p original_record.inspect
-      ls= LeaseStructure.where(:name =>original_record[:custom][:lease_structure]["value"])
-      #tenant_record.set_lease_structure ls
+      not_for_sheet
+      original_record_old=original_record
+
+
+      if not_for_sheet[:has_lease_structure]== true
+
+        if (original_record[:custom][:lease_structure]["value"]).present?
+          ls= LeaseStructure.new original_record[:custom][:lease_structure]["value"]
+          tenant_record.set_lease_structure ls
+        else
+          ls= LeaseStructure.new 'Full Service'
+          tenant_record.set_lease_structure ls
+        end
+      end
       if not_for_sheet.key?('base_rent_type') && not_for_sheet[:base_rent_type] == 'monthly'
         tenant_record.base_rent = tenant_record.base_rent.to_f * 12
       end
@@ -77,12 +84,14 @@ module CustomImporter
       elsif not_for_sheet[:rent_escalation_type_stepped]
         tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet, original_record
       end
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
-      not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
-      not_for_sheet = not_for_sheet.except(:additional_cost)
-      not_for_sheet = not_for_sheet.except(:stepped_rents)
-      not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
+
+      #p tenant_record
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_percent)
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_fixed)
+      #not_for_sheet = not_for_sheet.except(:rent_escalation_type_stepped)
+      #not_for_sheet = not_for_sheet.except(:additional_cost)
+      #not_for_sheet = not_for_sheet.except(:stepped_rents)
+      #not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
 
       if not_for_sheet[:free_rent_type_consecutive] && not_for_sheet[:free_rent_type_non_consecutive]
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
@@ -114,18 +123,34 @@ module CustomImporter
       if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet[:has_additional_ll_allowance])
         not_for_sheet[:additional_ll_allowance] = 0.0
       end
+      hash = original_record[:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        tenant_record.custom_data = b
+      end
+    elsif not_for_sheet[:class] == 'SaleRecord'
+      hash = original_record[:custom]
+      if !hash.nil?
+        a= hash.values
+        b = a.map { |h| [h["key"] , h["value"]] }.to_h
+        tenant_record.custom = b
+      end
     end
 
+
+
     not_for_sheet = not_for_sheet.except(:class)
-p not_for_sheet
+    p not_for_sheet
     # just save custom
-    tenant_record.custom = original_record[:custom] if original_record[:custom]
-    hash = original_record[:custom]
-    if !hash.nil?
-      a= hash.values
-      b = a.map { |h| [h["key"] , h["value"]] }.to_h
-      tenant_record.custom_data = b
-    end
+    # hash = original_record[:custom]
+    # if !hash.nil?
+    #   a= hash.values
+    #   b = a.map { |h| [h["key"] , h["value"]] }.to_h
+    #   tenant_record.custom = b
+    # end
+
+    tenant_record.is_geo_coded= not_for_sheet[:is_geo_coded]
     # just set the team
     #tenant_record.team = import.team
     tenant_record.user = import.user
@@ -152,13 +177,13 @@ p not_for_sheet
         tmp_record = ImportRecord.find record_id
       end
 
-      #tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
-      #  e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
-      #end
+      tmp_record.geocode_valid = false if tenant_record.errors.detect do |e|
+        e[0] == :address || e[0] == :city || e[0] == :state || e[0] == :zipcode
+      end
       tmp_record.record_valid = false
       tmp_record.record_errors = tenant_record.errors.to_hash
 
-      required, stepped_total = *self.validate_stepped_rents_matches_lease_term_months(record)
+     required, stepped_total = *self.validate_stepped_rents_matches_lease_term_months(record)
       if has_stepped_errors
          tmp_record.record_errors = tmp_record.record_errors.
            merge(Hash[:stepped_errors, "Stepped rent months need to add up to the lease term.<br><br>The lease term is #{required} months and the stepped rent adds up to #{stepped_total} months."])
@@ -203,23 +228,18 @@ p not_for_sheet
   def self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
     tenant_record.rent_escalation_type = 'stepped_rent'
     tenant_record.is_stepped_rent = true
-    not_for_sheet[:stepped_rents].each { |index, step|
-      p step
-      key=step[:cost_per_month].split(" ").join("_")
-      val=step[:months].split(" ").join("_")
-      tenant_record.stepped_rents.new(:cost_per_month => original_record[key].to_f, :months => original_record[val].to_i)
+    not_for_sheet['lease_stepped_rents'].each { |step|
+          tenant_record.stepped_rents.new(:cost_per_month => step['cost_per_month'], :months => step['months'])
     }
-    p tenant_record.stepped_rents
 
-    tenant_record
+
+tenant_record
   end
 
   # helper stuff
   #
   def self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
-    if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
-      tenant_record.stepped_rents = self.save_stepped_rent(record, tenant_record.id)
-    end
+
     #import to tenant records and remove the temp_record
 
     if current_user_info == "cushman" && defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
@@ -253,7 +273,8 @@ p not_for_sheet
   end
 
   def self.geocode_record import_id, record_id, record, tenant_record, tmp_record, has_stepped_errors, current_user_info, not_for_sheet
-   # if(not_for_sheet[:is-geo])
+   if not_for_sheet[:is_geo_coded]
+
     begin
       ################# geocode with Google #########################
       google_results = geocode_address(tenant_record)
@@ -274,6 +295,7 @@ p not_for_sheet
       # update lat & lon
       tenant_record.latitude = geo[:latitude]
       tenant_record.longitude = geo[:longitude]
+
 
       self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
 
@@ -301,6 +323,10 @@ p not_for_sheet
       tmp_record.record_errors = tmp_record.record_errors.except("stepped_errors") if !has_stepped_errors
       tmp_record.save
     end
+   else
+     self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
+   end
+
   end
 
   def self.hash_format import_id, h

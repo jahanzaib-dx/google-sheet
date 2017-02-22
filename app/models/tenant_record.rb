@@ -84,7 +84,7 @@ class TenantRecord < ActiveRecord::Base
   view_type comments property_name submarket industry_type]
 
   validates_associated :stepped_rents
-  validate :stepped_rents_equal_term_months
+  #validate :stepped_rents_equal_term_months
   conditionally_validate :address1,
             :presence => true
   conditionally_validate :city,
@@ -139,6 +139,7 @@ class TenantRecord < ActiveRecord::Base
   validate :validate_stepped_rents
 
   def validate_stepped_rents
+    return true
     if stepped_rents.any?
       stepped_months = stepped_rents.inject(0){|count, r| count + r.months.to_i }
       if stepped_months != lease_term_months

@@ -13,6 +13,7 @@ module GoogleGeocoder
                                :address1 => tenant_record.address1,
                                :city => tenant_record.city,
                                :state => tenant_record.state,
+                               :country=> tenant_record.country,
                                :zipcode => tenant_record.zipcode
                            },
                            address_only)
@@ -20,7 +21,7 @@ module GoogleGeocoder
 
   def get_address_by_geocode(tenant_hash, address_only)
     combined_fields = address_only ? ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}") :
-        ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{(tenant_hash[:zipcode].present? ? tenant_hash[:zipcode] : '')}")
+        ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:country]}, #{(tenant_hash[:zipcode].present? ? tenant_hash[:zipcode] : '')}")
     #("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:zipcode]}")
     uri = URI.encode("https://maps.googleapis.com/maps/api/geocode/json?address=#{combined_fields}&key=AIzaSyAiX-5uM4E2QtEVLOhyfti8YaomGndX240")
 
