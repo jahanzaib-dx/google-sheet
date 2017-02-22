@@ -66,8 +66,7 @@ gem "figaro"
 gem 'roadie'
 
 gem 'finance'
-#gem 'activ
-# erecord-postgres-hstore'
+#gem 'activerecord-postgres-hstore'
 gem 'rgeo'
 gem 'rgeo-activerecord'
 gem 'activerecord-postgis-adapter'
