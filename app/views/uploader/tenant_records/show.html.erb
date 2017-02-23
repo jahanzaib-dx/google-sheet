@@ -157,39 +157,21 @@
 
         </table>
 
-        <% if @comp_record.record_type == 'lease' %>
-          <% if @comp_record.custom_data %>
-              <h1 class="detail-comp-hadding">Custom Data</h1>
+        <% if @comp_record.custom_data %>
+            <h1 class="detail-comp-hadding">Custom Data</h1>
 
-              <table width="100%" border="0" >
-                <tbody>
-                <% @comp_record.custom_data.each_with_index do |(key, value), index| %>
-                    <tr>
-                      <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
-                      <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
-                    </tr>
-                <% end %>
-                </tbody>
-              </table>
-          <% end %>
+            <table width="100%" border="0" >
+              <tbody>
+              <% @comp_record.custom_data.each_with_index do |(key, value), index| %>
+                  <tr>
+                    <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
+                    <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
         <% end %>
-
-        <% if @comp_record.record_type != 'lease' %>
-        <% if @comp_record.custom %>
-        <h1 class="detail-comp-hadding">Custom Data</h1>
-
-        <table width="100%" border="0" >
-          <tbody>
-          <% @comp_record.custom.each_with_index do |(key, value), index| %>
-              <tr>
-                <td><p class="comp-table-pre"> <%= key.split('_').map(&:capitalize).join(' ') %></p> </td>
-                <td><p class="comp-table-pre"> <%= value.split('_').map(&:capitalize).join(' ') %></p> </td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-        <% end %>
-        <% end %>
+        
       </div>
     </div>
     <div class="col-md-12 comp-bottom-btn">
