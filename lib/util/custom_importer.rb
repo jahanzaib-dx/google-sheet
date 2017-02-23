@@ -24,10 +24,10 @@ module CustomImporter
       if not_for_sheet[:has_lease_structure]== true
 
         if (original_record[:custom][:lease_structure]["value"]).present?
-          ls= LeaseStructure.new original_record[:custom][:lease_structure]["value"]
+          ls= LeaseStructure.new("name"=> original_record[:custom][:lease_structure]["value"])
           tenant_record.set_lease_structure ls
         else
-          ls= LeaseStructure.new 'Full Service'
+          ls= LeaseStructure.new("name"=>'Full Service')
           tenant_record.set_lease_structure ls
         end
       end
