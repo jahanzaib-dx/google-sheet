@@ -517,7 +517,6 @@ $(document).ready ->
       previous_element_id = arr[0] + '_' + (parseInt(arr[1])-1)
       $('#current-rent-number').text('Rent #'+parseInt(arr[1]))
       previous_element_value = $('#' + previous_element_id).val()
-      concole.log(previous_element_value)
       $('#previous-value').html previous_element_value
       $('#current-element-id').val current_stepped_rent_element.id
       $('#previous-element-id').val previous_element_id
