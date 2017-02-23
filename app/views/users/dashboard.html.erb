@@ -79,21 +79,36 @@
                     </div>
                     <div class="col-md-9 col-sm-9">
                       <div class="tx_raiting_box">
+                        <% if UserSetting.find_by_id(current_user.id).rating == 1 %>
+                            <% current_user %>
+                            <div class="col-md-6">
+                              <div class="tx_raiting_color_box tx_raiting_as_yellow"> </div>
+                            </div>
+                        <% end %>
+                        <% if UserSetting.find_by_id(current_user.id).rating == 2 %>
+                            <% current_user %>
+                            <div class="col-md-6">
+                              <div class="tx_raiting_color_box tx_raiting_as_red"> </div>
+                            </div>
+                        <% end %>
+                        <% if UserSetting.find_by_id(current_user.id).rating == nil || UserSetting.find_by_id(current_user.id).rating == '1' || UserSetting.find_by_id(current_user.id).rating == '2'%>
+                            <% current_user %>
                         <div class="col-md-6">
                           <div class="tx_raiting_color_box tx_raiting_color_picker"> </div>
                         </div>
+                        <% end %>
                         <div class="col-md-6 user_raiting_content">
                           <h6>User Rating:</h6>
-                          <h3>GOOD <a title="" data-toggle="tooltip" class="" href="#" data-original-title="Raiting....???">
-                            <%= image_tag("question-tol-tipp.jpg") %>
-                          </a></h3>
+                          <!--<h3>GOOD <a title="" data-toggle="tooltip" class="" href="#" data-original-title="Raiting....???">-->
+                            <!--<%= image_tag("question-tol-tipp.jpg") %>-->
+                          <!--</a></h3>-->
                         </div>
                       </div>
                     </div>
                     <div class="col-md-3 col-sm-3"> </div>
                   </div>
                 </div>
-                <div class="tx_profile_section">
+                <div class="tx_profile_section_user_preferences">
                   <div class="col-md-12 col-sm-12">
                     <h1 class="profile_hadding">User Preferences</h1>
 
@@ -101,6 +116,7 @@
 
                   </div>
                   <div class="col-md-12 col-sm-12 tx_notification_content">
+                    <% if false %>
                     <p>Text/SMS Notifications
                       <a href="#">
                         <% if @user.settings.sms %>
@@ -110,6 +126,7 @@
                         <% end %>
                       </a>
                     </p>
+                    <% end %>
                     <p>Email Notification
                       <a href="#">
                         <% if @user.settings.email %>
@@ -132,17 +149,17 @@
 
                   </div>
                 </div>
-                <div class="tx_profile_section">
-                  <div class="col-md-12 col-sm-12">
-                    <h1 class="profile_hadding">Backend Status</h1>
-                    <a href="#!" class="tx_edit_btn">Edit</a> </div>
-                  <div class="col-md-5 col-sm-5 tx_notification_stetas">
-                    <%= image_tag("stetas-tx.png") %>
-                  </div>
-                  <div class="col-md-7 col-sm-7 tx_notification_stetas">
-                    <a data-original-title="Status" href="#" class="" data-toggle="tooltip" title=""><%= image_tag("question-tol-tipp.jpg") %></a>
-                  </div>
-                </div>
+                <!--<div class="tx_profile_section">-->
+                  <!--<div class="col-md-12 col-sm-12">-->
+                    <!--<h1 class="profile_hadding">Backend Status</h1>-->
+                    <!--<a href="#!" class="tx_edit_btn">Edit</a> </div>-->
+                  <!--<div class="col-md-5 col-sm-5 tx_notification_stetas">-->
+                    <!--<%= image_tag("stetas-tx.png") %>-->
+                  <!--</div>-->
+                  <!--<div class="col-md-7 col-sm-7 tx_notification_stetas">-->
+                    <!--<a data-original-title="Status" href="#" class="" data-toggle="tooltip" title=""><%= image_tag("question-tol-tipp.jpg") %></a>-->
+                  <!--</div>-->
+                <!--</div>-->
               </div>
               <div class="col-md-5 col-sm-5">
                 <div class="tx_activity_section">
@@ -262,6 +279,7 @@
         <h4 class="modal-title tx_modal_title">USER PREFERENCES</h4>
       </div>
       <div class="modal-body tx_modal_body">
+        <% if false %>
         <div class="col-md-12 modal_content">
           <h5>Text/SMS Notifications</h5>
           <label class="switch">
@@ -270,6 +288,7 @@
             <div class="slider round"></div>
           </label>
         </div>
+        <% end %>
         <div class="col-md-12 modal_content">
           <h5>Email Notification</h5>
           <label class="switch">
