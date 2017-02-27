@@ -102,7 +102,7 @@ class BackEndSaleCompsController < ApplicationController
 
       counter=2
       if ws.max_rows<sale_records.count
-        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
+        ws.insert_rows(ws.max_rows,sale_records.count-ws.max_rows)
       end
       custom_headers_col_head = 19
       custom_headers.each do |keys|
