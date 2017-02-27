@@ -192,10 +192,10 @@
 
 
     $(document).ajaxStart(function(){
-      $("#wait").show('fast');
+      $("#wait").show();
     });
     $(document).ajaxComplete(function(){
-      $("#wait").hide('slow')
+      $("#wait").hide()
     });
     $('#imageUploadForm').on('submit',(function(e) {
       e.preventDefault();
