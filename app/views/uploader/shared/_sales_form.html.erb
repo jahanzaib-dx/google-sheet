@@ -54,9 +54,9 @@
                   </td>
                   </tr>
                   <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]', nil, class: 'validate[required]', id: "autocomplete2", onFocus: "geolocate()"  %> <input type="hidden" id="street_number2"><input type="hidden" id="route2"></td></tr>
-                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality2" %></td></tr>
-                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_12" %></td></tr>
-                  <tr><td>Country*</td><td><%= text_field_tag "sale_record[country]", nil, class: 'validate[required]', id: "country2" %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality2", :readonly => true%></td></tr>
+                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_12", :readonly => true %></td></tr>
+                  <tr><td>Country*</td><td><%= text_field_tag "sale_record[country]", nil, class: 'validate[required]', id: "country2" ,:readonly => true%></td></tr>
                   <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
@@ -68,7 +68,7 @@
                           <td>
                             Date Built*
                           </td>
-                          <td><%= text_field_tag 'sale_record[build_date]', "", class: 'date-picker-inline validate[required]' %>
+                          <td><%= text_field_tag 'sale_record[build_date]', "", class: 'date-picker-inline validate[required]' ,:readonly => true %>
                                       <span> <% #= hidden_field_tag "sale_record[date_built]"
                                       %> </span></td>
                                 </tr>
@@ -108,7 +108,7 @@
                                                   <td>
                                                     Date Sold*
                                                   </td>
-                                                  <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
+                                                  <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]', :readonly => true %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
                                       %> </span></td>
                                                 </tr>
@@ -148,9 +148,9 @@
                   </td>
                   </tr>
                   <tr><td>Address Line 1*</td><td><%= text_field_tag 'sale_record[address1]',nil, class: ' validate[required]', id: "autocomplete3", onFocus: "geolocate()"   %> <input type="hidden" id="street_number3"><input type="hidden" id="route3"></td></tr>
-                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality3" %></td></tr>
-                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_13" %></td></tr>
-                  <tr><td>Country*</td><td><%= text_field_tag "sale_record[country]", nil, class: 'validate[required]', id: "country3" %></td></tr>
+                  <tr><td>City*</td><td><%= text_field_tag 'sale_record[city]', nil, class: ' validate[required]', id: "locality3" ,:readonly => true %></td></tr>
+                  <tr><td>State*</td><td><%= text_field_tag "sale_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_13",:readonly => true  %></td></tr>
+                  <tr><td>Country*</td><td><%= text_field_tag "sale_record[country]", nil, class: 'validate[required]', id: "country3" ,:readonly => true %></td></tr>
                   <tr><td>Submarket*</td><td><%= text_field_tag 'sale_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
                         <tr>
                           <td>
@@ -169,7 +169,7 @@
                           <td>
                             Date Sold*
                           </td>
-                          <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]' %>
+                          <td><%= text_field_tag 'sale_record[sold_date]', "", class: 'date-picker-inline validate[required]', :readonly => true %>
                                       <span> <% #= hidden_field_tag "sale_record[date_sold]"
                                       %> </span></td>
                                 </tr>
