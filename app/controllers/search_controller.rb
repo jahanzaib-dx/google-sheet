@@ -200,7 +200,9 @@ class SearchController < ApplicationController
   def lockTenantRecord tenant_records
     
        tenant_records = tenant_records.each do |t_record|
-          
+
+         t_record.base_rent = number_to_currency(t_record.base_rent, {:precision=>2})
+
           if t_record.user_id != current_user.id
             
              ##compObj = OpenStruct.new() ## convert hash(asso array) to object
@@ -237,7 +239,7 @@ class SearchController < ApplicationController
               end
     
               t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
-              t_record.base_rent = if unlockFields.include?"base_rent" then t_record.base_rent else 'Lock' end
+              t_record.base_rent = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent, {:precision=>2}) else 'Lock' end
               t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
               t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
               

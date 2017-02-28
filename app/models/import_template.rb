@@ -7,7 +7,7 @@ class ImportTemplate < ActiveRecord::Base
   accepts_nested_attributes_for :import_mappings
   #attr_accessible :name, :reusable, :office, :import_mappings_attributes
 
-  default_scope { where(:reusable => true) }
+  default_scope { }#where(:reusable => true) }
   scope :user_import_template, -> { unscope(:where).where reusable: [true, false] }
 
   conditionally_validate :name, :presence => true, allow_nil: false
