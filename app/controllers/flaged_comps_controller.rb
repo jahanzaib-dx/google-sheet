@@ -8,7 +8,7 @@ class FlagedCompsController < ApplicationController
     if @f_comp.comp_type == 'lease'
       lease_comp = TenantRecord.find_by_id(@f_comp.id)
       user = lease_comp.user
-      user_setting = UserSetting.find_by_id(user.id)
+      user_setting = UserSetting.find_by_user_id(user.id)
       user_setting.rating = 1
       if user_setting.rating == 1
         user_setting.rating = 2
@@ -18,7 +18,7 @@ class FlagedCompsController < ApplicationController
     elsif @f_comp.comp_type == 'sale'
       sale_comp = SaleRecord.find_by_id(@f_comp.id)
       user = sale_comp.user
-      user_setting = UserSetting.find_by_id(user.id)
+      user_setting = UserSetting.find_by_user_id(user.id)
       user_setting.rating = 1
       if user_setting.rating == 1
         user_setting.rating = 2
@@ -28,7 +28,7 @@ class FlagedCompsController < ApplicationController
     elsif @f_comp.comp_type == 'sale'
       custom_comp = CustomRecord.find_by_id(@f_comp.id)
       user = custom_comp.user
-      user_setting = UserSetting.find_by_id(user.id)
+      user_setting = UserSetting.find_by_user_id(user.id)
       user_setting.rating = 1
       if user_setting.rating == 1
         user_setting.rating = 2
