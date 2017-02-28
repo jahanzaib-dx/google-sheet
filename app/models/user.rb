@@ -215,7 +215,7 @@ class User < ActiveRecord::Base
 
 
   def assign_default_settings
-    values = {:user_id => self.id, :sms => true, :email => true, :outofnetwork => false}
+    values = {:user_id => self.id, :sms => true, :email => true, :outofnetwork => false, :rating => nil}
 	settings = UserSetting.create(values)
   end
 
