@@ -710,6 +710,13 @@ a {
   width: 100%;
   margin: 0 0 28px;
 }
+.tx_profile_section_user_preferences {
+  background: #eaebec none repeat scroll 0 0;
+  float: left;
+  padding: 69px 21px 68px;
+  width: 100%;
+  margin: 0 0 28px;
+}
 .tx_activity_section {
   background: #eaebec none repeat scroll 0 0;
   float: left;
@@ -954,6 +961,14 @@ a {
 }
 .tx_raiting_color_picker {
   background: #71a842 none repeat scroll 0 0;
+
+}
+.tx_raiting_as_yellow {
+  background: #e1a525 none repeat scroll 0 0;
+
+}
+.tx_raiting_as_red {
+  background: #f00 none repeat scroll 0 0;
 
 }
 .user_raiting_content h6 {

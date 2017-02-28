@@ -1,4 +1,5 @@
 class DatabaseBackEndsController < ApplicationController
+  require "google_drive"
   def index
     require "google_drive"
     @custom_records = CustomRecord.where('user_id = ?', @current_user.id)
