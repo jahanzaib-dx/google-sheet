@@ -6,31 +6,25 @@ class FlagedCompsController < ApplicationController
     @f_comp.comp_type= params[:type]
     @f_comp.save
     if @f_comp.comp_type == 'lease'
-      lease_comp = TenantRecord.find_by_id(@f_comp.id)
+      lease_comp = TenantRecord.find_by_id(@f_comp.comp_id)
       user = lease_comp.user
       user_setting = UserSetting.find_by_user_id(user.id)
-      user_setting.rating = 1
-      if user_setting.rating == 1
+      if user_setting.rating == nil
+        user_setting.rating = 1
+        user_setting.save!
+      elsif user_setting.rating == 1
         user_setting.rating = 2
         user_setting.save!
       end
       user_setting.save!
     elsif @f_comp.comp_type == 'sale'
-      sale_comp = SaleRecord.find_by_id(@f_comp.id)
+      sale_comp = SaleRecord.find_by_id(@f_comp.comp_id)
       user = sale_comp.user
       user_setting = UserSetting.find_by_user_id(user.id)
-      user_setting.rating = 1
-      if user_setting.rating == 1
-        user_setting.rating = 2
+      if user_setting.rating == nil
+        user_setting.rating = 1
         user_setting.save!
-      end
-      user_setting.save!
-    elsif @f_comp.comp_type == 'sale'
-      custom_comp = CustomRecord.find_by_id(@f_comp.id)
-      user = custom_comp.user
-      user_setting = UserSetting.find_by_user_id(user.id)
-      user_setting.rating = 1
-      if user_setting.rating == 1
+      elsif user_setting.rating == 1
         user_setting.rating = 2
         user_setting.save!
       end
