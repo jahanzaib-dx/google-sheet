@@ -215,9 +215,9 @@
           </tr>
           <tr><td>Address Line 1*</td><td><%= text_field_tag "tenant_record[address1]", nil, class: ' validate[required]', id: "autocomplete", onFocus: "geolocate()" %> <input type="hidden" id="street_number"><input type="hidden" id="route"></td></tr>
           <tr><td>Suite</td><td><%= text_field_tag "tenant_record[suite]" %></td></tr>
-          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]", nil, class: ' validate[required]', id: "locality" %></td></tr>
-          <tr><td>State*</td><td><%= text_field_tag "tenant_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_1" %></td></tr>
-          <tr><td>Country*</td><td><%= text_field_tag "tenant_record[country]", nil, class: 'validate[required]', id: "country" %></td></tr>
+          <tr><td>City*</td><td><%= text_field_tag "tenant_record[city]", nil, class: ' validate[required]', id: "locality",:readonly => true %></td></tr>
+          <tr><td>State*</td><td><%= text_field_tag "tenant_record[state]", nil, class: 'validate[required]', id: "administrative_area_level_1", :readonly => true %></td></tr>
+          <tr><td>Country*</td><td><%= text_field_tag "tenant_record[country]", nil, class: 'validate[required]', id: "country",:readonly => true %></td></tr>
           <tr><td>Submarket*</td><td><%= text_field_tag 'tenant_record[submarket]', nil, class: 'required  validate[required]' %></td></tr>
           <tr>
             <td>Class Type*</td>
@@ -240,7 +240,7 @@
           <tr>
             <td>Lease Commencement Date*</td>
             <td>
-              <%= text_field_tag 'tenant_record[lease_commencement_date]', "", class: 'date-picker-inline validate[required]' %>
+              <%= text_field_tag 'tenant_record[lease_commencement_date]', "", class: 'date-picker-inline validate[required]', :readonly => true%>
               <span> <% #= hidden_field_tag "tenant_record[lease_commencement_date]"
               %> </span>
             </td>
