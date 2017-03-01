@@ -1,4 +1,54 @@
+/*tootltip starts here*/
+/* Tooltip container */
+.tooltip2 {
+  float: right;
+  position: relative;
+  display: inline-block;
+   /* If you want dots under the hoverable text */
+}
 
+
+/* Tooltip text */
+.tooltip2 .tooltip2text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  font-size: 14px !important;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip2 text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip2 */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+/* Tooltip2 arrow */
+.tooltip2 .tooltip2text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip2 text when you mouse over the tooltip2 container */
+.tooltip2:hover .tooltip2text {
+  visibility: visible;
+  opacity: 1;
+}
+/*tootltip ends here*/
 /*faqs*/
 
 .blog-main-hadding-faq {
@@ -1459,7 +1509,16 @@ label.myLabel input[type="file"] {
   height: 74px;
   width: 74px;
 }
-
+.tx_tracker_box_round_content.tx_small_round.tx_small_round_yellow {
+  background: #e1a525 none repeat scroll 0 0;
+  height: 74px;
+  width: 74px;
+}
+.tx_tracker_box_round_content.tx_small_round.tx_small_round_red {
+  background: #f00 none repeat scroll 0 0;
+  height: 74px;
+  width: 74px;
+}
 .tx_round_color_green h4 {
   color: #4c494a;
   margin: 13px 0 0;
