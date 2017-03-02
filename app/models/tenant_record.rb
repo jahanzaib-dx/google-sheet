@@ -259,6 +259,7 @@ class TenantRecord < ActiveRecord::Base
 	  " 0 as editable" +
       ", 'protect_view' as in_scope " +
       ", 'cp_status' as cp_status " +
+      ", 'base_rent_str' as base_rent_str " +
       ", 'size_range' as size_range "
     )
     ####.joins({ :office => :firm })
@@ -356,7 +357,8 @@ class TenantRecord < ActiveRecord::Base
       'tenant_ti_cost_str' as tenant_ti_cost_str,
       'escalation_str' as escalation_str,
       'additional_ll_allowance_str' as additional_ll_allowance_str,
-      'additional_tenant_cost_str' as additional_tenant_cost_str            
+      'additional_tenant_cost_str' as additional_tenant_cost_str,
+      'leasestructure_name_str' as leasestructure_name_str
       
       ") }
 
