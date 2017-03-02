@@ -401,8 +401,7 @@ class SearchController < ApplicationController
               ##t_record.tenant_ti_cost_str = number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2})
               t_record.additional_ll_allowance_str = number_to_currency(t_record.additional_ll_allowance.to_f,{:precision=>2})
               t_record.additional_tenant_cost_str = number_to_currency(t_record.additional_tenant_cost.to_f,{:precision=>2})
-              t_record.leasestructure_name_str = t_record.data['leasestructure_name']
-
+              t_record.leasestructure_name_str = (t_record.data['leasestructure_name'].blank? == true)?"Full Service":t_record.data['leasestructure_name']
 
           if t_record.user_id != current_user.id
             
@@ -463,7 +462,7 @@ class SearchController < ApplicationController
               t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
                 
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end
-              t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.data['leasestructure_name'] else 'Lock' end
+              t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.leasestructure_name_str else 'Lock' end
               ## not working t_record.data['leasestructure_name'] = if unlockFields.include?"leasestructure_name" then t_record.data['leasestructure_name'] else 'Lock' end
               
                        
