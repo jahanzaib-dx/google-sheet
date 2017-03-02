@@ -75,7 +75,7 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        custom_data = TenantRecord.custom_field_values(tenant_record.id)
+        custom_data = tenant_record.custom != "" ? TenantRecord.custom_field_values(tenant_record.id) : nil
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -257,6 +257,16 @@ class BackEndLeaseCompsController < ApplicationController
         custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
+        ##################################################
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          if !custom_data.all? { |k,v| v == "" }
+            custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+          else
+            custom_data = {}
+          end
+        end
+        ##################################################
         custom_headers.each.map do |keys|
           custom_data_hash[keys.header]={
               "key" => keys.header,
@@ -264,10 +274,7 @@ class BackEndLeaseCompsController < ApplicationController
           }
           custom_field_col+=1
         end
-        if !custom_data_hash.nil?
-          pair = custom_data_hash.values
-          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-        end
+
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
