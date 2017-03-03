@@ -418,7 +418,6 @@ class BackEndLeaseCompsController < ApplicationController
      render :json => {
          :file_temp => @file_temp.id
      }
-
   end
 
   def delete_duplication
