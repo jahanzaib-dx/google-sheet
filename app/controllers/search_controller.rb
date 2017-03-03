@@ -470,9 +470,9 @@ class SearchController < ApplicationController
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end
               t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.leasestructure_name_str else 'Lock' end
               ## not working t_record.data['leasestructure_name'] = if unlockFields.include?"leasestructure_name" then t_record.data['leasestructure_name'] else 'Lock' end
-              
-                       
+
           end
+
           
           t_record
        
