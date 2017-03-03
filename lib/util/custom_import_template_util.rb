@@ -159,7 +159,7 @@ module CustomImportTemplateUtil
       @sheet.parse(:header_search => column_names[0..1], :clean => true).each_with_index do |row, i|
         if i >= 0
           p row
-
+          already_mapped_columns={}
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
           if not_for_sheet[:class] == "TenantRecord"
             not_for_sheet[:additional_tenant_cost] = 0.0
