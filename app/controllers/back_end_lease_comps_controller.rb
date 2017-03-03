@@ -75,7 +75,8 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        custom_data = tenant_record.custom != "" ? TenantRecord.custom_field_values(tenant_record.id) : nil
+        #custom_data = tenant_record.custom != "" ? TenantRecord.custom_field_values(tenant_record.id) : nil
+        custom_data =TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -260,11 +261,12 @@ class BackEndLeaseCompsController < ApplicationController
         ##################################################
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
-          if !custom_data.all? { |k,v| v == "" }
-            custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-          else
-            custom_data = {}
-          end
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+          # if !custom_data.all? { |k,v| v == "" }
+          #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+          # else
+          #   custom_data = {}
+          # end
         end
         ##################################################
         custom_headers.each.map do |keys|
@@ -416,7 +418,6 @@ class BackEndLeaseCompsController < ApplicationController
      render :json => {
          :file_temp => @file_temp.id
      }
-
   end
 
   def delete_duplication
