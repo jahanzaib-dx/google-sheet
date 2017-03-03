@@ -102,15 +102,13 @@ class Uploader::ImportController < ApplicationController
     not_for_sheet = {}
     params.permit(:white_glove_user)
     current_user= @current_user
-    #params.require(:geo_code_record).permit!
-    #params.require(:lease_structure).permit!
     p params.inspect
     @is_white_glove_service = false
      if(params[:white_glove_user] && params[:white_glove_user].to_i >0 )
        current_user = params[:white_glove_user].to_i
-       current_user_account= Account.where(:user_id=>current_user)
-       current_user_account_type= '' #current_user_account.office_id
-       @is_white_glove_service=true
+       current_user_account = Account.where(:user_id=>current_user)
+       current_user_account_type = '' #current_user_account.office_id
+       @is_white_glove_service =true
      end
     if params[:bulk_property_type_switch] == 'sales_comps'
       not_for_sheet.merge!({
