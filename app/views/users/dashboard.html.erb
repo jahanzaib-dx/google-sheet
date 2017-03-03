@@ -80,28 +80,35 @@
                     <div class="col-md-9 col-sm-9">
                       <div class="tx_raiting_box">
                         <% if UserSetting.find_by_user_id(current_user.id).rating == 1 %>
-                            <% current_user %>
                             <div class="col-md-6">
                               <div class="tx_raiting_color_box tx_raiting_as_yellow"> </div>
                             </div>
-                        <% end %>
-                        <% if UserSetting.find_by_user_id(current_user.id).rating == 2 %>
-                            <% current_user %>
+                            <div class="col-md-6 user_raiting_content">
+                              <h6>User Rating:</h6>
+                              <h3> AVERAGE <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+                                <span class="tooltip2text">User was flagged for submitting an inaccurate comp.</span>
+                              </div></h3>
+                        <% elsif UserSetting.find_by_user_id(current_user.id).rating == 2 %>
                             <div class="col-md-6">
                               <div class="tx_raiting_color_box tx_raiting_as_red"> </div>
                             </div>
-                        <% end %>
-                        <% if UserSetting.find_by_user_id(current_user.id).rating == nil || UserSetting.find_by_user_id(current_user.id).rating == '1' || UserSetting.find_by_user_id(current_user.id).rating == '2'%>
-                            <% current_user %>
+                            <div class="col-md-6 user_raiting_content">
+                              <h6>User Rating:</h6>
+                              <h3> POOR <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+                                <span class="tooltip2text">User was flagged a second time for submitting an inaccurate comp.</span>
+                              </div></h3>
+                        <% else %>
                         <div class="col-md-6">
                           <div class="tx_raiting_color_box tx_raiting_color_picker"> </div>
                         </div>
-                        <% end %>
                         <div class="col-md-6 user_raiting_content">
                           <h6>User Rating:</h6>
-                          <!--<h3>GOOD <a title="" data-toggle="tooltip" class="" href="#" data-original-title="Raiting....???">-->
-                            <!--<%= image_tag("question-tol-tipp.jpg") %>-->
-                          <!--</a></h3>-->
+                          <h3> GOOD <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+                            <span class="tooltip2text">User rating is GOOD. This user has not been flagged for submitting any inaccurate comps.</span>
+                          </div></h3>
+                        <% end %>
+
+
                         </div>
                       </div>
                     </div>

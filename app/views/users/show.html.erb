@@ -69,22 +69,54 @@
       </div>
     <% end %>
   <% end %>
-  <div class="col-md-12 col-sm-12 both-pad-none"> 
+  <div class="col-md-12 col-sm-12 both-pad-none">
   <div class="tx_tracker_box tx_tracker_box_white_background boredr_rating_box">
+    <% if UserSetting.find_by_user_id(@user.id).rating == 1 %>
                <div class="col-md-4">
-               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_green">
+
+               <div class="tx_tracker_box_round_content tx_small_round tx_small_round_yellow">
              
                </div>
                 
                </div>
                <div class="col-md-8 tx_tracker_box_text_content tx_round_color_green border_hide">
-                <h4>User Rating:</h4>
-                <h3>Good 
-                	<a class="tx_rating_help" data-original-title="linkin" href="#" data-toggle="tooltip" title="">
-                		<%= image_tag("question-tol-tipp.jpg") %>
-                	</a>
-                </h3>
-                
+                 <h4>User Rating:</h4>
+                 <h4> AVERAGE <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+                   <span class="tooltip2text">User was flagged for submitting an inaccurate comp.</span>
+                 </div>
+                 </h4>
+    <% elsif UserSetting.find_by_user_id(@user.id).rating == 2 %>
+        <% current_user %>
+            <div class="col-md-4">
+
+              <div class="tx_tracker_box_round_content tx_small_round tx_small_round_red">
+
+              </div>
+
+            </div>
+            <div class="col-md-8 tx_tracker_box_text_content tx_round_color_green border_hide">
+              <h4>User Rating:</h4>
+              <h4> POOR <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+                <span class="tooltip2text">User was flagged a second time for submitting an inaccurate comp.</span>
+              </div>
+              </h4>
+    <% else %>
+
+          <div class="col-md-4">
+
+            <div class="tx_tracker_box_round_content tx_small_round tx_small_round_green">
+
+            </div>
+
+          </div>
+          <div class="col-md-8 tx_tracker_box_text_content tx_round_color_green border_hide">
+            <h4>User Rating:</h4>
+            <h4> GOOD <div class="tooltip2"><%= image_tag("question-tol-tipp.jpg") %>
+              <span class="tooltip2text">User rating is GOOD. This user has not been flagged for submitting any inaccurate comps.</span>
+            </div>
+            </h4>
+    <% end %>
+
                 </div>
                </div>
                <div class="tx_tracker_box tx_tracker_box_white_background ">
