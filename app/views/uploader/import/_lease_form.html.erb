@@ -35,11 +35,12 @@
     <li class="accordion-item accordian-item2-a invalid" data-accordion-item>
       <a href="javascript:void(0)" class="accordion-title clearfix"><span>Step 3: Upload File</span><span class="tick"><span>&#x2713;</span></span></a>
       <div class="accordion-content clearfix" data-tab-content>
-        <div class="accordion-content-data">
+        <%= form_tag '/uploader/import/white_glove_service_request', multipart: true, autocomplete: "off" do |f| %>
+
+      <div class="accordion-content-data">
           <div class="">
             <div class="columns large-12 no-padding bulk-upload-file-section">
-              <%= form_tag '/uploader/import/white_glove_service_request', multipart: true, autocomplete: "off" do |f| %>
-              <table>
+                 <table>
                 <th>Name your upload</th>
                 <th><input type="text" class="normal-element" name="request_name"></th>
                 <tr>
@@ -54,7 +55,7 @@
                   </td>
                 </tr>
               </table>
-              <% end %>
+
             </div>
           </div>
         </div>
@@ -80,6 +81,7 @@
             </div>
           </div>
         </div>
+        <% end %>
       </div>
 
 
@@ -330,7 +332,7 @@
                       <div class="uploaded_file_name"></div>
                     </div>
 
-                    <input type="file" name="fileToUpload" id="fileToUpload">
+                    <input type="file" name="fileToUpload" id="fileToUpload" class="self-service">
                   </div>
               <% end %>
             </td>
@@ -499,6 +501,18 @@
               <td>
                 <div class="header-name-container">
                   <div class="first"><input class="bulk-column-header-value" name="tenant_record[property_name]" type="text" placeholder="{ Please select }"></div>
+                  <div class="second">
+                    <select class="bulk-column-header-dd"></select>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Industry</td>
+              <td>
+                <div class="header-name-container">
+                  <div class="first"><input class="bulk-column-header-value" name="tenant_record[industry_type]" type="text" placeholder="{ Please select }"></div>
                   <div class="second">
                     <select class="bulk-column-header-dd"></select>
                   </div>

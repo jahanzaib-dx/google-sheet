@@ -54,7 +54,7 @@ class Uploader::ImportController < ApplicationController
     else
       @white_glove_user = "Nil"
     end
-    #@white_glove_user=12
+    #@white_glove_user=1
     TenantRecord::REQUIRED_FIELDS.each_with_index do |required_field, i|
       @import.import_template.import_mappings << ImportMapping.new(:import_template => @template, :record_column => required_field)
     end
@@ -105,15 +105,13 @@ class Uploader::ImportController < ApplicationController
     not_for_sheet = {}
     params.permit(:white_glove_user)
     current_user= @current_user
-    #params.require(:geo_code_record).permit!
-    #params.require(:lease_structure).permit!
     p params.inspect
     @is_white_glove_service = false
      if(params[:white_glove_user] && params[:white_glove_user].to_i >0 )
        current_user = params[:white_glove_user].to_i
-       current_user_account= Account.where(:user_id=>current_user)
-       current_user_account_type=current_user_account.office_id
-       @is_white_glove_service=true
+       current_user_account = Account.where(:user_id=>current_user)
+       current_user_account_type = '' #current_user_account.office_id
+       @is_white_glove_service =true
      end
     if params[:bulk_property_type_switch] == 'sales_comps'
       not_for_sheet.merge!({
@@ -189,8 +187,10 @@ class Uploader::ImportController < ApplicationController
 
 
     if(@is_white_glove_service)
-        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user)
-        pre_existing = ImportTemplate.where(:id => white_glove.import_template_id)
+        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user).first
+        pre_existing = ImportTemplate.where(:id => white_glove.import_template_id).first
+        pre_existing.name=SecureRandom.hex
+
     else
     pre_existing = ImportTemplate.new(import_template_attributes.merge({
                                                              :name => name,
@@ -208,7 +208,7 @@ class Uploader::ImportController < ApplicationController
     if(@is_white_glove_service)
       import= TenantRecordImport.where(:status => 'Enqueued for White Glove Service', :user_id => current_user, :import_template_id => white_glove.import_template_id)
       if (import)
-        import.update_attributes(:import_template_id=>mapping_structure)
+        import.update_attributes(:import_template_id=>mapping_structure.id)
       end
     else
       import = TenantRecordImport.create(:user => current_user,
