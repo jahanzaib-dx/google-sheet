@@ -267,6 +267,11 @@ class BackEndLeaseCompsController < ApplicationController
           custom_field_col+=1
         end
 
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+          custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
+
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
