@@ -137,7 +137,7 @@ $(document).ready ->
       $('.land-row input, #sales-land-table select').attr('disabled','disabled')
 
 
-  $('input[type=checkbox][id=custom_record_is_geo_coded]').on 'change', (e) ->
+  $('input[type=checkbox][id=custom_record_is_geo_coded].bulk-upload').on 'change', (e) ->
     obj = $(this)
     rightBox = obj.parents(".accordion-content").find(".right-box")
     if(obj.is(":checked"))
