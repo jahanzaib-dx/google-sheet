@@ -787,7 +787,7 @@ class TenantRecord < ActiveRecord::Base
     if t_record.rent_escalation_type == 'base_rent_fixed_increase'
       val_str
     elsif t_record.rent_escalation_type == 'stepped_rent'
-      if val_str == "Locked" || val_str == "None"
+      if val_str == "Lock" || val_str == "None"
       val_str
       else
         r=1
