@@ -811,7 +811,10 @@ class TenantRecord < ActiveRecord::Base
       "None"
     elsif data.to_i < 1
       "None"
+    else
+      data
     end
+
   end
 
   private
