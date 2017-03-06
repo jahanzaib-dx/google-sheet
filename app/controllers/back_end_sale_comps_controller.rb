@@ -44,6 +44,7 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 17] = sale_record.cap_rate
         ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
         custom_field_col = 19
+
         custom_data = SaleRecord.custom_field_values(sale_record.id)
         custom_headers.each do
           custom_data.each do |vals|
@@ -130,7 +131,8 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 17] = sale_record.cap_rate
         ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
         custom_field_col = 19
-        custom_data = sale_record.custom != "" ? SaleRecord.custom_field_values(sale_record.id) : nil
+        custom_data =  SaleRecord.custom_field_values(sale_record.id)
+
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -193,21 +195,22 @@ class BackEndSaleCompsController < ApplicationController
         custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
-              "value" => ws[counter,custom_field_col]
-          }
-          custom_field_col += 1
-        end
-        if !custom_data_hash.nil?
-          pair = custom_data_hash.values
-          if !custom_data.all? { |k,v| v == "" }
-            custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-          else
-            custom_data = {}
+          custom_headers.each.map do |keys|
+            if ws[1,custom_field_col]!=""
+              custom_data_hash[keys.header]={
+                  "key" => ws[1,custom_field_col],
+                  "value" => ws[counter,custom_field_col]
+              }
+            end
+            custom_field_col += 1
           end
-        end
+
+          if !custom_data_hash.nil?
+            pair = custom_data_hash.values
+             custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+          end
+
+
 
         @sale_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
@@ -235,6 +238,9 @@ class BackEndSaleCompsController < ApplicationController
       end
       counter+=1
     end
+
+
+
     deleted = ids.any? ? SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : SaleRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
     redirect_to database_back_ends_path
