@@ -39,7 +39,7 @@
             <td><p class="comp-table-pre"><%=@comp_record.company.to_s.capitalize%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
             <!-- <td><p class="comp-table-pre">&nbsp;<%#=@comp_record.property_name.to_s.capitalize!%></p></td> -->
-            <td><p class="comp-table-pre"><%=@comp_record.property_name.to_s.capitalize%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.na(@comp_record.property_name.to_s.capitalize)%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Industry </p></td>
