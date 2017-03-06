@@ -9,15 +9,26 @@ module CustomImporter
     record = self.template_converted_data(import, original_record)
     params = record.merge( "user_id" => import.user_id )
     klass = Object.const_get not_for_sheet[:class]
-    tenant_record = klass.new do |t|
-    params.each_pair { |k,v|
-        t.send "#{k.to_s}=", v if !self.is_stepped_rent_params(k.to_s)
-      }
+
+    if not_for_sheet[:class] == 'CustomRecord'
+      tenant_record = CustomRecord.where({name: not_for_sheet[:name], user_id: import.user_id}).last
+      Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+      Rails.logger.debug tenant_record.inspect
+      if tenant_record.nil?
+        tenant_record = CustomRecord.new({name: not_for_sheet[:name], is_geo_coded: not_for_sheet[:is_geo_coded], is_existing_data_set: not_for_sheet[:is_existing_data_set]})
+        tenant_record.custom_record_properties = []
+      end
+    else
+      tenant_record = klass.new do |t|
+        params.each_pair { |k,v|
+          t.send "#{k.to_s}=", v if !self.is_stepped_rent_params(k.to_s)
+        }
+      end
     end
 
     if not_for_sheet[:class] == 'TenantRecord'
       p original_record.inspect
-      not_for_sheet
+
       original_record_old=original_record
 
 
@@ -136,6 +147,21 @@ module CustomImporter
         b = a.map { |h| [h["key"] , h["value"]] }.to_h
         tenant_record.custom = b
       end
+    elsif not_for_sheet[:class] == 'CustomRecord'
+
+      Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@"
+      Rails.logger.debug not_for_sheet.inspect
+
+
+
+      hash = original_record[:custom]
+      unless hash.nil?
+        a= hash.values
+        a.each do |h|
+          property = CustomRecordProperty.new({key: h["key"], value: h["value"]})
+          tenant_record.custom_record_properties << property
+        end
+      end
     end
 
 
@@ -201,6 +227,33 @@ module CustomImporter
         tmp_record.save
       end
 
+
+      do_geocoding = false
+      if (tenant_record.latitude.blank? or tenant_record.longitude.blank?)
+        if klass.to_s.eql?("CustomRecord")
+          do_geocoding = not_for_sheet[:is_geo_coded]
+        else
+          do_geocoding = true
+        end
+      else
+        do_geocoding = false
+      end
+
+      #Rails.logger.debug "$%$%$%$%$%$%$%$%$%$%"
+      #Rails.logger.debug ":is_geo_coded : #{not_for_sheet[:is_geo_coded].inspect}"
+      #Rails.logger.debug ":do_geocoding : #{do_geocoding.inspect}"
+
+      if do_geocoding
+        record = self.process_custom_fields(original_record, record) if original_record[:custom] && !record_id
+        unless record[:custom]
+          record[:custom] = {}
+        end
+        record[:custom].merge!(:class => klass.to_s)
+        self.geocode_record import_id, record_id, record, tenant_record, tmp_record, has_stepped_errors, current_user_info, not_for_sheet
+      else
+        self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
+      end
+=begin
       if tenant_record.latitude.blank? or tenant_record.longitude.blank?
         record = self.process_custom_fields(original_record, record) if original_record[:custom] && !record_id
 
@@ -213,6 +266,7 @@ module CustomImporter
       else
         self.finish_import import_id, record_id, record, tenant_record, current_user_info, not_for_sheet
       end
+=end
 
     end
     # update import record flags
@@ -242,10 +296,12 @@ tenant_record
 
     #import to tenant records and remove the temp_record
 
+=begin
     if current_user_info == "cushman" && defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
       cushman_results = retrieve_cushman_metrics(tenant_record)
       tenant_record.cushman_net_effective_per_sf = cushman_results[:net_effective_rent]
     end
+=end
     tenant_record.is_stepped_rent = true if defined?(tenant_record.stepped_rents) != nil && tenant_record.stepped_rents.present?
 
 
@@ -307,6 +363,8 @@ tenant_record
           # create a tmp_record
           tmp_record = ImportRecord.create(:tenant_record_import_id => import_id,
                                            :data => record)
+
+          tmp_record.record_errors = {}
         end
       end
       tmp_record.geocode_valid = false

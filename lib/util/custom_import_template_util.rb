@@ -177,8 +177,8 @@ module CustomImportTemplateUtil
                 }
               end
             end
-            Sidekiq::Logging.logger.debug "*****************************************************"
-            Sidekiq::Logging.logger.debug not_for_sheet[:rent_escalation_type_stepped]
+            #Rails.logger.debug "*****************************************************"
+            #Rails.logger.debug not_for_sheet[:rent_escalation_type_stepped]
             if !(not_for_sheet[:stepped_rents].nil?)
               if (not_for_sheet[:rent_escalation_type_stepped] and not_for_sheet[:stepped_rents].count > 0 )
                 counter = 0
@@ -192,7 +192,13 @@ module CustomImportTemplateUtil
               end
             end
           end
+          #Rails.logger.debug "*****************************************************"
+          #Rails.logger.debug "row"
+          #Rails.logger.debug row
           parsed_spreadsheet_record = Importer.hash_format(import_id, row)
+          #Rails.logger.debug "*****************************************************"
+          #Rails.logger.debug "parsed_spreadsheet_record"
+          #Rails.logger.debug parsed_spreadsheet_record
           CustomImporter.validate(parsed_spreadsheet_record, import_id, current_user_info, not_for_sheet)
         end
       end
