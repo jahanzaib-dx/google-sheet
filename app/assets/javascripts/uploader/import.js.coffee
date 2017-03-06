@@ -130,13 +130,24 @@ $(document).ready ->
       $('.building-row input, .building-row select').attr('disabled','disabled')
       $('.land-row input, .land-row select').removeAttr('disabled')
 
-
-
     if $("input[type='radio'][name='sale_record[is_sales_record]']:checked").length > 0 and $("input[type='radio'][name='sale_record[is_sales_record]']:checked").val() == 'no'
       $('.building-row').show()
       $('.land-row').hide()
       $('.building-row input, .building-row select').removeAttr('disabled')
       $('.land-row input, #sales-land-table select').attr('disabled','disabled')
+
+
+  $('input[type=checkbox][id=custom_record_is_geo_coded]').on 'change', (e) ->
+    obj = $(this)
+    rightBox = obj.parents(".accordion-content").find(".right-box")
+    if(obj.is(":checked"))
+      rightBox.find(".accordion-content-continue:first").show()
+      rightBox.find(".accordion-content-continue:last").hide()
+      obj.parents("li").next().show();
+    else
+      rightBox.find(".accordion-content-continue:first").hide()
+      rightBox.find(".accordion-content-continue:last").show()
+      obj.parents("li").next().hide();
 
 
   $('input[type=radio][name=lease_structure]').on 'change', (e) ->

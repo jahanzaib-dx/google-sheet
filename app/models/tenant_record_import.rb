@@ -68,10 +68,10 @@ class TenantRecordImport < ActiveRecord::Base
     if record
       record_id = record[:id].to_s
       class_name = YAML.load(record[:custom].gsub(/=>/, ': '))["class"] rescue ''
-      jid = CustomValidateImportWorker.perform_async(id, office.id, record_id, current_user_info, class_name)
+      jid = CustomValidateImportWorker.perform_async(id, record_id, current_user_info, class_name)
     else
       #validates everything
-      jid = CustomValidateImportWorker.perform_async(id, office.id, nil, current_user_info, nil)
+      jid = CustomValidateImportWorker.perform_async(id, nil, current_user_info, nil)
     end
     save
     jid
