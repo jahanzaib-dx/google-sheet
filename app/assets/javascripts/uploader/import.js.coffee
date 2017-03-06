@@ -80,7 +80,7 @@ $(document).ready ->
 ##    submit_is.closest('form').submit()
 #    submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")
 
-  $(document).on 'change','#fileToUpload', (e) ->
+  $(document).on 'change','#fileToUpload.self-service', (e) ->
     submit_is = $('#bulk-comp-continue-3, #bulk-sales-comp-continue-2, #bulk-custom-comp-continue-2')
     loadingAnimationStarts()
     submit_is.parent().siblings('.accordion-content-data').find('.bulk-upload-file-section').find('form').trigger("submit")

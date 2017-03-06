@@ -102,7 +102,7 @@ module CustomImportTemplateUtil
         raise Exception.new("##{col} column has no header name defined") if column.nil?
         column_names << column.to_s.strip
       end
-      p column_names
+      #p column_names
       errors = ""
       missing_not_required_columns = []
       removed_not_required_columns = []
@@ -159,21 +159,29 @@ module CustomImportTemplateUtil
       @sheet.parse(:header_search => column_names[0..1], :clean => true).each_with_index do |row, i|
         if i >= 0
           p row
-
+          already_mapped_columns={}
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
           if not_for_sheet[:class] == "TenantRecord"
             not_for_sheet[:additional_tenant_cost] = 0.0
             not_for_sheet[:additional_ll_allowance] = 0.0
             lease_stepped_rents = []
+            already_mapped_columns={}
+            @ind=0;
             if !(not_for_sheet[:additional_cost].nil?)
               if !(not_for_sheet[:additional_cost][:tenant].nil?)
                 not_for_sheet[:additional_cost][:tenant].each { |cost_column|
                   not_for_sheet[:additional_tenant_cost] += row[cost_column.last].to_f
+                  #already_mapped_columns.merge(cost_column.last.to_sym=>row[cost_column.last].to_f)
+                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"additional_tenant_cost", spreadsheet_column: cost_column.last, default_value: "" }
+                  @ind +=1
                 }
               end
               if !(not_for_sheet[:additional_cost][:ll].nil?)
                 not_for_sheet[:additional_cost][:ll].each { |cost_column|
                   not_for_sheet[:additional_ll_allowance] += row[cost_column.last].to_f
+                  #already_mapped_columns.merge!(cost_column.last.to_sym => row[cost_column.last].to_f)
+                  already_mapped_columns["#{@ind}"] = { id: "#{@ind}", record_column:"additional_ll_allowance", spreadsheet_column: cost_column.last, default_value: "" }
+                  @ind +=1
                 }
               end
             end
@@ -184,21 +192,29 @@ module CustomImportTemplateUtil
                 counter = 0
                 not_for_sheet[:stepped_rents].each { |step|
                   lease_stepped_rents[counter] = {'cost_per_month' => row[step.last[:cost_per_month]].to_f , 'months' => row[step.last[:months]].to_i}
+                  #already_mapped_columns.merge!(step.last[:cost_per_month].to_sym => row[step.last[:cost_per_month]].to_f)
+                  #already_mapped_columns.merge!(.to_sym => row[step.last[:months]].to_i)
+                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_cost", spreadsheet_column: step.last[:cost_per_month], default_value: "" }
                   counter += 1
+                  @ind +=1
+                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_month", spreadsheet_column: step.last[:months], default_value: "" }
+                  @ind +=1
                 }
+
                 not_for_sheet.merge!({
                                          'lease_stepped_rents' => lease_stepped_rents
                                      })
               end
             end
+            if !(not_for_sheet[:lease_structure_field].nil?)
+
+              not_for_sheet.merge!(:lease_structure => row[not_for_sheet[:lease_structure_field]].to_s)
+
+              already_mapped_columns["#{@ind}"] = { id: "#{@ind}", record_column:"lease_structure", spreadsheet_column: not_for_sheet[:lease_structure_field], default_value: "" }
+              @ind +=1
+            end
           end
-          #Rails.logger.debug "*****************************************************"
-          #Rails.logger.debug "row"
-          #Rails.logger.debug row
-          parsed_spreadsheet_record = Importer.hash_format(import_id, row)
-          #Rails.logger.debug "*****************************************************"
-          #Rails.logger.debug "parsed_spreadsheet_record"
-          #Rails.logger.debug parsed_spreadsheet_record
+          parsed_spreadsheet_record = CustomImporter.hash_format(import_id, row,already_mapped_columns)
           CustomImporter.validate(parsed_spreadsheet_record, import_id, current_user_info, not_for_sheet)
         end
       end

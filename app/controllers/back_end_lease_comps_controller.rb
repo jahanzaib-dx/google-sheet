@@ -75,7 +75,7 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        custom_data = TenantRecord.custom_field_values(tenant_record.id)
+        custom_data =TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -258,16 +258,20 @@ class BackEndLeaseCompsController < ApplicationController
         custom_data_hash={}
         custom_data={}
         custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
-              "value" => ws[counter,custom_field_col]
-          }
+          if ws[1,custom_field_col]!=""
+            custom_data_hash[keys.header]={
+                "key" => ws[1,custom_field_col],
+                "value" => ws[counter,custom_field_col]
+            }
+          end
           custom_field_col+=1
         end
+
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
         end
+
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
@@ -409,7 +413,6 @@ class BackEndLeaseCompsController < ApplicationController
      render :json => {
          :file_temp => @file_temp.id
      }
-
   end
 
   def delete_duplication
