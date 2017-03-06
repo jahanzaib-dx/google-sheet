@@ -23,8 +23,9 @@ module CustomImporter
 
       if not_for_sheet[:has_lease_structure]== true
 
-        if (original_record[:custom][:lease_structure]["value"]).present?
-          ls= LeaseStructure.new("name"=> original_record[:custom][:lease_structure]["value"])
+        if (not_for_sheet[:lease_structure]).present?
+          #ls= LeaseStructure.new("name"=> original_record[:custom][:lease_structure]["value"])
+          ls= LeaseStructure.new("name"=> not_for_sheet[:lease_structure].to_s)
           tenant_record.set_lease_structure ls
         else
           ls= LeaseStructure.new("name"=>'Full Service')
@@ -250,6 +251,11 @@ tenant_record
 
 
     #tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
+    if tenant_record.class.to_s == 'CustomRecord'
+      if not_for_sheet[:custom_record_properties]
+        not_for_sheet[:custom_record_properties].merge(record[:custom].except(:class))
+      end
+    end
 
     if tenant_record.save
       if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet[:custom_record_properties].count) > 0 rescue false)
@@ -329,11 +335,13 @@ tenant_record
 
   end
 
-  def self.hash_format import_id, h
+  def self.hash_format import_id, h, already_mapped_columns
     # h is the spreadsheet row
     mappings = ImportTemplate.unscoped.find(TenantRecordImport.find(import_id).import_template_id).import_mappings
     custom = {}
+    mapped_hash=already_mapped_columns.values.map { |h| [h[:id] , h[:spreadsheet_column]] }.to_h
     hashed_record = Hash[h.map do |k, v|
+
       sheet_col = k.gsub(/\ /, "_").gsub("\n","_").downcase.to_sym
       mapping = mappings.find {|m| m.spreadsheet_column.present? && (m.spreadsheet_column.to_sym == sheet_col) }
       if !mapping.nil?
@@ -342,7 +350,11 @@ tenant_record
         #keep formatted original key with modified edge case value
         [mapping.record_column.to_sym, val]
       else
-        custom[sheet_col] = Hash["key", k, "value", v]
+        mapped_fields=mapped_hash.has_value? k
+        if !mapped_fields
+          custom[sheet_col] = Hash["key", k, "value", v]
+        end
+
       end
     end]
     # adding custom fields (aka, non-required tenantrex fields
