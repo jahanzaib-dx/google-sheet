@@ -259,6 +259,7 @@ class TenantRecord < ActiveRecord::Base
 	  " 0 as editable" +
       ", 'protect_view' as in_scope " +
       ", 'cp_status' as cp_status " +
+      ", 'base_rent_str' as base_rent_str " +
       ", 'size_range' as size_range "
     )
     ####.joins({ :office => :firm })
@@ -356,7 +357,8 @@ class TenantRecord < ActiveRecord::Base
       'tenant_ti_cost_str' as tenant_ti_cost_str,
       'escalation_str' as escalation_str,
       'additional_ll_allowance_str' as additional_ll_allowance_str,
-      'additional_tenant_cost_str' as additional_tenant_cost_str            
+      'additional_tenant_cost_str' as additional_tenant_cost_str,
+      'leasestructure_name_str' as leasestructure_name_str
       
       ") }
 
@@ -769,6 +771,41 @@ class TenantRecord < ActiveRecord::Base
     ##arr
   end
 
+  def escalation_char t_record
+    if t_record.rent_escalation_type == 'base_rent_fixed_increase'
+      "($/SF)"
+    elsif t_record.rent_escalation_type == 'stepped_rent'
+      "(stepped)"
+    else
+      "(%)"
+    end
+
+  end
+
+  def escalation_value t_record,val_str
+    rent = ""
+    if t_record.rent_escalation_type == 'base_rent_fixed_increase'
+      val_str
+    elsif t_record.rent_escalation_type == 'stepped_rent'
+      if val_str == "Lock" || val_str == "None"
+      val_str
+      else
+        r=1
+        t_record.stepped_rents.map{|v|
+          if r%3 == 0
+            br = "</br>"
+          end
+          rent += "#{v.months.to_s}/#{number_with_precision(v.cost_per_month,:precision=>0)}, #{br}"
+          r=r+1
+        }
+        rent.chomp("</br>").chomp(", ").html_safe
+
+      end
+    else
+      val_str
+    end
+  end
+
   private
   def default_values
     #puts "***********************@current user: #{User.current_user.name}"
@@ -915,4 +952,6 @@ class TenantRecord < ActiveRecord::Base
     shared_comp=SharedComp.where('comp_id = ? and comp_type = ?', self.id,"lease")
     shared_comp.destroy_all if !shared_comp.nil?
   end
+
+
 end

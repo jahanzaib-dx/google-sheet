@@ -965,7 +965,7 @@ populateResults = (data, text_status, $xhr, doAppend) ->
       longitude: item.longitude
       size: size
       year: (if (item.lease_commencement_date) then moment(item.lease_commencement_date, 'YYYY-MM-DD').format('YYYY') else '')
-      base_rent:item.base_rent
+      base_rent_str:item.base_rent_str
       requestunlock_class:requestunlock_class
       Request_Unlock_text:Request_Unlock_text
       cpstatus:cpstatus

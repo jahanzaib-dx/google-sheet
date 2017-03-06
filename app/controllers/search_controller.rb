@@ -201,7 +201,8 @@ class SearchController < ApplicationController
     
        tenant_records = tenant_records.each do |t_record|
 
-         t_record.base_rent = number_to_currency(t_record.base_rent, {:precision=>2})
+         t_record.base_rent_str = number_to_currency(t_record.base_rent, {:precision=>2})
+
 
           if t_record.user_id != current_user.id
             
@@ -239,11 +240,12 @@ class SearchController < ApplicationController
               end
     
               t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
-              t_record.base_rent = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent, {:precision=>2}) else 'Lock' end
+              t_record.base_rent_str = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent, {:precision=>2}) else 'Lock' end
               t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
               t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
-              
-                
+
+             p "---==================base rent------------------"
+             p t_record.base_rent
               ##t_record = t_record + compArr
               ##t_record = t_record + compObj
               p t_record.cp_status
@@ -399,6 +401,12 @@ class SearchController < ApplicationController
               ##t_record.tenant_ti_cost_str = number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2})
               t_record.additional_ll_allowance_str = number_to_currency(t_record.additional_ll_allowance.to_f,{:precision=>2})
               t_record.additional_tenant_cost_str = number_to_currency(t_record.additional_tenant_cost.to_f,{:precision=>2})
+              t_record.leasestructure_name_str = (t_record.data['leasestructure_name'].blank? == true)?"Full Service":t_record.data['leasestructure_name']
+
+              t_record.tenant_improvement_str = if t_record.tenant_improvement.to_f > 0 then t_record.tenant_improvement else "None" end
+              t_record.additional_ll_allowance_str = if t_record.additional_ll_allowance.to_f > 0 then t_record.additional_ll_allowance else "None" end
+              t_record.additional_tenant_cost_str = if t_record.additional_tenant_cost.to_f > 0 then t_record.additional_tenant_cost else "None" end
+              t_record.free_rent = if t_record.free_rent.to_f > 0 then t_record.free_rent else "None" end
 
 
           if t_record.user_id != current_user.id
@@ -460,10 +468,11 @@ class SearchController < ApplicationController
               t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
                 
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end
+              t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.leasestructure_name_str else 'Lock' end
               ## not working t_record.data['leasestructure_name'] = if unlockFields.include?"leasestructure_name" then t_record.data['leasestructure_name'] else 'Lock' end
-              
-                       
+
           end
+
           
           t_record
        
