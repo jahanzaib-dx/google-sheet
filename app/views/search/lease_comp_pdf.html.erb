@@ -39,7 +39,7 @@
             <td><p class="comp-table-pre"><%=@comp_record.company.to_s.capitalize%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
             <!-- <td><p class="comp-table-pre">&nbsp;<%#=@comp_record.property_name.to_s.capitalize!%></p></td> -->
-            <td><p class="comp-table-pre"><%=@comp_record.property_name.to_s.capitalize%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.na(@comp_record.property_name.to_s.capitalize)%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Industry </p></td>
@@ -71,7 +71,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Lease Structure </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.data['leasestructure_name']%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.leasestructure_name_str%></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"> </p></td>
           </tr>
@@ -85,7 +85,7 @@
             <td><p class="comp-table-pre">Term (Months) </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.lease_term_months_str%></p></td>
             <td><p class="comp-table-pre">Suite</p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.suite %> </p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.na(@comp_record.suite) %> </p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Free Rent (Months) </p></td>

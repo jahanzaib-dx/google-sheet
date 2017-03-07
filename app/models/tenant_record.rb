@@ -787,7 +787,7 @@ class TenantRecord < ActiveRecord::Base
     if t_record.rent_escalation_type == 'base_rent_fixed_increase'
       val_str
     elsif t_record.rent_escalation_type == 'stepped_rent'
-      if val_str == "Locked" || val_str == "None"
+      if val_str == "Lock" || val_str == "None"
       val_str
       else
         r=1
@@ -795,7 +795,7 @@ class TenantRecord < ActiveRecord::Base
           if r%3 == 0
             br = "</br>"
           end
-          rent += "#{v.months.to_s}/#{number_with_precision(v.cost_per_month,:precision=>0)}, #{br}"
+          rent += "#{v.months.to_s}/#{number_with_precision(v.cost_per_month,:precision=>2)}, #{br}"
           r=r+1
         }
         rent.chomp("</br>").chomp(", ").html_safe
@@ -804,6 +804,17 @@ class TenantRecord < ActiveRecord::Base
     else
       val_str
     end
+  end
+
+  def na data
+    if data.blank? == true
+      "None"
+    elsif data.to_i < 1
+      "None"
+    else
+      data
+    end
+
   end
 
   private

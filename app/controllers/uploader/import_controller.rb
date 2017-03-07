@@ -85,6 +85,9 @@ class Uploader::ImportController < ApplicationController
   end
 
   def create_and_process_upload
+
+    permit_parameters
+
     file_path = CustomImportTemplateUtil.marketrex_default_file_path(params[:upload_file_tmp_url])
     #Rails.logger.debug  "--------------------------------------file_path: #{file_path}"
     original_file_name = params[:upload_file_tmp_url]
@@ -121,6 +124,7 @@ class Uploader::ImportController < ApplicationController
         required_params["#{index}"] = { id: "", record_column: key, spreadsheet_column: value, default_value: "" }
       }
     elsif params[:bulk_property_type_switch]  == 'custom_data'
+=begin
       if params[:custom_record][:custom_record_properties_attributes]
         custom_record_properties = {}
         params[:custom_record][:custom_record_properties_attributes].each_with_index do |hash, index|
@@ -132,16 +136,26 @@ class Uploader::ImportController < ApplicationController
           }
         end
       end
+=end
       not_for_sheet.merge!({
-                              :custom_record_properties => custom_record_properties,
+                              #:custom_record_properties => custom_record_properties,
                               :is_existing_data_set => (params[:custom_record][:is_existing_data_set] == 'yes' ? true : false ),
                               :is_geo_coded => (params[:custom_record][:is_geo_coded] == 'on' ? true : false),
+                              :name => ( params[:custom_record][:is_existing_data_set] == 'yes' ? CustomRecord.find(params['existing-data-set-dd']).name : params[:custom_record][:name]),
                               :class => 'CustomRecord'
                           })
-      params[:custom_record].except(:is_existing_data_set, :is_geo_coded, :custom_record_properties_attributes).to_hash.each_with_index { |(key, value), index|
-        Rails.logger.debug  "#{index} - #{key} = #{value}"
-        required_params["#{index}"] = { id: "", record_column: key, spreadsheet_column: value, default_value: "" }
+      # get column names from sheet and add them to required_params
+=begin
+      headers = @sheet.first
+      headers.each_with_index { |(column), index|
+        Rails.logger.debug  "#{index} - #{column}"
+        required_params["#{index}"] = { id: "", record_column: column, spreadsheet_column: column, default_value: "" }
       }
+=end
+      #params[:custom_record].except(:is_existing_data_set, :is_geo_coded, :custom_record_properties_attributes).to_hash.each_with_index { |(key, value), index|
+      #  Rails.logger.debug  "#{index} - #{key} = #{value}"
+      #  required_params["#{index}"] = { id: "", record_column: key, spreadsheet_column: value, default_value: "" }
+      #}
     elsif params[:bulk_property_type_switch]  == 'lease_comps'
       not_for_sheet.merge!({
                                :base_rent_type                 => params[:tenant_record][:base_rent_type],
@@ -354,4 +368,10 @@ class Uploader::ImportController < ApplicationController
     @geocode_errors = @import.import_records.where("(geocode_valid = ? and defined(record_errors, 'geocode_info') and record_errors->'geocode_info' != '[]') and record_valid = ?", false, true).count
     @validation_errors = @import.import_records.where("record_valid = ?", false).count
   end
+
+  def permit_parameters
+    #tenant_record, bulk_property_type_switch, utf8, authenticity_token, request_name, steps_count_dd, oe_column_count, lease_structure_name, tenant_record_import_operating_expense_mapping, sale_record, custom_record, existing-data-set-dd, test, upload_file_tmp_url
+
+  end
+
 end

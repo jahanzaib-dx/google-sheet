@@ -89,6 +89,8 @@ gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 
 gem 'sidekiq'
+gem 'sidekiq_status'
+gem 'shrimp', :git => 'https://github.com/developdc/shrimp.git'
 
 
 gem 'google-analytics-rails'

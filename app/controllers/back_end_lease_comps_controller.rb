@@ -75,7 +75,6 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        #custom_data = tenant_record.custom != "" ? TenantRecord.custom_field_values(tenant_record.id) : nil
         custom_data =TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
@@ -258,23 +257,19 @@ class BackEndLeaseCompsController < ApplicationController
         custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        ##################################################
+        custom_headers.each.map do |keys|
+          if ws[1,custom_field_col]!=""
+            custom_data_hash[keys.header]={
+                "key" => ws[1,custom_field_col],
+                "value" => ws[counter,custom_field_col]
+            }
+          end
+          custom_field_col+=1
+        end
+
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-          # if !custom_data.all? { |k,v| v == "" }
-          #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-          # else
-          #   custom_data = {}
-          # end
-        end
-        ##################################################
-        custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
-              "value" => ws[counter,custom_field_col]
-          }
-          custom_field_col+=1
         end
 
         @tenant_record.update_attributes(

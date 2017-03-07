@@ -22,6 +22,17 @@ class Uploader::AjaxController < ApplicationController
 
   def get_custom_record_attributes
     @custom_record = CustomRecord.find params[:custom_record_id]
+    keys = []
+    custom_record_properties = []
+
+    @custom_record.custom_record_properties.each do |property|
+      unless keys.include? property.key
+        keys << property.key
+        custom_record_properties << property
+      end
+    end
+
+    @custom_record.custom_record_properties = custom_record_properties
 
     respond_to do |format|
       format.json { render json: @custom_record.to_json(include: 'custom_record_properties' ) }
