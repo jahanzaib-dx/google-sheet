@@ -29,9 +29,8 @@ class RegistrationsController < Devise::RegistrationsController
         redirect_to new_user_registration_path
       end
     else
-      if @user.sign_in_count == 0
-        DxMailer.new_user_has_signed_up(@user).deliver
-      end
+      @user = params[:user]
+      DxMailer.new_user_has_signed_up(@user).deliver
       super
     end
 
