@@ -24,11 +24,12 @@ helper :comp
 		@user = user
 		mail( :to => @user.email, :subject => "Welcome to MarketRex" )
 	end
-
-	def new_user_has_signed_up(user)
-		@user = user
-		mail( :to => ['mnaumimirza@yahoo.com', 'mnaumimirza@hotmail.com'], :subject => "#{@user[:first_name]} #{@user[:last_name]} has signed up to Rexforce for first time." )
-	end
+###########email##########
+	# def new_user_has_signed_up(user)
+	# 	@user = user
+	# 	mail( :to => ['mnaumimirza@yahoo.com', 'mnaumimirza@hotmail.com'], :subject => "#{@user[:first_name]} #{@user[:last_name]} has signed up to Rexforce for first time." )
+	# end
+###########email##########
 
   def connection_invite(request)
 		headers({'X-No-Spam' => 'True'})
