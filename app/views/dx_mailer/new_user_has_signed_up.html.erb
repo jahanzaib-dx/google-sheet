@@ -1,0 +1,25 @@
+<%= render 'partials/email_header' %>
+
+
+<div class="email-content">
+
+  <div >
+
+    <div style="
+    height: 200px;
+        overflow:hidden;
+        margin: 0 0 0 24px;
+    ">
+
+      <p><%= @user[:first_name].capitalize %> <%= @user[:last_name].capitalize %> has signed up for the first time to the system.</br>
+
+      </p>
+    <div style="clear:both"></div>
+  </div>
+
+
+
+</div></div>
+
+
+<%= render 'partials/email_footer' %>

@@ -23,7 +23,13 @@ helper :comp
 	def welcome_email(user)
 		@user = user
 		mail( :to => @user.email, :subject => "Welcome to MarketRex" )
-  end
+	end
+###########email##########
+	# def new_user_has_signed_up(user)
+	# 	@user = user
+	# 	mail( :to => ['mnaumimirza@yahoo.com', 'mnaumimirza@hotmail.com'], :subject => "#{@user[:first_name]} #{@user[:last_name]} has signed up to Rexforce for first time." )
+	# end
+###########email##########
 
   def connection_invite(request)
 		headers({'X-No-Spam' => 'True'})
@@ -54,7 +60,19 @@ helper :comp
     @comp_request = comp_request
     mail(to: comp_request.received_by.email, subject: "New Unlock Request")
   end
-  
+
+	def searchable_new_comps(request)
+		@connection_request =request
+		mail(:to => request.connected_to.email, :from => request.user.email, :subject => "Congragulations! New Comps")
+
+	end
+
+	def searchable_sale_comps(request)
+		@connection_request =request
+		mail(:to => request.connected_to.email, :from => request.user.email, :subject => "Congragulations! New Comps")
+
+	end
+
   def comp_request_approved(comp_request,email_comp_id=0)
     @comp_request = comp_request
     @email_comp_id = email_comp_id
