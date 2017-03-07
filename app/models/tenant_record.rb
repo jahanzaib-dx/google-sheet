@@ -795,7 +795,7 @@ class TenantRecord < ActiveRecord::Base
           if r%3 == 0
             br = "</br>"
           end
-          rent += "#{v.months.to_s}/#{number_with_precision(v.cost_per_month,:precision=>0)}, #{br}"
+          rent += "#{v.months.to_s}/#{number_with_precision(v.cost_per_month,:precision=>2)}, #{br}"
           r=r+1
         }
         rent.chomp("</br>").chomp(", ").html_safe
