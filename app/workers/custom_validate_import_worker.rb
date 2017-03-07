@@ -4,7 +4,7 @@ class CustomValidateImportWorker
   include SidekiqStatus::Worker
   sidekiq_options :queue => :validate_import, :retry => false
 
-  def perform(import_id, office_id, id = nil, current_user_info, class_name)
+  def perform(import_id, id = nil, current_user_info, class_name)
     records = nil
 
     if id

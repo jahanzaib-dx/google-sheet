@@ -806,6 +806,17 @@ class TenantRecord < ActiveRecord::Base
     end
   end
 
+  def na data
+    if data.blank? == true
+      "None"
+    elsif data.to_i < 1
+      "None"
+    else
+      data
+    end
+
+  end
+
   private
   def default_values
     #puts "***********************@current user: #{User.current_user.name}"

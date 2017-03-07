@@ -185,8 +185,8 @@ module CustomImportTemplateUtil
                 }
               end
             end
-            Sidekiq::Logging.logger.debug "*****************************************************"
-            Sidekiq::Logging.logger.debug not_for_sheet[:rent_escalation_type_stepped]
+            #Rails.logger.debug "*****************************************************"
+            #Rails.logger.debug not_for_sheet[:rent_escalation_type_stepped]
             if !(not_for_sheet[:stepped_rents].nil?)
               if (not_for_sheet[:rent_escalation_type_stepped] and not_for_sheet[:stepped_rents].count > 0 )
                 counter = 0
