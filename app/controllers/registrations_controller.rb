@@ -29,8 +29,10 @@ class RegistrationsController < Devise::RegistrationsController
         redirect_to new_user_registration_path
       end
     else
-      @user = params[:user]
-      DxMailer.new_user_has_signed_up(@user).deliver
+      ###########email##########
+      # @user = params[:user]
+      # DxMailer.new_user_has_signed_up(@user).deliver
+      ###########email##########
       super
     end
 
