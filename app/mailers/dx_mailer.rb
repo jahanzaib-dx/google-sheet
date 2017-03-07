@@ -27,7 +27,7 @@ helper :comp
 
 	def new_user_has_signed_up(user)
 		@user = user
-		mail( :to => 'maha.khalid@discretelogix.com', :subject => "#{user.first_name} #{user.last_name} has signed up to Rexforce for first time." )
+		mail( :to => 'maha.khalid@discretelogix.com', :subject => "#{@user[:first_name]} #{@user[:last_name]} has signed up to Rexforce for first time." )
 	end
 
   def connection_invite(request)
