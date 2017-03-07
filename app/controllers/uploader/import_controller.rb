@@ -173,9 +173,9 @@ class Uploader::ImportController < ApplicationController
 
 
     if(@is_white_glove_service)
-        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user).first
+        white_glove= WhiteGloveServiceRequest.where(:user_id => current_user).last
         pre_existing = ImportTemplate.where(:id => white_glove.import_template_id).first
-        pre_existing.name=SecureRandom.hex
+       #pre_existing.name=SecureRandom.hex
 
     else
     pre_existing = ImportTemplate.new(import_template_attributes.merge({
@@ -192,7 +192,7 @@ class Uploader::ImportController < ApplicationController
     import_mappings_dup = Marshal.load(Marshal.dump(import_mappings))
     CustomImportTemplateUtil.update_import_mappings mapping_structure, import_mappings
     if(@is_white_glove_service)
-      import= TenantRecordImport.where(:status => 'Enqueued for White Glove Service', :user_id => current_user, :import_template_id => white_glove.import_template_id)
+      import= TenantRecordImport.where(:status => 'Enqueued for White Glove Service', :user_id => current_user, :import_template_id => white_glove.import_template_id).first
       if (import)
         import.update_attributes(:import_template_id=>mapping_structure.id)
       end
@@ -288,10 +288,12 @@ class Uploader::ImportController < ApplicationController
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
       encrypted_data = crypt.encrypt_and_sign(@current_user.id)
 
-      import_template = ImportTemplate.create({user_id: current_user.id, name: params['request_name'], reusable: false})
-      WhiteGloveServiceRequest.create({user_id: current_user.id, name: params['request_name'], file_path: @file_path, import_template_id: import_template.id});
-      TenantRecordImport.create({ import_template_id: import_template.id, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data).deliver_now
+      import_template = ImportTemplate.create({user_id: current_user.id, name: @updated_file_name, reusable: false})
+      WhiteGloveServiceRequest.create({user_id: current_user.id, name: @updated_file_name, file_path: @file_path, import_template_id: import_template.id});
+      TenantRecordImport.create({ import_template_id: import_template.id, geocode_valid:(params[:geo_code_records_is_geo_coded].to_i == 1  ? true : false), complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
+      p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
+      p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
+      #DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."

@@ -254,6 +254,7 @@ Rails.application.routes.draw do
       collection do
         match 'process_file' => "import#process_file", via: :post
         match 'create_and_process_upload' => "import#create_and_process_upload", via: :post
+        match 'new/create_and_process_upload' => "import#create_and_process_upload", via: :post
         match 'marketrex_import_status' => 'import#import_status', :as => :marketrex_import_status, via: :get
         match 'white_glove_service_request' => 'import#white_glove_service_request', :as => :white_glove_service_request, via: :post
         match 'new/:user_id' => 'import#new', via: :get
