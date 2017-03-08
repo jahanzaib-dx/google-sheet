@@ -254,16 +254,14 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          if ws[1,custom_field_col]!=""
-            custom_data_hash[keys.header]={
+        while ws[1,custom_field_col]!=""
+            custom_data_hash[ws[1,custom_field_col]]={
                 "key" => ws[1,custom_field_col],
                 "value" => ws[counter,custom_field_col]
             }
-          end
           custom_field_col+=1
         end
 
