@@ -495,6 +495,17 @@ class BackEndLeaseCompsController < ApplicationController
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     error_string=""
+    header=1
+    clear=0
+    while clear==0
+      while ws[1,header]!=""
+        header+=1
+      end
+      if ws[1,header+1]!=""
+        error_string+="</br> There is a missing Header"
+      end
+      clear=1
+    end
     counter=2
     if params[:id].present?
       tenant_records.each do |tenant_record|
