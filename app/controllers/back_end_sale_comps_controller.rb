@@ -192,18 +192,25 @@ class BackEndSaleCompsController < ApplicationController
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         custom_field_col = 19
-        custom_headers = SaleRecord.custom_field_headers(@current_user.id)
+        # custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-          custom_headers.each.map do |keys|
-            if ws[1,custom_field_col]!=""
-              custom_data_hash[keys.header]={
-                  "key" => ws[1,custom_field_col],
-                  "value" => ws[counter,custom_field_col]
-              }
-            end
-            custom_field_col += 1
-          end
+          # custom_headers.each.map do |keys|
+          #   if ws[1,custom_field_col]!=""
+          #     custom_data_hash[keys.header]={
+          #         "key" => ws[1,custom_field_col],
+          #         "value" => ws[counter,custom_field_col]
+          #     }
+          #   end
+          #   custom_field_col += 1
+          # end
+        while ws[1,custom_field_col]!=""
+          custom_data_hash[ws[1,custom_field_col]]={
+              "key" => ws[1,custom_field_col],
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
 
           if !custom_data_hash.nil?
             pair = custom_data_hash.values
