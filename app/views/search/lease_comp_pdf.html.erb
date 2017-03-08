@@ -152,8 +152,9 @@
 
 
         </table>
-
+        <% if @comp_record.user_id == current_user.id%>
         <%= onepager_custom_data(@comp_record.custom_data).html_safe%>
+        <% end %>
 
         <!-- <h1 class="detail-comp-hadding">Custom Data</h1>
 
