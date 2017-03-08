@@ -58,6 +58,7 @@ class BackEndSaleCompsController < ApplicationController
           end
           custom_field_col+=1
         end
+        ws[counter, custom_field_col] = ''
         counter+=1
       end
       if counter>2
