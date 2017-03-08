@@ -247,6 +247,8 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.company_logo_updated_at, " +
       "tenant_records.user_id, " +
       "tenant_records.main_image_file_name, " +
+          "tenant_records.rent_escalation_type, " +
+
       ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
@@ -818,10 +820,10 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def getescalation t_record
-    if t_record.rent_escalation_type == 'base_rent_fixed_increase'
-      t_record.fixed_escalation
-    elsif t_record.rent_escalation_type == 'base_rent_percent'
-      t_record.escalation
+    if rent_escalation_type == 'base_rent_fixed_increase'
+      fixed_escalation
+    elsif rent_escalation_type == 'base_rent_percent'
+      escalation
     end
   end
 
