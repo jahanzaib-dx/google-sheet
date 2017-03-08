@@ -89,6 +89,7 @@ class BackEndLeaseCompsController < ApplicationController
           custom_field_col+=1
         end
         counter+=1
+        ws[counter, custom_field_col] = ''
       end
       if counter>2
         counter-=1
