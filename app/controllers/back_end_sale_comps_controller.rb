@@ -192,18 +192,25 @@ class BackEndSaleCompsController < ApplicationController
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         custom_field_col = 19
-        custom_headers = SaleRecord.custom_field_headers(@current_user.id)
+        # custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-          custom_headers.each.map do |keys|
-            if ws[1,custom_field_col]!=""
-              custom_data_hash[keys.header]={
-                  "key" => ws[1,custom_field_col],
-                  "value" => ws[counter,custom_field_col]
-              }
-            end
-            custom_field_col += 1
-          end
+          # custom_headers.each.map do |keys|
+          #   if ws[1,custom_field_col]!=""
+          #     custom_data_hash[keys.header]={
+          #         "key" => ws[1,custom_field_col],
+          #         "value" => ws[counter,custom_field_col]
+          #     }
+          #   end
+          #   custom_field_col += 1
+          # end
+        while ws[1,custom_field_col]!=""
+          custom_data_hash[ws[1,custom_field_col]]={
+              "key" => ws[1,custom_field_col],
+              "value" => ws[counter,custom_field_col]
+          }
+          custom_field_col+=1
+        end
 
           if !custom_data_hash.nil?
             pair = custom_data_hash.values
@@ -382,6 +389,17 @@ class BackEndSaleCompsController < ApplicationController
 
     sale_records = SaleRecord.where('user_id = ?', @current_user)
     error_string=""
+    header=1
+    clear=0
+    while clear==0
+      while ws[1,header]!=""
+        header+=1
+      end
+      if ws[1,header+1]!=""
+        error_string+="</br> There is a missing Header"
+      end
+      clear=1
+    end
     counter=2
     if params[:id].present?
       sale_records.each do |sale_record|

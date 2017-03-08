@@ -254,16 +254,14 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
-        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          if ws[1,custom_field_col]!=""
-            custom_data_hash[keys.header]={
+        while ws[1,custom_field_col]!=""
+            custom_data_hash[ws[1,custom_field_col]]={
                 "key" => ws[1,custom_field_col],
                 "value" => ws[counter,custom_field_col]
             }
-          end
           custom_field_col+=1
         end
 
@@ -497,6 +495,17 @@ class BackEndLeaseCompsController < ApplicationController
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     error_string=""
+    header=1
+    clear=0
+    while clear==0
+      while ws[1,header]!=""
+        header+=1
+      end
+      if ws[1,header+1]!=""
+        error_string+="</br> There is a missing Header"
+      end
+      clear=1
+    end
     counter=2
     if params[:id].present?
       tenant_records.each do |tenant_record|
