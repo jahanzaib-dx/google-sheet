@@ -817,6 +817,14 @@ class TenantRecord < ActiveRecord::Base
 
   end
 
+  def getescalation t_record
+    if t_record.rent_escalation_type == 'base_rent_fixed_increase'
+      t_record.fixed_escalation
+    elsif t_record.rent_escalation_type == 'base_rent_percent'
+      t_record.escalation
+    end
+  end
+
   private
   def default_values
     #puts "***********************@current user: #{User.current_user.name}"
