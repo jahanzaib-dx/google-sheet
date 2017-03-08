@@ -392,7 +392,7 @@ class SearchController < ApplicationController
               t_record.size_range = t_record.size
 
 
-              t_record.escalation_str = t_record.escalation
+              t_record.escalation_str = t_record.getescalation(t_record.escalation)
               t_record.lease_commencement_date_str = t_record.lease_commencement_date.strftime('%m/%d/%Y')
               t_record.lease_term_months_str = t_record.lease_term_months
 
@@ -455,7 +455,7 @@ class SearchController < ApplicationController
               t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
               t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end
                 
-              t_record.escalation_str = if unlockFields.include?"escalation" then t_record.escalation else 'Lock' end
+              t_record.escalation_str = if unlockFields.include?"escalation" then t_record.getescalation(t_record.escalation) else 'Lock' end
               ##t_record.lease_commencement_date_str = if unlockFields.include?"lease_commencement_date" then t_record.lease_commencement_date.strftime('%m/%d/%Y') else 'Lock' end
               t_record.lease_term_months_str = if unlockFields.include?"lease_term_months" then t_record.lease_term_months else 'Lock' end
               t_record.free_rent = if unlockFields.include?"free_rent" then t_record.free_rent else 'Lock' end
