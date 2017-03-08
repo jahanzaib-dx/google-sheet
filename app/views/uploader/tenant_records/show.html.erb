@@ -110,21 +110,21 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Tenant Improvements ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.na(number_to_currency(@comp_record.tenant_improvement.to_f, {:precision=>2}))%></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.na(@comp_record.tenant_improvement.to_f), {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">State</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.state%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Additional Concessions ($/SF) </p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.na(number_to_currency(@comp_record.additional_ll_allowance.to_f, {:precision=>2}))%></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.na(@comp_record.additional_ll_allowance.to_f), {:precision=>2})%></p></td>
             <td><p class="comp-table-pre">Country</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.country%> </p></td>
 
           </tr>
           <tr>
             <td><p class="comp-table-pre">Costs to Tenant ($/SF)</p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.na(number_to_currency(@comp_record.additional_tenant_cost.to_f, {:precision=>2})) %></p></td>
+            <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.na(@comp_record.additional_tenant_cost.to_f), {:precision=>2}) %></p></td>
             <td><p class="comp-table-pre">Zip</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.na(@comp_record.zipcode)%> </p></td>
 
