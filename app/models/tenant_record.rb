@@ -247,6 +247,8 @@ class TenantRecord < ActiveRecord::Base
       "tenant_records.company_logo_updated_at, " +
       "tenant_records.user_id, " +
       "tenant_records.main_image_file_name, " +
+      "tenant_records.rent_escalation_type, " +
+
       ###"offices.firm_id AS firm_id, 
 	  ###firms.name AS firm_name, " +
       ###"offices.name AS office_name, offices.logo_image_file_name AS office_logo_image_file_name " +
