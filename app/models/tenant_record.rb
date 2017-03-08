@@ -811,7 +811,7 @@ class TenantRecord < ActiveRecord::Base
   def na data
     if data.blank? == true
       "None"
-    elsif data.to_i < 1
+    elsif data.delete("^0-9").to_i < 1
       "None"
     else
       data
