@@ -103,7 +103,7 @@ class BackEndLeaseCompsController < ApplicationController
       if ws.max_rows>counter
         ws.delete_rows(counter+1,ws.max_rows-counter)
       end
-      # ws.save()
+      ws.save()
 
       # save file name to database
       @BackEndLeaseComp = BackEndLeaseComp.new
