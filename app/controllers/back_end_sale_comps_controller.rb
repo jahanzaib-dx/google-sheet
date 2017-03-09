@@ -41,8 +41,8 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 14] = sale_record.land_size
         ws[counter, 15] = sale_record.price
         ws[counter, 16] = sale_record.sold_date
-        ws[counter, 17] = sale_record.cap_rate
-        ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 18] = sale_record.cap_rate
         custom_field_col = 19
 
         custom_data = SaleRecord.custom_field_values(sale_record.id)
@@ -129,8 +129,8 @@ class BackEndSaleCompsController < ApplicationController
         ws[counter, 14] = sale_record.land_size
         ws[counter, 15] = sale_record.price
         ws[counter, 16] = sale_record.sold_date
-        ws[counter, 17] = sale_record.cap_rate
-        ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+        ws[counter, 18] = sale_record.cap_rate
         custom_field_col = 19
         custom_data =  SaleRecord.custom_field_values(sale_record.id)
 
@@ -213,14 +213,10 @@ class BackEndSaleCompsController < ApplicationController
           }
           custom_field_col+=1
         end
-
-          if !custom_data_hash.nil?
-            pair = custom_data_hash.values
-             custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-          end
-
-
-
+        if !custom_data_hash.nil?
+          pair = custom_data_hash.values
+           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        end
         @sale_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
@@ -237,8 +233,8 @@ class BackEndSaleCompsController < ApplicationController
             :land_size => ws[counter, 14],
             :price => ws[counter, 15],
             :sold_date => ws[counter, 16],
-            :cap_rate => ws[counter, 17],
-            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
+            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False',
+            :cap_rate => ws[counter, 18],
             :custom => custom_data
         )
       end
@@ -247,9 +243,6 @@ class BackEndSaleCompsController < ApplicationController
       end
       counter+=1
     end
-
-
-
     deleted = ids.any? ? SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : SaleRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
     redirect_to database_back_ends_path
@@ -290,8 +283,8 @@ class BackEndSaleCompsController < ApplicationController
       ws[counter, 15] = sale_record.land_size
       ws[counter, 16] = sale_record.price
       ws[counter, 17] = sale_record.sold_date
-      ws[counter, 18] = sale_record.cap_rate
-      ws[counter, 19] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      ws[counter, 19] = sale_record.cap_rate
       custom_field_col = 20
       custom_data = SaleRecord.custom_field_values(sale_record.id)
       custom_headers.each do
@@ -306,7 +299,14 @@ class BackEndSaleCompsController < ApplicationController
         end
         custom_field_col+=1
       end
+      ws[counter, custom_field_col] = ''
       counter+=1
+    end
+    if counter>2
+      counter-=1
+    end
+    if ws.max_rows>counter
+      ws.delete_rows(counter+1,ws.max_rows-counter)
     end
     ws.save()
 
@@ -340,12 +340,23 @@ class BackEndSaleCompsController < ApplicationController
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         custom_field_col = 20
-        custom_headers = SaleRecord.custom_field_headers(@current_user.id)
+        # custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
+        # custom_headers.each.map do |keys|
+        #   custom_data_hash[keys.header]={
+        #       "key" => keys.header,
+        #       "value" => ws[counter,custom_field_col]
+        #   }
+        #   custom_field_col+=1
+        # end
+        # if !custom_data_hash.nil?
+        #   pair = custom_data_hash.values
+        #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        # end
+        while ws[1,custom_field_col]!=""
+          custom_data_hash[ws[1,custom_field_col]]={
+              "key" => ws[1,custom_field_col],
               "value" => ws[counter,custom_field_col]
           }
           custom_field_col+=1
@@ -370,8 +381,8 @@ class BackEndSaleCompsController < ApplicationController
             :land_size => ws[counter, 15],
             :price => ws[counter, 16],
             :sold_date => ws[counter, 17],
-            :cap_rate => ws[counter, 18],
-            :is_sales_record => (ws[counter, 19]=='Land Record') ? 'TRUE' : 'False',
+            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
+            :cap_rate => ws[counter, 19],
             :custom => custom_data
         )
       end

@@ -67,8 +67,8 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 24] = tenant_record.additional_tenant_cost
         ws[counter, 25] = tenant_record.additional_ll_allowance
         ws[counter, 26] = tenant_record.escalation
-        ws[counter, 27] = tenant_record.fixed_escalation
-        ws[counter, 28] = tenant_record.is_stepped_rent
+        ws[counter, 27] = tenant_record.is_stepped_rent
+        ws[counter, 28] = tenant_record.fixed_escalation
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
@@ -172,8 +172,8 @@ class BackEndLeaseCompsController < ApplicationController
         ws[counter, 24] = tenant_record.additional_tenant_cost
         ws[counter, 25] = tenant_record.additional_ll_allowance
         ws[counter, 26] = tenant_record.escalation
-        ws[counter, 27] = tenant_record.fixed_escalation
-        ws[counter, 28] = tenant_record.is_stepped_rent
+        ws[counter, 27] = tenant_record.is_stepped_rent
+        ws[counter, 28] = tenant_record.fixed_escalation
         tenant_record.stepped_rents.each do |sr|
           ws[counter, stepped_rent_col] = sr.cost_per_month
           ws[counter, stepped_rent_col+1] = sr.months
@@ -298,8 +298,8 @@ class BackEndLeaseCompsController < ApplicationController
             :additional_tenant_cost => ws[counter, 24],
             :additional_ll_allowance => ws[counter, 25],
             :escalation => ws[counter, 26],
-            :fixed_escalation => ws[counter, 27],
-            :is_stepped_rent => ws[counter, 28],
+            :is_stepped_rent => ws[counter, 27],
+            :fixed_escalation => ws[counter, 28],
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
         )
@@ -375,8 +375,8 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 25] = tenant_record.additional_tenant_cost
        ws[counter, 26] = tenant_record.additional_ll_allowance
        ws[counter, 27] = tenant_record.escalation
-       ws[counter, 28] = tenant_record.fixed_escalation
-       ws[counter, 29] = tenant_record.is_stepped_rent
+       ws[counter, 28] = tenant_record.is_stepped_rent
+       ws[counter, 29] = tenant_record.fixed_escalation
        tenant_record.stepped_rents.each do |sr|
          ws[counter, stepped_rent_col] = sr.cost_per_month
          ws[counter, stepped_rent_col+1] = sr.months
@@ -396,7 +396,14 @@ class BackEndLeaseCompsController < ApplicationController
          end
          custom_field_col+=1
        end
+       ws[counter, custom_field_col] = ''
        counter+=1
+     end
+     if counter>2
+       counter-=1
+     end
+     if ws.max_rows>counter
+       ws.delete_rows(counter+1,ws.max_rows-counter)
      end
      ws.save()
 
@@ -438,13 +445,25 @@ class BackEndLeaseCompsController < ApplicationController
         custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
+        # custom_headers.each.map do |keys|
+        #   custom_data_hash[keys.header]={
+        #       "key" => keys.header,
+        #       "value" => ws[counter,custom_field_col]
+        #   }
+        #   custom_field_col+=1
+        # end
+        # if !custom_data_hash.nil?
+        #   pair = custom_data_hash.values
+        #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        # end
+        while ws[1,custom_field_col]!=""
+          custom_data_hash[ws[1,custom_field_col]]={
+              "key" => ws[1,custom_field_col],
               "value" => ws[counter,custom_field_col]
           }
           custom_field_col+=1
         end
+
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
@@ -475,8 +494,8 @@ class BackEndLeaseCompsController < ApplicationController
             :additional_tenant_cost => ws[counter, 25],
             :additional_ll_allowance => ws[counter, 26],
             :escalation => ws[counter, 27],
-            :fixed_escalation => ws[counter, 28],
-            :is_stepped_rent => ws[counter, 29],
+            :is_stepped_rent => ws[counter, 28],
+            :fixed_escalation => ws[counter, 29],
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
         )
@@ -546,8 +565,8 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 22] == '')? "</br>Cell no. V#{counter} is required" : ""
           error_string += (
               (ws[counter, 26] == ''  || ws[counter, 26] == "0") &&
-              (ws[counter, 27] == '' || ws[counter, 27] == "0") &&
-              (ws[counter, 28] == '' || ws[counter, 28] == 'FALSE')
+              (ws[counter, 28] == '' || ws[counter, 28] == "0") &&
+              (ws[counter, 27] == '' || ws[counter, 27] == 'FALSE')
           )? "</br>Cell no. Z#{counter}, AA#{counter}  and AB#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
@@ -590,8 +609,8 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 23] == '')? "</br>Cell no. W#{counter} is required" : ""
           error_string += (
               (ws[counter, 27] == ''  || ws[counter, 27] == "0") &&
-              (ws[counter, 28] == '' || ws[counter, 28] == "0") &&
-              (ws[counter, 29] == '' || ws[counter, 29] == 'FALSE')
+              (ws[counter, 29] == '' || ws[counter, 29] == "0") &&
+              (ws[counter, 28] == '' || ws[counter, 28] == 'FALSE')
           )? "</br>Cell no. AA#{counter}, AB#{counter}  and AC#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
