@@ -75,6 +75,13 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        end
+        while stepped_rent_col<=custom_field_col
+          ws[counter,stepped_rent_col]=''
+          stepped_rent_col+=1
+        end
         custom_data =TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
@@ -83,7 +90,6 @@ class BackEndLeaseCompsController < ApplicationController
               break
             else
               ws[counter, custom_field_col] = ''
-              next
             end
           end
           custom_field_col+=1
@@ -180,6 +186,13 @@ class BackEndLeaseCompsController < ApplicationController
           stepped_rent_col+=2
         end
         custom_field_col = stepped_rent_col
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        end
+        while stepped_rent_col<=custom_field_col
+          ws[counter,stepped_rent_col]=''
+          stepped_rent_col+=1
+        end
         custom_data = TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
@@ -188,7 +201,6 @@ class BackEndLeaseCompsController < ApplicationController
               break
             else
               ws[counter, custom_field_col] = ''
-              next
             end
           end
           custom_field_col+=1
@@ -255,7 +267,12 @@ class BackEndLeaseCompsController < ApplicationController
               }
           stepped_rent_col+=2
         end
-        custom_field_col = stepped_rent_col
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        else
+          custom_field_col = stepped_rent_col
+        end
+
         # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
@@ -383,6 +400,13 @@ class BackEndLeaseCompsController < ApplicationController
          stepped_rent_col+=2
        end
        custom_field_col = stepped_rent_col
+       if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+         custom_field_col = 30+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+       end
+       while stepped_rent_col<=custom_field_col
+         ws[counter,stepped_rent_col]=''
+         stepped_rent_col+=1
+       end
        custom_data = TenantRecord.custom_field_values(tenant_record.id)
        custom_headers.each do
          custom_data.each do |vals|
@@ -391,7 +415,6 @@ class BackEndLeaseCompsController < ApplicationController
              break
            else
              ws[counter, custom_field_col] = ''
-             next
            end
          end
          custom_field_col+=1
@@ -441,8 +464,12 @@ class BackEndLeaseCompsController < ApplicationController
           }
           stepped_rent_col+=2
         end
-        custom_field_col = stepped_rent_col
-        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        else
+          custom_field_col = stepped_rent_col
+        end
+        # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
         # custom_headers.each.map do |keys|
