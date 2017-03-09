@@ -39,6 +39,16 @@ class BackEndLeaseCompsController < ApplicationController
         ws[1,custom_headers_col_head]= keys.header
         custom_headers_col_head+=1
       end
+      while ws[counter,1]!=""
+        if !tenant_records.find_by_id(ws[counter,1]).present?
+          ws.delete_rows(counter,1)
+        end
+        counter+=1
+      end
+      counter=2
+      if ws.max_rows<tenant_records.count
+        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
+      end
       tenant_records.each do |tenant_record|
         stepped_rent_col=29
         ws[counter, 1] = tenant_record.id
@@ -82,7 +92,7 @@ class BackEndLeaseCompsController < ApplicationController
           ws[counter,stepped_rent_col]=''
           stepped_rent_col+=1
         end
-        custom_data =TenantRecord.custom_field_values(tenant_record.id)
+        custom_data = TenantRecord.custom_field_values(tenant_record.id)
         custom_headers.each do
           custom_data.each do |vals|
             if ws[1, custom_field_col]==vals.header
@@ -94,8 +104,8 @@ class BackEndLeaseCompsController < ApplicationController
           end
           custom_field_col+=1
         end
-        counter+=1
         ws[counter, custom_field_col] = ''
+        counter+=1
       end
       if counter>2
         counter-=1
