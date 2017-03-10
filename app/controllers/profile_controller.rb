@@ -61,28 +61,28 @@ class ProfileController < ApplicationController
   
   	@user = current_user
 	
-	if params[:UserSetting]
+	if params[:UserSettings]
 	
 		settings = UserSetting.where(:user_id=>@user.id).first
 		
 		if settings
-			settings.update_attributes(:sms => params[:UserSetting][:sms] , :email => params[:UserSetting][:email] ,  :outofnetwork => params[:UserSetting][:outofnetwork])
+			settings.update_attributes(:sms => params[:UserSettings][:sms] , :email => params[:UserSettings][:email] ,  :outofnetwork => params[:UserSettings][:outofnetwork])
 		else
 			settings_new = UserSetting.new
 			settings_new.user_id = @user.id
 			#preferences_new.sms = true
 			#preferences_new.email = true
 			
-			if !params[:UserSetting][:sms].blank?
-				settings_new.sms = params[:UserSetting][:sms]
+			if !params[:UserSettings][:sms].blank?
+				settings_new.sms = params[:UserSettings][:sms]
 			end
 			
-			if !params[:UserSetting][:email].blank?
-				settings_new.email = params[:UserSetting][:email]
+			if !params[:UserSettings][:email].blank?
+				settings_new.email = params[:UserSettings][:email]
 			end
 			
-			if !params[:UserSetting][:outofnetwork].blank?
-				settings_new.outofnetwork = params[:UserSetting][:outofnetwork]
+			if !params[:UserSettings][:outofnetwork].blank?
+				settings_new.outofnetwork = params[:UserSettings][:outofnetwork]
 			end
 			
 			settings_new.save(validate: false)
