@@ -245,7 +245,26 @@ class BackEndSaleCompsController < ApplicationController
     end
     deleted = ids.any? ? SaleRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : SaleRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
-    redirect_to database_back_ends_path
+    # redirect_to database_back_ends_path
+
+    @file = BackEndSaleComp.where('user_id = ?', @current_user).first
+    @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
+    session.drive.batch do
+      user_permission = {
+          value: 'default',
+          type: 'anyone',
+          role: 'writer'
+      }
+      session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
+    end
+  @is_potential_dupes = SaleRecord.duplicate_list(current_user.id).count
+  render :json => {
+      :file_temp => @file_temp.id,
+      :file => @file.file,
+      :is_potential_dupes => @is_potential_dupes
+  }
+
+
   end
 
   def duplication
