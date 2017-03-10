@@ -91,7 +91,8 @@ class ProfileController < ApplicationController
 		
 	end
 	
-	redirect_to profile_path
+	##redirect_to profile_path
+		redirect_to dashboard_path
 	
   end
   
