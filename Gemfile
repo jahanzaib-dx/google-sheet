@@ -99,4 +99,4 @@ gem "mediaelement_rails"
 
 gem 'naturalsorter', '3.0.16'
 
-gem 'rack-timeout', '~> 0.4.2'
+# gem 'rack-timeout', '~> 0.4.2'
