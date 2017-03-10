@@ -301,13 +301,13 @@ class Uploader::ImportController < ApplicationController
 
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
       encrypted_data = crypt.encrypt_and_sign(@current_user.id)
-
+      is_geo_coded=(params[:geo_code_records_is_geo_coded].to_i == 1  ? true : false)
       import_template = ImportTemplate.create({user_id: current_user.id, name: @updated_file_name, reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: @updated_file_name, file_path: @file_path, import_template_id: import_template.id});
-      TenantRecordImport.create({ import_template_id: import_template.id, geocode_valid:(params[:geo_code_records_is_geo_coded].to_i == 1  ? true : false), complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
+      TenantRecordImport.create({ import_template_id: import_template.id, geocode_valid:is_geo_coded, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
       p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
       p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
-      #DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data).deliver_now
+      #DxMailer.white_glove_service_email('ahessen@tenantrex.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data,is_geo_coded).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."
