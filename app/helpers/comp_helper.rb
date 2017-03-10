@@ -112,8 +112,8 @@ module CompHelper
     </tr>'
     data.each_with_index do |(key, value), index|
       custom_data << '<tr>
-                        <td><p class="comp-table-pre">'+ key.split('_').map(&:capitalize).join(' ') +'</p> </td>
-                        <td><p class="comp-table-pre">'+ value.split('_').map(&:capitalize).join(' ') +'</p> </td>
+                        <td><p class="comp-table-pre">'+ if !key.blank? then key.split('_').map(&:capitalize).join(' ') else "" end +'</p> </td>
+                        <td><p class="comp-table-pre">'+ if !value.blank? then value.split('_').map(&:capitalize).join(' ') else "" end +'</p> </td>
                       </tr>'
     end
       custom_data << '</tbody>
