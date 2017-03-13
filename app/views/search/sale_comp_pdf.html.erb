@@ -84,12 +84,12 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Zip Code</p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.zipcode%></p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.na(@comp_record.zipcode)%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Submarket</p></td>
             <td><p class="comp-table-pre">
-            	<%=@comp_record.submarket%>
+            	<%=@comp_record.na(@comp_record.submarket)%>
               <!--Downtown-->
             </p></td>
           </tr>
