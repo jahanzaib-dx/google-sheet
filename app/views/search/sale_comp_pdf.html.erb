@@ -34,56 +34,44 @@
         <h1 class="detail-comp-hadding">Comp Detail</h1>
         <table width="100%" border="0">
           <tr>
-            <td height="104"><h1 class="comp-table-hadding">Sale</h1></td>
-            <td><h1 class="comp-table-hadding"></h1></td>
-            <td><h1 class="comp-table-hadding">Building</h1></td>
-            <td><h1 class="comp-table-hadding"></h1></td>
+            <td height="104"  width="30%"><h1 class="comp-table-hadding">Sale</h1></td>
+            <td  width="20%"><h1 class="comp-table-hadding"></h1></td>
+            <td  width="20%"><h1 class="comp-table-hadding">Building</h1></td>
+            <td  width="30%"><h1 class="comp-table-hadding"></h1></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Size (SF) </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.size_range%></p></td>
-            <td><p class="comp-table-pre">
-            	<!-- Property Name -->
-            	 </p></td>
-            <td><p class="comp-table-pre">
-            	<!-- The Bank Building -->
-            	</p></td>
-          </tr>
-          <tr>
-            <td><p class="comp-table-pre">Sale Price </p></td>
-            <td><p class="comp-table-pre"><%= @comp_record.price_str%> </p></td>
             <td><p class="comp-table-pre">Property Type </p></td>
             <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize %></p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Date Sold </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.sold_date.year%></p></td>
+            <td><p class="comp-table-pre">Sale Price </p></td>
+            <td><p class="comp-table-pre"><%= @comp_record.price_str%> </p></td>
             <td><p class="comp-table-pre">Class Type </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize%></p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Cap Rate (%) </p></td>
-            <td><p class="comp-table-pre"><%=@comp_record.cap_rate_str%></p></td>
+            <td><p class="comp-table-pre">Date Sold </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.sold_date.year%></p></td>
             <td><p class="comp-table-pre">Year Built </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.build_date_str%></p></td>
           </tr>
-        </table>
-        <table width="48%" border="0" class="pull-left">
           <tr>
-            <td width="214" height="104"><h1 class="comp-table-hadding">Location</h1></td>
-            <td width="272" height="104"><h1 class="comp-table-hadding"></h1></td>
+            <td><p class="comp-table-pre">Cap Rate (%) </p></td>
+            <td><p class="comp-table-pre"><%=@comp_record.cap_rate_str%></p></td>
+            <td><p class="comp-table-pre"></p></td>
+            <td><p class="comp-table-pre"></p></td>
+          </tr>
+        </table>
+        <table width="100%" border="0" class="">
+          <tr>
+            <td width="30%" height="104"><h1 class="comp-table-hadding">Location</h1></td>
+            <td width="" height="104"><h1 class="comp-table-hadding"></h1></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Address</p></td>
             <td><p class="comp-table-pre"><%=@comp_record.address1%></p></td>
-          </tr>
-          <tr>
-            <td><p class="comp-table-pre">
-            	<!-- Suite -->
-            	</p></td>
-            <td><p class="comp-table-pre">
-              <!--402-->
-            </p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">City</p></td>
@@ -104,7 +92,15 @@
               <!--Downtown-->
             </p></td>
           </tr>
+          <tr>
+            <td><p class="comp-table-pre">&nbsp;</p></td>
+            <td><p class="comp-table-pre"></p></td>
+          </tr>
         </table>
+
+        <% if @comp_record.user_id == current_user.id%>
+            <%= onepager_custom_data(@comp_record.custom).html_safe%>
+        <% end %>
         <!-- <table width="50%" border="0" class="pull-left">
           <tr>
             <td width="214" height="104"><h1 class="comp-table-hadding">Comments</h1></td>
