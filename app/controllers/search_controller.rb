@@ -332,7 +332,7 @@ class SearchController < ApplicationController
             
              unlockFields = []
              
-              activity = ActivityLog.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "lease").first
+              activity = ActivityLog.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comptype => "sale").first
 
               if activity.present?
                 
@@ -351,7 +351,7 @@ class SearchController < ApplicationController
                 end
               
               else
-                comp_request = CompRequest.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comp_type => "lease").first
+                comp_request = CompRequest.where(:comp_id => t_record.id, :initiator_id => current_user.id, :comp_type => "sale").first
                 
                 if comp_request.present?
                   t_record.cp_status = "Waiting"
