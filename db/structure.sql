@@ -501,7 +501,7 @@ ALTER SEQUENCE custom_record_properties_id_seq OWNED BY custom_record_properties
 CREATE TABLE custom_records (
     id integer NOT NULL,
     is_existing_data_set boolean DEFAULT false,
-    is_geo_coded boolean DEFAULT false,
+    is_geo_coded boolean DEFAULT true,
     name character varying,
     address1 character varying,
     city character varying,
@@ -512,7 +512,8 @@ CREATE TABLE custom_records (
     updated_at timestamp without time zone,
     zipcode character varying,
     zipcode_plus character varying,
-    user_id integer
+    user_id integer,
+    country character varying
 );
 
 
@@ -1449,7 +1450,9 @@ CREATE TABLE sale_records (
     submarket character varying,
     main_image_file_name character varying,
     parent_id integer,
-    master_id integer
+    master_id integer,
+    country character varying,
+    is_geo_coded boolean DEFAULT true
 );
 
 
@@ -1836,7 +1839,9 @@ CREATE TABLE tenant_records (
     record_type character varying DEFAULT 'lease'::character varying,
     custom_data hstore,
     parent_id integer,
-    master_id integer
+    master_id integer,
+    country character varying,
+    is_geo_coded boolean DEFAULT true
 );
 
 
@@ -1868,7 +1873,8 @@ CREATE TABLE user_settings (
     user_id integer NOT NULL,
     sms boolean,
     email boolean,
-    outofnetwork boolean
+    outofnetwork boolean,
+    rating integer
 );
 
 
@@ -3363,4 +3369,18 @@ INSERT INTO schema_migrations (version) VALUES ('20170125055701');
 INSERT INTO schema_migrations (version) VALUES ('20170125070916');
 
 INSERT INTO schema_migrations (version) VALUES ('20170207072720');
+
+INSERT INTO schema_migrations (version) VALUES ('20170213074138');
+
+INSERT INTO schema_migrations (version) VALUES ('20170213074202');
+
+INSERT INTO schema_migrations (version) VALUES ('20170213091644');
+
+INSERT INTO schema_migrations (version) VALUES ('20170217062133');
+
+INSERT INTO schema_migrations (version) VALUES ('20170217062144');
+
+INSERT INTO schema_migrations (version) VALUES ('20170222100731');
+
+INSERT INTO schema_migrations (version) VALUES ('20170223094339');
 
