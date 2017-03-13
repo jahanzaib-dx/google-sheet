@@ -729,7 +729,7 @@ class TenantRecord < ActiveRecord::Base
   def dup
     d = super
     d.stepped_rents = stepped_rents.dup
-    dp
+    d
   end
 
 
