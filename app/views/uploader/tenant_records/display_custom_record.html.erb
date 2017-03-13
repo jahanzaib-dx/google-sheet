@@ -8,39 +8,28 @@
           <td>Name</td>
           <td><%= @custom_record.name %></td>
         </tr>
-        <% if @custom_record.is_geo_coded %>
-            <tr>
-              <td>Address</td>
-              <td><%= @custom_record.address1 %></td>
-            </tr>
+        <% @custom_record.rows.each do |arr|
+                record = arr[1]
+                record.keys.each do |key|
+        %>
+                    <tr>
+                      <td><%= key.capitalize %></td>
+                      <td><%= record[key] %></td>
+                    </tr>
+                <%
+                    end
+                %>
+            <% if @custom_record.is_geo_coded %>
+                <tr>
+                  <td colspan="2" style="text-align: center;">
+                    <a href="<%= "http://www.google.com/maps?cbll=#{record["latitude"]},#{record["longitude"]}&layer=c" %>" target="_blank">
+                      <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{record["address1"]},#{record["city"]},#{record["state"]},#{record["zipcode"]}&key=#{ENV['google_geocode_key']}" %>" />
+                    </a>
+                  </td>
+            <% end %>
 
-            <tr>
-              <td>City</td>
-              <td><%= @custom_record.city %></td>
-            </tr>
-            <tr>
-              <td>State</td>
-              <td><%= @custom_record.state %></td>
-            </tr>
-            <tr>
-              <td>Country</td>
-              <td><%= @custom_record.country %></td>
-            </tr>
         <% end %>
-        <% @custom_record.custom_record_properties.each do |record| %>
-            <tr>
-              <td><%= record.key %></td>
-              <td><%= record.value %></td>
-            </tr>
-        <% end %>
-        <% if @custom_record.is_geo_coded %>
-            <tr>
-              <td colspan="2" style="text-align: center;">
-                <a href="<%= "http://www.google.com/maps?cbll=#{@custom_record.latitude},#{@custom_record.longitude}&layer=c" %>" target="_blank">
-                  <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{@custom_record.address1},#{@custom_record.city},#{@custom_record.state},#{@custom_record.zipcode}" %>" />
-                </a>
-              </td>
-        <% end %>
+
         </tr>
       </table>
     </div>

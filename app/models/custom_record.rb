@@ -15,6 +15,29 @@ class CustomRecord < ActiveRecord::Base
   before_validation :default_values
 
 
+  def rows
+    record_rows = {}
+    custom_record_properties.each do |property|
+      row_id = property.row_id
+      col_name = property.key
+      if record_rows.has_key? row_id
+        record_rows[row_id][col_name] = property.value
+      else
+        record_rows.merge!( {row_id => {col_name => property.value } } )
+      end
+    end
+    record_rows
+  end
+
+  def get_next_row_number
+    max = CustomRecordProperty.where({custom_record_id: id}).order('row_id DESC').first.row_id
+    if max.nil?
+      1
+    else
+      max+1
+    end
+  end
+
 
   def self.get_custom_records
     select('id, name').where({user_id: User.current_user.id})
