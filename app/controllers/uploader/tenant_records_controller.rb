@@ -17,6 +17,7 @@ class Uploader::TenantRecordsController < ApplicationController
   def new
     @tenant_record = TenantRecord.new
   end
+
   def custom_record
     @tenant_record.custom = params[:custom_record][:custom]
   end
@@ -74,6 +75,8 @@ class Uploader::TenantRecordsController < ApplicationController
       @sale_record.save
 
     elsif @property_type == 'custom_data'
+      @custom_record = CustomRecordUtil.process_single_record(custom_record_params, current_user)
+=begin
       @custom_record = CustomRecord.new(custom_record_params)
       @custom_record.is_existing_data_set = (params[:custom_record][:is_existing_data_set] == 'yes' ? true : false)
       @custom_record.is_geo_coded = false unless params[:custom_record][:is_geo_coded]
@@ -87,6 +90,7 @@ class Uploader::TenantRecordsController < ApplicationController
         end
       end
       @custom_record.save
+=end
     end
 
     # respond_to do |format|

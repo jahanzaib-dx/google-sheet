@@ -40,8 +40,8 @@ class TenantRecordImport < ActiveRecord::Base
     begin
 
       #CustomImportTenantRecordsWorker.perform(self.id, file_path, original_file_name, import_template.id, current_user_info, import_mappings_dup, not_for_sheet)
-
       CustomImportTenantRecordsWorker.perform_async(self.id, file_path, original_file_name, import_template.id, current_user_info, import_mappings_dup, not_for_sheet)
+
     rescue NoMethodError => e
       self.update_attributes(:status => "Invalid file.\n")
       self.error = true

@@ -8,7 +8,7 @@ VALIDATION_ERRORS = {:street_number => "Address not found",
 
 module GoogleGeocoder
 
-  def geocode_address(tenant_record, address_only = false)
+  def self.geocode_address(tenant_record, address_only = false)
     get_address_by_geocode({
                                :address1 => tenant_record.address1,
                                :city => tenant_record.city,
@@ -19,7 +19,7 @@ module GoogleGeocoder
                            address_only)
   end
 
-  def get_address_by_geocode(tenant_hash, address_only)
+  def self.get_address_by_geocode(tenant_hash, address_only)
     combined_fields = address_only ? ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}") :
         ("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:country]}, #{(tenant_hash[:zipcode].present? ? tenant_hash[:zipcode] : '')}")
     #("#{tenant_hash[:address1]}, #{tenant_hash[:city]}, #{tenant_hash[:state]}, #{tenant_hash[:zipcode]}")
@@ -31,12 +31,12 @@ module GoogleGeocoder
     HTTParty.get(uri)
   end
 
-  def is_valid_address?(tenant_record, geocode)
+  def self.is_valid_address?(tenant_record, geocode)
     (tenant_record.address1.present? && tenant_record.city.present? &&
         tenant_record.state.present?) && validate_address_types(geocode) ? true : false
   end
 
-  def validate_address_types(geocode)
+  def self.validate_address_types(geocode)
     case geocode[:address_type]
       when 'premise'
         (geocode[:city].present? &&
@@ -52,7 +52,7 @@ module GoogleGeocoder
     end
   end
 
-  def parse_geocode_response(geocode_instance)
+  def self.parse_geocode_response(geocode_instance)
     final_address_hash = []
     begin
       if geocode_instance.present?
@@ -87,16 +87,20 @@ module GoogleGeocoder
     final_address_hash
   end
 
-  def validate_address_google(trec, tr_geocode_status = 'false', address_only = false)
+  def self.validate_address_google(trec, tr_geocode_status = 'false', address_only = false)
     geocode_response = geocode_address(trec, address_only)
+    #Rails.logger.debug geocode_response.inspect
     parsed_result = parse_geocode_response(geocode_response["results"])
     parsed_result = get_unique_hash(parsed_result)
+    #Rails.logger.debug parsed_result.inspect
     if !parsed_result.empty? and !parsed_result[0][:city].downcase.strip.empty?
       if (parsed_result.count > 1 && tr_geocode_status == 'false') ||
           (parsed_result.count == 1 && parsed_result[0][:city].downcase.strip != trec[:city].downcase.strip)
         { valid: false, errors: add_city_suggestions(parsed_result) }
       else
         result_hash = parsed_result.first
+        #Rails.logger.debug "result_hash.inspect"
+        #Rails.logger.debug result_hash.inspect
         is_valid = is_valid_address?(trec, result_hash)
         if result_hash.blank? || !is_valid
           { valid: false,
@@ -199,7 +203,7 @@ module GoogleGeocoder
     office
   end
 
-  def get_unique_hash(parsed_result)
+  def self.get_unique_hash(parsed_result)
     arr = []
     parsed_result.each do |hash|
       if arr.present?
