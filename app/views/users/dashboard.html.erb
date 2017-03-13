@@ -296,6 +296,7 @@
           </label>
         </div>
         <% end %>
+        <%= f.check_box :sms , checked: @user.settings.sms , :style => 'visibility: hidden' %>
         <div class="col-md-12 modal_content">
           <h5>Email Notification</h5>
           <label class="switch">
