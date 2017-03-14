@@ -94,6 +94,12 @@ class CompRequest < ActiveRecord::Base
       comp_record_new.user_id = comp_request.initiator_id
       comp_record_new.parent_id = comp_record.id
       comp_record_new.master_id = (comp_record.parent_id.to_i > 0) ? comp_record.master_id : comp_record.id
+
+      if shared.comp_type == 'lease'
+        comp_record_new.comp_view_type = 'external'
+      else
+        comp_record_new.view_type = 'external'
+      end
       comp_record_new.save      
       
       master_id = comp_record_new.master_id

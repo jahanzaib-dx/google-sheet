@@ -145,11 +145,15 @@ class SaleRecord < ActiveRecord::Base
   end
 
   def na data
+    begin
     if data.blank? == true
       "None"
     elsif data.delete("^0-9").to_i < 1
       "None"
     else
+      data
+    end
+    rescue
       data
     end
 
