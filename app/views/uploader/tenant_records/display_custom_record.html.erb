@@ -1,3 +1,49 @@
+
+<%
+   hash = {}
+   Rails.logger.debug @custom_record.inspect
+   @custom_record.rows.each do |arr|
+     record = arr[1]
+     record.keys.each do |key|
+       k = key #.capitalize
+       hash[k] = [] if hash[k].nil?
+       hash[k] << record[key]
+     end
+
+   end
+
+  html = ""
+  colspan = 0
+  hash.keys.each do |key|
+    values = hash[key]
+    colspan = 0
+    html = html + "<tr><td>#{key.capitalize}</td>"
+    values.each do |value|
+        html = html + "<td>#{value}</td>"
+        colspan += 1
+    end
+    html = html + "</tr>"
+
+  end
+
+  if @custom_record.is_geo_coded
+      html = html + "<tr><td></td>"
+      @custom_record.rows.each do |arr|
+        record = arr[1]
+
+          html = html + "<td style='text-align: center;'>
+                <a href='http://www.google.com/maps?cbll=#{record['latitude']},#{record['longitude']}&layer=c' target='_blank'>
+                  <img src='http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{record['address1']},#{record['city']},#{record['state']},#{record['zipcode']}&key=#{ENV['google_geocode_key']}' />
+                </a>
+              </td>"
+      end
+      html = html + "</tr>"
+  end
+%>
+
+
+
+
 <div class="fixed-width-div">
   <%= render partial: 'uploader/shared/import_comp_header', :locals => { :active_tab => 'add_single_record' } %>
   <div class="columns large-12 white-area">
@@ -6,31 +52,12 @@
       <table>
         <tr>
           <td>Name</td>
-          <td><%= @custom_record.name %></td>
+          <td colspan="<%= colspan %>"><%= @custom_record.name %></td>
         </tr>
-        <% @custom_record.rows.each do |arr|
-                record = arr[1]
-                record.keys.each do |key|
-        %>
-                    <tr>
-                      <td><%= key.capitalize %></td>
-                      <td><%= record[key] %></td>
-                    </tr>
-                <%
-                    end
-                %>
-            <% if @custom_record.is_geo_coded %>
-                <tr>
-                  <td colspan="2" style="text-align: center;">
-                    <a href="<%= "http://www.google.com/maps?cbll=#{record["latitude"]},#{record["longitude"]}&layer=c" %>" target="_blank">
-                      <img src="<%= "http://maps.googleapis.com/maps/api/streetview?size=383x270&location=#{record["address1"]},#{record["city"]},#{record["state"]},#{record["zipcode"]}&key=#{ENV['google_geocode_key']}" %>" />
-                    </a>
-                  </td>
-            <% end %>
 
-        <% end %>
+        <%= raw(html) %>
 
-        </tr>
+
       </table>
     </div>
 

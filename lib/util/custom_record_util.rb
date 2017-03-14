@@ -179,8 +179,12 @@ module CustomRecordUtil
                          :user_id => current_user.id
     }
     #Sidekiq.logger.debug "model_parameters #{model_parameters.inspect}"
+    log "model_parameters[:is_existing_data_set] #{model_parameters[:is_existing_data_set].inspect}"
     if model_parameters[:is_existing_data_set]
-      custom_record = CustomRecord.find(custom_record_params["existing-data-set-dd"]).last
+      log "custom_record_params['existing-data-set-dd'] #{custom_record_params["existing-data-set-dd"].inspect} "
+      log "custom_record_params #{custom_record_params.inspect} "
+      custom_record = CustomRecord.find(custom_record_params["existing-data-set-dd"])
+      log custom_record.inspect
     else
       custom_record = CustomRecord.new(model_parameters)
     end
@@ -205,8 +209,6 @@ module CustomRecordUtil
 
     if custom_record.is_geo_coded
 
-      ## find lat/lon if it hasn't been done already
-      #begin
         address = ["address1","city","state","country","latitude", "longitude","zipcode"]
         address_hash = {
             :address1 => "",
@@ -252,19 +254,20 @@ module CustomRecordUtil
           end
         end
 
-      #rescue => exception
-        #Rails.logger.info("Exception while GeoCoding ... ")
-        #Rails.logger.info exception.message
-      #end
 
     end
 
-    #log custom_record.inspect
-    #log custom_record.custom_record_properties.inspect
-
+    log custom_record.inspect
+    log custom_record.custom_record_properties.inspect
     #abort("Message goes here")
 
     custom_record.save
+
+    CustomRecordProperty.where(:key => 'latitude').update_all(:visible => false)
+    CustomRecordProperty.where(:key => 'longitude').update_all(:visible => false)
+    CustomRecordProperty.where(:key => 'zipcode').update_all(:visible => false)
+
+
     return custom_record
   end
 

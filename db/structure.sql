@@ -471,7 +471,9 @@ CREATE TABLE custom_record_properties (
     value character varying,
     custom_record_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    row_id integer,
+    visible boolean DEFAULT true
 );
 
 
@@ -778,7 +780,8 @@ CREATE TABLE import_templates (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     reusable boolean DEFAULT true,
-    user_id integer
+    user_id integer,
+    type character varying(30)
 );
 
 
@@ -3383,4 +3386,10 @@ INSERT INTO schema_migrations (version) VALUES ('20170217062144');
 INSERT INTO schema_migrations (version) VALUES ('20170222100731');
 
 INSERT INTO schema_migrations (version) VALUES ('20170223094339');
+
+INSERT INTO schema_migrations (version) VALUES ('20170310130827');
+
+INSERT INTO schema_migrations (version) VALUES ('20170312172034');
+
+INSERT INTO schema_migrations (version) VALUES ('20170314103732');
 

@@ -310,11 +310,8 @@ $(document).ready ->
 
       if response.is_geo_coded
         $('#custom_record_is_geo_coded').prop 'checked', true
-        html_default_fields = Mustache.render $(template1_id).html()
-        $('.fields-table-custom-data table tbody').html html_default_fields
-        #$('#custom_record_address1').val(response.address1) if response.address1
-        #$('#custom_record_city').val(response.city) if response.city
-        #$('#custom_record_state').val(response.state) if response.state
+        #html_default_fields = Mustache.render $(template1_id).html()
+        #$('.fields-table-custom-data table tbody').html html_default_fields
 
         container = $('.fields-table-custom-data table tbody')
         $.each response.custom_record_properties, (row, obj)->
