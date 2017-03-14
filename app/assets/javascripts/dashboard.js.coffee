@@ -47,7 +47,7 @@ $("#autocomplete").ajaxselect(
     record_type: $('input[name="record_type"]:checked').val()
     #f:new Date().getTime()
 ).bind("change.ajaxselect", (e) ->
-  $("#search").removeAttr "disabled"
+  #$("#search").removeAttr "disabled"
   $(this).off "keydown.autocomplete"
 ).bind("autocompletesearch", ->
   $("#search").attr "disabled", "disabled"
@@ -57,6 +57,7 @@ $("#autocomplete").ajaxselect(
       e.preventDefault()
       false
 ).bind("autocompleteselect", (e, ui) ->
+  $("#search").removeAttr "disabled"
   $("#address1").val ui.item.label.address1
   $("#zipcode").val ui.item.label.zipcode
   $("#tenant_record_property_type").val ui.item.label.property_type
