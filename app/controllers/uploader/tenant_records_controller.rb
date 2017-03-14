@@ -59,7 +59,7 @@ class Uploader::TenantRecordsController < ApplicationController
       @sale_record.sold_date = Date.strptime(params[:sale_record][:sold_date], "%m/%d/%Y")
 
 
-      hash =params[:sale_record][:custom]
+      hash = params[:sale_record][:custom]
       if !hash.nil?
         a= hash.values
         b = a.map { |h| [h["key"] , h["value"]] }.to_h # saving custom data as a hash
@@ -75,7 +75,9 @@ class Uploader::TenantRecordsController < ApplicationController
       @sale_record.save
 
     elsif @property_type == 'custom_data'
-      @custom_record = CustomRecordUtil.process_single_record(custom_record_params, current_user)
+      parameters = custom_record_params
+      parameters["existing-data-set-dd"] = params["existing-data-set-dd"]
+      @custom_record = CustomRecordUtil.process_single_record(parameters, current_user)
 =begin
       @custom_record = CustomRecord.new(custom_record_params)
       @custom_record.is_existing_data_set = (params[:custom_record][:is_existing_data_set] == 'yes' ? true : false)
@@ -110,6 +112,9 @@ class Uploader::TenantRecordsController < ApplicationController
 
   def display_custom_record
     @custom_record = CustomRecord.find(params[:tenant_record_id])
+    Rails.logger.debug @custom_record.inspect
+    Rails.logger.debug @custom_record.custom_record_properties.inspect
+
   end
 
   def display_sales_comp
