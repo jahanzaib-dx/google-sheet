@@ -28,6 +28,7 @@ class Uploader::AjaxController < ApplicationController
     @custom_record.custom_record_properties.each do |property|
       unless keys.include? property.key
         keys << property.key
+        #property.key.capitalize!
         custom_record_properties << property
       end
     end

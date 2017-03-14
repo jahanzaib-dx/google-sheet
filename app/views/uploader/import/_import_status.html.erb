@@ -42,8 +42,7 @@
                   <td class="actions" style="padding-top: 10px;">
                     <% if i.complete and i.import_valid and i.geocode_valid %>
                         <span>&#x2713;</span>
-                        <span class="standard-font-size"><%= link_to(image_tag(image_url("uploader/undo.png"), size: "16x10", alt: 'undo', title: 'undo'),
-                      undo_uploader_import_path(i), method: :put, :class => "undo") %></span>
+                        <span class="standard-font-size"> </span>
                     <% else %>
                         <%= link_to "view", uploader_import_path(i), :class=>"btn standard-font-size" %>
                         <%= link_to "delete", uploader_import_path(i), { method: :delete,  :class => "btn btn-red standard-font-size" } %>

@@ -50,9 +50,10 @@ helper :comp
 		mail( :to => @user.email, :subject => 'Flagged Comp' )
 	end
 
-	def white_glove_service_email(email,file,encrypted_data)
+	def white_glove_service_email(email,file,encrypted_data,is_geo_coded)
 		@file = file
 		@encrypted_data = encrypted_data
+		@is_geo_coded = is_geo_coded
 		mail( :to => email, :subject => 'White glove service request' )
 	end
 	

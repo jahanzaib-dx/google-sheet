@@ -472,7 +472,8 @@ CREATE TABLE custom_record_properties (
     custom_record_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    row_id integer
+    row_id integer,
+    visible boolean DEFAULT true
 );
 
 
@@ -3389,4 +3390,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170223094339');
 INSERT INTO schema_migrations (version) VALUES ('20170310130827');
 
 INSERT INTO schema_migrations (version) VALUES ('20170312172034');
+
+INSERT INTO schema_migrations (version) VALUES ('20170314103732');
 

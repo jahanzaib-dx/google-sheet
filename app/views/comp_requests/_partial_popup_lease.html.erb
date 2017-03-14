@@ -18,10 +18,10 @@
             <td><h1 class="comp-table-hadding"></h1></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Tenant Name</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[company]"> <%=@comp_record.company.to_s.capitalize%></p></td>
-            <td><p class="comp-table-pre">Property Name </p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[property_name]">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
+            <td width="25%"><p class="comp-table-pre">Tenant Name</p></td>
+            <td width="25%"><p class="comp-table-pre"><input type="checkbox" name="unlock[company]"> <%=@comp_record.company.to_s.capitalize%></p></td>
+            <td width="25%"><p class="comp-table-pre">Property Name </p></td>
+            <td width="25%"><p class="comp-table-pre"><input type="checkbox" name="unlock[property_name]">&nbsp;<%=@comp_record.property_name.to_s.capitalize!%></p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Industry </p></td>
@@ -46,14 +46,14 @@
             <td><p class="comp-table-pre"> </p></td>
           </tr>
           <tr>
-            <td><p class="comp-table-pre">Escalation (%) </p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[escalation]"> <%=@comp_record.escalation%></p></td>
+            <td><p class="comp-table-pre">Escalation <%=@comp_record.escalation_char @comp_record%> </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[escalation]"> <%=@comp_record.escalation_value @comp_record,@comp_record.escalation%></p></td>
             <td><p class="comp-table-pre"><h1 class="comp-table-hadding">Location</h1></p></td>
             <td><p class="comp-table-pre"> </p></td>
           </tr>
           <tr>
             <td><p class="comp-table-pre">Lease Structure </p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[leasestructure_name]"> <%=@comp_record.data['leasestructure_name']%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[leasestructure_name]"> <%=@comp_record.data['leasestructure_name'].blank?? 'Full Service' : @comp_record.data['leasestructure_name']%></p></td>
             <td><p class="comp-table-pre"></p></td>
             <td><p class="comp-table-pre"> </p></td>
           </tr>
