@@ -182,6 +182,9 @@ class User < ActiveRecord::Base
 		
 		##---welcome email with random password-------------
 		DxMailer.welcome_email(user).deliver
+    ###########email##########
+    # DxMailer.new_user_has_signed_up(user).deliver
+    ###########email##########
 		
 		####user.skip_confirmation! if user.respond_to?(:skip_confirmation)
 		return user

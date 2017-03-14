@@ -16,10 +16,10 @@
           <tr class="record-row geoinfo">
             <td class="geocode <%= r.object.id %> error" colspan="2">
               <p>The following issues were found with this address:</p>
-              <% # r.object.record_errors["geocode_info"].each do |info| %>
+              <% #r.object.record_errors["geocode_info"].each do |info| %>
               <% info = r.object.record_errors["geocode_info"] %>
                 <p><%= info %></p>
-              <% # end %>
+              <% #end %>
               <ul>
                 <% if r.object.record_errors["geocode_addresses"].present? and r.object.record_errors["geocode_addresses"].length == 1 %>
                   <% r.object.record_errors["geocode_addresses"].each_with_index do |addr, i| %>

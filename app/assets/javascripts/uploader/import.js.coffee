@@ -303,3 +303,71 @@ window.populateHeaderSelect = ->
       $(obj).html(options);
 
 
+#*************************************************** Google addresses Api start *******************************#
+placeSearch = undefined
+autocomplete = undefined
+autocomplete2 = undefined
+autocomplete3 = undefined
+componentForm =
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name'
+  administrative_area_level_1: 'short_name'
+  country: 'long_name'
+
+initAutocomplete = ->
+# Create the autocomplete object, restricting the search to geographical
+# location types.
+  autocomplete = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete'), types: [ 'geocode' ])
+  autocomplete.addListener 'place_changed', ->
+    fillInAddress autocomplete, ''
+
+  autocomplete2 = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete2'), types: [ 'geocode' ])
+  autocomplete2.addListener 'place_changed', ->
+    fillInAddress autocomplete2, '2'
+
+  autocomplete3 = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete3'), types: [ 'geocode' ])
+  autocomplete3.addListener 'place_changed', ->
+    fillInAddress autocomplete3, '3'
+
+  autocomplete4 = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete4'), types: [ 'geocode' ])
+  autocomplete4.addListener 'place_changed', ->
+    fillInAddress autocomplete4, '4'
+  return
+
+fillInAddress = (autocomplete, unique) ->
+# Get the place details from the autocomplete object.
+  place = autocomplete.getPlace()
+  for component of componentForm
+    if ! !document.getElementById(component + unique)
+      document.getElementById(component + unique).value = ''
+      document.getElementById(component + unique).disabled = false
+  # Get each component of the address from the place details
+  # and fill the corresponding field on the form.
+  i = 0
+  while i < place.address_components.length
+    addressType = place.address_components[i].types[0]
+    if componentForm[addressType] and document.getElementById(addressType + unique)
+      val = place.address_components[i][componentForm[addressType]]
+      document.getElementById(addressType + unique).value = val
+    i++
+  document.getElementById('autocomplete' + unique).value = document.getElementById('street_number' + unique).value + ' ' + document.getElementById('route' + unique).value
+  return
+
+geolocate = ->
+  if navigator.geolocation
+    navigator.geolocation.getCurrentPosition (position) ->
+      geolocation =
+        lat: position.coords.latitude
+        lng: position.coords.longitude
+      circle = new (google.maps.Circle)(
+        center: geolocation
+        radius: position.coords.accuracy)
+      autocomplete.setBounds circle.getBounds()
+  return
+
+window.onload = ->
+  initAutocomplete()
+  return
+
+#*************************************************** Google addresses Api end *******************************#
