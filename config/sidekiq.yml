@@ -1,6 +1,7 @@
 # Sample configuration file for Sidekiq.
 # Options here can still be overridden by cmd line args.
 #   sidekiq -C config.yml
+:logfile: log/sidekiq.log
 :verbose: true
 :pidfile: tmp/pids/sidekiq.pid
 :concurrency:  25
@@ -13,3 +14,4 @@
   - [calculator, 5]
   - [pdf, 4]
   - [xls, 4]
+  - [high, 2]
