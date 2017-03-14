@@ -316,7 +316,7 @@ class Uploader::ImportController < ApplicationController
       p is_geo_coded
       p  "Geo-coding is "+(is_geocoded == true ? " ":"Not ")+"required"
       p is_geo_coded
-      #DxMailer.white_glove_service_email('amir.khalid@discretelogix.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data,is_geo_coded).deliver_now
+      DxMailer.white_glove_service_email('amir.khalid@discretelogix.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data,is_geo_coded).deliver_now
       redirect_to uploader_import_index_path
     else
       flash[:error] = "Import file was not found. Please make sure you have uploaded it."
