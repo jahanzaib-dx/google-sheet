@@ -339,9 +339,9 @@ tenant_record
 
     begin
       ################# geocode with Google #########################
-      google_results = geocode_address(tenant_record)
-      geocode_results = parse_geocode_response(google_results["results"])
-      geocode_results = get_unique_hash_using_standard_attributes(geocode_results, tenant_record)
+      google_results = GoogleGeocoder.geocode_address(tenant_record)
+      geocode_results = GoogleGeocoder.parse_geocode_response(google_results["results"])
+      geocode_results = GoogleGeocoder.get_unique_hash_using_standard_attributes(geocode_results, tenant_record)
     rescue Exception => e
       Rails.logger.error [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
       geocode_results = nil
