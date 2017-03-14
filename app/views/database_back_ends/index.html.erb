@@ -297,6 +297,12 @@
                 $('#error_string').html('Spreadsheet successfully Saved.');
                 $('#error_string').show('fast');
                 $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+                if($('#data_type').val()=="lease") {
+                  $('#tx_linkdin_profile').attr('href', '/back_end_lease_comps/validate_spreadsheet/' + result.file + '/' + result.file_temp);
+                }
+                else if($('#data_type').val()=="sale"){
+                  $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+                }
               }
             });
 //            window.location = result.url;

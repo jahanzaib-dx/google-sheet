@@ -729,7 +729,7 @@ class TenantRecord < ActiveRecord::Base
   def dup
     d = super
     d.stepped_rents = stepped_rents.dup
-    dp
+    d
   end
 
 
@@ -809,6 +809,7 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def na data
+    begin
     if data.blank? == true
       "None"
     elsif data.delete("^0-9").to_i < 1
@@ -816,7 +817,9 @@ class TenantRecord < ActiveRecord::Base
     else
       data
     end
-
+    rescue
+      data
+    end
   end
 
   def getescalation t_record

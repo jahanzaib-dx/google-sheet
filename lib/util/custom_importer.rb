@@ -347,7 +347,7 @@ tenant_record
       geocode_results = nil
     end
 
-    if (!geocode_results.nil? && geocode_results.length == 1 && validate_address_types(geocode_results.first))
+    if (!geocode_results.nil? && geocode_results.length == 1 && GoogleGeocoder.validate_address_types(geocode_results.first))
       geo = geocode_results.first
 
       # use verified address

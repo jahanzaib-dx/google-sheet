@@ -278,9 +278,17 @@ class Uploader::ImportController < ApplicationController
   def undo
     begin
       import_logs = ImportLog.find_all_by_tenant_record_import_id params[:id]
+      tenant_record_import = TenantRecordImport.find(params[:id])
+      import_template = ImportTemplate.find(tenant_record_import.import_template_id)
+
       import_logs.each do |import_log|
         import_log.delete # Performance gain over destroy as callback won't be fired
-        TenantRecord.destroy import_log.tenant_record_id # Callbacks needed so using destroy
+        if import_template.type == 'custom_data'
+          CustomRecord.destroy import_log.tenant_record_id
+        else
+          TenantRecord.destroy import_log.tenant_record_id # Callbacks needed so using destroy
+        end
+
       end
     rescue Exception => ex
     end
