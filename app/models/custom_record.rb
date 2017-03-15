@@ -20,10 +20,12 @@ class CustomRecord < ActiveRecord::Base
     custom_record_properties.each do |property|
       row_id = property.row_id
       col_name = property.key
-      if record_rows.has_key? row_id
-        record_rows[row_id][col_name] = property.value
-      else
-        record_rows.merge!( {row_id => {col_name => property.value } } )
+      if property.visible
+        if record_rows.has_key? row_id
+          record_rows[row_id][col_name] = property.value
+        else
+          record_rows.merge!( {row_id => {col_name => property.value } } )
+        end
       end
     end
     record_rows
