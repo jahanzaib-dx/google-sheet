@@ -57,6 +57,15 @@ class SearchController < ApplicationController
   end
 
     @connections = Connection.all_connection_ids(current_user)
+
+    if current_user.settings.outofnetwork
+      @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+
+      if @out_ids.count > 0
+        @connections = @connections + @out_ids
+      end
+    end
+
     tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
     clause = if address1.present? and zipcode.present?
@@ -712,6 +721,13 @@ class SearchController < ApplicationController
     unless (clause.nil?)
 
       @connections = Connection.all_connection_ids(current_user)
+      if current_user.settings.outofnetwork
+        @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+
+        if @out_ids.count > 0
+          @connections = @connections + @out_ids
+        end
+      end
       tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
       tenant_records = tenant_records.where(clause[:where], clause[:params])
