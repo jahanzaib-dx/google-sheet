@@ -110,6 +110,14 @@ module SearchControllerUtil
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
+        if user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
+
+          if @out_ids.count > 0
+            @connections = @connections + @out_ids
+          end
+        end
+
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
 
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
@@ -194,8 +202,17 @@ module SearchControllerUtil
         tenant_records = tenant_records.where("user_id IN (?)" , params['connection'])
         connections_ids = params['connection']
       else
+
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
+        if user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+
+          if @out_ids.count > 0
+            @connections = @connections + @out_ids
+          end
+        end
+
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
         connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
@@ -460,11 +477,11 @@ module SearchControllerUtil
     end
 
     if (!params['price_min'].blank?)
-      tenant_records = tenant_records.where("sale_records.price >= ?", params['price_min'].to_f)
+      tenant_records = tenant_records.where("sale_records.price >= ?", params['price_min'].delete(",").to_f)
     end
 
     if (!params['price_max'].blank?)
-      tenant_records = tenant_records.where("sale_records.price <= ?", params['price_max'].to_f)
+      tenant_records = tenant_records.where("sale_records.price <= ?", params['price_max'].delete(",").to_f)
     end
 
     if (!params['cap_min'].blank?)
@@ -536,6 +553,13 @@ module SearchControllerUtil
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
+        if user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+
+          if @out_ids.count > 0
+            @connections = @connections + @out_ids
+          end
+        end
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
         connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
@@ -624,6 +648,13 @@ module SearchControllerUtil
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
+        if user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
+
+          if @out_ids.count > 0
+            @connections = @connections + @out_ids
+          end
+        end
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
         connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
