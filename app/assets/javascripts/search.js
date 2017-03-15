@@ -157,6 +157,13 @@ $(function() {
 
 $( document ).on( "keyup", "input[name='tenant_record[price_min]'],input[name='tenant_record[price_max]']", function() {
     $(this).val(number_format($(this).val()))
+
+    if ($(this).val() < 1) {
+        $(this).val("")
+    }
+
+
+
 });
 
 
