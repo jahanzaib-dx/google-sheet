@@ -111,7 +111,7 @@ module SearchControllerUtil
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
         if user.settings.outofnetwork
-          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
           if @out_ids.count > 0
             @connections = @connections + @out_ids
@@ -649,7 +649,7 @@ module SearchControllerUtil
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
         if user.settings.outofnetwork
-          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
           if @out_ids.count > 0
             @connections = @connections + @out_ids

@@ -59,7 +59,7 @@ class SearchController < ApplicationController
     @connections = Connection.all_connection_ids(current_user)
 
     if current_user.settings.outofnetwork
-      @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+      @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
       if @out_ids.count > 0
         @connections = @connections + @out_ids
@@ -722,7 +722,7 @@ class SearchController < ApplicationController
 
       @connections = Connection.all_connection_ids(current_user)
       if current_user.settings.outofnetwork
-        @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+        @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
         if @out_ids.count > 0
           @connections = @connections + @out_ids
