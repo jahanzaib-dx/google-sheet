@@ -29,6 +29,8 @@ class TenantRecord < ActiveRecord::Base
     where("address1 not in (select address1 from tenant_records where user_id=?)" , User.current_user.id)
   end
 
+
+
   # after_save :populate_lookup_tables
 
   # has_and_belongs_to_many :agreements
