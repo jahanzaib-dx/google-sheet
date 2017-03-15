@@ -477,11 +477,11 @@ module SearchControllerUtil
     end
 
     if (!params['price_min'].blank?)
-      tenant_records = tenant_records.where("sale_records.price >= ?", params['price_min'].to_f)
+      tenant_records = tenant_records.where("sale_records.price >= ?", params['price_min'].delete(",").to_f)
     end
 
     if (!params['price_max'].blank?)
-      tenant_records = tenant_records.where("sale_records.price <= ?", params['price_max'].to_f)
+      tenant_records = tenant_records.where("sale_records.price <= ?", params['price_max'].delete(",").to_f)
     end
 
     if (!params['cap_min'].blank?)
