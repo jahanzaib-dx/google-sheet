@@ -93,17 +93,18 @@ class User < ActiveRecord::Base
 
 
 
-  validates :mobile, presence: true, :on => :update
+  # validates :mobile, presence: true, :on => :update
+  #
+  # validates :city, presence: true, :on => :update
+  #
+  # validates :address, presence: true, :on => :update
+  #
+  # validates :state, presence: true, :on => :update
+  # 
+  # validates :zip, presence: true, :on => :update
+  #
+  # validates :firm_name, presence: true, :on => :update
 
-  validates :city, presence: true, :on => :update
-
-  validates :address, presence: true, :on => :update
-
-  validates :state, presence: true, :on => :update
-
-  validates :zip, presence: true, :on => :update
-
-  validates :firm_name, presence: true, :on => :update
   validates :first_name, presence: true, :on => :create
   validates :last_name, presence: true, :on => :create
   
