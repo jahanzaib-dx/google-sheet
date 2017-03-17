@@ -97,12 +97,20 @@ class BackEndLeaseCompsController < ApplicationController
             }
           custom_field_col+=1
         end
-
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
         end
-
+        rent_increase=""
+        if ws[counter, 26].to_i>0
+          rent_increase = 'base_rent_percent'
+        else if ws[counter, 27]=='TRUE'
+               rent_increase = 'stepped_rent'
+             else if ws[counter, 28].to_i>0
+                      rent_increase = 'base_rent_fixed_increase'
+                  end
+             end
+        end
         @tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
@@ -131,6 +139,7 @@ class BackEndLeaseCompsController < ApplicationController
             :escalation => ws[counter, 26],
             :is_stepped_rent => ws[counter, 27],
             :fixed_escalation => ws[counter, 28],
+            :rent_escalation_type => rent_increase,
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
         )

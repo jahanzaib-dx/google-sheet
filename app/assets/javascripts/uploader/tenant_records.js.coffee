@@ -810,3 +810,9 @@ window.onload = ->
   return
 
 #*************************************************** Google addresses Api end *******************************#
+
+$(document).on 'keyup', 'input[name=\'tenant_record[size]\'],input[name=\'sale_record[land_size]\'],input[name=\'sale_record[price]\']', ->
+  $(this).val number_format($(this).val())
+  if $(this).val() < 1
+    $(this).val ''
+  return
