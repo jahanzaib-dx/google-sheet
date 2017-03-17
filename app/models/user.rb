@@ -306,6 +306,8 @@ class User < ActiveRecord::Base
     membership.destroy_all if !membership.nil?
     import_templates= ImportTemplate.user_import_template.where('user_id = ?', self.id)
     import_templates.destroy_all if !import_templates.nil?
+    user_setting= UserSetting.where('user_id = ?', self.id)
+    user_setting.destroy_all if !user_setting.nil?
   end
 
 #####end of class#############

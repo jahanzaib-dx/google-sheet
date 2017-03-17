@@ -250,17 +250,9 @@ class SearchController < ApplicationController
     
               t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
               t_record.base_rent_str = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent, {:precision=>2}) else 'Lock' end
-              t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
+              t_record.size_range = if unlockFields.include?"size" then number_with_precision(t_record.size,:precision=>0,:delimiter => ',') else sf_range(t_record.size) end
               t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
 
-             p "---==================base rent------------------"
-             p t_record.base_rent
-              ##t_record = t_record + compArr
-              ##t_record = t_record + compObj
-              p t_record.cp_status
-              ##t_record.merge(compObj)
-             
-                       
           end
        
        end
