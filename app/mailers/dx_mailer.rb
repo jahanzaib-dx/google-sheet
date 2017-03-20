@@ -56,6 +56,10 @@ helper :comp
 		@is_geo_coded = is_geo_coded
 		mail( :to => email, :subject => 'White glove service request' )
 	end
+	def white_glove_service_completed_email(email,redirect_link)
+		@redirect = redirect_link
+		 mail( :to => email, :subject => 'White glove service request' )
+	end
 	
 	def comp_request_unlock(comp_request)    
     @comp_request = comp_request

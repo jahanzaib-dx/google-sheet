@@ -106,6 +106,7 @@ class TenantRecordImport < ActiveRecord::Base
     if (self.total_record_count == self.total_traversed_count && self.total_record_count > self.num_imported_records)
       self.status = 'Some comps need attention.'
       self.complete = true
+      DxMailer.white_glove_service_completed_email('amir.khalid@discretelogix.com',uploader_import_index_path).deliver_now
     end
 
 
@@ -113,11 +114,14 @@ class TenantRecordImport < ActiveRecord::Base
       self.complete = true
       self.completed_at = DateTime.now
       self.status = 'Import has completed'
+      DxMailer.white_glove_service_completed_email('amir.khalid@discretelogix.com',uploader_import_index_path).deliver_now
+
     end
 
     if self.errors.any?
       self.complete = true
       self.status = self.errors[:upload].to_s
+      DxMailer.white_glove_service_completed_email('amir.khalid@discretelogix.com',uploader_import_index_path).deliver_now
     end
 
     save
