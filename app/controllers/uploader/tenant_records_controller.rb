@@ -32,6 +32,7 @@ class Uploader::TenantRecordsController < ApplicationController
       #@tenant_record.office = current_user.account.office
       @tenant_record.gross_free_rent = false unless params[:tenant_record][:gross_free_rent]
       @tenant_record.is_tenant_improvement = false unless params[:tenant_record][:is_tenant_improvement]
+      @tenant_record.size = params[:tenant_record][:size].delete(',')
 
 
       if @tenant_record.base_rent_type == 'monthly' && !(params[:tenant_record][:stepped_rents_attributes].present?)
@@ -57,6 +58,8 @@ class Uploader::TenantRecordsController < ApplicationController
         @sale_record.build_date = Date.strptime(params[:sale_record][:build_date], "%m/%d/%Y")
       end
       @sale_record.sold_date = Date.strptime(params[:sale_record][:sold_date], "%m/%d/%Y")
+      @sale_record.land_size = params[:sale_record][:land_size].delete(',')
+      @sale_record.land_size = params[:sale_record][:price].delete(',')
 
 
       hash = params[:sale_record][:custom]
