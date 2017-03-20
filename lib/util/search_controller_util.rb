@@ -205,8 +205,8 @@ module SearchControllerUtil
 
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
-        if user.settings.outofnetwork
-          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+        if current_user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
           if @out_ids.count > 0
             @connections = @connections + @out_ids
@@ -553,13 +553,14 @@ module SearchControllerUtil
         else
         @connections = Connection.all_connection_ids(current_user)
         ##p @con3
-        if user.settings.outofnetwork
-          @out_ids = UserSetting.select("user_id").where("outofnetwork = True")
+        if current_user.settings.outofnetwork
+          @out_ids = UserSetting.select("user_id").where("outofnetwork = True").all.map{|v| v.user_id }
 
           if @out_ids.count > 0
             @connections = @connections + @out_ids
           end
         end
+
         tenant_records = tenant_records.where("user_id IN (?) OR user_id=?" , @connections.to_a,current_user.id)
         connections_ids = @connections.join(",")
         ##tenant_records = tenant_records.where("user_id = ?" , params['connection'])
