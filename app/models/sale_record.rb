@@ -146,11 +146,14 @@ class SaleRecord < ActiveRecord::Base
 
   def na data
     begin
-    if data == "Lock"
+    if data === "Lock"
         "Lock"
     elsif data.blank? == true
       "None"
-    elsif data.delete("^0-9").to_i < 1
+    #elsif data.delete("^0-9").to_i < 1
+    elsif data.is_a? String && data.delete("^0-9").to_i < 1
+      "None"
+    elsif data < 1
       "None"
     else
       data

@@ -48,6 +48,10 @@
             <td><p class="comp-table-pre">Size (SF) </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.size_range%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
+            <%
+              p "-----------------property name---------------------"
+            p @comp_record.property_name
+            %>
             <td><p class="comp-table-pre"><%= @comp_record.na(@comp_record.property_name).to_s.capitalize %></p></td>
           </tr>
           <tr>
