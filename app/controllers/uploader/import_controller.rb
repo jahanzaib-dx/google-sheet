@@ -312,11 +312,11 @@ class Uploader::ImportController < ApplicationController
       import_template = ImportTemplate.create({user_id: current_user.id, name: @updated_file_name, reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: @updated_file_name, file_path: @file_path, import_template_id: import_template.id});
       TenantRecordImport.create({ import_template_id: import_template.id, geocode_valid:is_geo_coded, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
-      p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
-      p is_geo_coded
-      p  "Geo-coding is "+(is_geocoded == true ? " ":"Not ")+"required"
-      p is_geo_coded
+     # p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
+    #  p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
+     # p is_geo_coded
+      #p  "Geo-coding is "+(is_geo_coded == true ? " ":"Not ")+"required"
+     # p is_geo_coded
       DxMailer.white_glove_service_email('amir.khalid@discretelogix.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data,is_geo_coded).deliver_now
       redirect_to uploader_import_index_path
     else

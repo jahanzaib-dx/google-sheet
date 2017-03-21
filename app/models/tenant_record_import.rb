@@ -37,6 +37,8 @@ class TenantRecordImport < ActiveRecord::Base
 
   def marketrex_import_start(file_path, current_user_info, import_mappings_dup, original_file_name, not_for_sheet)
     self.status = "Verifying the spreadsheet format"
+    p import_template.id
+    p self.id
     begin
 
       #CustomImportTenantRecordsWorker.perform(self.id, file_path, original_file_name, import_template.id, current_user_info, import_mappings_dup, not_for_sheet)
