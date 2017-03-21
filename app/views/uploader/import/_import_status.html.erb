@@ -30,6 +30,8 @@
                   <td>
                     <% if !i.complete and i.import_valid %>
                         <%= image_tag("small-ajax-loader.gif", :class => 'status_image') %>
+                    <% elsif !i.complete and !i.import_valid %>
+                        <%= image_tag("small-ajax-loader-error.gif", :class => 'status_image') %>
                     <% end %>
                   </td>
                   <td class="import-row custom-vertical-align"><%=i.created_at.strftime('%b %-d, %Y %l:%M %P')%></td>

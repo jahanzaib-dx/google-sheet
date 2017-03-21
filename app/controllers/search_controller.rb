@@ -307,6 +307,8 @@ class SearchController < ApplicationController
               t_record.price_str = if unlockFields.include?"price" then number_to_currency(t_record.price, {:precision=>0}) else 'Lock' end
               t_record.cap_rate_str = if unlockFields.include?"cap_rate" then t_record.cap_rate else 'Lock' end
               t_record.land_size_str = if unlockFields.include?"land_size" then number_with_precision(t_record.land_size,:precision => 0,:delimiter => ',') else sf_range(t_record.land_size,'sale') end
+
+             t_record.property_name = if unlockFields.include?"property_name" then t_record.property_name else 'Lock' end
                 
               ##t_record = t_record + compArr
               ##t_record = t_record + compObj
@@ -370,6 +372,7 @@ class SearchController < ApplicationController
               t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end
               t_record.class_type = if unlockFields.include?"class_type" then t_record.class_type else 'Lock' end
               t_record.build_date_str = if unlockFields.include?"build_date" then (t_record.build_date.blank? == true)?"":t_record.build_date.year else 'Lock' end
+             t_record.property_name = if unlockFields.include?"property_name" then t_record.property_name else 'Lock' end
                    
               ##t_record.suite = if unlockFields.include?"suite" then t_record.company else 'Lock' end
               t_record.city = if unlockFields.include?"city" then t_record.city else 'Lock' end
@@ -450,7 +453,7 @@ class SearchController < ApplicationController
               t_record.city = if unlockFields.include?"city" then t_record.city else 'Lock' end
               t_record.state = if unlockFields.include?"state" then t_record.state else 'Lock' end
               t_record.zipcode = if unlockFields.include?"zipcode" then t_record.zipcode else 'Lock' end
-                
+
               t_record.property_name = if unlockFields.include?"property_name" then t_record.property_name else 'Lock' end
               t_record.industry_type = if unlockFields.include?"industry_type" then t_record.industry_type else 'Lock' end
               t_record.property_type = if unlockFields.include?"property_type" then t_record.property_type else 'Lock' end

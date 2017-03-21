@@ -6,16 +6,12 @@
 <body>
 <h1>White Glove Service</h1>
 <p>
-  Click on the link and get file.
-  </br>
-  <a href="<%= @file %>">Download</a>
+  The client has requested to bulk upload <a href="<%= @file %>"> this sheet</a> .
 </p>
 <p>
-  </br>
-  Please use the link below to process the request.(you need to be logged in with admin  access.)
-  </br>
-  <a href="<%= @encrypted_data %>">Link</a>
-
+  <br>
+  Please use this <a href="<%= @encrypted_data %>">Link</a> to process the request( You need to be logged in with admin access).
+  <br>
   Geo-coding is <%=(@is_geo_coded == true ? "":"Not ") %> required
 </p>
 </body>

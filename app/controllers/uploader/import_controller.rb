@@ -223,7 +223,8 @@ class Uploader::ImportController < ApplicationController
       import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
       #abort("Stopping script execution")
     else
-      CustomImportTemplateUtil.process_excel_file(import.id, file_path, original_file_name, import.import_template.id, current_user_account_type, import_mappings_dup, not_for_sheet)
+      import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
+      #CustomImportTemplateUtil.process_excel_file(import.id, file_path, original_file_name, import.import_template.id, current_user_account_type, import_mappings_dup, not_for_sheet)
     end
 
 
@@ -277,7 +278,7 @@ class Uploader::ImportController < ApplicationController
 
   def undo
     begin
-      import_logs = ImportLog.find_all_by_tenant_record_import_id params[:id]
+      import_logs = ImportLog.where(:tenant_record_import_id=>params[:id])
       tenant_record_import = TenantRecordImport.find(params[:id])
       import_template = ImportTemplate.find(tenant_record_import.import_template_id)
 
@@ -311,11 +312,11 @@ class Uploader::ImportController < ApplicationController
       import_template = ImportTemplate.create({user_id: current_user.id, name: @updated_file_name, reusable: false})
       WhiteGloveServiceRequest.create({user_id: current_user.id, name: @updated_file_name, file_path: @file_path, import_template_id: import_template.id});
       TenantRecordImport.create({ import_template_id: import_template.id, geocode_valid:is_geo_coded, complete: false, import_valid: true, status: 'Enqueued for White Glove Service', user_id: current_user.id})
-      p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
-      p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
-      p is_geo_coded
-      p  "Geo-coding is "+(is_geocoded == true ? " ":"Not ")+"required"
-      p is_geo_coded
+     # p "http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name
+    #  p "http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data
+     # p is_geo_coded
+      #p  "Geo-coding is "+(is_geo_coded == true ? " ":"Not ")+"required"
+     # p is_geo_coded
       DxMailer.white_glove_service_email('amir.khalid@discretelogix.com',"http://"+request.host_with_port+"/system/marketrex_uploads/"+@updated_file_name,"http://"+request.host_with_port+"/uploader/import/new/"+encrypted_data,is_geo_coded).deliver_now
       redirect_to uploader_import_index_path
     else
