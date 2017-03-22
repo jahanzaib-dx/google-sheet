@@ -328,8 +328,15 @@ module SearchControllerUtil
 
       #working for address tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (select address1 from tenant_records where user_id=#{current_user.id})) ")
 
+      if tntids.count > 0
+        tenant_records = tenant_records.where("tenant_records.id not in (?) ",tntids)
+      end
 
-      tenant_records = tenant_records.where("tenant_records.id not in (?) ",tntids)
+
+
+
+
+
 
                ##tenant_records = tenant_records.where("(address1 not in (select address1 from tenant_records where user_id=?) and user_id!=#{current_user.id})" , User.current_user.id)
     
