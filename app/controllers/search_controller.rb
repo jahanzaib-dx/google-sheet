@@ -469,7 +469,7 @@ class SearchController < ApplicationController
               ##t_record.tenant_ti_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2}) else 'Lock' end
               t_record.additional_ll_allowance_str = if unlockFields.include?"landlord_concessions_per_sf" then t_record.additional_ll_allowance_str else 'Lock' end
               t_record.additional_tenant_cost_str = if unlockFields.include?"tenant_ti_cost" then t_record.additional_tenant_cost_str else 'Lock' end
-              t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
+              t_record.submarket = if unlockFields.include?"submarket" then t_record.submarket else 'Lock' end
                 
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end
               t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.leasestructure_name_str else 'Lock' end
