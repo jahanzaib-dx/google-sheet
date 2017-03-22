@@ -257,7 +257,23 @@ module SearchControllerUtil
     #######dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
     
       ##dup_tenant_records = TenantRecord.where("" , @connections.to_a,current_user.id)
-      
+
+
+      ##get full_owner comps from acitvity log
+      activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "lease", :status => "full_owner").all
+
+      tntids = []
+
+      activity_full.each do |activity|
+        singletnt = TenantRecord.find(activity.comp_id)
+
+        tntids += TenantRecord.where("address1='#{singletnt.address1}' and user_id!=#{current_user.id}").all.map{|v| v.id}.uniq
+
+      end
+
+      p "------------idddddddddddddddssssssssssssssssss-----------------"
+      p tntids
+
       
       tenant_records = tenant_records
       .joins("left join (select * from activity_logs where comptype = 'lease' and initiator_id in (#{current_user.id})) as a on tenant_records.id=a.comp_id")
@@ -307,8 +323,22 @@ module SearchControllerUtil
     ##tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
     
     #######tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
-    tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (select address1 from tenant_records where user_id=#{current_user.id})) ")
-    ##tenant_records = tenant_records.where("(address1 not in (select address1 from tenant_records where user_id=?) and user_id!=#{current_user.id})" , User.current_user.id)
+
+
+
+      #working for address tenant_records = tenant_records.where("tenant_records.id not in (select id from tenant_records as tr where user_id!=#{current_user.id} and tr.address1 in (select address1 from tenant_records where user_id=#{current_user.id})) ")
+
+      if tntids.count > 0
+        tenant_records = tenant_records.where("tenant_records.id not in (?) ",tntids)
+      end
+
+
+
+
+
+
+
+               ##tenant_records = tenant_records.where("(address1 not in (select address1 from tenant_records where user_id=?) and user_id!=#{current_user.id})" , User.current_user.id)
     
     ##tenant_records = tenant_records.where("tenant_records.address1 (not in (?)) ",dup_tenant_records.join(","))
     

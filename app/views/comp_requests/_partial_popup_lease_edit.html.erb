@@ -32,7 +32,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Size (SF)</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[size]"> <%=@comp_record.size%> </p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[size]"> <%=number_with_precision(@comp_record.size,:precision => 0,:delimiter => ',')%> </p></td>
 
             <td><p class="comp-table-pre">Class Type</p></td>
             <td><p class="comp-table-pre"><input type="checkbox" name="unlock[class_type]"> <%=@comp_record.class_type.to_s.capitalize!%> </p></td>
@@ -47,7 +47,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Escalation <%=@comp_record.escalation_char @comp_record%> </p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[escalation]"> <%=@comp_record.escalation_value @comp_record,@comp_record.escalation%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[escalation]"> <%=@comp_record.escalation_value @comp_record,@comp_record.getescalation(@comp_record.escalation)%></p></td>
             <td><p class="comp-table-pre"><h1 class="comp-table-hadding">Location</h1></p></td>
             <td><p class="comp-table-pre"> </p></td>
           </tr>
