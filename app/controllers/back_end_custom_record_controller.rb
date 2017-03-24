@@ -109,9 +109,42 @@ class BackEndCustomRecordController < ApplicationController
         end
       end
     end
-    render json:{
-        flag: 'ok',
-        url: database_back_ends_path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @file = BackEndCustomRecord.where('custom_record_id = ?', @custom_record_id).first
+
+    @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
+    session.drive.batch do
+      user_permission = {
+          value: 'default',
+          type: 'anyone',
+          role: 'writer'
+      }
+      session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
+    end
+    render :json => {
+        :file_temp => @file_temp.id,
+        :file => @file.file,
+        :custom_record_id => @custom_record_id,
+        :flag => 'custom'
     }
   end
 end

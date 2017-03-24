@@ -180,6 +180,17 @@
     });
     $('#custom_record_list').change(function(){
     $('#myiframe').find('iframe').attr('src','');
+    $('#tx_linkdin_profile').hide('fast');
+    $('#export').hide('fast');
+    $('#link').hide('fast');
+    $('#link_txt').hide('fast');
+    $('#media-button').hide('fast');
+    $('#ImageBrowse').hide('fast');
+    $('#database_map_search').hide('fast');
+    $('#duplication').parent().hide('fast');
+    $('#manage_dups').hide('fast');
+    $('#error_string').hide('fast');
+    $('#message').hide('fast');
     $.ajax({
         url: '/back_end_custom_record/index/'+$(this).val(),
         success: function(result){
@@ -310,6 +321,14 @@
               }
             });
 //            window.location = result.url;
+          }
+          else if(result.flag=='custom'){
+            $('#error_string').html('Spreadsheet successfully Saved.');
+            $('#error_string').show('fast');
+            $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+            $('#tx_linkdin_profile').attr('href','/back_end_custom_record/create/'+result.file+'/'+result.file_temp+'/'+result.custom_record_id);
+
+
           }
           else
           {
