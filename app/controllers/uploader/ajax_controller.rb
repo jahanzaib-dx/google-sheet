@@ -29,15 +29,19 @@ class Uploader::AjaxController < ApplicationController
       unless keys.include? property.key
         keys << property.key
         #property.key.capitalize!
-        custom_record_properties << property
+        custom_record_properties << property if property.visible
       end
     end
 
-    @custom_record.custom_record_properties = custom_record_properties
+    obj = {
+        :name => @custom_record.name,
+        :is_geo_coded => @custom_record.is_geo_coded,
+        :custom_record_properties => custom_record_properties
+    }
 
     respond_to do |format|
-      format.json { render json: @custom_record.to_json(include: 'custom_record_properties' ) }
-      format.html { render json: @custom_record.to_json(include: 'custom_record_properties' ) }
+      format.json { render json: obj.to_json() }
+      format.html { render json: obj.to_json() }
     end
   end
 end

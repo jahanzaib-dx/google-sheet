@@ -285,7 +285,7 @@ $(document).ready ->
     container = $('.fields-table-custom-data')
     row = container.find('.user-defined-custom-data').length
     if( $(this).hasClass("add-row-custom-data-geocode-single-comp") )
-      custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row})
+      custom_data_set_row = Mustache.render($('#custom-data-set-row-template').html(), {row: row, editable: true, readonly: false})
     #else if( $(this).hasClass("add-row-custom-data-geocode-bulk-upload") )
     #  custom_data_set_row = Mustache.render($('#custom-data-new-bulk-set-row-template').html(), {row: row})
 
@@ -314,9 +314,10 @@ $(document).ready ->
         #$('.fields-table-custom-data table tbody').html html_default_fields
 
         container = $('.fields-table-custom-data table tbody')
+        container.empty()
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: ''})
+          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: '', readonly: true, editable: false, capitalizedField: toTitleCase(obj.key) })
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       else
         $('#custom_record_is_geo_coded').prop 'checked', false
@@ -324,7 +325,7 @@ $(document).ready ->
         container.empty()
         $.each response.custom_record_properties, (row, obj)->
           row = container.find('.user-defined-custom-data').length
-          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: ''})
+          custom_data_set_row = Mustache.render($(template2_id).html(), {row: row, field: obj.key, field_value: '', readonly: true, editable: false, capitalizedField: toTitleCase(obj.key)})
           $('.fields-table-custom-data table tbody').append custom_data_set_row
       $('#custom_record_name').val(response.name)
 
