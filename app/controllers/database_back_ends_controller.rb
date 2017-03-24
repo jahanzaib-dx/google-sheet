@@ -3,11 +3,7 @@ class DatabaseBackEndsController < ApplicationController
   def index
     require "google_drive"
     @custom_records = CustomRecord.where('user_id = ?', @current_user.id)
-    session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
-    g_files = session.files(q: ["name = ?", "#{@current_user.id}_temp"])
-    g_files.each do |file|
-      session.drive.delete_file(file.id)
-    end
+    DatabaseDeleteTempFileWorker.perform_async(@current_user.id)
   end
 
   def upload_image

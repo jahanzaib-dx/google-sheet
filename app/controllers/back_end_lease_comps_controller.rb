@@ -5,107 +5,18 @@ class BackEndLeaseCompsController < ApplicationController
   include GoogleGeocoder
 
   def index
-
-    tenant_records = TenantRecord.where('user_id = ?', @current_user).order(:id)
-    custom_headers = TenantRecord.custom_field_headers(@current_user.id)
-    if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
-      stepped_rent_count = TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof
-    else
-      stepped_rent_count=0
-    end
-
     time = Time.now.getutc
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
-
-
     check = BackEndLeaseComp.where('user_id = ?', @current_user)
     if  check.count == 0
       @file = session.drive.copy_file('1simT-7peFhoY-k9zrov3XYP4XpWJKPQRMz2sQYA5F1Y', {name: fileName}, {})
-
-      # put data to sheet
-      ws = session.spreadsheet_by_key(@file.id).worksheets[0]
-      counter=2
-      i=1
-      stepped_rent_col_head=29
-      while i <= stepped_rent_count  do
-        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
-        ws[1,stepped_rent_col_head+1] = "# of Months"
-        i +=1
-        stepped_rent_col_head+=2
-      end
-      custom_headers_col_head = stepped_rent_col_head
-      custom_headers.each do |keys|
-        ws[1,custom_headers_col_head]= keys.header
-        custom_headers_col_head+=1
-      end
-      tenant_records.each do |tenant_record|
-        stepped_rent_col=29
-        ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
-        ws[counter, 3] = tenant_record.is_geo_coded
-        ws[counter, 4] = tenant_record.comp_view_type
-        ws[counter, 5] = tenant_record.company
-        ws[counter, 6] = tenant_record.industry_type
-        ws[counter, 7] = tenant_record.address1
-        ws[counter, 8] = tenant_record.suite
-        ws[counter, 9] = tenant_record.city
-        ws[counter, 10] = tenant_record.state
-        ws[counter, 11] = tenant_record.country
-        ws[counter, 12] = tenant_record.submarket
-        ws[counter, 13] = tenant_record.class_type
-        ws[counter, 14] = tenant_record.property_type
-        ws[counter, 15] = tenant_record.property_name
-        ws[counter, 16] = tenant_record.lease_commencement_date
-        ws[counter, 17] = tenant_record.lease_term_months
-        ws[counter, 18] = tenant_record.free_rent
-        ws[counter, 19] = tenant_record.size
-        ws[counter, 20] = tenant_record.deal_type
-        ws[counter, 21] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
-        ws[counter, 22] = tenant_record.base_rent
-        ws[counter, 23] = tenant_record.tenant_improvement
-        ws[counter, 24] = tenant_record.additional_tenant_cost
-        ws[counter, 25] = tenant_record.additional_ll_allowance
-        ws[counter, 26] = tenant_record.escalation
-        ws[counter, 27] = tenant_record.fixed_escalation
-        ws[counter, 28] = tenant_record.is_stepped_rent
-        tenant_record.stepped_rents.each do |sr|
-          ws[counter, stepped_rent_col] = sr.cost_per_month
-          ws[counter, stepped_rent_col+1] = sr.months
-          stepped_rent_col+=2
-        end
-        custom_field_col = stepped_rent_col
-        custom_data =TenantRecord.custom_field_values(tenant_record.id)
-        custom_headers.each do
-          custom_data.each do |vals|
-            if ws[1, custom_field_col]==vals.header
-              ws[counter, custom_field_col] = vals.value
-              break
-            else
-              ws[counter, custom_field_col] = ''
-              next
-            end
-          end
-          custom_field_col+=1
-        end
-        counter+=1
-      end
-      if counter>2
-        counter-=1
-      end
-      if ws.max_rows>counter
-        ws.delete_rows(counter+1,ws.max_rows-counter)
-      end
-      ws.save()
-
       # save file name to database
       @BackEndLeaseComp = BackEndLeaseComp.new
       @BackEndLeaseComp.user_id = @current_user.id
       @BackEndLeaseComp.file = @file.id
       @BackEndLeaseComp.save
-
       @file_temp = session.drive.copy_file(@file.id, {name: "#{@current_user.id}_temp"}, {})
-
       session.drive.batch do
         user_permission = {
             value: 'default',
@@ -117,92 +28,7 @@ class BackEndLeaseCompsController < ApplicationController
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
     else
       @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
-      # put data to sheet
-      ws = session.spreadsheet_by_key(@file.file).worksheets[0]
-      counter=2
-      i=1
-      stepped_rent_col_head=29
-      while i <= stepped_rent_count  do
-        ws[1,stepped_rent_col_head] = "Step #{i} Cost Per SF"
-        ws[1,stepped_rent_col_head+1] = "# of Months"
-        i +=1
-        stepped_rent_col_head+=2
-      end
-      custom_headers_col_head = stepped_rent_col_head
-      custom_headers.each do |keys|
-        ws[1,custom_headers_col_head]= keys.header
-        custom_headers_col_head+=1
-      end
-      while ws[counter,1]!=""
-        if !tenant_records.find_by_id(ws[counter,1]).present?
-          ws.delete_rows(counter,1)
-        end
-        counter+=1
-      end
-      counter=2
-      if ws.max_rows<tenant_records.count
-        ws.insert_rows(ws.max_rows,tenant_records.count-ws.max_rows)
-      end
-      tenant_records.each do |tenant_record|
-        stepped_rent_col=29
-        ws[counter, 1] = tenant_record.id
-        ws[counter, 2] = (tenant_record.main_image_file_name.present?) ? tenant_record.main_image_file_name : '=image("https://maps.googleapis.com/maps/api/streetview?size=350x200&location='+"#{tenant_record.latitude},#{tenant_record.longitude}"+'&heading=151.78&pitch=-0.76",2)'
-        ws[counter, 3] = tenant_record.is_geo_coded
-        ws[counter, 4] = tenant_record.comp_view_type
-        ws[counter, 5] = tenant_record.company
-        ws[counter, 6] = tenant_record.industry_type
-        ws[counter, 7] = tenant_record.address1
-        ws[counter, 8] = tenant_record.suite
-        ws[counter, 9] = tenant_record.city
-        ws[counter, 10] = tenant_record.state
-        ws[counter, 11] = tenant_record.country
-        ws[counter, 12] = tenant_record.submarket
-        ws[counter, 13] = tenant_record.class_type
-        ws[counter, 14] = tenant_record.property_type
-        ws[counter, 15] = tenant_record.property_name
-        ws[counter, 16] = tenant_record.lease_commencement_date
-        ws[counter, 17] = tenant_record.lease_term_months
-        ws[counter, 18] = tenant_record.free_rent
-        ws[counter, 19] = tenant_record.size
-        ws[counter, 20] = tenant_record.deal_type
-        ws[counter, 21] = (tenant_record.lease_structure.present?) ?  tenant_record.lease_structure : 'Full Service'
-        ws[counter, 22] = tenant_record.base_rent
-        ws[counter, 23] = tenant_record.tenant_improvement
-        ws[counter, 24] = tenant_record.additional_tenant_cost
-        ws[counter, 25] = tenant_record.additional_ll_allowance
-        ws[counter, 26] = tenant_record.escalation
-        ws[counter, 27] = tenant_record.fixed_escalation
-        ws[counter, 28] = tenant_record.is_stepped_rent
-        tenant_record.stepped_rents.each do |sr|
-          ws[counter, stepped_rent_col] = sr.cost_per_month
-          ws[counter, stepped_rent_col+1] = sr.months
-          stepped_rent_col+=2
-        end
-        custom_field_col = stepped_rent_col
-        custom_data = TenantRecord.custom_field_values(tenant_record.id)
-        custom_headers.each do
-          custom_data.each do |vals|
-            if ws[1, custom_field_col]==vals.header
-              ws[counter, custom_field_col] = vals.value
-              break
-            else
-              ws[counter, custom_field_col] = ''
-              next
-            end
-          end
-          custom_field_col+=1
-        end
-        counter+=1
-      end
-      if counter>2
-        counter-=1
-      end
-      if ws.max_rows>counter
-        ws.delete_rows(counter+1,ws.max_rows-counter)
-      end
-      ws.save()
       @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
-
       session.drive.batch do
         user_permission = {
             value: 'default',
@@ -212,6 +38,8 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
+    DatabaseLeaseWorker.perform_async(@file_temp.id,@current_user.id)
+    # CustomImportTenantRecordsWorker.perform_async()
     @is_potential_dupes = TenantRecord.duplicate_list(current_user.id).count
     render :json => {
         :file_temp => @file_temp.id,
@@ -253,17 +81,20 @@ class BackEndLeaseCompsController < ApplicationController
               }
           stepped_rent_col+=2
         end
-        custom_field_col = stepped_rent_col
-        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        else
+          custom_field_col = stepped_rent_col
+        end
+
+        # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          if ws[1,custom_field_col]!=""
-            custom_data_hash[keys.header]={
+        while ws[1,custom_field_col]!=""
+            custom_data_hash[ws[1,custom_field_col]]={
                 "key" => ws[1,custom_field_col],
                 "value" => ws[counter,custom_field_col]
             }
-          end
           custom_field_col+=1
         end
 
@@ -298,8 +129,8 @@ class BackEndLeaseCompsController < ApplicationController
             :additional_tenant_cost => ws[counter, 24],
             :additional_ll_allowance => ws[counter, 25],
             :escalation => ws[counter, 26],
-            :fixed_escalation => ws[counter, 27],
-            :is_stepped_rent => ws[counter, 28],
+            :is_stepped_rent => ws[counter, 27],
+            :fixed_escalation => ws[counter, 28],
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
         )
@@ -312,7 +143,35 @@ class BackEndLeaseCompsController < ApplicationController
     end
     deleted = ids.any? ? TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : TenantRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
-    redirect_to database_back_ends_path
+    # redirect_to database_back_ends_path
+
+
+
+
+
+    @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
+    @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
+
+    session.drive.batch do
+      user_permission = {
+          value: 'default',
+          type: 'anyone',
+          role: 'writer'
+      }
+      session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
+    end
+  @is_potential_dupes = TenantRecord.duplicate_list(current_user.id).count
+  render :json => {
+      :file_temp => @file_temp.id,
+      :file => @file.file,
+      :is_potential_dupes => @is_potential_dupes
+  }
+
+
+
+
+
+
   end
 
   def duplication
@@ -375,14 +234,21 @@ class BackEndLeaseCompsController < ApplicationController
        ws[counter, 25] = tenant_record.additional_tenant_cost
        ws[counter, 26] = tenant_record.additional_ll_allowance
        ws[counter, 27] = tenant_record.escalation
-       ws[counter, 28] = tenant_record.fixed_escalation
-       ws[counter, 29] = tenant_record.is_stepped_rent
+       ws[counter, 28] = tenant_record.is_stepped_rent
+       ws[counter, 29] = tenant_record.fixed_escalation
        tenant_record.stepped_rents.each do |sr|
          ws[counter, stepped_rent_col] = sr.cost_per_month
          ws[counter, stepped_rent_col+1] = sr.months
          stepped_rent_col+=2
        end
        custom_field_col = stepped_rent_col
+       if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+         custom_field_col = 30+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+       end
+       while stepped_rent_col<=custom_field_col
+         ws[counter,stepped_rent_col]=''
+         stepped_rent_col+=1
+       end
        custom_data = TenantRecord.custom_field_values(tenant_record.id)
        custom_headers.each do
          custom_data.each do |vals|
@@ -391,12 +257,18 @@ class BackEndLeaseCompsController < ApplicationController
              break
            else
              ws[counter, custom_field_col] = ''
-             next
            end
          end
          custom_field_col+=1
        end
+       ws[counter, custom_field_col] = ''
        counter+=1
+     end
+     if counter>2
+       counter-=1
+     end
+     if ws.max_rows>counter
+       ws.delete_rows(counter+1,ws.max_rows-counter)
      end
      ws.save()
 
@@ -434,17 +306,33 @@ class BackEndLeaseCompsController < ApplicationController
           }
           stepped_rent_col+=2
         end
-        custom_field_col = stepped_rent_col
-        custom_headers = TenantRecord.custom_field_headers(@current_user.id)
+        if TenantRecord.max_stepped_rent_by_user(current_user.id).first!=nil
+          custom_field_col = 29+TenantRecord.max_stepped_rent_by_user(current_user.id).first.countof*2
+        else
+          custom_field_col = stepped_rent_col
+        end
+        # custom_headers = TenantRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        custom_headers.each.map do |keys|
-          custom_data_hash[keys.header]={
-              "key" => keys.header,
+        # custom_headers.each.map do |keys|
+        #   custom_data_hash[keys.header]={
+        #       "key" => keys.header,
+        #       "value" => ws[counter,custom_field_col]
+        #   }
+        #   custom_field_col+=1
+        # end
+        # if !custom_data_hash.nil?
+        #   pair = custom_data_hash.values
+        #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
+        # end
+        while ws[1,custom_field_col]!=""
+          custom_data_hash[ws[1,custom_field_col]]={
+              "key" => ws[1,custom_field_col],
               "value" => ws[counter,custom_field_col]
           }
           custom_field_col+=1
         end
+
         if !custom_data_hash.nil?
           pair = custom_data_hash.values
           custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
@@ -475,8 +363,8 @@ class BackEndLeaseCompsController < ApplicationController
             :additional_tenant_cost => ws[counter, 25],
             :additional_ll_allowance => ws[counter, 26],
             :escalation => ws[counter, 27],
-            :fixed_escalation => ws[counter, 28],
-            :is_stepped_rent => ws[counter, 29],
+            :is_stepped_rent => ws[counter, 28],
+            :fixed_escalation => ws[counter, 29],
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
         )
@@ -497,6 +385,17 @@ class BackEndLeaseCompsController < ApplicationController
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     error_string=""
+    header=1
+    clear=0
+    while clear==0
+      while ws[1,header]!=""
+        header+=1
+      end
+      if ws[1,header+1]!=""
+        error_string+="</br> There is a missing Header"
+      end
+      clear=1
+    end
     counter=2
     if params[:id].present?
       tenant_records.each do |tenant_record|
@@ -513,7 +412,7 @@ class BackEndLeaseCompsController < ApplicationController
           @tenant_record.city = ws[counter, 9]
           @tenant_record.state = ws[counter, 10]
           if(ws[counter,3]=='TRUE')
-            result = validate_address_google(@tenant_record,true)
+            result = GoogleGeocoder.validate_address_google(@tenant_record,true)
             if result.has_key? :errors
               error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. G#{counter} "+result[:errors][:geocode_info].to_s : ""
             end
@@ -535,8 +434,8 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 22] == '')? "</br>Cell no. V#{counter} is required" : ""
           error_string += (
               (ws[counter, 26] == ''  || ws[counter, 26] == "0") &&
-              (ws[counter, 27] == '' || ws[counter, 27] == "0") &&
-              (ws[counter, 28] == '' || ws[counter, 28] == 'FALSE')
+              (ws[counter, 28] == '' || ws[counter, 28] == "0") &&
+              (ws[counter, 27] == '' || ws[counter, 27] == 'FALSE')
           )? "</br>Cell no. Z#{counter}, AA#{counter}  and AB#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
@@ -557,7 +456,7 @@ class BackEndLeaseCompsController < ApplicationController
           @tenant_record.city = ws[counter, 10]
           @tenant_record.state = ws[counter, 11]
           if(ws[counter,3]=='TRUE')
-            result = validate_address_google(@tenant_record,true)
+            result = GoogleGeocoder.validate_address_google(@tenant_record,true)
             if result.has_key? :errors
               error_string += (result[:errors][:geocode_info].to_s != '') ? "</br>Cell no. H#{counter} "+result[:errors][:geocode_info].to_s : ""
             end
@@ -579,8 +478,8 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 23] == '')? "</br>Cell no. W#{counter} is required" : ""
           error_string += (
               (ws[counter, 27] == ''  || ws[counter, 27] == "0") &&
-              (ws[counter, 28] == '' || ws[counter, 28] == "0") &&
-              (ws[counter, 29] == '' || ws[counter, 29] == 'FALSE')
+              (ws[counter, 29] == '' || ws[counter, 29] == "0") &&
+              (ws[counter, 28] == '' || ws[counter, 28] == 'FALSE')
           )? "</br>Cell no. AA#{counter}, AB#{counter}  and AC#{counter} are empty or false. One of them must be filled." : ""
         end
         counter+=1
@@ -600,7 +499,7 @@ class BackEndLeaseCompsController < ApplicationController
   end
 
   def geocode_setup(trec)
-    result = validate_address_google(trec, true)
+    result = GoogleGeocoder.validate_address_google(trec, true)
     if result.has_key? :updates
       @tenant_record.latitude = result[:updates][:latitude]
       @tenant_record.longitude = result[:updates][:longitude]

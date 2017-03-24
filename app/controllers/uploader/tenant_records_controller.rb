@@ -133,7 +133,7 @@ class Uploader::TenantRecordsController < ApplicationController
 
     ## find lat/lon if it hasn't been done already
     if trec.longitude.blank? or trec.latitude.blank?
-      result = validate_address_google(trec)
+      result = GoogleGeocoder.validate_address_google(trec)
 
       if result.has_key? :coords
         trec.latitude = result[:coords][:latitude]
@@ -201,7 +201,7 @@ class Uploader::TenantRecordsController < ApplicationController
   end
 
   def geocode_setup(trec)
-    result = validate_address_google(trec, true)
+    result = GoogleGeocoder.validate_address_google(trec, true)
     if result.has_key? :coords
       trec.latitude = result[:coords][:latitude]
       trec.longitude = result[:coords][:longitude]
