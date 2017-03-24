@@ -260,21 +260,37 @@ module SearchControllerUtil
 
 
       ##get full_owner comps from acitvity log
-      activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "lease", :status => "full_owner").all
+      #activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "lease", :status => "full_owner").all
+      activity_full = ActivityLog.where(" (initiator_id = #{current_user.id} OR receiver_id = #{current_user.id}) and comptype = 'lease' and status = 'full_owner' ")
+               #:initiator_id => current_user.id, :comptype => "lease", :status => "full_owner").all
 
       tntids = []
 
       activity_full.each do |activity|
-        singletnt = TenantRecord.find(activity.comp_id)
 
-        tntids += TenantRecord.where("address1='#{singletnt.address1}' and user_id!=#{current_user.id}").all.map{|v| v.id}.uniq
+        if activity.initiator_id == current_user.id
+          singletnt = TenantRecord.find(activity.comp_id)
+        else
+          singletnt = TenantRecord.find(activity.child_comp)
+        end
+
+
+        tntids += TenantRecord.where("address1='#{singletnt.address1}'
+                                      and suite = '#{singletnt.suite}'
+                                      and city = '#{singletnt.city}'
+                                      and state = '#{singletnt.state}'
+                                      and submarket = '#{singletnt.submarket}'
+                                      and class_type = '#{singletnt.class_type}'
+                                      and property_type = '#{singletnt.property_type}'
+                                      and property_name = '#{singletnt.property_name}'
+                                      and size = '#{singletnt.size}'
+                                      and base_rent = '#{singletnt.base_rent}'
+
+                                      and user_id!=#{current_user.id}
+                    ").all.map{|v| v.id}.uniq
 
       end
 
-      p "------------idddddddddddddddssssssssssssssssss-----------------"
-      p tntids
-
-      
       tenant_records = tenant_records
       .joins("left join (select * from activity_logs where comptype = 'lease' and initiator_id in (#{current_user.id})) as a on tenant_records.id=a.comp_id")
       .joins("left join (select * from comp_requests where comp_type = 'lease' and initiator_id in (#{current_user.id})) as c on tenant_records.id=c.comp_id")
@@ -711,9 +727,37 @@ module SearchControllerUtil
     # dup_tenant_records = SaleRecord.find_by_sql(query).map{|v| v.address1 }
     
     ##dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
-    
-    
-      
+
+               ##get full_owner comps from acitvity log
+      activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "sale", :status => "full_owner").all
+
+      tntids = []
+
+      activity_full.each do |activity|
+
+        if activity.initiator_id == current_user.id
+          singletnt = SaleRecord.find(activity.comp_id)
+        else
+          singletnt = SaleRecord.find(activity.child_comp)
+        end
+
+        tntids += SaleRecord.where("address1='#{singletnt.address1}'
+                                      and city = '#{singletnt.city}'
+                                      and state = '#{singletnt.state}'
+                                      and submarket = '#{singletnt.submarket}'
+                                      and property_name = '#{singletnt.property_name}'
+                                      and build_date = '#{singletnt.build_date}'
+                                      and property_type = '#{singletnt.property_type}'
+                                      and class_type = '#{singletnt.class_type}'
+                                      and land_size = '#{singletnt.land_size}'
+                                      and price = '#{singletnt.price}'
+                                      and sold_date = '#{singletnt.sold_date}'
+                                      and cap_rate = '#{singletnt.cap_rate}'
+
+                                      and user_id!=#{current_user.id}
+                                     ").all.map{|v| v.id}.uniq
+
+      end
       
       tenant_records = tenant_records
       .joins("left join (select * from activity_logs where comptype='sale' and initiator_id in (#{current_user.id})) as a on sale_records.id=a.comp_id")
@@ -756,7 +800,11 @@ module SearchControllerUtil
         
         #############tenant_records = tenant_records.where("sale_records.id not in (select id from sale_records as tr where user_id!=#{current_user.id} and tr.address1 in (?)) ",dup_tenant_records.join(","))
         
-        tenant_records = tenant_records.where("sale_records.id not in (select id from sale_records as tr where user_id!=#{current_user.id} and tr.address1 in (select address1 from sale_records where user_id=#{current_user.id})) ")
+        #workingtenant_records = tenant_records.where("sale_records.id not in (select id from sale_records as tr where user_id!=#{current_user.id} and tr.address1 in (select address1 from sale_records where user_id=#{current_user.id})) ")
+
+        if tntids.count > 0
+          tenant_records = tenant_records.where("sale_records.id not in (?) ",tntids)
+        end
         
         
         
