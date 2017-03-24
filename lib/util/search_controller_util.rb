@@ -274,8 +274,8 @@ module SearchControllerUtil
           singletnt = TenantRecord.find(activity.child_comp)
         end
 
-        if singletnt.size == '' then singletnt.size = NULL end
-        if singletnt.base_rent == '' then singletnt.base_rent = NULL end
+        if singletnt.size == '' then size_str = "" else size_str = " and size = #{singletnt.size}" end
+        if singletnt.base_rent == '' then base_rent_str = "" else base_rent_str = " and base_rent = #{singletnt.base_rent}" end
 
         tntids += TenantRecord.where("address1='#{singletnt.address1}'
                                       and suite = '#{singletnt.suite}'
@@ -285,8 +285,8 @@ module SearchControllerUtil
                                       and class_type = '#{singletnt.class_type}'
                                       and property_type = '#{singletnt.property_type}'
                                       and property_name = '#{singletnt.property_name}'
-                                      and size = #{singletnt.size}
-                                      and base_rent = #{singletnt.base_rent}
+                                      #{size_str}
+                                      #{base_rent_str}
 
                                       and user_id!=#{current_user.id}
                     ").all.map{|v| v.id}.uniq
@@ -744,9 +744,9 @@ module SearchControllerUtil
           singletnt = SaleRecord.find(activity.child_comp)
         end
 
-        if singletnt.land_size == '' then singletnt.land_size = NULL end
-        if singletnt.price == '' then singletnt.price = NULL end
-        if singletnt.cap_rate == '' then singletnt.cap_rate = NULL end
+        if singletnt.land_size == '' then land_size_str = "" else land_size_str = " and land_size = #{singletnt.land_size}" end
+        if singletnt.price == '' then price_str = "" else price_str = " and price = #{singletnt.price}" end
+        if singletnt.cap_rate == '' then cap_rate_str = "" else cap_rate_str = " and cap_rate = #{singletnt.cap_rate}" end
 
         tntids += SaleRecord.where("address1='#{singletnt.address1}'
                                       and city = '#{singletnt.city}'
@@ -756,11 +756,10 @@ module SearchControllerUtil
                                       and build_date = '#{singletnt.build_date}'
                                       and property_type = '#{singletnt.property_type}'
                                       and class_type = '#{singletnt.class_type}'
-                                      and land_size = #{singletnt.land_size}
-                                      and price = #{singletnt.price}
+                                      #{land_size_str}
+                                      #{price_str}
+                                      #{cap_rate_str}
                                       and sold_date = '#{singletnt.sold_date}'
-                                      and cap_rate = #{singletnt.cap_rate}
-
                                       and user_id!=#{current_user.id}
                                      ").all.map{|v| v.id}.uniq
 
