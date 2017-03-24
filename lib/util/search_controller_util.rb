@@ -274,6 +274,8 @@ module SearchControllerUtil
           singletnt = TenantRecord.find(activity.child_comp)
         end
 
+        if singletnt.size == '' then singletnt.size = NULL end
+        if singletnt.base_rent == '' then singletnt.base_rent = NULL end
 
         tntids += TenantRecord.where("address1='#{singletnt.address1}'
                                       and suite = '#{singletnt.suite}'
@@ -283,11 +285,11 @@ module SearchControllerUtil
                                       and class_type = '#{singletnt.class_type}'
                                       and property_type = '#{singletnt.property_type}'
                                       and property_name = '#{singletnt.property_name}'
-                                      and size = ?
-                                      and base_rent = ?
+                                      and size = #{singletnt.size}
+                                      and base_rent = #{singletnt.base_rent}
 
                                       and user_id!=#{current_user.id}
-                    ",singletnt.size,singletnt.base_rent).all.map{|v| v.id}.uniq
+                    ").all.map{|v| v.id}.uniq
 
       end
 
@@ -742,6 +744,10 @@ module SearchControllerUtil
           singletnt = SaleRecord.find(activity.child_comp)
         end
 
+        if singletnt.land_size == '' then singletnt.land_size = NULL end
+        if singletnt.price == '' then singletnt.price = NULL end
+        if singletnt.cap_rate == '' then singletnt.cap_rate = NULL end
+
         tntids += SaleRecord.where("address1='#{singletnt.address1}'
                                       and city = '#{singletnt.city}'
                                       and state = '#{singletnt.state}'
@@ -750,13 +756,13 @@ module SearchControllerUtil
                                       and build_date = '#{singletnt.build_date}'
                                       and property_type = '#{singletnt.property_type}'
                                       and class_type = '#{singletnt.class_type}'
-                                      and land_size = ?
-                                      and price = ?
+                                      and land_size = #{singletnt.land_size}
+                                      and price = #{singletnt.price}
                                       and sold_date = '#{singletnt.sold_date}'
-                                      and cap_rate = ?
+                                      and cap_rate = #{singletnt.cap_rate}
 
                                       and user_id!=#{current_user.id}
-                                     ",singletnt.land_size,singletnt.price,singletnt.cap_rate).all.map{|v| v.id}.uniq
+                                     ").all.map{|v| v.id}.uniq
 
       end
       
