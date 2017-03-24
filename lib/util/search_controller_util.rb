@@ -283,11 +283,11 @@ module SearchControllerUtil
                                       and class_type = '#{singletnt.class_type}'
                                       and property_type = '#{singletnt.property_type}'
                                       and property_name = '#{singletnt.property_name}'
-                                      and size = #{singletnt.size}
-                                      and base_rent = #{singletnt.base_rent}
+                                      and size = ?
+                                      and base_rent = ?
 
                                       and user_id!=#{current_user.id}
-                    ").all.map{|v| v.id}.uniq
+                    ",singletnt.size,singletnt.base_rent).all.map{|v| v.id}.uniq
 
       end
 
@@ -750,13 +750,13 @@ module SearchControllerUtil
                                       and build_date = '#{singletnt.build_date}'
                                       and property_type = '#{singletnt.property_type}'
                                       and class_type = '#{singletnt.class_type}'
-                                      and land_size = #{singletnt.land_size}
-                                      and price = #{singletnt.price}
+                                      and land_size = ?
+                                      and price = ?
                                       and sold_date = '#{singletnt.sold_date}'
-                                      and cap_rate = #{singletnt.cap_rate}
+                                      and cap_rate = ?
 
                                       and user_id!=#{current_user.id}
-                                     ").all.map{|v| v.id}.uniq
+                                     ",singletnt.land_size,singletnt.price,singletnt.cap_rate).all.map{|v| v.id}.uniq
 
       end
       
