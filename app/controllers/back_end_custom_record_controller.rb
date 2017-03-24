@@ -109,26 +109,6 @@ class BackEndCustomRecordController < ApplicationController
         end
       end
     end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @file = BackEndCustomRecord.where('custom_record_id = ?', @custom_record_id).first
 
     @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
