@@ -37,4 +37,13 @@ class ImportTemplate < ActiveRecord::Base
       }
     }
   end
+
+
+  private
+
+  def self.inheritance_column
+    nil
+  end
+
+
 end

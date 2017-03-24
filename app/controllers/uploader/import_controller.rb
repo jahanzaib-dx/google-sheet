@@ -134,6 +134,7 @@ class Uploader::ImportController < ApplicationController
                           })
 
       if(not_for_sheet[:is_geo_coded] == 'on')
+        Rails.logger.debug "params[:custom_record]: #{params[:custom_record].inspect}"
         not_for_sheet.merge!({
                                  :address_mapping => {
                                      :address1 => params[:custom_record][:address1],
@@ -186,7 +187,7 @@ class Uploader::ImportController < ApplicationController
                                                              :reusable => false,
                                                              :user => current_user
                                                              }))
-
+      pre_existing.type =  params[:bulk_property_type_switch]
     end
     mapping_structure = pre_existing.dup
     mapping_structure.name = [mapping_structure.name, Time.now.to_i.to_s].join(' ')
