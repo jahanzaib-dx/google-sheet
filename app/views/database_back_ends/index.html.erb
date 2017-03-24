@@ -296,6 +296,10 @@
               success: function(result){
                 $('#error_string').html('Spreadsheet successfully Saved.');
                 $('#error_string').show('fast');
+                if(result.is_potential_dupes>0)
+                  $('#duplication').parent().show();
+                else
+                  $('#duplication').parent().hide();
                 $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
                 if($('#data_type').val()=="lease") {
                   $('#tx_linkdin_profile').attr('href', '/back_end_lease_comps/validate_spreadsheet/' + result.file + '/' + result.file_temp);
