@@ -729,7 +729,8 @@ module SearchControllerUtil
     ##dup_tenant_records = TenantRecord.find_by_sql(query).map{|v| v.address1 }
 
                ##get full_owner comps from acitvity log
-      activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "sale", :status => "full_owner").all
+      #activity_full = ActivityLog.where(:initiator_id => current_user.id, :comptype => "sale", :status => "full_owner").all
+      activity_full = ActivityLog.where(" (initiator_id = #{current_user.id} OR receiver_id = #{current_user.id}) and comptype = 'sale' and status = 'full_owner' ")
 
       tntids = []
 
