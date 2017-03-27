@@ -223,6 +223,7 @@ class Uploader::ImportController < ApplicationController
       import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
       #abort("Stopping script execution")
     else
+      p  import_mappings_dup.inspect
       import.marketrex_import_start(file_path, current_user_account_type, import_mappings_dup, original_file_name, not_for_sheet)
       #CustomImportTemplateUtil.process_excel_file(import.id, file_path, original_file_name, import.import_template.id, current_user_account_type, import_mappings_dup, not_for_sheet)
     end

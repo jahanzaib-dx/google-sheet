@@ -76,6 +76,7 @@ module CustomImportTemplateUtil
 
   def self.process_excel_file(import_id, tmp_file_path, original_filename, template_id, current_user_info, import_mappings, not_for_sheet)
     missing_column_header = []
+    p import_mappings.inspect
     import_mappings.each do |mapping|
       mapping = mapping.last
       missing_column_header << mapping[:record_column] if mapping[:spreadsheet_column].empty?
