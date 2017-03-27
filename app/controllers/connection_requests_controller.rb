@@ -63,7 +63,14 @@ class ConnectionRequestsController < ApplicationController
 
 
   def accept
-    @connection_request = ConnectionRequest.find(params[:id])
+
+    #@connection_request = ConnectionRequest.find(params[:id])
+    @connection_request = ConnectionRequest.where("id=?",params[:id]).first
+
+    if @connection_request.blank? === true
+      redirect_to connections_url
+      return
+    end
     # request = ConnectionRequest.find(params[:id])
     # DxMailer.connection_request_approved_email(request).deliver
     if user_signed_in?
