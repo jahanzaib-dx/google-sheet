@@ -254,7 +254,7 @@ class SearchController < ApplicationController
               t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
 
           end
-       
+
        end
    
    end
@@ -393,8 +393,7 @@ class SearchController < ApplicationController
    def lockSingleTenantRecord t_record
      
               t_record.base_rent_str = number_to_currency(t_record.base_rent.to_f,{:precision=>2})
-              t_record.size_range = t_record.size
-
+              t_record.size_range = number_with_precision(t_record.size,:precision=>0,:delimiter => ',')
 
               t_record.escalation_str = t_record.getescalation(t_record.escalation)
               t_record.lease_commencement_date_str = t_record.lease_commencement_date.strftime('%m/%d/%Y')
@@ -446,7 +445,7 @@ class SearchController < ApplicationController
     
               t_record.company = if unlockFields.include?"company" then t_record.company else 'Lock' end
               t_record.base_rent_str = if unlockFields.include?"base_rent" then number_to_currency(t_record.base_rent.to_f,{:precision=>2}) else 'Lock' end
-              t_record.size_range = if unlockFields.include?"size" then t_record.size else sf_range(t_record.size) end
+              t_record.size_range = if unlockFields.include?"size" then number_with_precision(t_record.size,:precision=>0,:delimiter => ',') else sf_range(t_record.size) end
               t_record.size = if unlockFields.include?"size" then t_record.size else "0" end
               
               t_record.suite = if unlockFields.include?"suite" then t_record.company else 'Lock' end
@@ -469,7 +468,7 @@ class SearchController < ApplicationController
               ##t_record.tenant_ti_cost_str = if unlockFields.include?"tenant_ti_cost" then number_to_currency(t_record.tenant_ti_cost.to_f,{:precision=>2}) else 'Lock' end
               t_record.additional_ll_allowance_str = if unlockFields.include?"landlord_concessions_per_sf" then t_record.additional_ll_allowance_str else 'Lock' end
               t_record.additional_tenant_cost_str = if unlockFields.include?"tenant_ti_cost" then t_record.additional_tenant_cost_str else 'Lock' end
-              t_record.submarket = if unlockFields.include?"submarket" then t_record.size else 'Lock' end
+              t_record.submarket = if unlockFields.include?"submarket" then t_record.submarket else 'Lock' end
                 
               t_record.deal_type = if unlockFields.include?"deal_type" then t_record.deal_type else 'Lock' end
               t_record.leasestructure_name_str = if unlockFields.include?"lease_structure" then t_record.leasestructure_name_str else 'Lock' end

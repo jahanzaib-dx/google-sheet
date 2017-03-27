@@ -811,12 +811,14 @@ class TenantRecord < ActiveRecord::Base
   end
 
   def na data
+    p data
     begin
     if data == "Lock"
         "Lock"
     elsif data.blank? == true
       "None"
-    elsif data.delete("^0-9").to_i < 1
+    #elsif data.delete("^0-9").to_i < 1
+    elsif (data.is_a? Integer OR data.is_a? Float) && data < 1
       "None"
     else
       data

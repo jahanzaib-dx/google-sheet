@@ -32,11 +32,11 @@ class CustomRecord < ActiveRecord::Base
   end
 
   def get_next_row_number
-    max = CustomRecordProperty.where({custom_record_id: id}).order('row_id DESC').first.row_id
-    if max.nil?
+    obj = CustomRecordProperty.where({custom_record_id: id}).order('row_id DESC').first
+    if obj.nil?
       1
     else
-      max+1
+      obj.row_id+1
     end
   end
 

@@ -81,7 +81,14 @@
 <script type="text/template" id="custom-data-set-row-template">
   <tr class="user-defined-custom-data">
     <td>
-      <%= text_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][key]', '{{field}}', :placeholder => '(Header from user)' %>
+      {{#readonly}}
+        <b>{{capitalizedField}}</b>
+        <%= hidden_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][key]', '{{field}}'  %>
+      {{/readonly}}
+
+      {{#editable}}
+        <%= text_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][key]', '{{field}}', :placeholder => '(Header from user)' %>
+      {{/editable}}
     </td>
     <td>
       <%= text_field_tag 'custom_record[custom_record_properties_attributes][{{row}}][value]', '{{field_value}}' %>

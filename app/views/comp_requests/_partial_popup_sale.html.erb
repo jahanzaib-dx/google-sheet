@@ -19,7 +19,7 @@
           </tr>
           <tr>
             <td><p class="comp-table-pre">Size (SF)</p></td>
-            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[land_size]"> <%=@comp_record.land_size%></p></td>
+            <td><p class="comp-table-pre"><input type="checkbox" name="unlock[land_size]"> <%= number_with_precision(@comp_record.land_size,:precision => 0,:delimiter => ',')%></p></td>
             <td><p class="comp-table-pre">Property Name </p></td>
             <td><p class="comp-table-pre">
             	<!-- <input type="checkbox" name="unlock[]"> -->
