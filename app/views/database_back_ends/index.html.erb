@@ -300,23 +300,37 @@
           if(result.flag=='ok')
           {
             $('#error_string').show('fast');
-            $('#error_string').html('Spreadsheet is validated. Saving the data...');
+            if(result.error_string=="")
+            {
+              $('#error_string').html('Spreadsheet is validated. Saving the data...');
+            }
+            else
+            {
+              $('#error_string').html(result.error_string);
+            }
             $('#myiframe').find('iframe').attr('')
             $.ajax({
              url: result.url ,
               success: function(result){
-                $('#error_string').html('Spreadsheet successfully Saved.');
-                $('#error_string').show('fast');
-                if(result.is_potential_dupes>0)
-                  $('#duplication').parent().show();
-                else
-                  $('#duplication').parent().hide();
-                $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
-                if($('#data_type').val()=="lease") {
-                  $('#tx_linkdin_profile').attr('href', '/back_end_lease_comps/validate_spreadsheet/' + result.file + '/' + result.file_temp);
+                if(result.due_flag=='ok')
+                {
+                  window.location = result.dupe_url;
                 }
-                else if($('#data_type').val()=="sale"){
-                  $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+                else
+                {
+                  $('#error_string').html('Spreadsheet successfully Saved.');
+                  $('#error_string').show('fast');
+                  if(result.is_potential_dupes>0)
+                    $('#duplication').parent().show();
+                  else
+                    $('#duplication').parent().hide();
+                  $('#myiframe').find('iframe').attr('src','https://docs.google.com/spreadsheets/d/'+result.file_temp+'/edit?usp=sharing');
+                  if($('#data_type').val()=="lease") {
+                    $('#tx_linkdin_profile').attr('href', '/back_end_lease_comps/validate_spreadsheet/' + result.file + '/' + result.file_temp);
+                  }
+                  if($('#data_type').val()=="sale"){
+                    $('#tx_linkdin_profile').attr('href','/back_end_sale_comps/validate_spreadsheet/'+result.file+'/'+result.file_temp);
+                  }
                 }
               }
             });
