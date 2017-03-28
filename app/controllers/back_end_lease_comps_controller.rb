@@ -63,6 +63,7 @@ class BackEndLeaseCompsController < ApplicationController
 
     tenant_records = TenantRecord.where('user_id = ?', @current_user)
     counter=2
+    error_string = ""
     ids= Array.new
     tenant_records.each do |tenant_record|
       # while ws[counter,1] != tenant_record.id.to_s
@@ -111,7 +112,7 @@ class BackEndLeaseCompsController < ApplicationController
                   end
              end
         end
-        @tenant_record.update_attributes(
+        error_string += (@tenant_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
             :comp_view_type => ws[counter, 4],
@@ -142,22 +143,21 @@ class BackEndLeaseCompsController < ApplicationController
             :rent_escalation_type => rent_increase,
             :stepped_rents_attributes => stepped_rent_values,
             :custom_data => custom_data
-        )
+        ))? "":"</br>Cell no. #{counter} is not saved"
         # geocode_setup(@tenant_record)
       end
       if ws[counter,1] != ''
         ids.push(ws[counter, 1])
+      end
+      if  ws[counter, 27] == 'FALSE' and ws[counter,1] != ''
+        step_rents_delete = SteppedRent.where('tenant_record_id = ? ', ws[counter,1])
+        step_rents_delete.destroy_all
       end
       counter+=1
     end
     deleted = ids.any? ? TenantRecord.where('id NOT IN (?) and user_id = ?',ids,@current_user) : TenantRecord.where('user_id = ?',@current_user)
     deleted.destroy_all
     # redirect_to database_back_ends_path
-
-
-
-
-
     @file = BackEndLeaseComp.where('user_id = ?', @current_user).first
     @file_temp = session.drive.copy_file(@file.file, {name: "#{@current_user.id}_temp"}, {})
 
@@ -173,14 +173,9 @@ class BackEndLeaseCompsController < ApplicationController
   render :json => {
       :file_temp => @file_temp.id,
       :file => @file.file,
-      :is_potential_dupes => @is_potential_dupes
+      :is_potential_dupes => @is_potential_dupes,
+      :error_string => error_string
   }
-
-
-
-
-
-
   end
 
   def duplication
@@ -385,7 +380,10 @@ class BackEndLeaseCompsController < ApplicationController
     end
     deleted = TenantRecord.where('id IN (?) and user_id = ?',ids,@current_user)
     deleted.destroy_all
-    redirect_to database_back_ends_path
+    render :json => {
+        :dupe_url => database_back_ends_path,
+        :due_flag => 'ok'
+    }
   end
 
   def validate_spreadsheet
