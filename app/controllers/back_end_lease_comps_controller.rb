@@ -458,7 +458,7 @@ class BackEndLeaseCompsController < ApplicationController
           error_string += (ws[counter, 4] == '')? "</br>Cell no. D#{counter} is required" : ""
           error_string += (ws[counter, 5] == '')? "</br>Cell no. E#{counter} is required" : ""
           error_string += (ws[counter, 6] == '')? "</br>Cell no. F#{counter} is required" : ""
-          error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
+          # error_string += (ws[counter, 7] == '')? "</br>Cell no. G#{counter} is required" : ""
           @tenant_record.address1 = ws[counter, 8]
           @tenant_record.city = ws[counter, 10]
           @tenant_record.state = ws[counter, 11]
