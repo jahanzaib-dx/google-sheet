@@ -8,14 +8,15 @@ module CustomImporter
     import = TenantRecordImport.find import_id
     record = self.template_converted_data(import, original_record)
     params = record.merge( "user_id" => import.user_id )
-    klass = Object.const_get not_for_sheet[:class]
+    p not_for_sheet
+    klass = Object.const_get not_for_sheet['class']
 
-    if not_for_sheet[:class] == 'CustomRecord'
-      tenant_record = CustomRecord.where({name: not_for_sheet[:name], user_id: import.user_id}).last
+    if not_for_sheet['class'] == 'CustomRecord'
+      tenant_record = CustomRecord.where({name: not_for_sheet['name'], user_id: import.user_id}).last
       Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
       Rails.logger.debug tenant_record.inspect
       if tenant_record.nil?
-        tenant_record = CustomRecord.new({name: not_for_sheet[:name], is_geo_coded: not_for_sheet[:is_geo_coded], is_existing_data_set: not_for_sheet[:is_existing_data_set]})
+        tenant_record = CustomRecord.new({name: not_for_sheet['name'], is_geo_coded: not_for_sheet['is_geo_coded'], is_existing_data_set: not_for_sheet['is_existing_data_set']})
         tenant_record.custom_record_properties = []
       end
     else
@@ -26,28 +27,28 @@ module CustomImporter
       end
     end
 
-    if not_for_sheet[:class] == 'TenantRecord'
+    if not_for_sheet['class'] == 'TenantRecord'
       p original_record.inspect
 
       original_record_old=original_record
 
 
-      if not_for_sheet[:has_lease_structure]== true
+      if not_for_sheet['has_lease_structure']== true
 
-        if (not_for_sheet[:lease_structure]).present?
+        if (not_for_sheet['lease_structure']).present?
           #ls= LeaseStructure.new("name"=> original_record[:custom][:lease_structure]["value"])
-          ls= LeaseStructure.new("name"=> not_for_sheet[:lease_structure].to_s)
+          ls= LeaseStructure.new("name"=> not_for_sheet['lease_structure'].to_s)
           tenant_record.set_lease_structure ls
         else
           ls= LeaseStructure.new("name"=>'Full Service')
           tenant_record.set_lease_structure ls
         end
       end
-      if not_for_sheet.key?('base_rent_type') && not_for_sheet[:base_rent_type] == 'monthly'
+      if not_for_sheet.key?('base_rent_type') && not_for_sheet['base_rent_type'] == 'monthly'
         tenant_record.base_rent = tenant_record.base_rent.to_f * 12
       end
 
-      if not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_fixed] && not_for_sheet[:rent_escalation_type_stepped]
+      if not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_fixed'] && not_for_sheet['rent_escalation_type_stepped']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
@@ -57,7 +58,7 @@ module CustomImporter
         else
           tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
         end
-      elsif not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_fixed]
+      elsif not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_fixed']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
@@ -65,7 +66,7 @@ module CustomImporter
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           end
         end
-      elsif not_for_sheet[:rent_escalation_type_percent] && not_for_sheet[:rent_escalation_type_stepped]
+      elsif not_for_sheet['rent_escalation_type_percent'] && not_for_sheet['rent_escalation_type_stepped']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
@@ -73,7 +74,7 @@ module CustomImporter
             tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
           end
         end
-      elsif not_for_sheet[:rent_escalation_type_fixed] && not_for_sheet[:rent_escalation_type_stepped]
+      elsif not_for_sheet['rent_escalation_type_fixed'] && not_for_sheet['rent_escalation_type_stepped']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.fixed_escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
@@ -81,19 +82,19 @@ module CustomImporter
             tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet,original_record
           end
         end
-      elsif not_for_sheet[:rent_escalation_type_percent]
+      elsif not_for_sheet['rent_escalation_type_percent']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_percent'
           end
         end
-      elsif not_for_sheet[:rent_escalation_type_fixed]
+      elsif not_for_sheet['rent_escalation_type_fixed']
         if tenant_record.base_rent.to_f > 0.0
           if tenant_record.fixed_escalation.to_f > 0.0
             tenant_record.rent_escalation_type = 'base_rent_fixed_increase'
           end
         end
-      elsif not_for_sheet[:rent_escalation_type_stepped]
+      elsif not_for_sheet['rent_escalation_type_stepped']
         tenant_record = self.process_tenantrecord_stepped_rent tenant_record, not_for_sheet, original_record
       end
 
@@ -105,34 +106,34 @@ module CustomImporter
       #not_for_sheet = not_for_sheet.except(:stepped_rents)
       #not_for_sheet = not_for_sheet.except(:lease_stepped_rents)
 
-      if not_for_sheet[:free_rent_type_consecutive] && not_for_sheet[:free_rent_type_non_consecutive]
+      if not_for_sheet['free_rent_type_consecutive'] && not_for_sheet['free_rent_type_non_consecutive']
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           tenant_record.free_rent_type = 'non consecutive'
         else
           tenant_record.free_rent_type = 'consecutive'
         end
-      elsif not_for_sheet[:free_rent_type_consecutive]
+      elsif not_for_sheet['free_rent_type_consecutive']
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           puts "error"
         else
           tenant_record.free_rent_type = 'consecutive'
         end
-      elsif not_for_sheet[:free_rent_type_non_consecutive]
+      elsif not_for_sheet['free_rent_type_non_consecutive']
         if(tenant_record.free_rent.to_s.include? "-" || tenant_record.free_rent.to_s.include?(","))
           tenant_record.free_rent_type = 'consecutive'
         else
           puts "error"
         end
       end
-      not_for_sheet = not_for_sheet.except(:free_rent_type_consecutive)
-      not_for_sheet = not_for_sheet.except(:free_rent_type_non_consecutive)
-      if not_for_sheet.key?('is_tenant_improvement') && !(not_for_sheet[:is_tenant_improvement])
+      not_for_sheet = not_for_sheet.except('free_rent_type_consecutive')
+      not_for_sheet = not_for_sheet.except('free_rent_type_non_consecutive')
+      if not_for_sheet.key?('is_tenant_improvement') && !(not_for_sheet['is_tenant_improvement'])
         tenant_record.tenant_improvement = 0.0
       end
-      if not_for_sheet.key?('has_additional_tenant_cost') && !(not_for_sheet[:has_additional_tenant_cost])
+      if not_for_sheet.key?('has_additional_tenant_cost') && !(not_for_sheet['has_additional_tenant_cost'])
         not_for_sheet[:additional_tenant_cost] = 0.0
       end
-      if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet[:has_additional_ll_allowance])
+      if not_for_sheet.key?('has_additional_ll_allowance') && !(not_for_sheet['has_additional_ll_allowance'])
         not_for_sheet[:additional_ll_allowance] = 0.0
       end
       hash = original_record[:custom]
@@ -141,14 +142,14 @@ module CustomImporter
         b = a.map { |h| [h["key"] , h["value"]] }.to_h
         tenant_record.custom_data = b
       end
-    elsif not_for_sheet[:class] == 'SaleRecord'
+    elsif not_for_sheet['class'] == 'SaleRecord'
       hash = original_record[:custom]
       if !hash.nil?
         a= hash.values
         b = a.map { |h| [h["key"] , h["value"]] }.to_h
         tenant_record.custom = b
       end
-    elsif not_for_sheet[:class] == 'CustomRecord'
+    elsif not_for_sheet['class'] == 'CustomRecord'
 
       Rails.logger.debug "@@@@@@@@@@@@@@@@@@@@"
       Rails.logger.debug not_for_sheet.inspect
@@ -167,7 +168,7 @@ module CustomImporter
 
 
 
-    not_for_sheet = not_for_sheet.except(:class)
+    not_for_sheet = not_for_sheet.except('class')
     p not_for_sheet
     # just save custom
     # hash = original_record[:custom]
@@ -177,7 +178,7 @@ module CustomImporter
     #   tenant_record.custom = b
     # end
 
-    tenant_record.is_geo_coded= not_for_sheet[:is_geo_coded]
+    tenant_record.is_geo_coded= not_for_sheet['is_geo_coded']
     # just set the team
     #tenant_record.team = import.team
     tenant_record.user = import.user
@@ -232,7 +233,7 @@ module CustomImporter
       do_geocoding = false
       if (tenant_record.latitude.blank? or tenant_record.longitude.blank?)
         if klass.to_s.eql?("CustomRecord")
-          do_geocoding = not_for_sheet[:is_geo_coded]
+          do_geocoding = not_for_sheet['is_geo_coded']
         else
           do_geocoding = true
         end
@@ -308,14 +309,14 @@ tenant_record
 
     #tenant_record.assign_attributes not_for_sheet.except('custom_record_properties')
     if tenant_record.class.to_s == 'CustomRecord'
-      if not_for_sheet[:custom_record_properties]
-        not_for_sheet[:custom_record_properties].merge(record[:custom].except(:class))
+      if not_for_sheet['custom_record_properties']
+        not_for_sheet['custom_record_properties'].merge(record[:custom].except(:class))
       end
     end
 
     if tenant_record.save
-      if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet[:custom_record_properties].count) > 0 rescue false)
-        not_for_sheet[:custom_record_properties].each do |index, hash|
+      if (tenant_record.class.to_s == 'CustomRecord' && (not_for_sheet['custom_record_properties'].count) > 0 rescue false)
+        not_for_sheet['custom_record_properties'].each do |index, hash|
           tenant_record.custom_record_properties.create(hash)
         end
       end
@@ -335,7 +336,7 @@ tenant_record
   end
 
   def self.geocode_record import_id, record_id, record, tenant_record, tmp_record, has_stepped_errors, current_user_info, not_for_sheet
-   if not_for_sheet[:is_geo_coded]
+   if not_for_sheet['is_geo_coded']
 
     begin
       ################# geocode with Google #########################
