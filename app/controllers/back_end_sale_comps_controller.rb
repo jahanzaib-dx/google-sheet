@@ -48,7 +48,6 @@ class BackEndSaleCompsController < ApplicationController
   end
 
   def create
-
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
     if !params[:temp].present?
       ws = session.spreadsheet_by_key(params[:id]).worksheets[0]
@@ -61,24 +60,15 @@ class BackEndSaleCompsController < ApplicationController
       ws = session.spreadsheet_by_key(@file.id).worksheets[0]
     end
     sale_records = SaleRecord.where('user_id = ?', @current_user)
+    error_string = ""
     counter=2
     ids= Array.new
     sale_records.each do |sale_record|
       if SaleRecord.where(:id => ws[counter, 1]).present?
         @sale_record = SaleRecord.find_by(:id => ws[counter, 1])
         custom_field_col = 19
-        # custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-          # custom_headers.each.map do |keys|
-          #   if ws[1,custom_field_col]!=""
-          #     custom_data_hash[keys.header]={
-          #         "key" => ws[1,custom_field_col],
-          #         "value" => ws[counter,custom_field_col]
-          #     }
-          #   end
-          #   custom_field_col += 1
-          # end
         while ws[1,custom_field_col]!=""
           custom_data_hash[ws[1,custom_field_col]]={
               "key" => ws[1,custom_field_col],
@@ -90,7 +80,7 @@ class BackEndSaleCompsController < ApplicationController
           pair = custom_data_hash.values
            custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
         end
-        @sale_record.update_attributes(
+        error_string += (@sale_record.update_attributes(
             :main_image_file_name => ws.input_value(counter, 2),
             :is_geo_coded => ws[counter, 3],
             :view_type => ws[counter, 4],
@@ -109,7 +99,7 @@ class BackEndSaleCompsController < ApplicationController
             :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False',
             :cap_rate => ws[counter, 18],
             :custom => custom_data
-        )
+        ))? "":"</br>Cell no. #{counter} is not saved"
       end
       if ws[counter, 1] != ''
         ids.push(ws[counter, 1])
@@ -134,10 +124,9 @@ class BackEndSaleCompsController < ApplicationController
   render :json => {
       :file_temp => @file_temp.id,
       :file => @file.file,
-      :is_potential_dupes => @is_potential_dupes
+      :is_potential_dupes => @is_potential_dupes,
+      :error_string => error_string
   }
-
-
   end
 
   def duplication
@@ -235,17 +224,6 @@ class BackEndSaleCompsController < ApplicationController
         # custom_headers = SaleRecord.custom_field_headers(@current_user.id)
         custom_data_hash={}
         custom_data={}
-        # custom_headers.each.map do |keys|
-        #   custom_data_hash[keys.header]={
-        #       "key" => keys.header,
-        #       "value" => ws[counter,custom_field_col]
-        #   }
-        #   custom_field_col+=1
-        # end
-        # if !custom_data_hash.nil?
-        #   pair = custom_data_hash.values
-        #   custom_data = pair.map { |h| [h["key"] , h["value"]] }.to_h
-        # end
         while ws[1,custom_field_col]!=""
           custom_data_hash[ws[1,custom_field_col]]={
               "key" => ws[1,custom_field_col],
@@ -285,7 +263,10 @@ class BackEndSaleCompsController < ApplicationController
     end
     deleted = SaleRecord.where('id IN (?) and user_id = ?',ids,@current_user)
     deleted.destroy_all
-    redirect_to database_back_ends_path
+    render :json => {
+        :dupe_url => database_back_ends_path,
+        :due_flag => 'ok'
+    }
   end
 
   def validate_spreadsheet

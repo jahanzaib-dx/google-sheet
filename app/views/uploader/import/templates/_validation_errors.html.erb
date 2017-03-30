@@ -111,15 +111,15 @@
                       counter += 1
                       case d[0].to_s
                         when 'address1'
-                          id_for_address="autocomplete#{r.object.id.to_s}"
+                          id_for_address="autocomplete#{counter}"
                           onfocus = 'geolocate()'
                           %>
-                        <input type="hidden" id="street_number<%=r.object.id.to_s%>"><input type="hidden" id="route<%=r.object.id.to_s%>">
+                        <input type="hidden" id="street_number<%=counter%>"><input type="hidden" id="route<%=counter%>">
                         <%
                         when 'city'
-                          id_for_address="locality#{r.object.id.to_s}"
+                          id_for_address="locality#{counter-1}"
                         when 'state'
-                        id_for_address="administrative_area_level_1#{r.object.id.to_s}"
+                        id_for_address="administrative_area_level_1#{counter-2}"
                       end
                     %>
                     <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{id_for_address}", :onfocus => onfocus  %>
