@@ -41,9 +41,11 @@ class Uploader::ImportController < ApplicationController
     respond_to do |format|
       format.js
     end
+
   end
 
   def new
+
     @import = TenantRecordImport.new
     @import.lease_structure = LeaseStructure.new
     @import.import_template = ImportTemplate.new
