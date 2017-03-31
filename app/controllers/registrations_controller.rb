@@ -5,7 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    @user = User.where('email = ? AND encrypted_password = "" ',params[:user][:email]).first
+    @user = User.where('email = ? AND encrypted_password = ?',params[:user][:email],'').first
     if @user
       if params[:user][:password].length < 8
         flash[:error] = 'Password should be minimum 8 character'
