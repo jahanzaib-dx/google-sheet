@@ -8,7 +8,8 @@ class SaleRecord < ActiveRecord::Base
 
   has_many :comp_requests
 
-  after_destroy :cleanup
+  #after_destroy :cleanup
+  before_destroy :cleanup
   
   def self.my_ids
     @connections = Connection.all_connection_ids(User.current_user)
