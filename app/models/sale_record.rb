@@ -210,7 +210,7 @@ class SaleRecord < ActiveRecord::Base
     comp_request.destroy_all if !comp_request.nil?
     activity_log = ActivityLog.where('comp_id = ? and comptype = ?', self.id,"sale")
     activity_log.destroy_all if !activity_log.nil?
-    activity_log = ActivityLog.where('child_id = ? and comptype = ?', self.id,"sale")
+    activity_log = ActivityLog.where('child_comp = ? and comptype = ?', self.id,"sale")
     activity_log.destroy_all if !activity_log.nil?
     shared_comp=SharedComp.where('comp_id = ? and comp_type = ?', self.id,"sale")
     shared_comp.destroy_all if !shared_comp.nil?
