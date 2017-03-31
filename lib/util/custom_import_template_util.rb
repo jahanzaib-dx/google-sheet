@@ -226,16 +226,38 @@ module CustomImportTemplateUtil
 
     rescue IOError => e
       import.update_attribute('status', ["File upload failed at", DateTime.current().to_s].join(' '))
+      import.error=true
+      if @role == 'admin'
+        @user_email = User.where(:id=>import.user_id).first
+        DxMailer.white_glove_service_completed_email(@user_email,uploader_import_index_path).deliver_now
+      end
       puts [e.message, e.backtrace.join("\n")].join("\n")
       Rails.logger.debug [e.message, e.backtrace.join("\n")].join("\n")
     rescue NoMethodError => e
       import.update_attributes(:status => ["Import error at", DateTime.current().to_s].join(' '))
+      import.error=true
+      if @role == 'admin'
+        @user_email = User.where(:id=>import.user_id).first
+        DxMailer.white_glove_service_completed_email(@user_email,uploader_import_index_path).deliver_now
+      end
       puts [e.message, e.backtrace.join("\n")].join("\n")
       Rails.logger.error [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
     rescue Exception => e
       import.update_attributes(:status => e.message)
+      import.error=true
+      if @role == 'admin'
+        @user_email = User.where(:id=>import.user_id).first
+        DxMailer.white_glove_service_completed_email(@user_email,uploader_import_index_path).deliver_now
+      end
       puts [e.message, e.backtrace.join("\n")].join("\n")
       Rails.logger.error [e.inspect, e.message, e.backtrace.join("\n")].join("\n")
+    end
+    if @role == 'admin'
+      @user_email = 'amir.khalid@discretelogix.com'
+      @useer=User.where(:id=>import.user_id).first
+      @user_email=@user_email.join(", ").join(@useer)
+      p @user_email
+      DxMailer.white_glove_service_completed_email(@user_email,uploader_import_index_path).deliver_now
     end
 
   end
