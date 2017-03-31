@@ -15,7 +15,8 @@ class TenantRecord < ActiveRecord::Base
   after_find :protect_record
   before_save :default_values
   before_validation :default_values
-  after_destroy :cleanup
+  #after_destroy :cleanup
+  before_destroy :cleanup
   
   def self.my_ids
     @connections = Connection.all_connection_ids(User.current_user)
