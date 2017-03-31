@@ -4,7 +4,7 @@
 :logfile: log/sidekiq.log
 :verbose: true
 :pidfile: tmp/pids/sidekiq.pid
-:concurrency:  25
+:concurrency:  10
 :queues:
   - [import, 6]
   - [validate_import, 6]

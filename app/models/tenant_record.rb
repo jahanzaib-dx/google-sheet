@@ -945,7 +945,7 @@ class TenantRecord < ActiveRecord::Base
 
   def self.max_stepped_rent_by_user user_id
     query = "
-            select stepped_rents.tenant_record_id,count(*) as countof from stepped_rents INNER JOIN tenant_records on tenant_records.id=stepped_rents.tenant_record_id  where tenant_records.user_id=#{user_id} group by tenant_record_id order by countof DESC
+            select stepped_rents.tenant_record_id,count(*) as countof from stepped_rents INNER JOIN tenant_records on tenant_records.id=stepped_rents.tenant_record_id  where tenant_records.user_id=#{user_id}  and stepped_rents.deleted_at = NULL group by tenant_record_id order by countof DESC
             "
     TenantRecord.find_by_sql(query)
     # ActiveRecord::Base.connection.execute(query)

@@ -37,6 +37,33 @@
               <td class="geocode <%= r.object.id %> error" colspan="2">
                 <p>Found more than one matching address. Did you mean:</p><br />
                 <ul>
+                  <li>
+
+                    <% errors = r.object.record_errors.find {|e| e[0] == d[0] } %>
+
+                    <% if errors or (controller.action_name == 'filter_by_geocode' and ['address1', 'suite', 'city', 'state', 'zipcode'].include? d[0]) %>
+                        <%
+                          onfocus = ""
+                          counter += 1
+                          case d[0].to_s
+                            when 'address1'
+                              id_for_address="autocomplete#{r.object.id.to_s}"
+                              onfocus = 'geolocate()'
+                        %>
+                            <input type="hidden" id="street_number<%=r.object.id.to_s%>"><input type="hidden" id="route<%=r.object.id.to_s%>">
+                        <%
+                          when 'city'
+                            id_for_address="locality#{r.object.id.to_s}"
+                          when 'state'
+                            id_for_address="administrative_area_level_1#{r.object.id.to_s}"
+                          end
+                        %>
+                        <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{id_for_address}", :onfocus => onfocus  %>
+                    <% else %>
+                        <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{r.object.id}#{d[0].to_s}", :disabled => true %>
+                        <%= r.hidden_field d[0].to_s, :value => d[1] %>
+                    <% end %>
+                  </li>
                   <% r.object.record_errors["geocode_addresses"].each_with_index do |addr, i| %>
                     <li>
                       <%= radio_button_tag :addr, "#{i}_#{r.object.id}" %>
@@ -84,15 +111,15 @@
                       counter += 1
                       case d[0].to_s
                         when 'address1'
-                          id_for_address="autocomplete#{r.object.id.to_s}"
+                          id_for_address="autocomplete#{counter}"
                           onfocus = 'geolocate()'
                           %>
-                        <input type="hidden" id="street_number<%=r.object.id.to_s%>"><input type="hidden" id="route<%=r.object.id.to_s%>">
+                        <input type="hidden" id="street_number<%=counter%>"><input type="hidden" id="route<%=counter%>">
                         <%
                         when 'city'
-                          id_for_address="locality#{r.object.id.to_s}"
+                          id_for_address="locality#{counter-1}"
                         when 'state'
-                        id_for_address="administrative_area_level_1#{r.object.id.to_s}"
+                        id_for_address="administrative_area_level_1#{counter-2}"
                       end
                     %>
                     <%= r.text_field d[0].to_s, :value => value, :class => "cell #{d[0].to_s}", :id => "#{id_for_address}", :onfocus => onfocus  %>

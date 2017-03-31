@@ -76,11 +76,15 @@ module CustomImportTemplateUtil
 
   def self.process_excel_file(import_id, tmp_file_path, original_filename, template_id, current_user_info, import_mappings, not_for_sheet)
     missing_column_header = []
-    import_mappings.each do |mapping|
-      mapping = mapping.last
-      missing_column_header << mapping[:record_column] if mapping[:spreadsheet_column].empty?
+    p import_mappings
+    p "AAa############################"
+    p not_for_sheet
+    # import_mappings_new =import_mappings
+    import_mappings_new = ImportMapping.where(:import_template_id=>template_id)
+    import_mappings_new.each do |mapping|
+          missing_column_header << mapping.record_column if mapping.spreadsheet_column.empty?
     end
-    # missing Columns headers check
+
 
     import = TenantRecordImport.find(import_id)
     begin
@@ -91,7 +95,7 @@ module CustomImportTemplateUtil
         when ".csv"  then @sheet = Roo::CSV.new(file.path)
         else raise Exception.new("Unknown file type: #{File.extname(original_filename)}")
         end
-      end
+       end
 
       column_names = []
       @sheet.default_sheet = @sheet.sheets.first
@@ -161,24 +165,24 @@ module CustomImportTemplateUtil
           p row
           already_mapped_columns={}
           TenantRecordImport.increment_counter(:total_traversed_count, import_id)
-          if not_for_sheet[:class] == "TenantRecord"
-            not_for_sheet[:additional_tenant_cost] = 0.0
-            not_for_sheet[:additional_ll_allowance] = 0.0
+          if not_for_sheet['class'] == "TenantRecord"
+            not_for_sheet['additional_tenant_cost'] = 0.0
+            not_for_sheet['additional_ll_allowance'] = 0.0
             lease_stepped_rents = []
             already_mapped_columns={}
             @ind=0;
-            if !(not_for_sheet[:additional_cost].nil?)
-              if !(not_for_sheet[:additional_cost][:tenant].nil?)
-                not_for_sheet[:additional_cost][:tenant].each { |cost_column|
-                  not_for_sheet[:additional_tenant_cost] += row[cost_column.last].to_f
+            if !(not_for_sheet['additional_cost'].nil?)
+              if !(not_for_sheet['additional_cost']['tenant'].nil?)
+                not_for_sheet['additional_cost']['tenant'].each { |cost_column|
+                  not_for_sheet['additional_tenant_cost'] += row[cost_column.last].to_f
                   #already_mapped_columns.merge(cost_column.last.to_sym=>row[cost_column.last].to_f)
                   already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"additional_tenant_cost", spreadsheet_column: cost_column.last, default_value: "" }
                   @ind +=1
                 }
               end
-              if !(not_for_sheet[:additional_cost][:ll].nil?)
-                not_for_sheet[:additional_cost][:ll].each { |cost_column|
-                  not_for_sheet[:additional_ll_allowance] += row[cost_column.last].to_f
+              if !(not_for_sheet['additional_cost']['ll'].nil?)
+                not_for_sheet['additional_cost']['ll'].each { |cost_column|
+                  not_for_sheet['additional_ll_allowance'] += row[cost_column.last].to_f
                   #already_mapped_columns.merge!(cost_column.last.to_sym => row[cost_column.last].to_f)
                   already_mapped_columns["#{@ind}"] = { id: "#{@ind}", record_column:"additional_ll_allowance", spreadsheet_column: cost_column.last, default_value: "" }
                   @ind +=1
@@ -187,10 +191,10 @@ module CustomImportTemplateUtil
             end
             #Rails.logger.debug "*****************************************************"
             #Rails.logger.debug not_for_sheet[:rent_escalation_type_stepped]
-            if !(not_for_sheet[:stepped_rents].nil?)
-              if (not_for_sheet[:rent_escalation_type_stepped] and not_for_sheet[:stepped_rents].count > 0 )
+            if !(not_for_sheet['stepped_rents'].nil?)
+              if (not_for_sheet['rent_escalation_type_stepped'] and not_for_sheet['stepped_rents'].count > 0 )
                 counter = 0
-                not_for_sheet[:stepped_rents].each { |step|
+                not_for_sheet['stepped_rents'].each { |step|
                   lease_stepped_rents[counter] = {'cost_per_month' => row[step.last[:cost_per_month]].to_f , 'months' => row[step.last[:months]].to_i}
                   #already_mapped_columns.merge!(step.last[:cost_per_month].to_sym => row[step.last[:cost_per_month]].to_f)
                   #already_mapped_columns.merge!(.to_sym => row[step.last[:months]].to_i)
@@ -206,17 +210,18 @@ module CustomImportTemplateUtil
                                      })
               end
             end
-            if !(not_for_sheet[:lease_structure_field].nil?)
+            if !(not_for_sheet['lease_structure_field'].nil?)
 
-              not_for_sheet.merge!(:lease_structure => row[not_for_sheet[:lease_structure_field]].to_s)
+              not_for_sheet.merge!('lease_structure' => row[not_for_sheet['lease_structure_field']].to_s)
 
-              already_mapped_columns["#{@ind}"] = { id: "#{@ind}", record_column:"lease_structure", spreadsheet_column: not_for_sheet[:lease_structure_field], default_value: "" }
+              already_mapped_columns["#{@ind}"] = { id: "#{@ind}", record_column:"lease_structure", spreadsheet_column: not_for_sheet['lease_structure_field'], default_value: "" }
               @ind +=1
             end
           end
           parsed_spreadsheet_record = CustomImporter.hash_format(import_id, row,already_mapped_columns)
+          p parsed_spreadsheet_record
           CustomImporter.validate(parsed_spreadsheet_record, import_id, current_user_info, not_for_sheet)
-        end
+       end
       end
 
     rescue IOError => e
