@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
   
   #:email #system is validating itself
 
-  # validates_uniqueness_of :email #, :if => :confirmation_token_exists?
+   validates_uniqueness_of :email #, :if => :confirmation_token_exists?
 
 
 
