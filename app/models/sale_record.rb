@@ -8,7 +8,8 @@ class SaleRecord < ActiveRecord::Base
 
   has_many :comp_requests
 
-  after_destroy :cleanup
+  #after_destroy :cleanup
+  before_destroy :cleanup
   
   def self.my_ids
     @connections = Connection.all_connection_ids(User.current_user)
@@ -208,6 +209,8 @@ class SaleRecord < ActiveRecord::Base
     comp_request = CompRequest.where('comp_id = ? and comp_type = ?', self.id,"sale")
     comp_request.destroy_all if !comp_request.nil?
     activity_log = ActivityLog.where('comp_id = ? and comptype = ?', self.id,"sale")
+    activity_log.destroy_all if !activity_log.nil?
+    activity_log = ActivityLog.where('child_comp = ? and comptype = ?', self.id,"sale")
     activity_log.destroy_all if !activity_log.nil?
     shared_comp=SharedComp.where('comp_id = ? and comp_type = ?', self.id,"sale")
     shared_comp.destroy_all if !shared_comp.nil?

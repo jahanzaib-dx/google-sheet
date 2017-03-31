@@ -269,10 +269,14 @@ module SearchControllerUtil
       activity_full.each do |activity|
 
         if activity.initiator_id == current_user.id
-          singletnt = TenantRecord.find(activity.comp_id)
+          #singletnt = TenantRecord.find(activity.comp_id)
+		  singletnt = TenantRecord.where("id=?",activity.comp_id).first
         else
-          singletnt = TenantRecord.find(activity.child_comp)
+          #singletnt = TenantRecord.find(activity.child_comp)
+		  singletnt = TenantRecord.where("id=?",activity.child_comp).first
         end
+		
+		next if !singletnt.present?
 
         if singletnt.size == '' then size_str = "" else size_str = " and size = #{singletnt.size}" end
         if singletnt.base_rent == '' then base_rent_str = "" else base_rent_str = " and base_rent = #{singletnt.base_rent}" end
@@ -743,6 +747,16 @@ module SearchControllerUtil
         else
           singletnt = SaleRecord.find(activity.child_comp)
         end
+		
+		if activity.initiator_id == current_user.id
+          #singletnt = TenantRecord.find(activity.comp_id)
+		  singletnt = SaleRecord.where("id=?",activity.comp_id).first
+        else
+          #singletnt = TenantRecord.find(activity.child_comp)
+		  singletnt = SaleRecord.where("id=?",activity.child_comp).first
+        end
+		
+		next if !singletnt.present?
 
         if singletnt.land_size == '' then land_size_str = "" else land_size_str = " and land_size = #{singletnt.land_size}" end
         if singletnt.price == '' then price_str = "" else price_str = " and price = #{singletnt.price}" end

@@ -15,7 +15,8 @@ class TenantRecord < ActiveRecord::Base
   after_find :protect_record
   before_save :default_values
   before_validation :default_values
-  after_destroy :cleanup
+  #after_destroy :cleanup
+  before_destroy :cleanup
   
   def self.my_ids
     @connections = Connection.all_connection_ids(User.current_user)
@@ -978,6 +979,8 @@ class TenantRecord < ActiveRecord::Base
     comp_request = CompRequest.where('comp_id = ? and comp_type = ?', self.id,"lease")
     comp_request.destroy_all if !comp_request.nil?
     activity_log = ActivityLog.where('comp_id = ? and comptype = ?', self.id,"lease")
+    activity_log.destroy_all if !activity_log.nil?
+    activity_log = ActivityLog.where('child_comp = ? and comptype = ?', self.id,"lease")
     activity_log.destroy_all if !activity_log.nil?
     shared_comp=SharedComp.where('comp_id = ? and comp_type = ?', self.id,"lease")
     shared_comp.destroy_all if !shared_comp.nil?
