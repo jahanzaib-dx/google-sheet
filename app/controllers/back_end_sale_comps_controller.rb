@@ -96,7 +96,7 @@ class BackEndSaleCompsController < ApplicationController
             :land_size => ws[counter, 14],
             :price => ws[counter, 15],
             :sold_date => ws[counter, 16],
-            :is_sales_record => (ws[counter, 17]=='Land Record') ? 'TRUE' : 'False',
+            :is_sales_record => (ws[counter, 17]=='Building Record') ? 'TRUE' : 'False',
             :cap_rate => ws[counter, 18],
             :custom => custom_data
         ))? "":"</br>Cell no. #{counter} is not saved"
@@ -164,7 +164,7 @@ class BackEndSaleCompsController < ApplicationController
       ws[counter, 15] = sale_record.land_size
       ws[counter, 16] = sale_record.price
       ws[counter, 17] = sale_record.sold_date
-      ws[counter, 18] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      ws[counter, 18] = (sale_record.is_sales_record) ? "Building Record":"Land Record"
       ws[counter, 19] = sale_record.cap_rate
       custom_field_col = 20
       custom_data = SaleRecord.custom_field_values(sale_record.id)
@@ -251,7 +251,7 @@ class BackEndSaleCompsController < ApplicationController
             :land_size => ws[counter, 15],
             :price => ws[counter, 16],
             :sold_date => ws[counter, 17],
-            :is_sales_record => (ws[counter, 18]=='Land Record') ? 'TRUE' : 'False',
+            :is_sales_record => (ws[counter, 18]=='Building Record') ? 'TRUE' : 'False',
             :cap_rate => ws[counter, 19],
             :custom => custom_data
         )

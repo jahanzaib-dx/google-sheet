@@ -34,7 +34,7 @@ class DatabaseSaleWorker
       ws[counter, 14] = sale_record.land_size
       ws[counter, 15] = sale_record.price
       ws[counter, 16] = sale_record.sold_date
-      ws[counter, 17] = (sale_record.is_sales_record) ? "Land Record":"Building Record"
+      ws[counter, 17] = (sale_record.is_sales_record) ? "Building Record":"Land Record"
       ws[counter, 18] = sale_record.cap_rate
       custom_field_col = 19
 
