@@ -45,11 +45,11 @@
       </div>
       <div class="comp-table-container">
         <h1 class="detail-comp-hadding">Comp Detail</h1>
-        <table width="<%= @comp_record.is_sales_record ? "50%":"100%" %>" border="0">
+        <table width="<%= !@comp_record.is_sales_record ? "50%":"100%" %>" border="0">
           <tr>
             <td height="104"><h1 class="comp-table-hadding">Sale</h1></td>
             <td><h1 class="comp-table-hadding"></h1></td>
-            <% if !@comp_record.is_sales_record %>
+            <% if @comp_record.is_sales_record %>
             <td><h1 class="comp-table-hadding">Building</h1></td>
             <td><h1 class="comp-table-hadding"></h1></td>
             <% end %>
@@ -57,7 +57,7 @@
           <tr>
             <td><p class="comp-table-pre">Size (SF) </p></td>
             <td><p class="comp-table-pre"><%=number_with_precision(@comp_record.land_size,:precision=>0,:delimiter => ',')%></p></td>
-            <% if !@comp_record.is_sales_record %>
+            <% if @comp_record.is_sales_record %>
             <td><p class="comp-table-pre">Property Name </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.property_name.to_s.capitalize! %></p></td>
             <% end %>
@@ -65,7 +65,7 @@
           <tr>
             <td><p class="comp-table-pre">Sale Price </p></td>
             <td><p class="comp-table-pre"><%= number_to_currency(@comp_record.price.to_f, {:precision=>0})%> </p></td>
-            <% if !@comp_record.is_sales_record %>
+            <% if @comp_record.is_sales_record %>
             <td><p class="comp-table-pre">Property Type </p></td>
             <td><p class="comp-table-pre"><%= @comp_record.property_type.to_s.capitalize! %></p></td>
             <% end %>
@@ -73,7 +73,7 @@
           <tr>
             <td><p class="comp-table-pre">Date Sold </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.sold_date.strftime('%m/%d/%Y')%></p></td>
-            <% if !@comp_record.is_sales_record %>
+            <% if @comp_record.is_sales_record %>
             <td><p class="comp-table-pre">Class Type </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.class_type.to_s.capitalize!%></p></td>
             <% end %>
@@ -81,7 +81,7 @@
           <tr>
             <td><p class="comp-table-pre">Cap Rate (%) </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.cap_rate%>%</p></td>
-            <% if !@comp_record.is_sales_record %>
+            <% if @comp_record.is_sales_record %>
             <td><p class="comp-table-pre">Year Built </p></td>
             <td><p class="comp-table-pre"><%=@comp_record.build_date.strftime('%Y')%></p></td>
             <% end %>
