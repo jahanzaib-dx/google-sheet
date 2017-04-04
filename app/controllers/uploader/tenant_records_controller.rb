@@ -53,7 +53,7 @@ class Uploader::TenantRecordsController < ApplicationController
 
     elsif @property_type == 'sales_comps'
       @sale_record = SaleRecord.new(sale_record_params)
-      @sale_record.is_sales_record = (params[:sale_record][:is_sales_record] == 'yes' ? true : false)
+      @sale_record.is_sales_record = (params[:sale_record][:is_sales_record] == 'yes' ? false : true)
       if params[:sale_record][:build_date].present?
         @sale_record.build_date = Date.strptime(params[:sale_record][:build_date], "%m/%d/%Y")
       end
