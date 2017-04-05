@@ -741,33 +741,29 @@ module SearchControllerUtil
       tntids = []
 
       activity_full.each do |activity|
-
-        if activity.initiator_id == current_user.id
-          singletnt = SaleRecord.find(activity.comp_id)
-        else
-          singletnt = SaleRecord.find(activity.child_comp)
-        end
 		
-		if activity.initiator_id == current_user.id
-          #singletnt = TenantRecord.find(activity.comp_id)
-		  singletnt = SaleRecord.where("id=?",activity.comp_id).first
-        else
-          #singletnt = TenantRecord.find(activity.child_comp)
-		  singletnt = SaleRecord.where("id=?",activity.child_comp).first
-        end
+      if activity.initiator_id == current_user.id
+            #singletnt = TenantRecord.find(activity.comp_id)
+            singletnt = SaleRecord.where("id=?",activity.comp_id).first
+      else
+            #singletnt = TenantRecord.find(activity.child_comp)
+            singletnt = SaleRecord.where("id=?",activity.child_comp).first
+      end
 		
-		next if !singletnt.present?
+		  next if !singletnt.present?
 
         if singletnt.land_size == '' then land_size_str = "" else land_size_str = " and land_size = #{singletnt.land_size}" end
         if singletnt.price == '' then price_str = "" else price_str = " and price = #{singletnt.price}" end
         if singletnt.cap_rate == '' then cap_rate_str = "" else cap_rate_str = " and cap_rate = #{singletnt.cap_rate}" end
+
+        bdate = (singletnt.build_date.nil?)?'':" and build_date = '#{singletnt.build_date}'"
 
         tntids += SaleRecord.where("address1='#{singletnt.address1}'
                                       and city = '#{singletnt.city}'
                                       and state = '#{singletnt.state}'
                                       and submarket = '#{singletnt.submarket}'
                                       and property_name = '#{singletnt.property_name}'
-                                      and build_date = '#{singletnt.build_date}'
+                                      #{bdate}
                                       and property_type = '#{singletnt.property_type}'
                                       and class_type = '#{singletnt.class_type}'
                                       #{land_size_str}
