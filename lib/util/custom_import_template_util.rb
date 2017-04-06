@@ -195,13 +195,13 @@ module CustomImportTemplateUtil
               if (not_for_sheet['rent_escalation_type_stepped'] and not_for_sheet['stepped_rents'].count > 0 )
                 counter = 0
                 not_for_sheet['stepped_rents'].each { |step|
-                  lease_stepped_rents[counter] = {'cost_per_month' => row[step.last[:cost_per_month]].to_f , 'months' => row[step.last[:months]].to_i}
+                  lease_stepped_rents[counter] = {'cost_per_month' => row[step.last['cost_per_month']].to_f , 'months' => row[step.last['months']].to_i}
                   #already_mapped_columns.merge!(step.last[:cost_per_month].to_sym => row[step.last[:cost_per_month]].to_f)
                   #already_mapped_columns.merge!(.to_sym => row[step.last[:months]].to_i)
-                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_cost", spreadsheet_column: step.last[:cost_per_month], default_value: "" }
+                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_cost", spreadsheet_column: step.last['cost_per_month'], default_value: "" }
                   counter += 1
                   @ind +=1
-                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_month", spreadsheet_column: step.last[:months], default_value: "" }
+                  already_mapped_columns["#{@ind}"] = { id:"#{@ind}", record_column:"stepped_month", spreadsheet_column: step.last['months'], default_value: "" }
                   @ind +=1
                 }
 
