@@ -1,5 +1,8 @@
 <div style="background-color: #fafafa;z-index: 1;">
-  <div class="container" style="background-color: #d9dadd; position: relative;">
+  <div style="background-color: #d9dadd; position: relative;">
+
+  </div>
+  <div class="container database_menu" style="background-color: #d9dadd; position: relative;">
     <div class="tx_activiti_fiulter fiulter-container-btn">
       <h1><b>Database</b></h1>
       <form enctype="multipart/form-data" method="post" id="imageUploadForm" action="/database_back_ends/upload_image">
@@ -76,16 +79,16 @@
       <p id="error_string" ></p>
     </div>
   </div>
-  <div class="position-z" style="width: 100%;height: 62px;background: #fafafa;position: relative;top: 35px;z-index: 12;margin: -36px 0 36px 0;"><div class="container bc-gread" style="    background: #d9d9db;height: 61px;"></div>
-    <div style="width: 50px;height: 37px;float: right;margin-right: 28px;">
-
+  <div class="position-z" style="width: 100%;height: 62px;background: #fafafa;position: relative;top: 35px;z-index: 12;margin: -36px 0 36px 0;"><div class="container bc-gread database_menu" style="    background: #d9d9db;height: 61px;"></div>
+    <div style="float: right;margin-right: 37px;background-color: #f1f1f1;padding: 6px;margin-top: 3px;">
+      <button id="toggle_menu_button"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
   </div>
 </div>
 <div class="clearfix"></div>
 
 <div style = "z-index: 0;position: relative;bottom: 63px;"  id = "myiframe">
-  <iframe src="" style="width:100%; height: 700px; "></iframe>
+  <iframe src="" style="width:100%; height: 685px; "></iframe>
 </div>
 
 
@@ -99,6 +102,20 @@
 
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function(){
+    $('#toggle_menu_button').click(function(){
+      $('.database_menu').toggle("slow");
+      if($('.position-z').height()!=1)
+      {
+        $('.position-z').height(1);
+        $('#toggle_menu_button').html('<i class="fa fa-compress" aria-hidden="true"></i>');
+      }
+      else
+      {
+        $('.position-z').height(62);
+        $('#toggle_menu_button').html('<i class="fa fa-expand" aria-hidden="true"></i>')
+      }
+    });
+    $('#toggle_menu_button').parent().hide('fast');
     $('#myiframe').find('iframe').attr('src','');
     $('#tx_linkdin_profile').hide('fast');
     $('#export').hide('fast');
@@ -127,6 +144,7 @@
       $('#manage_dups').hide('fast');
       $('#error_string').hide('fast');
       $('#message').hide('fast');
+      $('#toggle_menu_button').parent().hide('fast');
 
       if($('#data_type').val()=="lease")
       {
@@ -144,6 +162,7 @@
             $('#database_map_search').show('fast');
             $('#message').show('fast');
             $('#advanced-search-form').attr('action','/search/database_lease');
+            $('#toggle_menu_button').parent().show('fast');
             if(result.is_potential_dupes>0)
               $('#duplication').parent().show();
 
@@ -167,6 +186,7 @@
             $('#database_map_search').show('fast');
             $('#message').show('fast');
             $('#advanced-search-form').attr('action','/search/database_sale');
+            $('#toggle_menu_button').parent().show('fast');
             if(result.is_potential_dupes>0)
               $('#duplication').parent().show();
           }
@@ -191,6 +211,7 @@
     $('#manage_dups').hide('fast');
     $('#error_string').hide('fast');
     $('#message').hide('fast');
+    $('#toggle_menu_button').parent().hide('fast');
     $.ajax({
         url: '/back_end_custom_record/index/'+$(this).val(),
         success: function(result){
@@ -201,6 +222,7 @@
           $('#export').show('fast');
           $('#media-button').show('fast');
           $('#ImageBrowse').show('fast');
+          $('#toggle_menu_button').parent().show('fast');
         }
       });
   });
@@ -266,6 +288,7 @@
       $('#message').hide('fast');
       $('#error_string').hide('fast');
       $('#duplication').parent().hide('fast');
+      $('#toggle_menu_button').parent().hide('fast');
       var url;
       var delete_url;
       if($('#data_type').val()=="lease")
@@ -287,6 +310,7 @@
           $('#tx_linkdin_profile').attr('href',validation_url+'/'+result.file_temp);
           $('#tx_linkdin_profile').show('fast');
           $('#manage_dups').show('fast');
+          $('#toggle_menu_button').parent().show('fast');
         }
 
       });
@@ -359,6 +383,8 @@
       $('.popup_cont').remove();
       $('.popup_back').remove();
     });
+
+
     var search_basic_path_js = '<%= search_basic_path() %>';
     var search_advanced_path_js = '<%= "/search/database_lease" %>';
     var search_simple_path_js = '<%= search_simple_path() %>';
