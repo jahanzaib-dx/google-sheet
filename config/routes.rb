@@ -94,9 +94,11 @@ Rails.application.routes.draw do
   get 'leaserex-faqs' => 'pages#faqs_lease'
   get 'tenantrex-faqs' => 'pages#faqs_tenant'
 
+  get 'dashboard' => 'users#dashboard', :as => :dashboard
+  
   resource :users
 
-  get 'dashboard' => 'users#dashboard', :as => :dashboard
+  ##get 'dashboard' => 'users#dashboard', :as => :dashboard
   ##get 'profile/:id' => 'users#show', :as => :public_profile
 
 
