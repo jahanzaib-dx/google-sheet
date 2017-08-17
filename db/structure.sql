@@ -340,7 +340,6 @@ CREATE TABLE comp_requests (
     receiver_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    status boolean DEFAULT false,
     comp_type character varying
 );
 
@@ -371,7 +370,7 @@ ALTER SEQUENCE comp_requests_id_seq OWNED BY comp_requests.id;
 CREATE TABLE comp_unlock_fields (
     id integer NOT NULL,
     shared_comp_id integer,
-    field_name integer
+    field_name character varying
 );
 
 
@@ -1278,6 +1277,37 @@ ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
 
 
 --
+-- Name: notify_emails; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notify_emails (
+    id integer NOT NULL,
+    email character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notify_emails_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notify_emails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notify_emails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notify_emails_id_seq OWNED BY notify_emails.id;
+
+
+--
 -- Name: offices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1761,10 +1791,10 @@ ALTER SEQUENCE tenant_record_imports_id_seq OWNED BY tenant_record_imports.id;
 
 
 --
--- Name: tenant_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tenant_records_new; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE tenant_records (
+CREATE TABLE tenant_records_new (
     id integer NOT NULL,
     office_id integer,
     comments text,
@@ -1822,29 +1852,11 @@ CREATE TABLE tenant_records (
     company_logo_file_size integer,
     company_logo_updated_at timestamp without time zone,
     user_id integer,
-    has_additional_tenant_cost boolean DEFAULT false,
-    has_additional_ll_allowance boolean DEFAULT false,
-    additional_ll_allowance numeric(20,2) DEFAULT 0.0,
-    additional_tenant_cost numeric(20,2) DEFAULT 0.0,
-    gross_free_rent boolean DEFAULT false,
-    comp_view_type character varying,
-    deal_type character varying,
-    comp_data_type character varying,
-    base_rent_type character varying,
-    rent_escalation_type character varying,
-    free_rent_type character varying,
-    is_tenant_improvement boolean DEFAULT false,
-    fixed_escalation numeric(20,2) DEFAULT 0.0,
     cap_rate double precision,
     sale_price double precision,
     build_date date,
     sold_date date,
-    record_type character varying DEFAULT 'lease'::character varying,
-    custom_data hstore,
-    parent_id integer,
-    master_id integer,
-    country character varying,
-    is_geo_coded boolean DEFAULT true
+    record_type character varying
 );
 
 
@@ -1864,7 +1876,90 @@ CREATE SEQUENCE tenant_records_id_seq
 -- Name: tenant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE tenant_records_id_seq OWNED BY tenant_records.id;
+ALTER SEQUENCE tenant_records_id_seq OWNED BY tenant_records_new.id;
+
+
+--
+-- Name: tenant_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tenant_records (
+    id integer DEFAULT nextval('tenant_records_id_seq'::regclass) NOT NULL,
+    office_id integer,
+    comments text,
+    industry_sic_code_id integer,
+    company character varying(255),
+    address1 character varying(255),
+    suite character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zipcode character varying(255),
+    zipcode_plus integer,
+    view_type character varying(255) DEFAULT 'public'::character varying,
+    comp_type character varying(255) DEFAULT 'internal'::character varying,
+    contact character varying(255),
+    contact_email character varying(255),
+    contact_phone character varying(255),
+    location_type character varying(255),
+    lease_commencement_date date,
+    lease_term_months integer,
+    lease_type character varying(255),
+    property_type character varying(255),
+    class_type character varying(255),
+    version integer DEFAULT 1,
+    mongoid character varying(255),
+    latitude numeric(30,9),
+    longitude numeric(30,9),
+    size integer,
+    net_effective_per_sf numeric(20,9) DEFAULT 0,
+    landlord_concessions_per_sf numeric(20,9) DEFAULT 0,
+    landlord_margins numeric(20,9) DEFAULT 0,
+    base_rent numeric(20,9),
+    escalation numeric(4,2),
+    tenant_improvement numeric(20,9) DEFAULT 0,
+    tenant_ti_cost numeric(20,9) DEFAULT 0,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp without time zone,
+    data hstore,
+    team_id integer,
+    main_image_file_name character varying(255),
+    main_image_content_type character varying(255),
+    main_image_file_size integer,
+    main_image_updated_at timestamp without time zone,
+    avg_base_rent_per_annum_by_sf numeric,
+    landlord_effective_rent numeric(20,9) DEFAULT 0,
+    submarket character varying(255),
+    property_name character varying(255),
+    free_rent_total integer DEFAULT 0,
+    free_rent character varying(255) DEFAULT '0'::character varying,
+    industry_type character varying(255),
+    cushman_net_effective_per_sf numeric(20,2) DEFAULT 0,
+    is_stepped_rent boolean DEFAULT false,
+    company_logo_file_name character varying(255),
+    company_logo_content_type character varying(255),
+    company_logo_file_size integer,
+    company_logo_updated_at timestamp without time zone,
+    user_id integer,
+    has_additional_tenant_cost boolean DEFAULT false,
+    has_additional_ll_allowance boolean DEFAULT false,
+    additional_ll_allowance numeric(20,2) DEFAULT 0,
+    additional_tenant_cost numeric(20,2) DEFAULT 0,
+    gross_free_rent boolean DEFAULT false,
+    comp_view_type character varying,
+    deal_type character varying,
+    comp_data_type character varying,
+    base_rent_type character varying,
+    rent_escalation_type character varying,
+    free_rent_type character varying,
+    is_tenant_improvement boolean DEFAULT false,
+    fixed_escalation numeric(20,2) DEFAULT 0.0,
+    custom_data hstore,
+    parent_id integer,
+    master_id integer,
+    country character varying,
+    is_geo_coded boolean DEFAULT true
+);
 
 
 --
@@ -2281,6 +2376,13 @@ ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY notify_emails ALTER COLUMN id SET DEFAULT nextval('notify_emails_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY offices ALTER COLUMN id SET DEFAULT nextval('offices_id_seq'::regclass);
 
 
@@ -2372,7 +2474,7 @@ ALTER TABLE ONLY tenant_record_imports ALTER COLUMN id SET DEFAULT nextval('tena
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tenant_records ALTER COLUMN id SET DEFAULT nextval('tenant_records_id_seq'::regclass);
+ALTER TABLE ONLY tenant_records_new ALTER COLUMN id SET DEFAULT nextval('tenant_records_id_seq'::regclass);
 
 
 --
@@ -2681,6 +2783,14 @@ ALTER TABLE ONLY memberships
 
 ALTER TABLE ONLY messages
     ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notify_emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notify_emails
+    ADD CONSTRAINT notify_emails_pkey PRIMARY KEY (id);
 
 
 --
@@ -3013,21 +3123,21 @@ CREATE INDEX index_tenant_record_imports_on_user_id ON tenant_record_imports USI
 -- Name: index_tenant_records_on_industry_sic_code_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_tenant_records_on_industry_sic_code_id ON tenant_records USING btree (industry_sic_code_id);
+CREATE INDEX index_tenant_records_on_industry_sic_code_id ON tenant_records_new USING btree (industry_sic_code_id);
 
 
 --
 -- Name: index_tenant_records_on_office_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_tenant_records_on_office_id ON tenant_records USING btree (office_id);
+CREATE INDEX index_tenant_records_on_office_id ON tenant_records_new USING btree (office_id);
 
 
 --
 -- Name: index_tenant_records_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_tenant_records_on_user_id ON tenant_records USING btree (user_id);
+CREATE INDEX index_tenant_records_on_user_id ON tenant_records_new USING btree (user_id);
 
 
 --
@@ -3080,99 +3190,99 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: fk_rails_230b5be97a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sale_records
-    ADD CONSTRAINT fk_rails_230b5be97a FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_52c772bed9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY groups
-    ADD CONSTRAINT fk_rails_52c772bed9 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_59f0a48653; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tenant_record_import_operating_expense_mappings
-    ADD CONSTRAINT fk_rails_59f0a48653 FOREIGN KEY (tenant_record_import_id) REFERENCES tenant_record_imports(id);
-
-
---
--- Name: fk_rails_5f8d13ff4d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY white_glove_service_requests
-    ADD CONSTRAINT fk_rails_5f8d13ff4d FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_6dc8183ed6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_09a2e1e0ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tenant_record_imports
-    ADD CONSTRAINT fk_rails_6dc8183ed6 FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_09a2e1e0ba FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_71fed0cc19; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY import_logs
-    ADD CONSTRAINT fk_rails_71fed0cc19 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_95851c6014; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_0a70287dd0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY white_glove_service_requests
-    ADD CONSTRAINT fk_rails_95851c6014 FOREIGN KEY (import_template_id) REFERENCES import_templates(id);
+    ADD CONSTRAINT fk_rails_0a70287dd0 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_96da319de1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_1b137019c3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY import_templates
-    ADD CONSTRAINT fk_rails_96da319de1 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_bc1741e432; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY custom_records
-    ADD CONSTRAINT fk_rails_bc1741e432 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY sale_records
+    ADD CONSTRAINT fk_rails_1b137019c3 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_dea63341f6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_dea63341f6 FOREIGN KEY (member_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_f168d43179; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_f168d43179 FOREIGN KEY (group_id) REFERENCES groups(id);
-
-
---
--- Name: fk_rails_fd76783a6d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_1d5f22eb3b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schedule_accesses
-    ADD CONSTRAINT fk_rails_fd76783a6d FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_1d5f22eb3b FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_5c1d3c1c63; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT fk_rails_5c1d3c1c63 FOREIGN KEY (member_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_738e304f14; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tenant_record_import_operating_expense_mappings
+    ADD CONSTRAINT fk_rails_738e304f14 FOREIGN KEY (tenant_record_import_id) REFERENCES tenant_record_imports(id);
+
+
+--
+-- Name: fk_rails_7bd6558db5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT fk_rails_7bd6558db5 FOREIGN KEY (group_id) REFERENCES groups(id);
+
+
+--
+-- Name: fk_rails_8dad33a7fe; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY custom_records
+    ADD CONSTRAINT fk_rails_8dad33a7fe FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_a9f8511872; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY white_glove_service_requests
+    ADD CONSTRAINT fk_rails_a9f8511872 FOREIGN KEY (import_template_id) REFERENCES import_templates(id);
+
+
+--
+-- Name: fk_rails_c4f44ffbb0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT fk_rails_c4f44ffbb0 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_dcc950a319; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY import_logs
+    ADD CONSTRAINT fk_rails_dcc950a319 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_deefbaa61b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY import_templates
+    ADD CONSTRAINT fk_rails_deefbaa61b FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -3229,6 +3339,10 @@ INSERT INTO schema_migrations (version) VALUES ('20161004054508');
 
 INSERT INTO schema_migrations (version) VALUES ('20161004060626');
 
+INSERT INTO schema_migrations (version) VALUES ('20161005103317');
+
+INSERT INTO schema_migrations (version) VALUES ('20161005104536');
+
 INSERT INTO schema_migrations (version) VALUES ('20161006120927');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006120950');
@@ -3242,8 +3356,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161006121933');
 INSERT INTO schema_migrations (version) VALUES ('20161006121954');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006122054');
-
-INSERT INTO schema_migrations (version) VALUES ('20161006122244');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006125912');
 
@@ -3299,8 +3411,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161019053658');
 
 INSERT INTO schema_migrations (version) VALUES ('20161019064841');
 
-INSERT INTO schema_migrations (version) VALUES ('20161027070517');
-
 INSERT INTO schema_migrations (version) VALUES ('20161027071106');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027110604');
@@ -3309,8 +3419,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161027111025');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027121442');
 
-INSERT INTO schema_migrations (version) VALUES ('20161102100332');
-
 INSERT INTO schema_migrations (version) VALUES ('20161102133336');
 
 INSERT INTO schema_migrations (version) VALUES ('20161103094724');
@@ -3318,6 +3426,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161103094724');
 INSERT INTO schema_migrations (version) VALUES ('20161107070850');
 
 INSERT INTO schema_migrations (version) VALUES ('20161107073627');
+
+INSERT INTO schema_migrations (version) VALUES ('20161108093149');
 
 INSERT INTO schema_migrations (version) VALUES ('20161108102156');
 
@@ -3342,6 +3452,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161116235323');
 INSERT INTO schema_migrations (version) VALUES ('20161116235350');
 
 INSERT INTO schema_migrations (version) VALUES ('20161117125255');
+
+INSERT INTO schema_migrations (version) VALUES ('20161124103445');
 
 INSERT INTO schema_migrations (version) VALUES ('20161127194026');
 

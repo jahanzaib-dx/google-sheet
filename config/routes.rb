@@ -95,7 +95,7 @@ Rails.application.routes.draw do
   get 'tenantrex-faqs' => 'pages#faqs_tenant'
 
   get 'dashboard' => 'users#dashboard', :as => :dashboard
-  
+
   resource :users
 
   ##get 'dashboard' => 'users#dashboard', :as => :dashboard

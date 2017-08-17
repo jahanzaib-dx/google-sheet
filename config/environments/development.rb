@@ -41,7 +41,25 @@ Rails.application.configure do
 
   config.web_console.whitelisted_ips = %w( 115.186.56.134 10.0.2.2 )
 
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
+
+  config.action_mailer.default_url_options = {:host => "localhost:3000"}
+
+  config.action_mailer.default_options = {
+      from: "test.dx123@gmail.com"
+  }
+
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #     address:              'smtp.gmail.com',
+  #     ##port:                 587,
+  #     port:                 110,
+  #     domain:               'gmail.com',
+  #     user_name:            'aamir.sarwar@discretelogix.com',
+  #     password:             'dx654321',
+  #     authentication:       'plain',
+  #     enable_starttls_auto: true
+  # }
 
   #GA.tracker = 'UA-87956154-1'
 end

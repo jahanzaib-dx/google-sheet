@@ -6,6 +6,7 @@ class UsersController  < ApplicationController
       redirect_to users_path
     end
     @user = current_user
+    redirect_to database_back_ends_path
   end
 
 

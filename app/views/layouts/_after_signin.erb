@@ -1,4 +1,4 @@
-<ul class="nav tx_nav navbar-nav">
+<!--<ul class="nav tx_nav navbar-nav">
     <li class="active">
         <a href="<%= root_url %>"><img src="<%= image_url 'MarketRex_active.svg' %>"></a>
     </li>
@@ -24,11 +24,15 @@
                 <!--<a href="#">-->
                   Searchable Lease Comps (<%= TenantRecord.con_ids.count%>)
                 <!--</a>-->
+
+<!--
             </li>
 			 <li role="presentation tx_new_customer" class="simpledropdown">
                 <!--<a href="#">-->
                   Searchable Sale Comps (<%= SaleRecord.con_ids.count%>)
                 <!--</a> -->
+
+<!--
             </li>
         </ul>
     </li>
@@ -67,6 +71,8 @@
             <!--<li role="presentation tx_new_customer">-->
                 <!--<a href="#">Purchase Upgrades</a>-->
             <!--</li>-->
+
+<!--
         </ul>
     </li>
 </ul>
@@ -100,3 +106,12 @@
         </div>
     </div>
 </div>
+-->
+<li class="dropdown tx_dropdown" id="fat-menu">
+  <a data-toggle="dropdown" class="dropdown-toggle tx-drop-down " role="button" id="drop3" href="#"><%= image_tag("user-icon.png" , :class => "drom-icon") %><%= current_user.first_name %><b class="caret"></b></a>
+  <ul aria-labelledby="drop3" role="menu" class="dropdown-menu tx_drop_menu tx_drop_menu_user">
+    <li role="presentation tx_new_customer">
+      <%= link_to "Logout", destroy_user_session_url, :method => :delete %>
+    </li>
+  </ul>
+</li>

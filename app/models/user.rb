@@ -166,6 +166,7 @@ class User < ActiveRecord::Base
 		user.provider  = auth.provider
 		user.uid  = auth.provider
 
+
     user.email  = auth.info.email
 		
 		user.password  = (0...8).map { (65 + rand(26)).chr }.join
@@ -182,7 +183,7 @@ class User < ActiveRecord::Base
 		##user
 		
 		##---welcome email with random password-------------
-		DxMailer.welcome_email(user).deliver
+		##---localhost-----DxMailer.welcome_email(user).deliver
     ###########email##########
     # DxMailer.new_user_has_signed_up(user).deliver
     ###########email##########

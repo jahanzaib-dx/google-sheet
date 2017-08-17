@@ -10,7 +10,7 @@ class BackEndSaleCompsController < ApplicationController
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
     check = BackEndSaleComp.where('user_id = ?', @current_user)
     if  check.count == 0
-      @file = session.drive.copy_file('1xPvNyWzcah6fbf_VlunbE_GDfMG1ufw3Gb2UeLa0MGo', {name: fileName}, {})
+      @file = session.drive.copy_file('1xXKo3d3qc11q7P4QuBsOEkYqIQ4cmzhAKVj2GW7MnLA', {name: fileName}, {})
       # save file name to database
       @BackEndSaleComp = BackEndSaleComp.new
       @BackEndSaleComp.user_id = @current_user.id
@@ -136,7 +136,7 @@ class BackEndSaleCompsController < ApplicationController
     fileName = Digest::SHA1.hexdigest("#{time}#{@current_user}")
     session = GoogleDrive::Session.from_config("#{Rails.root}/config/google-sheets.json")
 
-    @file = session.drive.copy_file('1CcONE2zcYygchHXZQvaw5FnwShJT76T6xRL8OX1sbUI', {name: fileName}, {})
+    @file = session.drive.copy_file('1xXKo3d3qc11q7P4QuBsOEkYqIQ4cmzhAKVj2GW7MnLA', {name: fileName}, {})
 
     # put data to sheet
     ws = session.spreadsheet_by_key(@file.id).worksheets[0]
