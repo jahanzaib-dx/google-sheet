@@ -38,7 +38,7 @@ class BackEndSaleCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
-    DatabaseSaleWorker.perform_async(@file_temp.id,@current_user.id)
+    DatabaseSaleWorker.perform_async(@file_temp.id,1)
     @is_potential_dupes = SaleRecord.duplicate_list(current_user.id).count
     render :json => {
         :file_temp => @file_temp.id,

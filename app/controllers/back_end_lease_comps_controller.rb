@@ -38,7 +38,7 @@ class BackEndLeaseCompsController < ApplicationController
         session.drive.create_permission(@file_temp.id, user_permission, fields: 'id')
       end
     end
-    DatabaseLeaseWorker.perform_async(@file_temp.id,@current_user.id)
+    DatabaseLeaseWorker.perform_async(@file_temp.id,1)
     # CustomImportTenantRecordsWorker.perform_async()
     @is_potential_dupes = TenantRecord.duplicate_list(current_user.id).count
     render :json => {
